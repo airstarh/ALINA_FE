@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <MenuHorizontalMain></MenuHorizontalMain>
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -7,6 +8,21 @@
     <router-view />
   </div>
 </template>
+<script>
+  import MenuHorizontalMain from "./components/MenuHorizontalMain";
+
+  export default {
+    name:       'App',
+    components: {
+      MenuHorizontalMain
+    },
+    watch:      {
+      '$route'(to, from) {
+        console.log(`Router. ${from} -> ${to}`);
+      }
+    }
+  }
+</script>
 
 <style lang="scss">
 #app {
