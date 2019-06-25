@@ -38,17 +38,71 @@
         </p>
       </div>
     </div>
+
+    <b-container class="bv-example-row">
+      <b-row class="justify-content-md-center">
+        <b-col cols="12" md="5">
+          <h2>
+            <b-badge>Hello World</b-badge>&nbsp;
+          </h2>
+          <div>
+            <ui-textbox
+                    label="AnObject.prop1"
+                    v-model="AnObject.prop1"
+                    icon="person_pin"
+                    type="text"
+                    :floatingLabel="true"
+            ></ui-textbox>
+          </div>
+          <div>
+            <ui-textbox
+                    label="AnObject.prop2"
+                    v-model="AnObject.prop2"
+                    icon="security"
+                    type="text"
+                    :floatingLabel="true"
+            ></ui-textbox>
+          </div>
+
+          <b-list-group>
+            <b-list-group-item variant="dark">{{AnObject.prop1}}</b-list-group-item>
+            <b-list-group-item variant="dark">{{AnObject.prop2}}</b-list-group-item>
+          </b-list-group>
+
+          <div>
+            <ui-datepicker
+                    icon="eventpacks"
+                    orientation="landscape"
+                    picker-type="modal"
+                    placeholder="Select a date"
+                    v-model="picker8"
+            >Your Birthday
+            </ui-datepicker>
+          </div>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col>1 of 3</b-col>
+        <b-col cols="12" md="auto">Variable width content</b-col>
+        <b-col col lg="2">3 of 3</b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
   import {mapActions, mapGetters, mapState} from "vuex";
+  import AnObject                           from "../services/AnObject";
 
   export default {
     name:     'EgStoreModuleComponent',
     data() {
+      const twoWeeksFromNow = new Date();
+      twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
       return {
-        flag:      true,
+        picker8:     null,
+        AnObject:    AnObject
       };
     },
 

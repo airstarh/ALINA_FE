@@ -9,6 +9,9 @@ import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue);
 import '../public/a010.scss'
 
+import KeenUI from 'keen-ui';
+Vue.use(KeenUI);
+
 new Vue({
 	router,
 	store,
