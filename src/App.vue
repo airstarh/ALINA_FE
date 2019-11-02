@@ -5,19 +5,19 @@
   </div>
 </template>
 <script>
-  import MenuHorizontalMain from "./components/MenuHorizontalMain";
+import MenuHorizontalMain from "./components/MenuHorizontalMain";
 
-  export default {
-    name:       'App',
-    components: {
-      MenuHorizontalMain
-    },
-    watch:      {
-      '$route'(to, from) {
-        console.log(`Router. ${from} -> ${to}`);
-      }
+export default {
+  name: "App",
+  components: {
+    MenuHorizontalMain
+  },
+  watch: {
+    $route(to, from) {
+      console.log(`Router. ${from} -> ${to}`);
     }
   }
+};
 </script>
 
 <style lang="scss">
@@ -25,14 +25,16 @@
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
+
 #nav {
   padding: 30px;
+
   a {
     font-weight: bold;
     color: #2c3e50;
+
     &.router-link-exact-active {
       color: #42b983;
     }

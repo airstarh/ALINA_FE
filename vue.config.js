@@ -3,6 +3,6 @@ module.exports = {
 	//baseUrl: '.',
 	publicPath: '.',
 	devServer: {
-		clientLogLevel: 'info'
+		clientLogLevel: 'error'
 	  }
 };

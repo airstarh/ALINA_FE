@@ -1,28 +1,43 @@
 import UtilsData from "../Utils/UtilsData";
 import ConfigApi from "../configs/ConfigApi";
+import UtilsURL  from "../Utils/UtilsURL";
 
 export class Ajax {
-	options     = {};
+	options = {};
+	// ##################################################
 	//url         = 'http://alinazero/alinaRestAccept?cmd=model&m=user&ps=2&p=1';
-	url         = '';
-	urlProtocol = ''; //http://';
-	urlDomain   = ''; //'alinazero';
-	urlPort     = ''; //':8080';
-	urlPath     = ''; //'/alinaRestAccept';
-	headers     = {};
+	url         = "";
+	urlProtocol = ""; //http://';
+	urlDomain   = ""; //'alinazero';
+	urlPort     = ""; //':8080';
+	urlPath     = ""; //'/alinaRestAccept';
+	// ##################################################
+	headers = {};
 	// {
-	// "Content-Type": "application/json; charset=utf-8",
-	// // "Content-Type": "application/x-www-form-urlencoded",
+	// "Content-Type": "application/x-www-form-urlencoded",
 	// };
 	getParams   = {};
 	postParams  = {};
-	mode        = ''; //"cors"; // no-cors, cors, *same-origin
-	cache       = ''; //"no-cache"; // *default, no-cache, reload, force-cache, only-if-cached
-	credentials = ''; //"omit"; //"same-origin"; // include, same-origin, *omit
-	redirect    = ''; //"follow"; // manual, *follow, error
-	referrer    = ''; //"no-referrer"; // no-referrer, *client
+	method      = "GET"; // *GET, POST, PUT, DELETE, etc.
+	mode        = "cors"; //"cors"; // no-cors, cors, *same-origin
+	cache       = "no-cache"; //"no-cache"; // *default, no-cache, reload, force-cache, only-if-cached
+	credentials = "include"; //"omit"; //"same-origin"; // include, same-origin, *omit
+	redirect    = "follow"; //"follow"; // manual, *follow, error
+	referrer    = ""; //"no-referrer"; // no-referrer, *client
+	// ##################################################
+	respType                = null; // json, text, blob, ...others
+	onDone                  = null;
+	respBody                = "";
+	respHeadersStructurized = {};
 
-	constructor() {}
+	// ##################################################
+
+	constructor() {
+	}
+
+	// ##################################################
+	// ##################################################
+	// ##################################################
 
 	/**
 	 * @return Ajax instance
@@ -48,105 +63,101 @@ export class Ajax {
 		return this;
 	}
 
-	async ajaxGet() {
-		let r = await fetch(this.urlBuild(), {
-			method:      "GET", // *GET, POST, PUT, DELETE, etc.
+	// ##################################################
+	go() {
+		// ##################################################
+		const h = new Headers();
+		for (let hp in this.headers) {
+			if (this.headers.hasOwnProperty(hp)) {
+				h.append(hp, this.headers[hp]);
+			}
+		}
+		// ##################################################
+		const p = {
+			method:      this.method,
 			mode:        this.mode,
 			cache:       this.cache,
 			credentials: this.credentials,
-			headers:     this.headers,
+			headers:     h,
 			redirect:    this.redirect,
-			referrer:    this.referrer,
-		})
-			.catch(error => console.error('Error:', error));
+			referrer:    this.referrer
+		};
+		if (this.method !== "GET") {
+			p.body = JSON.stringify(this.postParams);
+		}
+		const myRequest = new Request(this.urlBuild(), p);
 
-		console.log(" ");
-		console.log(">>>>>>>>> Ajax. GET. Raw Response");
-		//console.log(r);
-
-		//Line below does not work: ...
-		//console.log(r.headers);
-		// ...instead:
-		r.headers.forEach(function (value, name) {
-			console.log(name + ": " + value);
-		});
-
-		return r;
-
-		//Instead of:
-		// return fetch(this.urlBuild(), {
-		// 	method:      "GET", // *GET, POST, PUT, DELETE, etc.
-		// 	mode:        this.mode,
-		// 	cache:       this.cache,
-		// 	credentials: this.credentials,
-		// 	headers:     this.headers,
-		// 	redirect:    this.redirect,
-		// 	referrer:    this.referrer,
-		// })
-		// 	.then(response => {
-		// 		console.log(" ");
-		// 		console.log(">>>>>>>>> Ajax. GET. Raw Response");
-		// 		//console.log(response);
-		// 		//console.log(response.headers);
-		// 		response.headers.forEach(function (value, name) {
-		// 			console.log(name + ": " + value);
-		// 		});
-		// 		return response
-		// 	}) // parses response to JSON
-		// 	.catch(error => console.error('Error:', error));
-
+		// ##################################################
+		// ##################################################
+		// ##################################################
+		const _t = this;
+		let resp = fetch(myRequest)
+			.then(resp => {
+				if (!resp.ok) {
+					throw new Error(`${resp.status} ||| ${resp.statusText}`);
+				}
+				// ##################################################
+				//Line below does not work: ...
+				//console.log(resp.headers);
+				// ...instead:
+				resp.headers.forEach((value, name) => {
+					_t.respHeadersStructurized[name] = value;
+				});
+				// ##################################################
+				return _t.handleResponse(resp);
+				// ##################################################
+			})
+			.then(data => {
+				_t.respBody = data;
+				if (_t.onDone) {
+					_t.onDone(_t);
+				}
+				return _t;
+			})
+			.catch(error => console.error(error));
+		// ##################################################
+		return resp;
 	}
 
-	ajaxPost() {
-		return fetch(this.urlBuild(), {
-			method:      "POST", // *GET, POST, PUT, DELETE, etc.
-			mode:        this.mode,
-			cache:       this.cache,
-			credentials: this.credentials,
-			headers:     this.headers,
-			redirect:    this.redirect,
-			referrer:    this.referrer,
-			body:        JSON.stringify(this.postParams)
-		})
-			.then(response => {
-				console.log(" ");
-				console.log(">>>>>>>>> Ajax. POST. Raw Response");
-				console.log(response);
-				return response
-			}) // parses response to JSON
-			.catch(error => console.error('Error:', error));
+	// ##################################################
+	handleResponse(resp) {
+		let _t          = this;
+		let contentType = resp.headers.get("content-type");
+		if (contentType.includes("application/json")) {
+			return resp.json()
+			           .then(json => {
+				           _t.respType = 'json';
+				           return json;
+			           });
+		} else if (
+			contentType.includes("text/html")
+			||
+			contentType.includes("text/plain")
+		) {
+			return resp.text()
+			           .then(text => {
+				           _t.respType = 'text';
+				           return text;
+			           });
+		} else {
+			return resp.blob()
+			           .then(blob => {
+				           _t.respType = 'blob';
+				           return blob;
+			           });
+		}
 	}
 
-	ajaxPut() {
-		return fetch(this.urlBuild(), {
-			method:      "PUT", // *GET, POST, PUT, DELETE, etc.
-			mode:        this.mode,
-			cache:       this.cache,
-			credentials: this.credentials,
-			headers:     this.headers,
-			redirect:    this.redirect,
-			referrer:    this.referrer,
-			body:        JSON.stringify(this.postParams)
-		})
-			.then(response => {
-				console.log(" ");
-				console.log(">>>>>>>>> Ajax. PUT. Raw Response");
-				console.log(response);
-				return response
-			}) // parses response to JSON
-			.catch(error => console.error('Error:', error));
-
-	}
-
-	ajaxDelete() {
-	}
-
+	// ##################################################
+	// ##################################################
+	// ##################################################
 	//region Data Processing
 	/**
 	 * @return String
 	 */
 	urlBuild() {
-		let urlFull = '';
+		const _t= this;
+		let urlFull = "";
 		if (!UtilsData.empty(this.url)) {
 			urlFull = this.url;
 		} else {
@@ -157,9 +168,43 @@ export class Ajax {
 			urlFull           = `${urlProtocol}${urlDomain}${urlPort}${urlPath}`;
 		}
 		const url = new URL(urlFull);
-		Object.keys(this.getParams).forEach(key => url.searchParams.append(key, this.getParams[key]));
+		// ##################################################
+		// Extract GET params which already in URL
+
+		console.log("UtilsURL.getParamsAsObject(url.search) ++++++++++");
+		console.log(UtilsURL.getParamsAsObject(url.search));
+
+		url.searchParams.forEach((oldV, k)=>{
+			console.log("xxx ++++++++++");
+			console.log(k);
+			console.log(oldV);
+
+			// if (_t.getParams.hasOwnProperty(k)) {
+			// 	url.searchParams.delete(k);
+			// }
+
+			// if (_t.getParams.hasOwnProperty(`${k}`)) {
+			// 	_t.getParams[k] = oldV;
+			// 	url.searchParams.delete(k);
+			// }
+			//
+			// if (!_t.getParams.hasOwnProperty(k)) {
+			// 	_t.getParams[k] = oldV;
+			// 	url.searchParams.delete(k);
+			// } else {
+			// 	if (_t.getParams[k] != oldV) {
+			// 		_t.getParams[k] = oldV;
+			// 		url.searchParams.delete(k);
+			// 	}
+			// }
+		});
+		// ##################################################
+		Object.keys(this.getParams).forEach(key =>
+			url.searchParams.append(key, this.getParams[key])
+		);
 		return url.toString();
 	}
 
 	//endregion Data Processing
+	// ##################################################
 }
