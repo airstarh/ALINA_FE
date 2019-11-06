@@ -53,24 +53,26 @@ export default class UtilsURL {
 	};
 
 	// ##################################################
+	/**
+	 * ToDo: Untested. From: https://stackoverflow.com/a/42604801/3142281
+	 */
+	static serializeQuery(params, prefix) {
+		const query = Object.keys(params).map((key) => {
+			const value  = params[key];
 
-	// ToDo: Untested. From: https://stackoverflow.com/a/42604801/3142281
-	static parseJsonAsQueryString(obj, prefix, objName) {
-		var str = [];
-		for (var p in obj) {
-			if (obj.hasOwnProperty(p)) {
-				var v = obj[p];
-				if (typeof v == "object") {
-					var k = (objName ? objName + '.' : '') + (prefix ? prefix + "[" + p + "]" : p);
-					str.push(parseJsonAsQueryString(v, k));
-				} else {
-					var k = (objName ? objName + '.' : '') + (prefix ? prefix + '.' + p : p);
-					str.push(encodeURIComponent(k) + "=" + encodeURIComponent(v));
-					//str.push(k + "=" + v);
-				}
-			}
-		}
-		return str.join("&");
-	};
+			if (params.constructor === Array)
+				key = `${prefix}[]`;
+			else if (params.constructor === Object)
+				key = (prefix ? `${prefix}[${key}]` : key);
+
+			if (typeof value === 'object')
+				return UtilsURL.serializeQuery(value, key);
+			else
+				return `${key}=${encodeURIComponent(value)}`;
+		});
+
+		return [].concat.apply([], query).join('&');
+	}
+
 	// ##################################################
 }

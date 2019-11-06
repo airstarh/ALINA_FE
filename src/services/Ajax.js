@@ -1,6 +1,7 @@
 import UtilsData from "../Utils/UtilsData";
 import ConfigApi from "../configs/ConfigApi";
 import UtilsURL  from "../Utils/UtilsURL";
+import * as _    from "lodash";
 
 export class Ajax {
 	options = {};
@@ -156,7 +157,7 @@ export class Ajax {
 	 * @return String
 	 */
 	urlBuild() {
-		const _t= this;
+		const _t    = this;
 		let urlFull = "";
 		if (!UtilsData.empty(this.url)) {
 			urlFull = this.url;
@@ -171,33 +172,19 @@ export class Ajax {
 		// ##################################################
 		// Extract GET params which already in URL
 
-		console.log("UtilsURL.getParamsAsObject(url.search) ++++++++++");
-		console.log(UtilsURL.getParamsAsObject(url.search));
-
-		url.searchParams.forEach((oldV, k)=>{
-			console.log("xxx ++++++++++");
-			console.log(k);
-			console.log(oldV);
-
-			// if (_t.getParams.hasOwnProperty(k)) {
-			// 	url.searchParams.delete(k);
-			// }
-
-			// if (_t.getParams.hasOwnProperty(`${k}`)) {
-			// 	_t.getParams[k] = oldV;
-			// 	url.searchParams.delete(k);
-			// }
-			//
-			// if (!_t.getParams.hasOwnProperty(k)) {
-			// 	_t.getParams[k] = oldV;
-			// 	url.searchParams.delete(k);
-			// } else {
-			// 	if (_t.getParams[k] != oldV) {
-			// 		_t.getParams[k] = oldV;
-			// 		url.searchParams.delete(k);
-			// 	}
-			// }
+		const oldGetStr = url.search;
+		const oldGetObj = UtilsURL.getParamsAsObject(oldGetStr);
+		const newGetObj = _.mergeWith(oldGetObj, this.getParams, function (objValue, srcValue) {
+			if (_.isArray(objValue)) {
+				return objValue.concat(srcValue);
+			}
 		});
+		this.getParams  = newGetObj;
+		const newGetStr = UtilsURL.serializeQuery(newGetObj);
+		url.search      = newGetStr;
+		//url.searchParams = new URLSearchParams(newGetStr);
+		console.log("url ++++++++++");
+		console.log(url);
 		// ##################################################
 		Object.keys(this.getParams).forEach(key =>
 			url.searchParams.append(key, this.getParams[key])

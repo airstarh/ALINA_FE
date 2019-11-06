@@ -157,7 +157,7 @@
 						this.respBodyTxt = aja.respBody;
 						break;
 				}
-				console.log("xxx ++++++++++");
+				console.log("onDone ajaajaajaajaajaajaaja ++++++++++");
 				console.log(aja);
 			},
 			log() {

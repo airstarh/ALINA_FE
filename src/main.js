@@ -12,6 +12,10 @@ import "../public/a010.scss";
 import KeenUI from "keen-ui";
 Vue.use(KeenUI);
 
+import VueLodash from 'vue-lodash';
+const options = { name: 'lodash' }; // customize the way you want to call it
+Vue.use(VueLodash, options); // options is optional
+
 new Vue({
   router,
   store,
