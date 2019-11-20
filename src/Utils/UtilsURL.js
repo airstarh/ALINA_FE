@@ -3,7 +3,7 @@ export default class UtilsURL {
 	/*
 	 * ToDo: UnTested. From: https://stackoverflow.com/a/43513777/3142281
 	 */
-	static getParamsAsObject(query) {
+	static castGetStringToObject(query) {
 
 		query = query.substring(query.indexOf('?') + 1);
 
@@ -56,7 +56,7 @@ export default class UtilsURL {
 	/**
 	 * ToDo: Untested. From: https://stackoverflow.com/a/42604801/3142281
 	 */
-	static serializeQuery(params, prefix) {
+	static castGetObjectToString(params, prefix) {
 		const query = Object.keys(params).map((key) => {
 			const value  = params[key];
 
@@ -66,7 +66,7 @@ export default class UtilsURL {
 				key = (prefix ? `${prefix}[${key}]` : key);
 
 			if (typeof value === 'object')
-				return UtilsURL.serializeQuery(value, key);
+				return UtilsURL.castGetObjectToString(value, key);
 			else
 				return `${key}=${encodeURIComponent(value)}`;
 		});

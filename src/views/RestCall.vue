@@ -6,7 +6,7 @@
           <h2>
             Request <span><button type="button" @click="log">LOG</button></span>
           </h2>
-          <StandardButtons :onGo="onGo"></StandardButtons>
+          <StandardButtons :onGo="runAJax"></StandardButtons>
           <!--##################################################-->
           <!--##################################################-->
           <!--##################################################-->
@@ -51,18 +51,19 @@
             <BtstrpBadge title="Headers" badge="reqHeaders"></BtstrpBadge>
             <textarea v-model="reqHeadersTxt" class="form-control" rows="5"></textarea>
           </div>
-          <StandardButtons :onGo="onGo"></StandardButtons>
+          <StandardButtons :onGo="runAJax"></StandardButtons>
         </form>
       </div>
       <!--##################################################-->
       <!--##################################################-->
       <!--##################################################-->
       <div class="col-sm">
+        <img src="http://alinazero:8080/sources/images/orig.png" width="150">
         <div class="mt-3">
           <h2>Response</h2>
           <div class="mt-3">
-            <BtstrpBadge title="URI" badge="$data->q->resUrl"></BtstrpBadge>
-            <input v-model="resUrl" type="text" class="form-control"/>
+            <BtstrpBadge title="URI" badge="urlRes"></BtstrpBadge>
+            <input v-model="urlRes" type="text" class="form-control"/>
           </div>
 
           <div class="mt-3">
@@ -100,14 +101,16 @@
 		},
 		data() {
 			return {
-				reqUri:                  "http://alinazero:8080/alinaRestAccept/TestCors?lala[]=1&lala[]=2&lala[]=3&foo=bar",
+				//reqUri:                  "http://alinazero:8080/alinaRestAccept/TestCors?lala[]=1&lala[]=2&lala[]=3&foo=bar",
+				reqUri:                  "http://alinazero:8080/sources/images/orig.png",
+				resU:                    "",
 				reqPostRaw:              true,
 				reqGet:                  {
-					lala: [4,5,6],
-					foo: 'baz'
+					lala: [4, 5, 6],
+					foo:  'привет'
 				},
 				reqPost:                 {},
-				reqHeaders:              [],
+				reqHeaders:              {},
 				/////////////////////////////////
 				reqGetTxt:               "",
 				reqPostTxt:              "",
@@ -118,7 +121,7 @@
 				/////////////////////////////////
 				/////////////////////////////////
 				/////////////////////////////////
-				resUrl:                  "",
+				urlRes:                  "",
 				respBody:                "",
 				respHeadersStructurized: {},
 				/////////////////////////////////
@@ -129,37 +132,53 @@
 		},
 		computed:   {},
 		created() {
-			this.reqGetTxt     = JSON.stringify(this.reqGet, null, 2);
-			this.reqPostTxt    = JSON.stringify(this.reqPost, null, 2);
-			this.reqHeadersTxt = JSON.stringify(this.reqHeaders, null, 2);
+			this.objsToTxt();
 		},
 		methods:    {
-			onGo() {
-				const aja = Ajax.newInst({
+			runAJax() {
+				const oAjax = Ajax.newInst({
 					url:        this.reqUri,
+					mode:       "cors",
+					//mode:       "no-cors",
 					getParams:  this.reqGet,
 					headers:    this.reqHeaders,
 					postParams: this.reqPost,
 					method:     this.reqMethod,
 					onDone:     this.onDone
 				});
-				aja.go();
+				oAjax.go();
 			},
-			onDone(aja) {
-				this.respHeaderTxt = JSON.stringify(aja.respHeadersStructurized, null, 2);
-				switch (aja.respType) {
+
+			onDone(oAjax) {
+				this.respHeaderTxt = JSON.stringify(oAjax.respHeadersStructurized, null, 2);
+				switch (oAjax.respType) {
 					case "json":
-						this.respBodyTxt = JSON.stringify(aja.respBody, null, 2);
+						this.respBodyTxt = JSON.stringify(oAjax.respBody, null, 2);
 						break;
 					case "text":
 					case "blob":
 					default:
-						this.respBodyTxt = aja.respBody;
+						this.respBodyTxt = oAjax.respBody;
 						break;
 				}
+
+				this.reqUri  = oAjax.urlClean;
+				this.urlRes  = oAjax.urlRes;
+				this.reqGet  = oAjax.options.getParams;
+				this.reqPost = oAjax.options.postParams;
+
+				this.objsToTxt();
+
 				console.log("onDone ajaajaajaajaajaajaaja ++++++++++");
-				console.log(aja);
+				console.log(oAjax);
 			},
+
+			objsToTxt() {
+				this.reqGetTxt     = JSON.stringify(this.reqGet, null, 2);
+				this.reqPostTxt    = JSON.stringify(this.reqPost, null, 2);
+				this.reqHeadersTxt = JSON.stringify(this.reqHeaders, null, 2);
+			},
+
 			log() {
 				console.log("log ++++++++++");
 				console.log(this.reqGet);

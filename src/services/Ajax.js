@@ -1,33 +1,28 @@
-import UtilsData from "../Utils/UtilsData";
-import ConfigApi from "../configs/ConfigApi";
-import UtilsURL  from "../Utils/UtilsURL";
-import * as _    from "lodash";
+import UtilsURL    from "../Utils/UtilsURL";
+import UtilsObject from "../Utils/UtilsObject";
 
 export class Ajax {
-	options = {};
+	options                 = {
+		url:         "",
+		method:      "GET", // *GET, POST, PUT, DELETE, etc.
+		headers:     {
+			//"Content-Type": "application/json; charset=utf-8",
+			// "Content-Type": "application/x-www-form-urlencoded",
+			// Authorization: "sewa"
+		},
+		getParams:   {},
+		postParams:  {},
+		mode:        "cors", // no-cors, cors, *same-origin
+		cache:       "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+		credentials: "omit", //"same-origin"; // include, same-origin, *omit
+		redirect:    "follow", // manual, *follow, error
+		referrer:    "", // no-referrer, *client
+		onDone:      () => {}
+	};
 	// ##################################################
-	//url         = 'http://alinazero/alinaRestAccept?cmd=model&m=user&ps=2&p=1';
-	url         = "";
-	urlProtocol = ""; //http://';
-	urlDomain   = ""; //'alinazero';
-	urlPort     = ""; //':8080';
-	urlPath     = ""; //'/alinaRestAccept';
-	// ##################################################
-	headers = {};
-	// {
-	// "Content-Type": "application/x-www-form-urlencoded",
-	// };
-	getParams   = {};
-	postParams  = {};
-	method      = "GET"; // *GET, POST, PUT, DELETE, etc.
-	mode        = "cors"; //"cors"; // no-cors, cors, *same-origin
-	cache       = "no-cache"; //"no-cache"; // *default, no-cache, reload, force-cache, only-if-cached
-	credentials = "include"; //"omit"; //"same-origin"; // include, same-origin, *omit
-	redirect    = "follow"; //"follow"; // manual, *follow, error
-	referrer    = ""; //"no-referrer"; // no-referrer, *client
-	// ##################################################
+	urlClean                = "";
+	urlRes                  = "";
 	respType                = null; // json, text, blob, ...others
-	onDone                  = null;
 	respBody                = "";
 	respHeadersStructurized = {};
 
@@ -50,74 +45,72 @@ export class Ajax {
 	}
 
 	setOptions(options = {}) {
-		//ToDo: Smart Extend of:
-		//ToDO: ConfigApi.headers;
-		//ToDO: ConfigApi.getParams;
-		//ToDO: ConfigApi.postParams;
-		options      = Object.assign({}, ConfigApi, options);
+		options      = Object.assign({}, this.options, options);
 		this.options = options;
-		for (let p in options) {
-			if (options.hasOwnProperty(p)) {
-				this[p] = options[p];
-			}
-		}
 		return this;
 	}
 
 	// ##################################################
+	// ##################################################
+	// ##################################################
 	go() {
-		// ##################################################
-		const h = new Headers();
-		for (let hp in this.headers) {
-			if (this.headers.hasOwnProperty(hp)) {
-				h.append(hp, this.headers[hp]);
+		const _t   = this;
+		const opts = this.options;
+
+		// Headers
+		const h    = new Headers();
+		for (let hp in opts.headers) {
+			if (opts.headers.hasOwnProperty(hp)) {
+				h.append(hp, opts.headers[hp]);
 			}
 		}
-		// ##################################################
-		const p = {
-			method:      this.method,
-			mode:        this.mode,
-			cache:       this.cache,
-			credentials: this.credentials,
-			headers:     h,
-			redirect:    this.redirect,
-			referrer:    this.referrer
-		};
-		if (this.method !== "GET") {
-			p.body = JSON.stringify(this.postParams);
-		}
-		const myRequest = new Request(this.urlBuild(), p);
 
-		// ##################################################
-		// ##################################################
-		// ##################################################
-		const _t = this;
-		let resp = fetch(myRequest)
+		// Fetch params
+		const p = {
+			method:      opts.method,
+			mode:        opts.mode,
+			cache:       opts.cache,
+			credentials: opts.credentials,
+			headers:     h,
+			redirect:    opts.redirect,
+			referrer:    opts.referrer
+		};
+
+		// POST
+		if (opts.method !== "GET") {
+			p.body = JSON.stringify(opts.postParams);
+		}
+
+		//Go
+		const myRequest = new Request(this.urlBuild(), p);
+		return fetch(myRequest)
 			.then(resp => {
 				if (!resp.ok) {
-					throw new Error(`${resp.status} ||| ${resp.statusText}`);
+					console.error(">>>");
+					console.error(resp);
+					console.error("<<<");
+					throw new Error('RESPONSE NOT OK');
 				}
-				// ##################################################
-				//Line below does not work: ...
-				//console.log(resp.headers);
-				// ...instead:
+
+				// Extract Response Headers
 				resp.headers.forEach((value, name) => {
 					_t.respHeadersStructurized[name] = value;
 				});
-				// ##################################################
+
 				return _t.handleResponse(resp);
-				// ##################################################
 			})
 			.then(data => {
 				_t.respBody = data;
-				if (_t.onDone) {
-					_t.onDone(_t);
+				if (opts.onDone) {
+					opts.onDone(_t);
 				}
 				return _t;
 			})
-			.catch(error => console.error(error));
-		// ##################################################
-		return resp;
+			.catch(error => {
+				console.error(">>>");
+				console.log(error);
+				console.error("<<<");
+			});
 	}
 
 	// ##################################################
@@ -140,6 +133,13 @@ export class Ajax {
 				           _t.respType = 'text';
 				           return text;
 			           });
+		} else if (contentType.includes("image")){
+			return resp.blob()
+			           .then(blob => {
+				           _t.respType = 'blob';
+				           return blob;
+			           });
+
 		} else {
 			return resp.blob()
 			           .then(blob => {
@@ -157,39 +157,30 @@ export class Ajax {
 	 * @return String
 	 */
 	urlBuild() {
-		const _t    = this;
-		let urlFull = "";
-		if (!UtilsData.empty(this.url)) {
-			urlFull = this.url;
-		} else {
-			const urlProtocol = this.urlProtocol;
-			const urlDomain   = this.urlDomain;
-			const urlPort     = this.urlPort;
-			const urlPath     = this.urlPath;
-			urlFull           = `${urlProtocol}${urlDomain}${urlPort}${urlPath}`;
-		}
-		const url = new URL(urlFull);
+		const opts  = this.options;
+		let urlFull = opts.url;
+		const url   = new URL(urlFull);
 		// ##################################################
-		// Extract GET params which already in URL
-
+		// region Process GET
 		const oldGetStr = url.search;
-		const oldGetObj = UtilsURL.getParamsAsObject(oldGetStr);
-		const newGetObj = _.mergeWith(oldGetObj, this.getParams, function (objValue, srcValue) {
-			if (_.isArray(objValue)) {
-				return objValue.concat(srcValue);
-			}
-		});
-		this.getParams  = newGetObj;
-		const newGetStr = UtilsURL.serializeQuery(newGetObj);
-		url.search      = newGetStr;
-		//url.searchParams = new URLSearchParams(newGetStr);
-		console.log("url ++++++++++");
-		console.log(url);
-		// ##################################################
-		Object.keys(this.getParams).forEach(key =>
-			url.searchParams.append(key, this.getParams[key])
+		const oldGetObj = UtilsURL.castGetStringToObject(oldGetStr);
+		const newGetObj = UtilsObject.mergeRecursively(oldGetObj, opts.getParams);
+		const newGetStr = UtilsURL.castGetObjectToString(newGetObj);
+		opts.getParams  = newGetObj;
+		//region Erase initial GET
+		url.search      = '';
+		Object.keys(url.searchParams).forEach(key =>
+			url.searchParams.delete(key)
 		);
-		return url.toString();
+		this.urlClean = url.toString();
+		console.log("NAKED URL ++++++++++");
+		console.log(this.urlClean);
+		//endregion Erase initial GET
+		url.search = newGetStr;
+		//endregion Process GET
+		// ##################################################
+		this.urlRes = url.toString();
+		return this.urlRes;
 	}
 
 	//endregion Data Processing
