@@ -3,26 +3,27 @@ import UtilsObject from "../Utils/UtilsObject";
 import UtilsData   from "../Utils/UtilsData";
 
 export class Ajax {
-	options             = {
-		url:         "",
-		enctype:      "",
-		method:      "GET", // *GET, POST, PUT, DELETE, etc.
-		headers:     {},
-		getParams:   {},
-		postParams:  {},
-		mode:        "cors", // no-cors, cors, *same-origin
-		cache:       "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-		credentials: "omit", //"same-origin", include, *omit
-		redirect:    "follow", // manual, *follow, error
-		referrer:    "", // no-referrer, *client
-		onDone:      () => {}
+	options     = {
+		url:            "",
+		method:         "GET", // *GET, POST, PUT, DELETE, etc.
+		headers:        {},
+		getParams:      {},
+		postParams:     {},
+		reqFlagPostRaw: false,
+		enctype:        "",
+		mode:           "cors", // no-cors, cors, *same-origin
+		cache:          "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+		credentials:    "omit", //"same-origin", include, *omit
+		redirect:       "follow", // manual, *follow, error
+		referrer:       "", // no-referrer, *client
+		onDone:         () => {}
 	};
 	// ##################################################
-	urlClean            = "";
-	urlRes              = "";
-	respType            = null; // json, text, blob, ...others
-	respBody            = "";
-	respHeaders         = {};
+	urlClean    = "";
+	urlRes      = "";
+	respType    = null; // json, text, blob, ...others
+	respBody    = "";
+	respHeaders = {};
 
 	// ##################################################
 
@@ -75,17 +76,23 @@ export class Ajax {
 
 		// POST
 		if (opts.method !== "GET") {
-			h.append("Content-Type", opts.enctype);
-			switch (opts.enctype) {
-				case "application/json":
-					p.body = JSON.stringify(opts.postParams);
-					break;
-				case "multipart/form-data":
-					p.body = UtilsData.objectToFormData(opts.postParams);
-					break;
-				default:
-					p.body = opts.postParams;
-					break;
+			if (opts.reqFlagPostRaw) {
+				h.append("Content-Type", "text/plain");
+				p.body = opts.postParams;
+			} else {
+				h.append("Content-Type", opts.enctype);
+				switch (opts.enctype) {
+					case "application/json":
+						p.body = JSON.stringify(opts.postParams);
+						break;
+					case "multipart/form-data":
+						p.body = UtilsData.objectToFormData(opts.postParams);
+						break;
+					case "text/plain":
+					default:
+						p.body = opts.postParams;
+						break;
+				}
 			}
 		}
 

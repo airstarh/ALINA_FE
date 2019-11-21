@@ -154,9 +154,12 @@
 				},
 				reqGetTxt:       "",
 				/////////////////////////////////
-				reqPost:         {},
+				reqPost:         {
+					hello: "world",
+					arr:   [1, 3, "some string"]
+				},
 				reqPostTxt:      "",
-				reqFlagPostRaw:  true,
+				reqFlagPostRaw:  false,
 				enctypes:        ["application/json", "multipart/form-data", "text-plain", "application/x-www-form-urlencoded"],
 				enctype:         "application/json",
 				/////////////////////////////////
@@ -192,18 +195,19 @@
 			runAJax() {
 				this.strsToObjs();
 				const oAjax = Ajax.newInst({
-					url:         this.reqUri,
-					mode:        this.mode,
-					cache:       this.cache,
-					credentials: this.credentials,
-					redirect:    this.redirect,
-					referrer:    this.referrer,
-					getParams:   this.reqGet,
-					headers:     this.reqHeaders,
-					enctype:     this.enctype,
-					postParams:  this.reqPost,
-					method:      this.reqMethod,
-					onDone:      this.onDone
+					url:            this.reqUri,
+					mode:           this.mode,
+					cache:          this.cache,
+					credentials:    this.credentials,
+					redirect:       this.redirect,
+					referrer:       this.referrer,
+					getParams:      this.reqGet,
+					headers:        this.reqHeaders,
+					enctype:        this.enctype,
+					reqFlagPostRaw: this.reqFlagPostRaw,
+					postParams:     this.reqPost,
+					method:         this.reqMethod,
+					onDone:         this.onDone
 				});
 				oAjax.go();
 			},
@@ -235,14 +239,21 @@
 
 			objsToTxt() {
 				this.reqGetTxt     = JSON.stringify(this.reqGet, null, 2);
-				this.reqPostTxt    = JSON.stringify(this.reqPost, null, 2);
 				this.reqHeadersTxt = JSON.stringify(this.reqHeaders, null, 2);
+				if (!this.reqFlagPostRaw) {
+					this.reqPostTxt = JSON.stringify(this.reqPost, null, 2);
+				}
 			},
 
 			strsToObjs() {
 				this.reqGet     = JSON.parse(this.reqGetTxt);
-				this.reqPost    = JSON.parse(this.reqPostTxt);
 				this.reqHeaders = JSON.parse(this.reqHeadersTxt);
+				if (this.reqFlagPostRaw) {
+					this.reqPost = this.reqPostTxt;
+
+				} else {
+					this.reqPost = JSON.parse(this.reqPostTxt);
+				}
 			},
 
 			log() {
