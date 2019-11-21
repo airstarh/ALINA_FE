@@ -1,30 +1,28 @@
 import UtilsURL    from "../Utils/UtilsURL";
 import UtilsObject from "../Utils/UtilsObject";
+import UtilsData   from "../Utils/UtilsData";
 
 export class Ajax {
-	options                 = {
+	options             = {
 		url:         "",
+		enctype:      "",
 		method:      "GET", // *GET, POST, PUT, DELETE, etc.
-		headers:     {
-			//"Content-Type": "application/json; charset=utf-8",
-			// "Content-Type": "application/x-www-form-urlencoded",
-			// Authorization: "sewa"
-		},
+		headers:     {},
 		getParams:   {},
 		postParams:  {},
 		mode:        "cors", // no-cors, cors, *same-origin
 		cache:       "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-		credentials: "omit", //"same-origin"; // include, same-origin, *omit
+		credentials: "omit", //"same-origin", include, *omit
 		redirect:    "follow", // manual, *follow, error
 		referrer:    "", // no-referrer, *client
 		onDone:      () => {}
 	};
 	// ##################################################
-	urlClean                = "";
-	urlRes                  = "";
-	respType                = null; // json, text, blob, ...others
-	respBody                = "";
-	respHeadersStructurized = {};
+	urlClean            = "";
+	urlRes              = "";
+	respType            = null; // json, text, blob, ...others
+	respBody            = "";
+	respHeaders         = {};
 
 	// ##################################################
 
@@ -58,13 +56,12 @@ export class Ajax {
 		const opts = this.options;
 
 		// Headers
-		const h    = new Headers();
+		const h = new Headers();
 		for (let hp in opts.headers) {
 			if (opts.headers.hasOwnProperty(hp)) {
 				h.append(hp, opts.headers[hp]);
 			}
 		}
-
 		// Fetch params
 		const p = {
 			method:      opts.method,
@@ -78,7 +75,18 @@ export class Ajax {
 
 		// POST
 		if (opts.method !== "GET") {
-			p.body = JSON.stringify(opts.postParams);
+			h.append("Content-Type", opts.enctype);
+			switch (opts.enctype) {
+				case "application/json":
+					p.body = JSON.stringify(opts.postParams);
+					break;
+				case "multipart/form-data":
+					p.body = UtilsData.objectToFormData(opts.postParams);
+					break;
+				default:
+					p.body = opts.postParams;
+					break;
+			}
 		}
 
 		//Go
@@ -94,7 +102,7 @@ export class Ajax {
 
 				// Extract Response Headers
 				resp.headers.forEach((value, name) => {
-					_t.respHeadersStructurized[name] = value;
+					_t.respHeaders[name] = value;
 				});
 
 				return _t.handleResponse(resp);
@@ -133,7 +141,7 @@ export class Ajax {
 				           _t.respType = 'text';
 				           return text;
 			           });
-		} else if (contentType.includes("image")){
+		} else if (contentType.includes("image")) {
 			return resp.blob()
 			           .then(blob => {
 				           _t.respType = 'blob';
@@ -173,10 +181,8 @@ export class Ajax {
 			url.searchParams.delete(key)
 		);
 		this.urlClean = url.toString();
-		console.log("NAKED URL ++++++++++");
-		console.log(this.urlClean);
 		//endregion Erase initial GET
-		url.search = newGetStr;
+		url.search    = newGetStr;
 		//endregion Process GET
 		// ##################################################
 		this.urlRes = url.toString();
