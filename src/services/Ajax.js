@@ -71,7 +71,8 @@ export class Ajax {
 			credentials: opts.credentials,
 			headers:     h,
 			redirect:    opts.redirect,
-			referrer:    opts.referrer
+			referrer:    opts.referrer,
+			enctype:     opts.enctype
 		};
 
 		// POST
@@ -80,13 +81,17 @@ export class Ajax {
 				h.append("Content-Type", "text/plain");
 				p.body = opts.postParams;
 			} else {
-				h.append("Content-Type", opts.enctype);
+				//h.append("Content-Type", opts.enctype);
 				switch (opts.enctype) {
 					case "application/json":
 						p.body = JSON.stringify(opts.postParams);
 						break;
 					case "multipart/form-data":
 						p.body = UtilsData.objectToFormData(opts.postParams);
+						break;
+					case "application/x-www-form-urlencoded":
+						h.append("Content-Type", opts.enctype);
+						p.body = UtilsURL.castGetObjectToString(opts.postParams);
 						break;
 					case "text/plain":
 					default:

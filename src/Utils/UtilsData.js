@@ -59,6 +59,11 @@ export default class UtilsData {
 	/**
 	 *  https://stackoverflow.com/a/49388446/3142281
 	 */
+	static getFormData(object) {
+		const formData = new FormData();
+		Object.keys(object).forEach(key => formData.append(key, object[key]));
+		return formData;
+	}
 	static objectToFormData(obj, rootName, ignoreList) {
 		const formData = new FormData();
 
