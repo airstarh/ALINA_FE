@@ -16,38 +16,38 @@
           <!--##################################################-->
           <div class="row">
             <div class="col-sm">
-              <BtstrpBadge title="Request Method" badge=""></BtstrpBadge>
-              <div v-for="(m, i) in reqMethods" v-bind:key="i" class="form-group mt-3">
-                <div class="form-check">
-                  <input :id="m" v-model="reqMethod" :value="m" type="radio" class="form-check-input"/>
-                  <label class="form-check-label" :for="m">
-                    {{ m }}
-                  </label>
-                </div>
-              </div>
+              <ui-select
+                  v-model="reqMethod"
+                  :options="reqMethods"
+                  label="Method"
+              ></ui-select>
             </div>
+          </div>
+          <div class="row">
             <div class="col-sm">
-              <BtstrpBadge title="Request Mode" badge=""></BtstrpBadge>
-              <div v-for="(m, i) in modes" v-bind:key="i" class="form-group mt-3">
-                <div class="form-check">
-                  <input :id="m" v-model="mode" :value="m" type="radio" class="form-check-input"/>
-                  <label class="form-check-label" :for="m">
-                    {{ m }}
-                  </label>
-                </div>
-              </div>
+              <ui-select
+                  v-model="mode"
+                  :options="modes"
+                  label="Mode"
+              ></ui-select>
             </div>
-
+          </div>
+          <div class="row">
             <div class="col-sm">
-              <BtstrpBadge title="Enctype" badge=""></BtstrpBadge>
-              <div v-for="(m, i) in enctypes" v-bind:key="i" class="form-group mt-3">
-                <div class="form-check">
-                  <input :id="m" v-model="enctype" :value="m" type="radio" class="form-check-input"/>
-                  <label class="form-check-label" :for="m">
-                    {{ m }}
-                  </label>
-                </div>
-              </div>
+              <ui-select
+                  v-model="credentials"
+                  :options="credentialsList"
+                  label="Credential"
+              ></ui-select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm">
+              <ui-select
+                  v-model="enctype"
+                  :options="enctypes"
+                  label="Ejctype"
+              ></ui-select>
             </div>
           </div>
           <!--##################################################-->
