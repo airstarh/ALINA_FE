@@ -59,7 +59,7 @@
                                     accept="image/*"
                                     :multiple="true "
                                     name="userfile"
-                                    @change="onFile11Change"
+                                    @change="onChangeFileField"
                             >Select an image
                             </ui-fileupload>
                         </div>
@@ -90,6 +90,10 @@
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Headers" badge="reqHeaders"></BtstrpBadge>
                         <textarea v-model="reqHeadersTxt" class="form-control" rows="5"></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                        <BtstrpBadge title="Cookies" badge="reqCookieTxt"></BtstrpBadge>
+                        <textarea v-model="reqCookieTxt" class="form-control" rows="5"></textarea>
                     </div>
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                 </form>
@@ -143,7 +147,8 @@
             return {
                 /////////////////////////////////
                 //region Request
-                reqUri:          "http://alinazero:8080/FileUpload/Common",
+                reqUri:          "http://alinazero:8080/Пользователь/Логин",
+                // reqUri:          "http://alinazero:8080/FileUpload/Common",
                 //reqUri:          "http://alinazero:8080/alinaRestAccept/TestCors?lala[]=1&lala[]=2&lala[]=3&foo=bar",
                 //reqUri:                  "http://alinazero:8080/sources/images/orig.png",
                 /////////////////////////////////
@@ -169,8 +174,10 @@
                 reqGetTxt:       "",
                 /////////////////////////////////
                 reqPost:         {
-                    hello: "world",
-                    arr:   [1, 3, "some string"]
+                    hello:    "world",
+                    arr:      [1, 3, 'какая-то строка / со слешем и с обратным \ слешем'],
+                    mail:     "vsevolod.azovsky@gmail.com",
+                    password: "qwerty123qwerty",
                 },
                 reqPostTxt:      "",
                 reqFlagPostRaw:  false,
@@ -180,11 +187,14 @@
                 enctype:         "multipart/form-data",
                 /////////////////////////////////
                 reqHeaders:      {
-                    //"Content-Type": "application/json; charset=utf-8",
-                    // "Content-Type": "application/x-www-form-urlencoded",
                     Authorization: "sewa"
                 },
                 reqHeadersTxt:   "",
+                /////////////////////////////////
+                reqCookie:       {
+                    "salam": "пополам",
+                },
+                reqCookieTxt:    '',
                 /////////////////////////////////
                 reqMethods:      ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
                 reqMethod:       "POST",
@@ -246,24 +256,45 @@
                 this.urlRes  = oAjax.urlRes;
                 this.reqGet  = oAjax.options.getParams;
                 this.reqPost = oAjax.options.postParams;
-
+                //#####
+                if (this.respHeaders.hasOwnProperty('token')) {
+                    this.reqHeaders.token = this.respHeaders.token;
+                }
+                if (this.respHeaders.hasOwnProperty('uid')) {
+                    this.reqHeaders.uid = this.respHeaders.uid;
+                }
+                //#####
                 this.objsToTxt();
-
-                console.log("onDone ajaajaajaajaajaajaaja ++++++++++");
+                //#####
+                console.log("__________________________________________");
+                console.log("++++++++++ onDone  oAjax ++++++++++");
                 console.log(oAjax);
             },
 
             objsToTxt() {
-                this.reqGetTxt     = JSON.stringify(this.reqGet, null, 2);
-                this.reqHeadersTxt = JSON.stringify(this.reqHeaders, null, 2);
+                this.reqHeadersTxt = JSON.stringify(this.reqHeaders, null, 6);
+                this.reqCookieTxt  = JSON.stringify(this.reqCookie, null, 6);
+                this.reqGetTxt     = JSON.stringify(this.reqGet, null, 6);
                 if (!this.reqFlagPostRaw) {
                     this.reqPostTxt = JSON.stringify(this.reqPost, null, 6);
                 }
             },
 
             strsToObjs() {
-                this.reqGet     = JSON.parse(this.reqGetTxt);
+                //#####
+                this.reqCookie = JSON.parse(this.reqCookieTxt);
+                Object.entries(this.reqCookie).forEach((ind_val) => {
+                    const ind = ind_val[0];
+                    const val = ind_val[1];
+                    //this.$cookie.set(ind, val, 1);
+                    document.cookie = "name=oeschger";
+                    document.cookie = `${ind}=${val}`;
+                });
+                //#####
                 this.reqHeaders = JSON.parse(this.reqHeadersTxt);
+                //#####
+                this.reqGet     = JSON.parse(this.reqGetTxt);
+                //#####
                 if (this.reqFlagPostRaw) {
                     this.reqPost = this.reqPostTxt;
 
@@ -274,9 +305,10 @@
                         this.reqPost['userfile'] = this.reqFileList;
                     }
                 }
+                //#####
             },
 
-            onFile11Change(fileList, event) {
+            onChangeFileField(fileList, event) {
                 if (fileList.length > 0) {
                     this.reqFlagPostFile = true;
                 } else {
