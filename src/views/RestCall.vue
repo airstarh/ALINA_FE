@@ -257,6 +257,8 @@
                 this.reqGet  = oAjax.options.getParams;
                 this.reqPost = oAjax.options.postParams;
                 //#####
+                delete this.reqHeaders.token;
+                delete this.reqHeaders.uid;
                 if (this.respHeaders.hasOwnProperty('token')) {
                     this.reqHeaders.token = this.respHeaders.token;
                 }
@@ -284,8 +286,8 @@
                 //#####
                 this.reqCookie = JSON.parse(this.reqCookieTxt);
                 Object.entries(this.reqCookie).forEach((ind_val) => {
-                    const ind = ind_val[0];
-                    const val = ind_val[1];
+                    const ind       = ind_val[0];
+                    const val       = ind_val[1];
                     //this.$cookie.set(ind, val, 1);
                     document.cookie = "name=oeschger";
                     document.cookie = `${ind}=${val}`;
