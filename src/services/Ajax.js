@@ -103,21 +103,25 @@ export class Ajax {
             }
         }
 
+        // ##################################################
+        // ##################################################
+        // ##################################################
         //Go
         const myRequest = new Request(this.urlBuild(), p);
         return fetch(myRequest)
             .then(resp => {
+
+                // Extract Response Headers
+                resp.headers.forEach((value, name) => {
+                    _t.respHeaders[name] = value;
+                });
+
                 if (!resp.ok) {
                     console.error(">>>");
                     console.error(resp);
                     console.error("<<<");
                     throw new Error('RESPONSE NOT OK');
                 }
-
-                // Extract Response Headers
-                resp.headers.forEach((value, name) => {
-                    _t.respHeaders[name] = value;
-                });
 
                 return _t.handleResponse(resp);
             })

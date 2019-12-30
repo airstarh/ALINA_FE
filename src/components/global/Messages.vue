@@ -1,6 +1,5 @@
 <template v-if="MessagesObj.store.length > 0">
     <div class="messages">
-        <div>X</div>
         <div
                 v-for="item in MessagesObj.store"
                 v-bind:key="item.id"
