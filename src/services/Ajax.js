@@ -6,7 +6,9 @@ export class Ajax {
     options     = {
         url:            "",
         method:         "GET", // *GET, POST, PUT, DELETE, etc.
-        headers:        {},
+        headers:        {
+            "x-requested-with": 1,
+        },
         getParams:      {},
         postParams:     {},
         reqFlagPostRaw: false,
@@ -45,8 +47,7 @@ export class Ajax {
     }
 
     setOptions(options = {}) {
-        options      = Object.assign({}, this.options, options);
-        this.options = options;
+        this.options = UtilsObject.mergeRecursively(this.options, options);
         return this;
     }
 

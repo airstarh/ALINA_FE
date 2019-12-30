@@ -147,9 +147,9 @@
             return {
                 /////////////////////////////////
                 //region Request
-                reqUri:          "http://alinazero:8080/Пользователь/Логин",
+                //reqUri:          "http://alinazero:8080/Пользователь/Логин",
                 // reqUri:          "http://alinazero:8080/FileUpload/Common",
-                //reqUri:          "http://alinazero:8080/alinaRestAccept/TestCors?lala[]=1&lala[]=2&lala[]=3&foo=bar",
+                reqUri:          "http://alinazero:8080/AdminTests/TestMessages?lala[]=1&lala[]=2&lala[]=3&foo=bar",
                 //reqUri:                  "http://alinazero:8080/sources/images/orig.png",
                 /////////////////////////////////
                 modes:           ["cors", "no-cors", "*same-origin"],
@@ -187,7 +187,7 @@
                 enctype:         "multipart/form-data",
                 /////////////////////////////////
                 reqHeaders:      {
-                    Authorization: "sewa"
+                    "Authorization":    "sewa"
                 },
                 reqHeadersTxt:   "",
                 /////////////////////////////////
@@ -197,7 +197,7 @@
                 reqCookieTxt:    '',
                 /////////////////////////////////
                 reqMethods:      ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-                reqMethod:       "POST",
+                reqMethod:       "GET",
                 //endregion Request
                 /////////////////////////////////
                 /////////////////////////////////

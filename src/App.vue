@@ -1,43 +1,30 @@
 <template>
-  <div id="app">
-    <MenuHorizontalMain></MenuHorizontalMain>
-    <router-view />
-  </div>
+    <div id="alina-body-wrapper">
+        <MenuHorizontalMain></MenuHorizontalMain>
+        <div id="app">
+            <router-view/>
+        </div>
+        <Messages></Messages>
+    </div>
 </template>
 <script>
-import MenuHorizontalMain from "./components/MenuHorizontalMain";
+    import MenuHorizontalMain from "./components/MenuHorizontalMain";
+    import Messages from "@/components/global/Messages";
 
-export default {
-  name: "App",
-  components: {
-    MenuHorizontalMain
-  },
-  watch: {
-    $route(to, from) {
-      console.log(`Router. ${from} -> ${to}`);
-    }
-  }
-};
+    export default {
+        name:       "App",
+        components: {
+            MenuHorizontalMain,
+            Messages
+        },
+        watch:      {
+            $route(to, from) {
+                console.log(`Router. ${from} -> ${to}`);
+            }
+        }
+    };
 </script>
 
 <style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-}
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
 </style>
