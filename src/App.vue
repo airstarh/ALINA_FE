@@ -17,7 +17,12 @@
         },
         watch:      {
             $route(to, from) {
-                console.log(`Router. ${from} -> ${to}`);
+                console.log(">>>____________________________");
+                console.log("from");
+                console.log(from);
+                console.log("to");
+                console.log(to);
+                console.log("<<<____________________________");
             }
         }
     };
