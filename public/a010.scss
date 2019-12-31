@@ -16,6 +16,7 @@ $base-background: #9BDAFF;
 html {
   font-size: 100%;
 }
+
 /*endregion Keen required*/
 
 /*region Common things */
@@ -25,7 +26,9 @@ html {
   box-sizing: border-box;
 }
 
-html { height: 100%; }
+html {
+  height: 100%;
+}
 
 body {
   height: 100%;
@@ -55,6 +58,7 @@ select:focus,
 textarea:focus {
   background-color: $base-background;
 }
+
 /*endregion Common things */
 /*endregion REQUIRED BY INCLUDED FRAMEWORKS*/
 

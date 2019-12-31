@@ -1,9 +1,7 @@
 <template>
     <div id="alina-body-wrapper">
         <MenuHorizontalMain></MenuHorizontalMain>
-        <div id="app">
-            <router-view/>
-        </div>
+        <router-view/>
         <Messages></Messages>
     </div>
 </template>

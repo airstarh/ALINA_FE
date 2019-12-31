@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
-import RestCall from "./views/RestCall.vue";
+import Home from "@/views/Home.vue";
+import RestCall from "@/views/RestCall.vue";
+import auth_login from "@/views/auth/login";
 
 Vue.use(Router);
 
@@ -25,6 +26,18 @@ export default new Router({
             path:      "/RestCall",
             name:      "RestCall",
             component: RestCall
+        },
+        //##################################################
+        //##################################################
+        //##################################################
+        {
+            path:      "/auth/login",
+            name:      "auth_login",
+            component: auth_login
         }
+        //##################################################
+        //##################################################
+        //##################################################
+
     ]
 });
