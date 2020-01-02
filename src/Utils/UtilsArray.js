@@ -31,8 +31,13 @@ export default class UtilsArray {
     return arr;
   }
 
-  //endregion Elements Manipulations
+  static clear(arr) {
+    return arr.splice(0, arr.length);
+  }
 
+
+  //endregion Elements Manipulations
+  //##################################################
   //region Helpers
   static isFirst(arr, i) {
     return i === 0;

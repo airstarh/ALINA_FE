@@ -1,8 +1,8 @@
-import UtilsURL from "../Utils/UtilsURL";
+import UtilsURL    from "../Utils/UtilsURL";
 import UtilsObject from "../Utils/UtilsObject";
-import UtilsData from "../Utils/UtilsData";
+import UtilsData   from "../Utils/UtilsData";
 
-export class Ajax {
+export default class Ajax {
     options     = {
         url:            "",
         method:         "GET", // *GET, POST, PUT, DELETE, etc.
@@ -12,10 +12,10 @@ export class Ajax {
         getParams:      {},
         postParams:     {},
         reqFlagPostRaw: false,
-        enctype:        "",
+        enctype:        "application/json",
         mode:           "cors", // no-cors, cors, *same-origin
         cache:          "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials:    "omit", //"same-origin", include, *omit
+        credentials:    "include", //"same-origin", include, *omit
         redirect:       "follow", // manual, *follow, error
         referrer:       "", // no-referrer, *client
         onDone:         () => {
@@ -117,9 +117,13 @@ export class Ajax {
                 });
 
                 if (!resp.ok) {
-                    console.error(">>>");
+                    if (typeof _t['hookResponseNotOk'] === 'function') {
+                        _t.hookResponseNotOk();
+                    }
+                    console.error(">>>____________________________");
+                    console.error("RESPONSE NOT OK");
                     console.error(resp);
-                    console.error("<<<");
+                    console.error("<<<____________________________");
                     throw new Error('RESPONSE NOT OK');
                 }
 
@@ -127,15 +131,19 @@ export class Ajax {
             })
             .then(data => {
                 _t.respBody = data;
+                if (typeof _t['hookProcessResponse'] === 'function') {
+                    _t.hookProcessResponse();
+                }
                 if (opts.onDone) {
                     opts.onDone(_t);
                 }
                 return _t;
             })
             .catch(error => {
-                console.error(">>>");
-                console.log(error);
-                console.error("<<<");
+                console.error(">>>____________________________");
+                console.error("COMMON REQUEST ERROR");
+                console.error(error);
+                console.error("<<<____________________________");
             });
     }
 

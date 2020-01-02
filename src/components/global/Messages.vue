@@ -1,5 +1,8 @@
 <template v-if="MessagesObj.store.length > 0">
-    <div class="messages">
+    <div
+            class="messages lalala"
+            @click="deleteAllMessages"
+    >
         <div
                 v-for="item in MessagesObj.store"
                 v-bind:key="item.id"
@@ -12,15 +15,21 @@
 
 <script>
     import MessagesObj from "@/services/MessagesObj";
+    import UtilsArray  from "@/Utils/UtilsArray";
 
     export default {
-        name:  "Messages",
-        props: {},
+        name:    "Messages",
+        props:   {},
         data() {
             return {
                 MessagesObj: MessagesObj
             }
         },
+        methods: {
+            deleteAllMessages() {
+                UtilsArray.clear(MessagesObj.store);
+            }
+        }
     };
 </script>
 

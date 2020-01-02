@@ -134,8 +134,8 @@
 
 <script>
     import StandardButtons from "../components/elements/form/StandardButtons";
-    import BtstrpBadge from "../components/elements/BtstrpBadge";
-    import {Ajax} from "../services/Ajax";
+    import BtstrpBadge     from "../components/elements/BtstrpBadge";
+    import Ajax            from "../services/Ajax";
 
     export default {
         name:       "RestCall",
@@ -187,7 +187,7 @@
                 enctype:         "multipart/form-data",
                 /////////////////////////////////
                 reqHeaders:      {
-                    "Authorization":    "sewa"
+                    "Authorization": "sewa"
                 },
                 reqHeadersTxt:   "",
                 /////////////////////////////////

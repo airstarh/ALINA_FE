@@ -4,15 +4,13 @@
             <div class="col-md-6 mx-auto">
                 <form action="" method="post" enctype="multipart/form-data">
                     <h1>Login</h1>
-                    <input type="text" name="mail" value="<?= $data->mail ?>" placeholder="Mail" class="form-control">
-                    <input type="password" name="password" value="<?= $data->password ?>" placeholder="Password" class="form-control">
-                    <input type="hidden" name="form_id" value="login" placeholder="Password" class="form-control">
-                    <StandardButtons></StandardButtons>
+                    <input type="text" v-model="post.mail" placeholder="Mail" class="form-control">
+                    <input type="password" v-model="post.password" placeholder="Password" class="form-control">
+                    <input type="hidden" v-model="post.form_id" class="form-control">
+                    <StandardButtons :onGo="runAJax"></StandardButtons>
                 </form>
             </div>
         </div>
-    </div>
-    </div>
     </div>
 </template>
 <!--##################################################-->
@@ -21,11 +19,41 @@
 <script>
     // @ is an alias to /src
     import StandardButtons from "@/components/elements/form/StandardButtons";
+    import ConfigApi       from "@/configs/ConfigApi";
+    import AjaxAlina       from "@/services/AjaxAlina";
 
     export default {
         name:       "auth_login",
+        data() {
+            return {
+                options: {
+                    url: `${ConfigApi.url_base}/auth/login`
+                },
+                post:    {
+                    mail:     '',
+                    password: '',
+                    form_id:  'login',
+                }
+            }
+        },
         components: {
             StandardButtons
+        },
+        methods:    {
+            runAJax() {
+                const oAjax = AjaxAlina.newInst({
+                    url:        this.options.url,
+                    postParams: this.post,
+                    method:     'POST',
+                    onDone:     (aja) => {
+                        console.log(">>>____________________________");
+                        console.log("aja.respBody");
+                        console.log(aja.respBody);
+                        console.log("<<<____________________________");
+                    }
+                })
+                    .go();
+            }
         }
     };
 </script>
