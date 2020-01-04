@@ -9,7 +9,7 @@ export default class UtilsData {
     static empty(value) {
         return (
             value == null ||
-            value == undefined ||
+            typeof value === "undefined" ||
             value === 0 ||
             value === "" ||
             //|| value === '0' //ToDo: Doubtful.
@@ -84,8 +84,8 @@ export default class UtilsData {
                                 appendFormData(data[key], key);
                             } else {
                                 let k = UtilsData.isNumber(key)
-                                    ? root + '[' + key + ']'
-                                    : root + '.' + key;
+                                        ? root + '[' + key + ']'
+                                        : root + '.' + key;
                                 appendFormData(data[key], k);
                             }
                         }

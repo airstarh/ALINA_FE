@@ -1,7 +1,11 @@
-<template v-if="MessagesObj.store.length > 0">
-    <div
+<template v-if="flagMessagesShown">
+
+    <b-modal
+            id="messages"
+            v-model="flagMessagesShown"
             class="messages lalala"
-            @click="deleteAllMessages"
+            title="Messages"
+            :ok-only="true"
     >
         <div
                 v-for="item in MessagesObj.store"
@@ -10,7 +14,7 @@
         >
             {{ item.text }}
         </div>
-    </div>
+    </b-modal>
 </template>
 
 <script>
@@ -18,18 +22,31 @@
     import UtilsArray  from "@/Utils/UtilsArray";
 
     export default {
-        name:    "Messages",
-        props:   {},
+        name:     "Messages",
+        props:    {},
         data() {
             return {
-                MessagesObj: MessagesObj
+                MessagesObj: MessagesObj,
             }
         },
-        methods: {
-            deleteAllMessages() {
+        methods:  {
+            ehDeleteAllMessages() {
                 UtilsArray.clear(MessagesObj.store);
+            },
+        },
+        computed: {
+            flagMessagesShown: {
+                get() {
+                    return MessagesObj.store.length > 0;
+                },
+                set(v) {
+                    if (!v) {
+                        this.ehDeleteAllMessages();
+                    }
+                },
             }
-        }
+        },
+        watch:    {},
     };
 </script>
 

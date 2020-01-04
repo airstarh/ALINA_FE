@@ -135,7 +135,7 @@
 <script>
     import StandardButtons from "../components/elements/form/StandardButtons";
     import BtstrpBadge     from "../components/elements/BtstrpBadge";
-    import Ajax            from "../services/Ajax";
+    import AjaxAlina            from "../services/AjaxAlina";
 
     export default {
         name:       "RestCall",
@@ -220,7 +220,7 @@
         methods:    {
             runAJax() {
                 this.strsToObjs();
-                const oAjax = Ajax.newInst({
+                const oAjax = AjaxAlina.newInst({
                     url:            this.reqUri,
                     mode:           this.mode,
                     cache:          this.cache,

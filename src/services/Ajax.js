@@ -6,9 +6,7 @@ export default class Ajax {
     options     = {
         url:            "",
         method:         "GET", // *GET, POST, PUT, DELETE, etc.
-        headers:        {
-            "x-requested-with": 1,
-        },
+        headers:        {},
         getParams:      {},
         postParams:     {},
         reqFlagPostRaw: false,
