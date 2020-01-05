@@ -268,9 +268,6 @@
                 //#####
                 this.objsToTxt();
                 //#####
-                console.log("__________________________________________");
-                console.log("++++++++++ onDone  oAjax ++++++++++");
-                console.log(oAjax);
             },
 
             objsToTxt() {

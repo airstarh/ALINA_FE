@@ -3,9 +3,9 @@
         <div class="row align-items-center h-100">
             <div class="col-md-6 mx-auto">
                 <form action="" method="post" enctype="multipart/form-data">
-                    <h1>Login</h1>
-                    <input type="text" v-model="post.mail" placeholder="Mail" class="form-control">
-                    <input type="password" v-model="post.password" placeholder="Password" class="form-control">
+                    <h1>LogOut</h1>
+                    <div v-if="CU.isLoggedIn()">You are logged in</div>
+                    <div v-if="!CU.isLoggedIn()">You are logged out</div>
                     <input type="hidden" v-model="post.form_id" class="form-control">
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                 </form>
@@ -21,18 +21,18 @@
     import StandardButtons from "@/components/elements/form/StandardButtons";
     import ConfigApi       from "@/configs/ConfigApi";
     import AjaxAlina       from "@/services/AjaxAlina";
+    import CurrentUser     from "@/services/CurrentUser";
 
     export default {
-        name:       "auth_login",
+        name:       "auth_logout",
         data() {
             return {
+                CU:      CurrentUser.obj(),
                 options: {
-                    url: `${ConfigApi.url_base}/auth/login`
+                    url: `${ConfigApi.url_base}/auth/logout`
                 },
                 post:    {
-                    mail:     '',
-                    password: '',
-                    form_id:  'login',
+                    form_id: 'logout',
                 }
             }
         },
@@ -46,7 +46,10 @@
                     postParams: this.post,
                     method:     'POST',
                     onDone:     (aja) => {
-                        //ToDo: redirect
+                        console.log(">>>____________________________");
+                        console.log("aja.respBody");
+                        console.log(aja.respBody);
+                        console.log("<<<____________________________");
                     }
                 })
                     .go();

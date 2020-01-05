@@ -18,6 +18,7 @@ export default class CurrentUser {
     attributes = {};
 
     applyAttributes(obj) {
+        this.attributes = {}; // :-)
         for (let [key, value] of Object.entries(obj)) {
             this.attributes[key] = value;
         }
@@ -25,7 +26,7 @@ export default class CurrentUser {
 
     //##################################################
     isLoggedIn() {
-        if (this.attributes.hasOwnProperty(id)) {
+        if (this.attributes.hasOwnProperty("id")) {
             if (!UtilsData.empty(this.attributes.id)) {
                 return true;
             }
@@ -69,6 +70,15 @@ export default class CurrentUser {
             }
         }
         return res;
+    }
+
+    name() {
+        const a  = this.attributes;
+        let name = a.mail;
+        if (UtilsData.empty(name)) {
+            name = "Not logged in";
+        }
+        return name;
     }
 
     //##################################################
