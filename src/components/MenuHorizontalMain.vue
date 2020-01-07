@@ -41,9 +41,8 @@
                             <em>{{this.CU.name()}}</em>
                         </template>
                         <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">LogIn</b-dropdown-item>
+                        <b-dropdown-item to="/auth/profile" v-if="CU.isLoggedIn()">Profile</b-dropdown-item>
                         <b-dropdown-item to="/auth/logout" v-if="CU.isLoggedIn()">LogOut</b-dropdown-item>
-                        <b-dropdown-item href="#">Profile</b-dropdown-item>
-                        <b-dropdown-item href="#">Sign Out</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
             </b-collapse>

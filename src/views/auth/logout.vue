@@ -7,7 +7,10 @@
                     <div v-if="CU.isLoggedIn()">You are logged in</div>
                     <div v-if="!CU.isLoggedIn()">You are logged out</div>
                     <input type="hidden" v-model="post.form_id" class="form-control">
-                    <StandardButtons :onGo="runAJax"></StandardButtons>
+                    <StandardButtons
+                            :onGo="runAJax"
+                            submit-txt="Bye-bye"
+                    ></StandardButtons>
                 </form>
             </div>
         </div>
@@ -46,10 +49,8 @@
                     postParams: this.post,
                     method:     'POST',
                     onDone:     (aja) => {
-                        console.log(">>>____________________________");
-                        console.log("aja.respBody");
-                        console.log(aja.respBody);
-                        console.log("<<<____________________________");
+                        //ToDo: auto log out
+                        //ToDo: redirect
                     }
                 })
                     .go();

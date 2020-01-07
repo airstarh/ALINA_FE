@@ -1,9 +1,10 @@
-import Vue         from "vue";
-import Router      from "vue-router";
-import Home        from "@/views/Home.vue";
-import RestCall    from "@/views/RestCall.vue";
-import auth_login  from "@/views/auth/login";
-import auth_logout from "@/views/auth/logout";
+import Vue          from "vue";
+import Router       from "vue-router";
+import Home         from "@/views/Home.vue";
+import RestCall     from "@/views/RestCall.vue";
+import auth_login   from "@/views/auth/login";
+import auth_logout  from "@/views/auth/logout";
+import auth_profile from "@/views/auth/profile";
 
 Vue.use(Router);
 
@@ -21,7 +22,7 @@ export default new Router({
             // this generates a separate chunk (about.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
             component: () =>
-                           import(/* webpackChunkName: "about" */ "./views/About.vue")
+                           import(/* webpackChunkName: "about" */ "@/views/About.vue")
         },
         {
             path:      "/RestCall",
@@ -40,7 +41,18 @@ export default new Router({
             path:      "/auth/logout",
             name:      "auth_logout",
             component: auth_logout
+        },
+        {
+            path:      "/auth/profile",
+            name:      "auth_profile",
+            component: auth_profile
+        },
+        {
+            path:      "/auth/profile/:id",
+            name:      "auth_profile",
+            component: auth_profile
         }
+
         //##################################################
         //##################################################
         //##################################################

@@ -12,6 +12,8 @@ $base-background: #9BDAFF;
 *::after {
   box-sizing: border-box;
 }
+/*$brand-primary-color: #673AB7;
+$brand-accent-color: #FF4081;*/
 
 html {
   font-size: 100%;
@@ -34,7 +36,7 @@ body {
   height: 100%;
   position: relative;
   overflow: hidden;
-  padding-top: 68px;
+  padding-top: 62px;
 }
 
 #alina-body-wrapper {
@@ -63,7 +65,7 @@ textarea:focus {
 /*endregion REQUIRED BY INCLUDED FRAMEWORKS*/
 
 //region Form
-form {
+form, .alina-form {
   background-color: #e9ecef;
   padding: 2mm;
 }
