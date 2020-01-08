@@ -9,7 +9,14 @@ export default class CurrentUser {
      * */
     static obj(options = {}) {
         if (null === this.inst) {
-            this.inst = new this();
+            this.inst      = new this();
+            //#####
+            let attributes = window.localStorage.getItem("CurrentUser");
+            if (attributes) {
+                attributes           = JSON.parse(attributes);
+                this.inst.attributes = attributes;
+            }
+            //#####
         }
         return this.inst;
     }
@@ -22,6 +29,7 @@ export default class CurrentUser {
         for (let [key, value] of Object.entries(obj)) {
             this.attributes[key] = value;
         }
+        window.localStorage.setItem("CurrentUser", JSON.stringify(this.attributes));
     };
 
     //##################################################
