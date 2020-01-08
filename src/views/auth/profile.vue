@@ -105,9 +105,9 @@
                     birth:                '',
                     birth_human:          '2020-01-01',
                     about_myself:         '',
-                    password:             '',
-                    new_password:         '',
-                    confirm_new_password: '',
+                    // password:             '',
+                    // new_password:         '',
+                    // confirm_new_password: '',
                     form_id:              'profile',
                 }
             }
@@ -146,16 +146,11 @@
                     url:    `${this.options.url}/${id}`,
                     method: 'GET',
                     onDone: (aja) => {
-                        console.log(">>>____________________________");
-                        console.log("aja.respBody.data");
-                        console.log(aja.respBody.data);
-                        console.log("<<<____________________________");
                         Object.entries(this.pst).forEach(([k, v]) => {
-                            if (aja.respBody.data.user.attributes.hasOwnProperty(k)) {
-                                this.pst[k] = aja.respBody.data.user.attributes[k];
+                            if (aja.respBody.data.user.hasOwnProperty(k)) {
+                                this.pst[k] = aja.respBody.data.user[k];
                             }
                         });
-                        //Object.assign(this.pst, aja.respBody.data.user.attributes);
                         if (callback) {
                             callback();
                         }
