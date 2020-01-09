@@ -3,6 +3,7 @@ import MessagesObj from "@/services/MessagesObj";
 import CurrentUser from "@/services/CurrentUser";
 import UtilsObject from "@/Utils/UtilsObject";
 import ConfigApi   from "@/configs/ConfigApi";
+import SpinnerObj  from "@/services/SpinnerObj";
 
 export default class AjaxAlina extends Ajax {
     //##################################################
@@ -10,6 +11,11 @@ export default class AjaxAlina extends Ajax {
         const setup  = ConfigApi.AjaxAlina.options;
         this.options = UtilsObject.mergeRecursively(setup, this.options, options);
         return this;
+    }
+
+    //##################################################
+    hookBeforeAjaxStarted() {
+        SpinnerObj.isOn = true;
     }
 
     //##################################################
@@ -36,6 +42,8 @@ export default class AjaxAlina extends Ajax {
             ConfigApi.AjaxAlina.options.headers.token = CU.attributes.token;
         }
         //endregion CurrentUser
+        //##########
+        SpinnerObj.isOn = false;
         //##########
 
     };

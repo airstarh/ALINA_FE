@@ -105,6 +105,10 @@ export default class Ajax {
         // ##################################################
         // ##################################################
         //Go
+        if (typeof _t['hookBeforeAjaxStarted'] === 'function') {
+            _t.hookBeforeAjaxStarted();
+        }
+
         const myRequest = new Request(this.urlBuild(), p);
         return fetch(myRequest)
             .then(resp => {

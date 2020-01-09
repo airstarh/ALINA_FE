@@ -1,4 +1,5 @@
-import {AppAlina} from "@/main";
+import {dateFilter} from "vue-date-fns";
+
 
 export default class UtilsDate {
     static toUnixTimeSecs(d) {
@@ -12,11 +13,8 @@ export default class UtilsDate {
         return v.getTime() / 1000;
     }
 
-    /**
-     * https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
-     * */
     static fromUnixTimeSecs(tmstmp, format = "Do MMM YYYY dddd") {
         let date = new Date(tmstmp * 1000);
-        return AppAlina.$date(date, format);
+        return dateFilter(date, format);
     }
 }

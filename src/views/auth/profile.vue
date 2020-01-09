@@ -4,8 +4,8 @@
             <div class="col-md-6 mx-auto">
                 <div class="alina-form" action="" method="post" enctype="multipart/form-data">
                     <h1>Profile</h1>
-                    <input type="hidden" v-model="pst.form_id" class="form-control">
-                    <input type="text" v-model="pst.id" class="form-control">
+                    <input type="hidden" v-model="post.form_id" class="form-control">
+                    <input type="text" v-model="post.id" class="form-control">
 
                     <!--##################################################-->
 
@@ -14,7 +14,7 @@
                             <label for="mail">mail</label>
                         </div>
                         <div class="col-6">
-                            <input v-model="pst.mail" type="text" id="mail" class="form-control">
+                            <input v-model="post.mail" type="text" id="mail" class="form-control">
                         </div>
                     </div>
 
@@ -25,7 +25,7 @@
                             <label for="firstname">firstname</label>
                         </div>
                         <div class="col-6">
-                            <input v-model="pst.firstname" type="text" id="firstname" class="form-control">
+                            <input v-model="post.firstname" type="text" id="firstname" class="form-control">
                         </div>
                     </div>
 
@@ -36,7 +36,7 @@
                             <label for="lastname">lastname</label>
                         </div>
                         <div class="col-6">
-                            <input v-model="pst.lastname" type="text" id="lastname" class="form-control">
+                            <input v-model="post.lastname" type="text" id="lastname" class="form-control">
                         </div>
                     </div>
 
@@ -47,12 +47,12 @@
                             <label for="birth_human">birth_human</label>
                         </div>
                         <div class="col-6">
-                            <input v-model="pst.birth" type="text" id="birth" class="form-control">
+                            <input v-model="post.birth" type="text" id="birth" class="form-control">
                             <ui-datepicker
                                     icon="eventpacks"
                                     picker-type="modal"
                                     placeholder="Select a date"
-                                    v-model="pst.birth_human"
+                                    v-model="post.birth_human"
                                     :startOfWeek="1"
                                     orientation="portrait"
                                     @input="ehInputBirthHuman"
@@ -67,7 +67,7 @@
                             <label for="about_myself">about_myself</label>
                         </div>
                         <div class="col-6">
-                            <textarea v-model="pst.about_myself" rows="10" id="about_myself" class="form-control"></textarea>
+                            <textarea v-model="post.about_myself" rows="10" id="about_myself" class="form-control"></textarea>
                         </div>
                     </div>
 
@@ -101,7 +101,7 @@
                 options: {
                     url: `${ConfigApi.url_base}/auth/profile`
                 },
-                pst:     {
+                post:    {
                     id:           '',
                     mail:         '',
                     firstname:    '',
@@ -152,11 +152,11 @@
                     url:    `${this.options.url}/${id}`,
                     method: 'GET',
                     onDone: (aja) => {
-                        Object.entries(this.pst).forEach(([k, v]) => {
+                        Object.entries(this.post).forEach(([k, v]) => {
                             if (aja.respBody.data.user.hasOwnProperty(k)) {
-                                this.pst[k] = aja.respBody.data.user[k];
+                                this.post[k] = aja.respBody.data.user[k];
                                 if (k === "birth") {
-                                    this.pst.birth_human = new Date(this.pst[k] * 1000);
+                                    this.post.birth_human = new Date(this.post[k] * 1000);
                                 }
                             }
                         });
@@ -172,14 +172,14 @@
             //##################################################
             //region Birth\
             ehInputBirthHuman(dateObj) {
-                this.pst.birth = UtilsDate.toUnixTimeSecs(dateObj);
+                this.post.birth = UtilsDate.toUnixTimeSecs(dateObj);
             },
             //endregion Birth
             //##################################################
             runAJax() {
                 const oAjax = AjaxAlina.newInst({
                     url:        this.options.url,
-                    postParams: this.pst,
+                    postParams: this.post,
                     method:     'POST',
                     onDone:     (aja) => {
                         //ToDo: ???
