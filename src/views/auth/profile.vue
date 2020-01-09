@@ -44,18 +44,16 @@
 
                     <div class="row mt-4 justify-content-center align-items-center">
                         <div class="col-6 text-right">
-                            <label for="birth_human">birth_human</label>
+                            <label for="birth">birth</label>
                         </div>
                         <div class="col-6">
                             <input v-model="post.birth" type="text" id="birth" class="form-control">
                             <ui-datepicker
                                     icon="eventpacks"
                                     picker-type="modal"
-                                    placeholder="Select a date"
-                                    v-model="post.birth_human"
+                                    v-model="post.birth"
                                     :startOfWeek="1"
                                     orientation="portrait"
-                                    @input="ehInputBirthHuman"
                             ></ui-datepicker>
                         </div>
                     </div>
@@ -106,8 +104,7 @@
                     mail:         '',
                     firstname:    '',
                     lastname:     '',
-                    birth:        '',
-                    birth_human:  '2020-01-01',
+                    birth:        null,
                     about_myself: '',
                     // password:             '',
                     // new_password:         '',
@@ -154,9 +151,10 @@
                     onDone: (aja) => {
                         Object.entries(this.post).forEach(([k, v]) => {
                             if (aja.respBody.data.user.hasOwnProperty(k)) {
-                                this.post[k] = aja.respBody.data.user[k];
                                 if (k === "birth") {
-                                    this.post.birth_human = new Date(this.post[k] * 1000);
+                                    this.post[k] = new Date(aja.respBody.data.user[k] * 1000);
+                                } else {
+                                    this.post[k] = aja.respBody.data.user[k];
                                 }
                             }
                         });
@@ -171,8 +169,8 @@
             //endregion Define User
             //##################################################
             //region Birth\
-            ehInputBirthHuman(dateObj) {
-                this.post.birth = UtilsDate.toUnixTimeSecs(dateObj);
+            customFormatter(dateObj) {
+                return this.$date(dateObj, "DD MMMM YYYY");
             },
             //endregion Birth
             //##################################################

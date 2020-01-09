@@ -9,7 +9,7 @@
     >
         <div
                 v-for="item in MessagesObj.store"
-                v-bind:key="item.id"
+                v-bind:key="'msg_'+item.id"
                 v-bind:class="item.status"
         >
             {{ item.text }}
