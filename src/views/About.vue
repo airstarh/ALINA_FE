@@ -1,6 +1,6 @@
 <template>
-    <!--<div :flag="flag">-->
     <div>
+
         <div>
             <h1>{{ sProp }} : mapped from Store</h1>
         </div>
@@ -9,6 +9,22 @@
         </div>
         <button @click="methChangeProp">Change Prop</button>
         <button @click="log">log</button>
+        <br>
+        <br>
+        <div>
+            <h1>Date FNS</h1>
+            <!--<div>Now: {{ now }}</div>-->
+            <div>Now: {{ new Date() | date }}</div>
+            <div>Now: {{ $date(new Date()) }}</div>
+            <div>Now: {{ new Date() | date('DD MMMM YYYY') }}</div>
+            <div>Now: {{ $date(new Date(), 'DD MMMM YYYY') }}</div>
+            <div>Now: {{ $date(new Date(), 'X') }}</div>
+            <div>Now: {{ $date(new Date(), 'x') }}</div>
+            <br>
+            {{dateExample}}
+        </div>
+        <br>
+        <br>
 
         <div>
             <!-- Using modifiers -->
@@ -115,6 +131,7 @@
 <script>
     import {mapActions, mapGetters, mapState} from "vuex";
     import AnObject                           from "../services/AnObject";
+    import UtilsDate                          from "@/Utils/UtilsDate";
 
     export default {
         name: "EgStoreModuleComponent",
@@ -122,9 +139,14 @@
             const twoWeeksFromNow = new Date();
             twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
             return {
-                picker8:  null,
-                AnObject: AnObject
+                picker8:     null,
+                AnObject:    AnObject,
+                dateExample: 'DEFAULT VALUE',
             };
+        },
+
+        created(){
+            this.dateplayer();
         },
 
         computed: {
@@ -139,6 +161,10 @@
                 const value = this.sProp + 3;
                 this.aProp(value);
                 //this.flag = !this.flag;
+            },
+
+            dateplayer() {
+                this.dateExample = UtilsDate.fromUnixTimeSecs(1578535140);
             },
 
             log() {

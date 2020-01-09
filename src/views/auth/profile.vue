@@ -47,12 +47,15 @@
                             <label for="birth_human">birth_human</label>
                         </div>
                         <div class="col-6">
+                            <input v-model="pst.birth" type="text" id="birth" class="form-control">
                             <ui-datepicker
                                     icon="eventpacks"
-                                    orientation="landscape"
                                     picker-type="modal"
                                     placeholder="Select a date"
                                     v-model="pst.birth_human"
+                                    :startOfWeek="1"
+                                    orientation="portrait"
+                                    @input="ehInputBirthHuman"
                             ></ui-datepicker>
                         </div>
                     </div>
@@ -88,6 +91,7 @@
     import ConfigApi       from "@/configs/ConfigApi";
     import AjaxAlina       from "@/services/AjaxAlina";
     import CurrentUser     from "@/services/CurrentUser";
+    import UtilsDate       from "@/Utils/UtilsDate";
 
     export default {
         name:       "auth_profile",
@@ -98,17 +102,17 @@
                     url: `${ConfigApi.url_base}/auth/profile`
                 },
                 pst:     {
-                    id:                   '',
-                    mail:                 '',
-                    firstname:            '',
-                    lastname:             '',
-                    birth:                '',
-                    birth_human:          '2020-01-01',
-                    about_myself:         '',
+                    id:           '',
+                    mail:         '',
+                    firstname:    '',
+                    lastname:     '',
+                    birth:        '',
+                    birth_human:  '2020-01-01',
+                    about_myself: '',
                     // password:             '',
                     // new_password:         '',
                     // confirm_new_password: '',
-                    form_id:              'profile',
+                    form_id:      'profile',
                 }
             }
         },
@@ -132,6 +136,8 @@
 
         },
         methods:    {
+            //##################################################
+            //region Define User
             getCurrentId(to) {
                 let id = null;
                 if (to && to.params && to.params.id) {
@@ -149,6 +155,9 @@
                         Object.entries(this.pst).forEach(([k, v]) => {
                             if (aja.respBody.data.user.hasOwnProperty(k)) {
                                 this.pst[k] = aja.respBody.data.user[k];
+                                if (k === "birth") {
+                                    this.pst.birth_human = new Date(this.pst[k] * 1000);
+                                }
                             }
                         });
                         if (callback) {
@@ -159,6 +168,14 @@
                     .go();
 
             },
+            //endregion Define User
+            //##################################################
+            //region Birth\
+            ehInputBirthHuman(dateObj) {
+                this.pst.birth = UtilsDate.toUnixTimeSecs(dateObj);
+            },
+            //endregion Birth
+            //##################################################
             runAJax() {
                 const oAjax = AjaxAlina.newInst({
                     url:        this.options.url,
