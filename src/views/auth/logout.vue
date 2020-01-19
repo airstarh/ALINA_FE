@@ -50,7 +50,7 @@
                     method:     'POST',
                     onDone:     (aja) => {
                         //ToDo: auto log out
-                        //ToDo: redirect
+                        this.$router.replace({ path: `/about` });
                     }
                 })
                     .go();

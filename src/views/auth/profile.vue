@@ -5,16 +5,13 @@
                 <div class="alina-form" action="" method="post" enctype="multipart/form-data">
                     <h1>Profile</h1>
                     <input type="hidden" v-model="post.form_id" class="form-control">
-                    <input type="text" v-model="post.id" class="form-control">
+                    <input type="hidden" v-model="post.id" class="form-control">
 
                     <!--##################################################-->
 
                     <div class="row mt-4 justify-content-center align-items-center">
-                        <div class="col-6 text-right">
-                            <label for="mail">mail</label>
-                        </div>
-                        <div class="col-6">
-                            <input v-model="post.mail" type="text" id="mail" class="form-control">
+                        <div class="col text-center">
+                            {{post.mail}}
                         </div>
                     </div>
 
@@ -54,6 +51,7 @@
                                     v-model="post.birth"
                                     :startOfWeek="1"
                                     orientation="portrait"
+                                    :customFormatter="customFormatter"
                             ></ui-datepicker>
                         </div>
                     </div>

@@ -26,7 +26,7 @@ import VueDateFns   from "vue-date-fns";
 
 Vue.use(VueDateFns);
 //#####
-export  const AppAlina = new Vue({
+export const AppAlina = new Vue({
     router,
     store,
     render: h => h(App)

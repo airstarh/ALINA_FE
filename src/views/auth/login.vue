@@ -21,6 +21,7 @@
     import StandardButtons from "@/components/elements/form/StandardButtons";
     import ConfigApi       from "@/configs/ConfigApi";
     import AjaxAlina       from "@/services/AjaxAlina";
+    import CurrentUser     from "@/services/CurrentUser";
 
     export default {
         name:       "auth_login",
@@ -46,10 +47,13 @@
                     postParams: this.post,
                     method:     'POST',
                     onDone:     (aja) => {
-                        //ToDo: redirect
+                        const id = CurrentUser.obj().attributes.id;
+                        if (id) {
+                            this.$router.replace({path: `/auth/profile`});
+                        }
                     }
                 })
-                    .go();
+                .go();
             }
         }
     };

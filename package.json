@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
-    "bootstrap-vue": "^2.1.0",
+    "bootstrap-vue": "^2.2.0",
     "core-js": "^2.6.11",
     "keen-ui": "^1.2.1",
     "material-design-icons": "^3.0.1",
@@ -29,7 +29,7 @@
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-vue": "^5.2.3",
-    "sass": "^1.24.2",
+    "sass": "^1.24.3",
     "sass-loader": "^7.3.1",
     "vue-template-compiler": "^2.6.11"
   }
