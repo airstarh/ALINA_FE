@@ -12,6 +12,7 @@ $base-background: #9BDAFF;
 *::after {
   box-sizing: border-box;
 }
+
 /*$brand-primary-color: #673AB7;
 $brand-accent-color: #FF4081;*/
 
@@ -53,6 +54,7 @@ body {
 
 button {
   padding: 1mm;
+  margin: 1mm;
 }
 
 input:focus,
