@@ -1,7 +1,7 @@
 <template>
-    <div class="container-sm">
+    <div class="container-fluid px-0">
         <div class="row">
-            <div class="col-sm">
+            <div class="col-6">
                 <form action="" method="post" enctype="multipart/form-data">
                     <h2>
                         Request <span><button type="button" @click="log">LOG</button></span>
@@ -101,7 +101,7 @@
             <!--##################################################-->
             <!--##################################################-->
             <!--##################################################-->
-            <div class="col-sm">
+            <div class="col-6 bg-dark">
                 <!--        <img src="http://alinazero:8080/sources/images/orig.png" width="150">-->
                 <div class="mt-3">
                     <h2>Response</h2>
