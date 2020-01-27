@@ -19,20 +19,28 @@ export default class UtilsData {
     }
 
     static isArray(something) {
-        //ToDo: Look here later: https://juhukinners.wordpress.com/2009/01/11/typeof-considered-useless-or-how-to-write-robust-type-checks/
-        // return UtilsData.isset(something.length)
-        // 	&& typeof something !== 'string'
-        // 	;
+        return Array.isArray(something);
+    }
 
-        // Also possible:
-        // return Object.prototype.toString.call(something) === '[object Array]';
-
-        // https://stackoverflow.com/a/12469043/3142281
+    static isString(something) {
         return (
-            something !== null &&
-            typeof something === "object" &&
-            typeof something.length !== "undefined"
-            //&& something.__proto__ === Array.prototype
+            !UtilsData.isNumber
+            &&
+            typeof something === 'string'
+        );
+    }
+
+    static isNull(something) {
+        return something === null;
+    }
+
+    static isObject(something) {
+        return (
+            !UtilsData.isNull(something)
+            &&
+            !UtilsData.isArray(something)
+            &&
+            typeof something === 'object'
         );
     }
 

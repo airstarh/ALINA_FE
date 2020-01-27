@@ -88,6 +88,7 @@
     import AjaxAlina       from "@/services/AjaxAlina";
     import CurrentUser     from "@/services/CurrentUser";
     import UtilsDate       from "@/Utils/UtilsDate";
+    import UtilsData       from "@/Utils/UtilsData";
 
     export default {
         name:       "auth_profile",
@@ -114,19 +115,21 @@
         components: {
             StandardButtons
         },
+        //##################################################
+        //region Router Hooks
         beforeRouteEnter(to, from, next) {
             next(vm => {
                 const id = vm.getCurrentId(to);
                 vm.fetchProfile(id);
             })
         },
-        // если путь изменяется, а компонент уже отображён,
-        // то логика будет немного иной
         beforeRouteUpdate(to, from, next) {
             const vm = this;
             const id = vm.getCurrentId(to);
             vm.fetchProfile(id, next);
         },
+        //endregion Router Hooks
+        //##################################################
         created() {
 
         },
@@ -139,6 +142,9 @@
                     id = to.params.id;
                 } else {
                     id = CurrentUser.obj().attributes.id;
+                }
+                if (UtilsData.empty(id)) {
+                    this.$router.replace({ path: `/auth/login` });
                 }
                 return id;
             },
@@ -162,7 +168,7 @@
                         }
                     }
                 })
-                    .go();
+                .go();
 
             },
             //endregion Define User
@@ -182,7 +188,7 @@
                         //ToDo: ???
                     }
                 })
-                    .go();
+                .go();
             }
         }
     };

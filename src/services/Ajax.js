@@ -118,6 +118,11 @@ export default class Ajax {
                     _t.respHeaders[name] = value;
                 });
 
+                console.log(">>>____________________________");
+                console.log("RESPONSE");
+                console.log(resp);
+                console.log("<<<____________________________");
+
                 if (!resp.ok) {
                     if (typeof _t['hookResponseNotOk'] === 'function') {
                         _t.hookResponseNotOk();

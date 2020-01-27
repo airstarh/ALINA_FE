@@ -3,7 +3,7 @@
     <b-modal
             id="messages"
             v-model="flagMessagesShown"
-            class="messages lalala"
+            class="messages"
             title="Messages"
             :ok-only="true"
     >
@@ -30,7 +30,7 @@
         },
         methods:  {
             ehDeleteAllMessages() {
-                UtilsArray.clear(MessagesObj.store);
+                MessagesObj.deleteAll();
             },
         },
         computed: {

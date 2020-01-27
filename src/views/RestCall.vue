@@ -135,7 +135,7 @@
 <script>
     import StandardButtons from "../components/elements/form/StandardButtons";
     import BtstrpBadge     from "../components/elements/BtstrpBadge";
-    import AjaxAlina            from "../services/AjaxAlina";
+    import AjaxAlina       from "../services/AjaxAlina";
 
     export default {
         name:       "RestCall",
@@ -149,8 +149,9 @@
                 //region Request
                 //reqUri:          "http://alinazero:8080/Пользователь/Логин",
                 // reqUri:          "http://alinazero:8080/FileUpload/Common",
-                reqUri:          "http://alinazero:8080/AdminTests/TestMessages?lala[]=1&lala[]=2&lala[]=3&foo=bar",
+                //reqUri:          "http://alinazero:8080/AdminTests/TestMessages?lala[]=1&lala[]=2&lala[]=3&foo=bar",
                 //reqUri:                  "http://alinazero:8080/sources/images/orig.png",
+                reqUri:          "http://alinazero:8080/auth/profile",
                 /////////////////////////////////
                 modes:           ["cors", "no-cors", "*same-origin"],
                 mode:            "cors",
@@ -174,10 +175,27 @@
                 reqGetTxt:       "",
                 /////////////////////////////////
                 reqPost:         {
-                    hello:    "world",
-                    arr:      [1, 3, 'какая-то строка / со слешем и с обратным \ слешем'],
-                    mail:     "vsevolod.azovsky@gmail.com",
-                    password: "qwerty123qwerty",
+                    "id":               "1",
+                    "mail":             "vsevolod.azovsky@gmail.com",
+                    "firstname":        "Sewa",
+                    "lastname":         "Azovsky",
+                    "emblem":           "111",
+                    "birth":            "477100800",
+                    "language":         "en",
+                    "timezone":         "3",
+                    "is_verified":      "1",
+                    "banned_till":      "1277928000",
+                    "created_at":       "1569877200",
+                    "is_deleted":       "0",
+                    "last_time":        "1580058021",
+                    "last_browser_enc": "09f454857cbf37627aacee60db0bd6fc",
+                    "last_ip":          "127.0.0.1",
+                    "fingerprint":      "",
+                    "about_myself":     "111333",
+                    "reset_code":       "1579611464",
+                    "reset_required":   "1",
+                    "timezone_name":    "The Third Тайм Зона",
+                    "form_id":          "actionProfile"
                 },
                 reqPostTxt:      "",
                 reqFlagPostRaw:  false,
