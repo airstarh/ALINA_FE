@@ -17,27 +17,30 @@ export default class AjaxAlina extends Ajax {
     hookBeforeAjaxStarted() {
         SpinnerObj.isOn = true;
     }
-
+    //##################################################
+    hookResponseNotOk() {
+        MessagesObj.set('Bad response');
+    }
     //##################################################
     hookProcessResponse() {
         //##########
         //region Messages
         let msgs = [];
-        if (this.respBody.messages) {
-            msgs = msgs.concat(this.respBody.messages)
+        if (this.respBody["messages"]) {
+            msgs = msgs.concat(this.respBody["messages"])
         }
-        if (this.respBody.messages_admin) {
-            msgs = msgs.concat(this.respBody.messages_admin)
+        if (this.respBody["messages_admin"]) {
+            msgs = msgs.concat(this.respBody["messages_admin"])
         }
-        msgs.forEach((m) => {
-            MessagesObj.store.push(m);
+        msgs.forEach((item) => {
+            MessagesObj.add(item);
         });
         //endregion Messages
         //##########
         //region CurrentUser
-        if (this.respBody.CurrentUser) {
+        if (this.respBody["CurrentUser"]) {
             const CU = CurrentUser.obj();
-            CU.applyAttributes(this.respBody.CurrentUser);
+            CU.applyAttributes(this.respBody["CurrentUser"]);
             ConfigApi.AjaxAlina.options.headers.uid   = CU.attributes.id;
             ConfigApi.AjaxAlina.options.headers.token = CU.attributes.token;
         }
