@@ -16,17 +16,17 @@
 
                 <!-- Right aligned nav items -->
                 <b-navbar-nav class="ml-auto">
-                    <b-nav-form>
-                        <b-form-input
-                                size="sm"
-                                class="mr-sm-2"
-                                placeholder="Search"
-                        ></b-form-input>
-                        <b-button size="sm" class="my-2 my-sm-0" type="submit"
-                        >Search
-                        </b-button
-                        >
-                    </b-nav-form>
+                    <!--<b-nav-form>-->
+                    <!--    <b-form-input-->
+                    <!--            size="sm"-->
+                    <!--            class="mr-sm-2"-->
+                    <!--            placeholder="Search"-->
+                    <!--    ></b-form-input>-->
+                    <!--    <b-button size="sm" class="my-2 my-sm-0" type="submit"-->
+                    <!--    >Search-->
+                    <!--    </b-button-->
+                    <!--    >-->
+                    <!--</b-nav-form>-->
 
                     <b-nav-item-dropdown text="Lang" right>
                         <b-dropdown-item href="#">EN</b-dropdown-item>
@@ -41,7 +41,10 @@
                             <em>{{this.CU.name()}}</em>
                         </template>
                         <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">LogIn</b-dropdown-item>
+                        <b-dropdown-item to="/auth/reset_password_request" v-if="!CU.isLoggedIn()">Reset password request</b-dropdown-item>
+                        <b-dropdown-item to="/auth/reset_password_with_code" v-if="!CU.isLoggedIn()">Reset password with code</b-dropdown-item>
                         <b-dropdown-item to="/auth/profile" v-if="CU.isLoggedIn()">Profile</b-dropdown-item>
+                        <b-dropdown-item to="/auth/change_password" v-if="CU.isLoggedIn()">Change password</b-dropdown-item>
                         <b-dropdown-item to="/auth/logout" v-if="CU.isLoggedIn()">LogOut</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>

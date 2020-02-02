@@ -1,10 +1,13 @@
-import Vue          from "vue";
-import Router       from "vue-router";
-import Home         from "@/views/Home.vue";
-import RestCall     from "@/views/RestCall.vue";
-import auth_login   from "@/views/auth/login";
-import auth_logout  from "@/views/auth/logout";
-import auth_profile from "@/views/auth/profile";
+import Vue                           from "vue";
+import Router                        from "vue-router";
+import Home                          from "@/views/Home.vue";
+import RestCall                      from "@/views/RestCall.vue";
+import auth_login                    from "@/views/auth/login";
+import auth_logout                   from "@/views/auth/logout";
+import auth_profile                  from "@/views/auth/profile";
+import auth_change_password          from "@/views/auth/changePassword";
+import auth_reset_password_request   from "@/views/auth/resetPasswordRequest";
+import auth_reset_password_with_code from "@/views/auth/resetPasswordWithCode";
 
 Vue.use(Router);
 
@@ -51,7 +54,23 @@ export default new Router({
             path:      "/auth/profile/:id",
             name:      "auth_profile",
             component: auth_profile
+        },
+        {
+            path:      "/auth/change_password",
+            name:      "auth_change_password",
+            component: auth_change_password
+        },
+        {
+            path:      "/auth/reset_password_request",
+            name:      "auth_reset_password_request",
+            component: auth_reset_password_request
+        },
+        {
+            path:      "/auth/reset_password_with_code",
+            name:      "auth_reset_password_with_code",
+            component: auth_reset_password_with_code
         }
+
 
         //##################################################
         //##################################################

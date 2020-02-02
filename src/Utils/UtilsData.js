@@ -23,11 +23,12 @@ export default class UtilsData {
     }
 
     static isString(something) {
-        return (
-            !UtilsData.isNumber
+        const res = (
+            !UtilsData.isNumber(something)
             &&
             typeof something === 'string'
         );
+        return res;
     }
 
     static isNull(something) {
@@ -62,7 +63,6 @@ export default class UtilsData {
         }
         return !isNaN(v);
     }
-
 
     /**
      *  https://stackoverflow.com/a/49388446/3142281

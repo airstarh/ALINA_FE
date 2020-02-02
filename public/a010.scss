@@ -47,6 +47,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
+  overflow: -moz-scrollbars-vertical;
   overflow: scroll;
 
   border: orange solid 2px;

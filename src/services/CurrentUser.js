@@ -41,7 +41,7 @@ export default class CurrentUser {
                 _static.inst.applyAttributes(attributes);
             }
         }
-        return this.inst;
+        return _static.inst;
     }
     //##################################################
     applyAttributes(obj) {

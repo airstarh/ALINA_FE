@@ -46,7 +46,7 @@
                             <ui-select
                                     v-model="enctype"
                                     :options="enctypes"
-                                    label="Ejctype"
+                                    label="Enctype"
                             ></ui-select>
                         </div>
                     </div>

@@ -4,6 +4,7 @@ import CurrentUser from "@/services/CurrentUser";
 import UtilsObject from "@/Utils/UtilsObject";
 import ConfigApi   from "@/configs/ConfigApi";
 import SpinnerObj  from "@/services/SpinnerObj";
+import Router      from '@/router';
 
 export default class AjaxAlina extends Ajax {
     //##################################################
@@ -19,10 +20,31 @@ export default class AjaxAlina extends Ajax {
     }
     //##################################################
     hookResponseNotOk() {
+        SpinnerObj.isOn = false;
         MessagesObj.set('Bad response');
     }
     //##################################################
     hookProcessResponse() {
+        console.log(">>>____________________________");
+        console.log("hookProcessResponse");
+        console.log(this.resp);
+        console.log("<<<____________________________");
+        //##########
+        if (this.resp.redirected) {
+            if (this.respBody["data"] && this.respBody["data"]["form_id"]) {
+                const formId       = this.respBody["data"]["form_id"];
+                const vocRedirects = ConfigApi.vocRedirects;
+                if (UtilsObject.hasOwnPropertyCaseInsensitive(vocRedirects, formId)) {
+                    console.log(">>>____________________________");
+                    console.log("Redirected!");
+                    console.log(formId);
+                    console.log("<<<____________________________");
+                    if (this.classBehaviour.followRedirects) {
+                        Router.push(vocRedirects[formId]);
+                    }
+                }
+            }
+        }
         //##########
         //region Messages
         let msgs = [];

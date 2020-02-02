@@ -7,6 +7,7 @@ const MessagesObj = {
         "text":   "",
         "status": "alert alert-info",
     },
+
     set(item) {
         const res = Object.assign({}, this.item);
         if (UtilsData.isString(item)) {
@@ -14,8 +15,9 @@ const MessagesObj = {
         } else if (UtilsData.isObject(item)) {
             Object.assign(res, item)
         }
-        this.add(item);
+        this.add(res);
     },
+
     add(message) {
         this.store.push(message);
     },

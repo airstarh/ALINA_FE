@@ -3,7 +3,15 @@ import UtilsObject from "../Utils/UtilsObject";
 import UtilsData   from "../Utils/UtilsData";
 
 export default class Ajax {
-    options     = {
+    // ##################################################
+    //region Class behaviour settings
+    classBehaviour = {
+        "followRedirects": false
+    };
+    //region Class behaviour settings
+    // ##################################################
+    //region Request related
+    options = {
         url:            "",
         method:         "GET", // *GET, POST, PUT, DELETE, etc.
         headers:        {},
@@ -19,21 +27,20 @@ export default class Ajax {
         onDone:         () => {
         }
     };
+    //endregion Request related
     // ##################################################
+    //region Response Related
     urlClean    = "";
     urlRes      = "";
+    resp        = {}; // Initial response object
     respType    = null; // json, text, blob, ...others
     respBody    = "";
     respHeaders = {};
-
+    //endregion Response Related
     // ##################################################
-
+    //region Instance
     constructor() {
     }
-
-    // ##################################################
-    // ##################################################
-    // ##################################################
 
     /**
      * @return Ajax instance
@@ -48,7 +55,7 @@ export default class Ajax {
         this.options = UtilsObject.mergeRecursively(this.options, options);
         return this;
     }
-
+    //endregion Instance
     // ##################################################
     // ##################################################
     // ##################################################
@@ -111,47 +118,47 @@ export default class Ajax {
 
         const myRequest = new Request(this.urlBuild(), p);
         return fetch(myRequest)
-            .then(resp => {
-
-                // Extract Response Headers
-                resp.headers.forEach((value, name) => {
-                    _t.respHeaders[name] = value;
-                });
-
-                console.log(">>>____________________________");
-                console.log("RESPONSE");
-                console.log(resp);
-                console.log("<<<____________________________");
-
-                if (!resp.ok) {
-                    if (typeof _t['hookResponseNotOk'] === 'function') {
-                        _t.hookResponseNotOk();
-                    }
-                    console.error(">>>____________________________");
-                    console.error("RESPONSE NOT OK");
-                    console.error(resp);
-                    console.error("<<<____________________________");
-                    throw new Error('RESPONSE NOT OK');
-                }
-
-                return _t.handleResponse(resp);
-            })
-            .then(data => {
-                _t.respBody = data;
-                if (typeof _t['hookProcessResponse'] === 'function') {
-                    _t.hookProcessResponse();
-                }
-                if (opts.onDone) {
-                    opts.onDone(_t);
-                }
-                return _t;
-            })
-            .catch(error => {
-                console.error(">>>____________________________");
-                console.error("COMMON REQUEST ERROR");
-                console.error(error);
-                console.error("<<<____________________________");
+        .then(resp => {
+            this.resp = resp;
+            //region Extract Response Headers
+            resp.headers.forEach((value, name) => {
+                _t.respHeaders[name] = value;
             });
+            //endregion Extract Response Headers
+            //#####
+            //region Response not OK
+            if (!resp.ok) {
+                if (typeof _t['hookResponseNotOk'] === 'function') {
+                    _t.hookResponseNotOk(resp);
+                }
+                console.error(">>>____________________________");
+                console.error("RESPONSE NOT OK");
+                console.error(resp);
+                console.error("<<<____________________________");
+                throw new Error('RESPONSE NOT OK');
+            }
+            //endregion Response not OK
+            return _t.handleResponse(resp);
+        })
+        .then(data => {
+            _t.respBody = data;
+            //region hookProcessResponse
+            if (typeof _t['hookProcessResponse'] === 'function') {
+                _t.hookProcessResponse();
+            }
+            //endregion hookProcessResponse
+            if (opts.onDone) {
+                opts.onDone(_t);
+            }
+            return _t;
+        })
+        //##################################################
+        .catch(error => {
+            console.error(">>>____________________________");
+            console.error("COMMON REQUEST ERROR");
+            console.error(error);
+            console.error("<<<____________________________");
+        });
     }
 
     // ##################################################
@@ -160,40 +167,40 @@ export default class Ajax {
         let contentType = resp.headers.get("content-type");
         if (contentType.includes("application/json")) {
             return resp.json()
-                .then(json => {
-                    _t.respType = 'json';
-                    return json;
-                });
+            .then(json => {
+                _t.respType = 'json';
+                return json;
+            });
         } else if (
             contentType.includes("text/html")
             ||
             contentType.includes("text/plain")
         ) {
             return resp.text()
-                .then(text => {
-                    _t.respType = 'text';
-                    return text;
-                });
+            .then(text => {
+                _t.respType = 'text';
+                return text;
+            });
         } else if (contentType.includes("image")) {
             return resp.blob()
-                .then(blob => {
-                    _t.respType = 'blob';
-                    return blob;
-                });
+            .then(blob => {
+                _t.respType = 'blob';
+                return blob;
+            });
 
         } else {
             return resp.blob()
-                .then(blob => {
-                    _t.respType = 'blob';
-                    return blob;
-                });
+            .then(blob => {
+                _t.respType = 'blob';
+                return blob;
+            });
         }
     }
 
     // ##################################################
     // ##################################################
     // ##################################################
-    //region Data Processing
+    //region Utils
     /**
      * @return String
      */
@@ -222,6 +229,6 @@ export default class Ajax {
         return this.urlRes;
     }
 
-    //endregion Data Processing
+    //endregion Utils
     // ##################################################
 }
