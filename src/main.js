@@ -26,6 +26,11 @@ import VueDateFns   from "vue-date-fns";
 
 Vue.use(VueDateFns);
 //#####
+import CKEditor     from '@ckeditor/ckeditor5-vue';
+
+Vue.use(CKEditor);
+//#####
+
 export const AppAlina = new Vue({
     router,
     store,

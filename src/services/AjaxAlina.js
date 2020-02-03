@@ -25,10 +25,6 @@ export default class AjaxAlina extends Ajax {
     }
     //##################################################
     hookProcessResponse() {
-        console.log(">>>____________________________");
-        console.log("hookProcessResponse");
-        console.log(this.resp);
-        console.log("<<<____________________________");
         //##########
         if (this.resp.redirected) {
             if (this.respBody["data"] && this.respBody["data"]["form_id"]) {
