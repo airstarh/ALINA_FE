@@ -8,6 +8,7 @@ import auth_profile                  from "@/views/auth/profile";
 import auth_change_password          from "@/views/auth/changePassword";
 import auth_reset_password_request   from "@/views/auth/resetPasswordRequest";
 import auth_reset_password_with_code from "@/views/auth/resetPasswordWithCode";
+import tale_upsert                   from "@/views/tale/upsert";
 
 Vue.use(Router);
 
@@ -31,6 +32,14 @@ export default new Router({
             path:      "/RestCall",
             name:      "RestCall",
             component: RestCall
+        },
+        //##################################################
+        //##################################################
+        //##################################################
+        {
+            path:      "/tale/upsert",
+            name:      "tale_upsert",
+            component: tale_upsert
         },
         //##################################################
         //##################################################
@@ -70,8 +79,6 @@ export default new Router({
             name:      "auth_reset_password_with_code",
             component: auth_reset_password_with_code
         }
-
-
         //##################################################
         //##################################################
         //##################################################
