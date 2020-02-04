@@ -28,6 +28,7 @@
     //#####
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
     import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
+    import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
     import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
     import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
@@ -44,6 +45,7 @@
     import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
     import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
     import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
+    import {MyCustomUploadAdapterPlugin} from "@/Utils/AlinaCustomUploader";
     //#####
 
     export default {
@@ -53,9 +55,11 @@
                 options: {
                     url:          `${ConfigApi.url_base}/tale/upsert`,
                     editorConfig: {
+                        extraPlugins: [MyCustomUploadAdapterPlugin],
                         plugins:      [
                             EasyImage,
-                            SimpleUploadAdapter,
+                            //SimpleUploadAdapter,
+                            //CKFinder,
                             EssentialsPlugin,
                             BoldPlugin,
                             ItalicPlugin,
@@ -79,6 +83,7 @@
                                 'alignment',
                                 'insertTable',
                                 '|',
+                                //'ckfinder',
                                 'imageUpload',
                                 'imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side',
                                 '|',
@@ -86,9 +91,12 @@
                                 'redo'
                             ]
                         },
-                        simpleUpload: {
-                            uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`,
-                        },
+                        // simpleUpload: {
+                        //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`,
+                        // },
+                        // ckfinder:     {
+                        //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`
+                        // },
                     },
                     editor:       ClassicEditor,
                 },
