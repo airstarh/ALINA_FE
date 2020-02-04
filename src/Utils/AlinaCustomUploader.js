@@ -1,5 +1,8 @@
 import ConfigApi from "@/configs/ConfigApi";
 
+/**
+ * https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#implementing-a-custom-upload-adapter
+ * */
 export class MyUploadAdapter {
     constructor(loader) {
         // The file loader instance to use during the upload.

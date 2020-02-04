@@ -5,7 +5,7 @@
                 <div class="alina-form">
                     <h1>Your tale</h1>
                     <input type="text" v-model="post.header" placeholder="Header" class="form-control">
-                    <ckeditor :editor="options.editor" v-model="post.body" :config="options.editorConfig"></ckeditor>
+                    <ckeditor :editor="options.editor" v-model="post.body" :config="options.editorConfig" @fileUploadResponse="fileUploadResponse($event)" height="100px"></ckeditor>
                     <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>
                     <input type="text" v-model="post.publish_at" placeholder="Publish at" class="form-control">
                     <input type="hidden" v-model="post.id" class="form-control">
@@ -27,8 +27,8 @@
     import CurrentUser from "@/services/CurrentUser";
     //#####
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-    import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
-    import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
+    //import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
+    //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
     import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
     import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
@@ -55,8 +55,8 @@
                 options: {
                     url:          `${ConfigApi.url_base}/tale/upsert`,
                     editorConfig: {
-                        extraPlugins: [MyCustomUploadAdapterPlugin],
-                        plugins:      [
+                        extraPlugins:       [MyCustomUploadAdapterPlugin],
+                        plugins:            [
                             EasyImage,
                             //SimpleUploadAdapter,
                             //CKFinder,
@@ -75,7 +75,7 @@
                             ImageStyle,
                             ImageResize,
                         ],
-                        toolbar:      {
+                        toolbar:            {
                             items: [
                                 'bold',
                                 'italic',
@@ -123,7 +123,14 @@
                     }
                 })
                 .go();
+            },
+            fileUploadResponse: function (evt) {
+                console.log(">>>____________________________");
+                console.log("fileUploadResponse");
+                console.log(evt);
+                console.log("<<<____________________________");
             }
+
         }
     };
 </script>
