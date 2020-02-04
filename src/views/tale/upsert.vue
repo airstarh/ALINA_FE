@@ -5,7 +5,7 @@
                 <div class="alina-form">
                     <h1>Your tale</h1>
                     <input type="text" v-model="post.header" placeholder="Header" class="form-control">
-                    <ckeditor :editor="options.editor" v-model="post.body" :config="options.editorConfig" @fileUploadResponse="fileUploadResponse($event)" height="100px"></ckeditor>
+                    <ckeditor ref="asd" :editor="options.editor" v-model="post.body" :config="options.editorConfig" :fileUploadResponse="fileUploadResponse" height="100px"></ckeditor>
                     <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>
                     <input type="text" v-model="post.publish_at" placeholder="Publish at" class="form-control">
                     <input type="hidden" v-model="post.id" class="form-control">
@@ -46,6 +46,7 @@
     import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
     import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
     import {MyCustomUploadAdapterPlugin} from "@/Utils/AlinaCustomUploader";
+    import AppAlina from "@/router";
     //#####
 
     export default {
@@ -55,8 +56,8 @@
                 options: {
                     url:          `${ConfigApi.url_base}/tale/upsert`,
                     editorConfig: {
-                        extraPlugins:       [MyCustomUploadAdapterPlugin],
-                        plugins:            [
+                        extraPlugins: [MyCustomUploadAdapterPlugin],
+                        plugins:      [
                             EasyImage,
                             //SimpleUploadAdapter,
                             //CKFinder,
@@ -75,7 +76,7 @@
                             ImageStyle,
                             ImageResize,
                         ],
-                        toolbar:            {
+                        toolbar:      {
                             items: [
                                 'bold',
                                 'italic',
@@ -85,12 +86,24 @@
                                 '|',
                                 //'ckfinder',
                                 'imageUpload',
-                                'imageTextAlternative', '|', 'imageStyle:full', 'imageStyle:side',
+                                'imageTextAlternative',
+                                '|',
+                                'imageStyle:full', 'imageStyle:side', /*'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',*/
                                 '|',
                                 'undo',
                                 'redo'
                             ]
                         },
+                        styles:       [
+                            // This option is equal to a situation where no style is applied.
+                            'full',
+
+                            // This represents an image aligned to the left.
+                            'alignLeft',
+
+                            // This represents an image aligned to the right.
+                            'alignRight'
+                        ],
                         // simpleUpload: {
                         //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`,
                         // },
@@ -112,6 +125,13 @@
         components: {
             StandardButtons
         },
+        mounted() {
+            console.log(">>>____________________________");
+            console.log("xxx");
+            console.log(this.$refs.asd
+            );
+            console.log("<<<____________________________");
+        },
         methods:    {
             runAJax() {
                 const oAjax = AjaxAlina.newInst({
@@ -127,7 +147,7 @@
             fileUploadResponse: function (evt) {
                 console.log(">>>____________________________");
                 console.log("fileUploadResponse");
-                console.log(evt);
+                console.log(arguments);
                 console.log("<<<____________________________");
             }
 
