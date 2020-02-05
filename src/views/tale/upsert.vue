@@ -4,8 +4,24 @@
             <div class="col mx-auto">
                 <div class="alina-form">
                     <h1>Your tale</h1>
+                    <StandardButtons :onGo="runAJax"></StandardButtons>
                     <input type="text" v-model="post.header" placeholder="Header" class="form-control">
-                    <ckeditor ref="asd" :editor="options.editor" v-model="post.body" :config="options.editorConfig" :fileUploadResponse="fileUploadResponse" height="100px"></ckeditor>
+                    <ckeditor
+                            v-model="post.body"
+                            :editor="options.editor"
+                            :config="options.editorConfig"
+                            @ready="onCkEditorReady"
+                            :fileUploadResponse="fileUploadResponse"
+                    ></ckeditor>
+                    <hr>
+                    <StandardButtons :onGo="runAJax"></StandardButtons>
+                    <hr>
+                    <div class="ck ck-content bg-light">
+                        <div v-html="post.body"></div>
+                    </div>
+                    <hr>
+                    <StandardButtons :onGo="runAJax"></StandardButtons>
+                    <hr>
                     <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>
                     <input type="text" v-model="post.publish_at" placeholder="Publish at" class="form-control">
                     <input type="hidden" v-model="post.id" class="form-control">
@@ -26,8 +42,8 @@
     import AjaxAlina from "@/services/AjaxAlina";
     import CurrentUser from "@/services/CurrentUser";
     //#####
+    import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-    //import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
     //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
     import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -46,7 +62,8 @@
     import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
     import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
     import {MyCustomUploadAdapterPlugin} from "@/Utils/AlinaCustomUploader";
-    import AppAlina from "@/router";
+    //#####
+    import UtilsData from "@/Utils/UtilsData";
     //#####
 
     export default {
@@ -59,7 +76,6 @@
                         extraPlugins: [MyCustomUploadAdapterPlugin],
                         plugins:      [
                             EasyImage,
-                            //SimpleUploadAdapter,
                             //CKFinder,
                             EssentialsPlugin,
                             BoldPlugin,
@@ -82,31 +98,27 @@
                                 'italic',
                                 'link',
                                 'alignment',
+                                '|',
                                 'insertTable',
+                                'tableRow',
+                                'tableColumn',
+                                'mergeTableCells',
                                 '|',
                                 //'ckfinder',
                                 'imageUpload',
-                                'imageTextAlternative',
-                                '|',
-                                'imageStyle:full', 'imageStyle:side', /*'imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',*/
                                 '|',
                                 'undo',
                                 'redo'
                             ]
                         },
-                        styles:       [
-                            // This option is equal to a situation where no style is applied.
-                            'full',
-
-                            // This represents an image aligned to the left.
-                            'alignLeft',
-
-                            // This represents an image aligned to the right.
-                            'alignRight'
-                        ],
-                        // simpleUpload: {
-                        //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`,
-                        // },
+                        image:        {
+                            toolbar: [ 'imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight' ],
+                            styles: [
+                                'full',
+                                'alignLeft',
+                                'alignRight'
+                            ],
+                        },
                         // ckfinder:     {
                         //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`
                         // },
@@ -114,7 +126,7 @@
                     editor:       ClassicEditor,
                 },
                 post:    {
-                    id:         '',
+                    id:         null,
                     header:     '',
                     body:       '',
                     publish_at: '',
@@ -123,16 +135,48 @@
             }
         },
         components: {
-            StandardButtons
+            StandardButtons,
+            ckeditor: CKEditor.component
         },
-        mounted() {
-            console.log(">>>____________________________");
-            console.log("xxx");
-            console.log(this.$refs.asd
-            );
-            console.log("<<<____________________________");
+        //##################################################
+        //region Router Hooks
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.post.id = vm.getCurrentId(to);
+                vm.getTale();
+            })
+        },
+        beforeRouteUpdate(to, from, next) {
+            const vm   = this;
+            vm.post.id = vm.getCurrentId(to);
+            vm.getTale();
+            next();
+        },
+        //endregion Router Hooks
+        //##################################################
+        updated() {
+
         },
         methods:    {
+            onCkEditorReady(ck) {
+                let res;
+                if (ck && ck.ui) {
+                    res = Array.from(ck.ui.componentFactory.names('image'));
+                }
+
+                console.log(">>>____________________________");
+                console.log("xxx");
+                console.log(res);
+                console.log("<<<____________________________");
+            },
+            getCurrentId(to) {
+                let id = null;
+                if (to && to.params && to.params.id) {
+                    id = to.params.id;
+                }
+                return id;
+            },
+
             runAJax() {
                 const oAjax = AjaxAlina.newInst({
                     url:        this.options.url,
@@ -143,6 +187,20 @@
                     }
                 })
                 .go();
+            },
+            getTale() {
+                const oAjax = AjaxAlina.newInst({
+                    url:    this.post.id
+                            ? `${this.options.url}/${this.post.id}`
+                            : `${this.options.url}`
+                    ,
+                    method: 'GET',
+                    onDone: (aja) => {
+                        this.post = aja.respBody.data;
+                    }
+                })
+                .go();
+
             },
             fileUploadResponse: function (evt) {
                 console.log(">>>____________________________");

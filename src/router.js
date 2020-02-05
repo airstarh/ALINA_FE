@@ -38,7 +38,10 @@ export default new Router({
         //##################################################
         {
             path:      "/tale/upsert",
-            name:      "tale_upsert",
+            component: tale_upsert
+        },
+        {
+            path:      "/tale/upsert/:id",
             component: tale_upsert
         },
         //##################################################
@@ -56,12 +59,10 @@ export default new Router({
         },
         {
             path:      "/auth/profile",
-            name:      "auth_profile",
             component: auth_profile
         },
         {
             path:      "/auth/profile/:id",
-            name:      "auth_profile",
             component: auth_profile
         },
         {
