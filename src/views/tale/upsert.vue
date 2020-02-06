@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col mx-auto">
                 <div class="alina-form">
-                    <h1>Your tale</h1>
+                    <h1>Your tale {{post.id}}</h1>
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                     <input type="text" v-model="post.header" placeholder="Header" class="form-control">
                     <ckeditor
@@ -36,7 +36,6 @@
 <!--##################################################-->
 <!--##################################################-->
 <script>
-    // @ is an alias to /src
     import StandardButtons from "@/components/elements/form/StandardButtons";
     import ConfigApi from "@/configs/ConfigApi";
     import AjaxAlina from "@/services/AjaxAlina";
@@ -62,6 +61,14 @@
     import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
     import ImageResize from '@ckeditor/ckeditor5-image/src/imageresize';
     import {MyCustomUploadAdapterPlugin} from "@/Utils/AlinaCustomUploader";
+    import Font from '@ckeditor/ckeditor5-font/src/font';
+    import Underline from '@ckeditor/ckeditor5-basic-styles/src/underline';
+    import Strikethrough from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
+    import Code from '@ckeditor/ckeditor5-basic-styles/src/code';
+    import Subscript from '@ckeditor/ckeditor5-basic-styles/src/subscript';
+    import Superscript from '@ckeditor/ckeditor5-basic-styles/src/superscript';
+    import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
+
     //#####
     import UtilsData from "@/Utils/UtilsData";
     //#####
@@ -75,6 +82,13 @@
                     editorConfig: {
                         extraPlugins: [MyCustomUploadAdapterPlugin],
                         plugins:      [
+                            MediaEmbed,
+                            Superscript,
+                            Subscript,
+                            Code,
+                            Strikethrough,
+                            Underline,
+                            Font,
                             EasyImage,
                             //CKFinder,
                             EssentialsPlugin,
@@ -96,6 +110,14 @@
                             items: [
                                 'bold',
                                 'italic',
+                                'underline',
+                                'strikethrough',
+                                'code',
+                                'subscript',
+                                'superscript',
+                                'fontColor',
+                                'fontBackgroundColor',
+                                '|',
                                 'link',
                                 'alignment',
                                 '|',
@@ -106,14 +128,15 @@
                                 '|',
                                 //'ckfinder',
                                 'imageUpload',
+                                'mediaEmbed',
                                 '|',
                                 'undo',
                                 'redo'
                             ]
                         },
                         image:        {
-                            toolbar: [ 'imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight' ],
-                            styles: [
+                            toolbar: ['imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
+                            styles:  [
                                 'full',
                                 'alignLeft',
                                 'alignRight'
