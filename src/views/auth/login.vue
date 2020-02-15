@@ -48,9 +48,9 @@
                     method:     'POST',
                     onDone:     (aja) => {
                         const id = CurrentUser.obj().attributes.id;
-                        if (id) {
-                            this.$router.replace({path: `/auth/profile`});
-                        }
+                        // if (id) {
+                        //     this.$router.replace({path: `/auth/profile`});
+                        // }
                     }
                 })
                 .go();

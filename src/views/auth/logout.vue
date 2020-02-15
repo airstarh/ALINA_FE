@@ -35,7 +35,7 @@
                     url: `${ConfigApi.url_base}/auth/logout`
                 },
                 post:    {
-                    form_id: 'logout',
+                    form_id: 'actionLogout',
                 }
             }
         },
@@ -50,7 +50,7 @@
                     method:     'POST',
                     onDone:     (aja) => {
                         //ToDo: auto log out
-                        this.$router.replace({ path: `/about` });
+                        //this.$router.replace({ path: `/about` });
                     }
                 })
                     .go();

@@ -6,7 +6,7 @@ export default class Ajax {
     // ##################################################
     //region Class behaviour settings
     classBehaviour = {
-        "followRedirects": false
+        "followRedirects": true
     };
     //region Class behaviour settings
     // ##################################################
