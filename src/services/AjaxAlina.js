@@ -36,7 +36,7 @@ export default class AjaxAlina extends Ajax {
                     console.log(formId);
                     console.log("<<<____________________________");
                     if (this.classBehaviour.followRedirects) {
-                        Router.push(vocRedirects[formId]);
+                        Router.replace(vocRedirects[formId]);
                     }
                 }
             }
