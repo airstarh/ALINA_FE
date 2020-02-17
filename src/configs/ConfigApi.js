@@ -5,7 +5,7 @@ const ConfigApi = {
         "default":                     "/auth/login",
         "actionProfile":               "/auth/profile",
         "actionLogin":                 "/auth/login",
-        "actionResetPasswordWithCode": "/auth/login",
+        "actionResetPasswordWithCode": "/auth/reset_password_with_code",
     },
     "AjaxAlina":             {
         options: {

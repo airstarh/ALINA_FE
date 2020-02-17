@@ -16,7 +16,7 @@
                     <hr>
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                     <hr>
-                    <div class="ck ck-content bg-light">
+                    <div class="ck-content bg-light">
                         <div v-html="post.body"></div>
                     </div>
                     <hr>
@@ -165,14 +165,12 @@
         //region Router Hooks
         beforeRouteEnter(to, from, next) {
             next(vm => {
-                vm.post.id = vm.getCurrentId(to);
-                vm.getTale();
+                vm.ajaxGetTale();
             })
         },
         beforeRouteUpdate(to, from, next) {
-            const vm   = this;
-            vm.post.id = vm.getCurrentId(to);
-            vm.getTale();
+            const vm = this;
+            vm.ajaxGetTale();
             next();
         },
         //endregion Router Hooks
@@ -182,17 +180,18 @@
         },
         methods:    {
             onCkEditorReady(ck) {
-                let res;
-                if (ck && ck.ui) {
-                    res = Array.from(ck.ui.componentFactory.names('image'));
-                }
-
-                console.log(">>>____________________________");
-                console.log("xxx");
-                console.log(res);
-                console.log("<<<____________________________");
+                // let res;
+                // if (ck && ck.ui) {
+                //     res = Array.from(ck.ui.componentFactory.names('image'));
+                // }
+                //
+                // console.log(">>>____________________________");
+                // console.log("onCkEditorReady");
+                // console.log(res);
+                // console.log("<<<____________________________");
             },
-            getCurrentId(to) {
+            getTaleIdFromUrl() {
+                let to = this.$route;
                 let id = null;
                 if (to && to.params && to.params.id) {
                     id = to.params.id;
@@ -202,28 +201,36 @@
 
             runAJax() {
                 const oAjax = AjaxAlina.newInst({
+                    method:     'POST',
                     url:        this.options.url,
                     postParams: this.post,
-                    method:     'POST',
                     onDone:     (aja) => {
                         this.post = aja.respBody.data;
                     }
                 })
                 .go();
             },
-            getTale() {
-                const oAjax = AjaxAlina.newInst({
+            ajaxGetTale() {
+                const vm = this;
+                let id   = this.getTaleIdFromUrl();
+                if (!UtilsData.empty(id) && this.post.id == id) {
+                    return null;
+                }
+                this.post.id = id;
+                AjaxAlina.newInst({
+                    method: 'GET',
                     url:    this.post.id
                             ? `${this.options.url}/${this.post.id}`
                             : `${this.options.url}`
                     ,
-                    method: 'GET',
                     onDone: (aja) => {
                         this.post = aja.respBody.data;
+                        if (this.post.id != id) {
+                            this.$router.replace({path: `/tale/upsert/${this.post.id}`});
+                        }
                     }
                 })
                 .go();
-
             },
             fileUploadResponse: function (evt) {
                 console.log(">>>____________________________");
