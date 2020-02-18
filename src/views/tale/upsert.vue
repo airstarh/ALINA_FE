@@ -164,13 +164,15 @@
         //##################################################
         //region Router Hooks
         beforeRouteEnter(to, from, next) {
-            next(vm => {
-                vm.ajaxGetTale();
+            next((vm) => {
+                const id = vm.getRouteParam('id', to);
+                vm.ajaxGetTale(id);
             })
         },
         beforeRouteUpdate(to, from, next) {
             const vm = this;
-            vm.ajaxGetTale();
+            const id = vm.getRouteParam('id', to);
+            vm.ajaxGetTale(id);
             next();
         },
         //endregion Router Hooks
@@ -190,17 +192,17 @@
                 // console.log(res);
                 // console.log("<<<____________________________");
             },
-            getTaleIdFromUrl() {
-                let to = this.$route;
-                let id = null;
-                if (to && to.params && to.params.id) {
-                    id = to.params.id;
+            getRouteParam(paramName, to) {
+                //if (UtilsData.empty(to)) {to = this.$route;}
+                let res = null;
+                if (to && to.params && to.params[paramName]) {
+                    res = to.params[paramName];
                 }
-                return id;
+                return res;
             },
 
             runAJax() {
-                const oAjax = AjaxAlina.newInst({
+                AjaxAlina.newInst({
                     method:     'POST',
                     url:        this.options.url,
                     postParams: this.post,
@@ -210,24 +212,31 @@
                 })
                 .go();
             },
-            ajaxGetTale() {
-                const vm = this;
-                let id   = this.getTaleIdFromUrl();
-                if (!UtilsData.empty(id) && this.post.id == id) {
+
+            ajaxGetTale(id) {
+                const _t = this;
+                //###############
+                //region Fix Double get
+                if (!UtilsData.empty(id) && id == _t.post.id) {
                     return null;
                 }
-                this.post.id = id;
+                //endregion Fix  Double get
+                //###############
                 AjaxAlina.newInst({
                     method: 'GET',
-                    url:    this.post.id
-                            ? `${this.options.url}/${this.post.id}`
-                            : `${this.options.url}`
+                    url:    id
+                            ? `${_t.options.url}/${id}`
+                            : `${_t.options.url}`
                     ,
                     onDone: (aja) => {
-                        this.post = aja.respBody.data;
-                        if (this.post.id != id) {
-                            this.$router.replace({path: `/tale/upsert/${this.post.id}`});
+                        _t.post = aja.respBody.data;
+                        //###############
+                        //region Fix  Double get
+                        if (UtilsData.empty(id)) {
+                            _t.$router.replace({path: `/tale/upsert/${_t.post.id}`});
                         }
+                        //endregion Fix  Double get
+                        //###############
                     }
                 })
                 .go();

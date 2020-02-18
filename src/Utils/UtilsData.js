@@ -7,13 +7,23 @@ export default class UtilsData {
     }
 
     static empty(value) {
+        //####################
+        //region Object
+        let isEmptyObject = true;
+        try {
+            isEmptyObject = JSON.stringify(value) === JSON.stringify({})
+        } catch (e) {
+            isEmptyObject = false;
+        }
+        //endregion Object
+        //####################
         return (
             value == null ||
             typeof value === "undefined" ||
             value === 0 ||
             value === "" ||
             //|| value === '0' //ToDo: Doubtful.
-            JSON.stringify(value) === JSON.stringify({}) ||
+            isEmptyObject ||
             JSON.stringify(value) === JSON.stringify([])
         );
     }
