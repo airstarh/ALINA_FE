@@ -1,3 +1,5 @@
+import UtilsObject from "@/Utils/UtilsObject";
+
 export default class UtilsData {
     static isset(ObjectPropertyOrArrayKey) {
         return (
@@ -9,22 +11,32 @@ export default class UtilsData {
     static empty(value) {
         //####################
         //region Object
-        let isEmptyObject = true;
-        try {
-            isEmptyObject = JSON.stringify(value) === JSON.stringify({})
-        } catch (e) {
-            isEmptyObject = false;
+        let isEmptyObject = false;
+        if (UtilsData.isObject(value)) {
+            isEmptyObject = UtilsObject.countOwnProps(value) === 0;
         }
         //endregion Object
         //####################
+        //region Array
+        let isEmptyArray = false;
+        if (UtilsData.isArray(value)) {
+            isEmptyArray = value.length === 0;
+        }
+        //endregion Array
+        //####################
         return (
-            value == null ||
-            typeof value === "undefined" ||
-            value === 0 ||
-            value === "" ||
-            //|| value === '0' //ToDo: Doubtful.
-            isEmptyObject ||
-            JSON.stringify(value) === JSON.stringify([])
+            value == null
+            ||
+            typeof value === "undefined"
+            ||
+            value === 0
+            ||
+            value === ""
+            ||
+            // value === '0' || // Doubtful.
+            isEmptyObject //JSON.stringify(value) === JSON.stringify({})
+            ||
+            isEmptyArray //JSON.stringify(value) === JSON.stringify([])
         );
     }
 

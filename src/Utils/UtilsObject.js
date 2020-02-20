@@ -115,4 +115,10 @@ export default class UtilsObject {
         }
         return res;
     }
+    // ##################################################
+    static countOwnProps(obj) {
+        return Object.keys(obj).length;
+    }
+
+    // ##################################################
 }

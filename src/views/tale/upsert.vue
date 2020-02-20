@@ -193,7 +193,7 @@
                 // console.log("<<<____________________________");
             },
             getRouteParam(paramName, to) {
-                //if (UtilsData.empty(to)) {to = this.$route;}
+                if (UtilsData.empty(to)) {to = this.$route;}
                 let res = null;
                 if (to && to.params && to.params[paramName]) {
                     res = to.params[paramName];
@@ -220,7 +220,7 @@
                 if (!UtilsData.empty(id) && id == _t.post.id) {
                     return null;
                 }
-                //endregion Fix  Double get
+                //endregion Fix Double get
                 //###############
                 AjaxAlina.newInst({
                     method: 'GET',
@@ -231,11 +231,11 @@
                     onDone: (aja) => {
                         _t.post = aja.respBody.data;
                         //###############
-                        //region Fix  Double get
+                        //region Fix Double get
                         if (UtilsData.empty(id)) {
                             _t.$router.replace({path: `/tale/upsert/${_t.post.id}`});
                         }
-                        //endregion Fix  Double get
+                        //endregion Fix Double get
                         //###############
                     }
                 })
