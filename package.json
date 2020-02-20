@@ -31,6 +31,7 @@
     "bootstrap-vue": "^2.2.0",
     "core-js": "^2.6.11",
     "keen-ui": "^1.2.1",
+    "lodash": "^4.17.15",
     "material-design-icons": "^3.0.1",
     "postcss-loader": "^3.0.0",
     "raw-loader": "^0.5.1",
