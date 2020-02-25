@@ -1,19 +1,26 @@
 <template>
     <div class="container h-100">
-        <div class="row align-items-center h-100">
-            <div class="col-md-6 mx-auto">
-                <div class="alina-form" action="" method="post" enctype="multipart/form-data">
-                    <h1>Profile</h1>
+        <h1>Profile {{post.mail}}</h1>
+        <div class="row">
+            <div class="col-lg mx-auto">
+                <div class="alina-form">
+                    <ui-fileupload
+                            accept="image/*"
+                            :multiple="false"
+                            name="userfile[]"
+                            @change="onChangeFileField"
+                    >Select an image
+                    </ui-fileupload>
+                    <div class="clearfix"></div>
+                    <img :src="post.emblem" width="100%">
+                </div>
+            </div>
+            <div class="col mx-auto">
+                <div class="alina-form">
                     <input type="hidden" v-model="post.form_id" class="form-control">
                     <input type="hidden" v-model="post.id" class="form-control">
 
                     <!--##################################################-->
-
-                    <div class="row mt-4 justify-content-center align-items-center">
-                        <div class="col text-center">
-                            {{post.mail}}
-                        </div>
-                    </div>
 
                     <!--##################################################-->
 
@@ -84,11 +91,11 @@
 <script>
     // @ is an alias to /src
     import StandardButtons from "@/components/elements/form/StandardButtons";
-    import ConfigApi       from "@/configs/ConfigApi";
-    import AjaxAlina       from "@/services/AjaxAlina";
-    import CurrentUser     from "@/services/CurrentUser";
-    import UtilsDate       from "@/Utils/UtilsDate";
-    import UtilsData       from "@/Utils/UtilsData";
+    import ConfigApi from "@/configs/ConfigApi";
+    import AjaxAlina from "@/services/AjaxAlina";
+    import CurrentUser from "@/services/CurrentUser";
+    import UtilsDate from "@/Utils/UtilsDate";
+    import UtilsData from "@/Utils/UtilsData";
 
     export default {
         name:       "auth_profile",
@@ -96,7 +103,8 @@
             return {
                 CU:      CurrentUser.obj(),
                 options: {
-                    url: `${ConfigApi.url_base}/auth/profile`
+                    url:       `${ConfigApi.url_base}/auth/profile`,
+                    urlEmblem: `${ConfigApi.url_base}/FileUpload/CkEditor`
                 },
                 post:    {
                     id:           '',
@@ -105,9 +113,7 @@
                     lastname:     '',
                     birth:        null,
                     about_myself: '',
-                    // password:             '',
-                    // new_password:         '',
-                    // confirm_new_password: '',
+                    emblem:       '',
                     form_id:      'profile',
                 }
             }
@@ -144,7 +150,7 @@
                     id = CurrentUser.obj().attributes.id;
                 }
                 if (UtilsData.empty(id)) {
-                    this.$router.replace({ path: `/auth/login` });
+                    this.$router.replace({path: `/auth/login`});
                 }
                 return id;
             },
@@ -181,14 +187,38 @@
             //##################################################
             runAJax() {
                 const oAjax = AjaxAlina.newInst({
+                    method:     'POST',
                     url:        this.options.url,
                     postParams: this.post,
-                    method:     'POST',
                     onDone:     (aja) => {
                         //ToDo: ???
                     }
                 })
                 .go();
+            },
+            //##################################################
+            onChangeFileField(fileList, event) {
+
+                AjaxAlina.newInst({
+                    method:     'POST',
+                    url:        this.options.urlEmblem,
+                    enctype:    'multipart/form-data',
+                    postParams: {
+                        "form_id":  "actionCommon",
+                        "userfile": fileList,
+                    },
+                    onDone:     (aja) => {
+                        this.post.emblem = aja.respBody.data.url;
+                        console.log(">>>____________________________");
+                        console.log("aja onChangeFileField");
+                        console.log(aja);
+                        console.log(fileList);
+                        console.log(event);
+                        console.log("<<<____________________________");
+                    }
+                })
+                .go();
+
             }
         }
     };

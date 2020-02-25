@@ -340,7 +340,7 @@
             },
 
             log() {
-                console.log("log ++++++++++");
+                console.log("onChangeFileField ++++++++++");
                 console.log(this.reqGet);
             }
         }

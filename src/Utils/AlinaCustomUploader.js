@@ -7,7 +7,7 @@ export class MyUploadAdapter {
     constructor(loader) {
         // The file loader instance to use during the upload.
         this.loader    = loader;
-        this.reqUrl    = `${ConfigApi.url_base}/FileUpload/Common`;
+        this.reqUrl    = `${ConfigApi.url_base}/FileUpload/CkEditor`;
         this.uploadKey = `${ConfigApi.ALINA_FILE_UPLOAD_KEY}`;
     }
 
@@ -66,7 +66,7 @@ export class MyUploadAdapter {
             // This URL will be used to display the image in the content. Learn more in the
             // UploadAdapter#upload documentation.
             resolve({
-                default: response.url
+                default: response.data.url // ALINA CUSTOMIZED
             });
         });
 
