@@ -4,6 +4,10 @@
             <div class="col mx-auto">
                 <div v-for="(tale, index) in feed" v-bind:key="tale.id">
                     <hr>
+                    <!--##################################################-->
+                    <!--##################################################-->
+                    <!--##################################################-->
+                    <!-- region Tale -->
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col"><h3>{{tale.header}}</h3></div>
@@ -23,8 +27,25 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col">
+                                <div class="alina-form">
+                                    <Comment
+                                            :level="1"
+                                            type="COMMENT"
+                                            :root_tale_id="tale.id"
+                                            :answer_to_tale_id="tale.id"
+                                    ></Comment>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="clearfix"></div>
+                    <!-- endregion Tale -->
+                    <!--##################################################-->
+                    <!--##################################################-->
+                    <!--##################################################-->
                 </div>
             </div>
         </div>
@@ -39,6 +60,7 @@
     import ConfigApi from "@/configs/ConfigApi";
     import AjaxAlina from "@/services/AjaxAlina";
     import CurrentUser from "@/services/CurrentUser";
+    import Comment from "@/components/elements/form/Comment";
     //#####
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
@@ -49,6 +71,11 @@
 
     export default {
         name:       "tale_feed",
+        components: {
+            StandardButtons,
+            ckeditor: CKEditor.component,
+            Comment
+        },
         data() {
             return {
                 options: {
@@ -58,10 +85,6 @@
                 },
                 feed:    []
             }
-        },
-        components: {
-            StandardButtons,
-            ckeditor: CKEditor.component
         },
         //##################################################
         //region Router Hooks
