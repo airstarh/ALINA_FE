@@ -9,6 +9,7 @@ import auth_change_password          from "@/views/auth/changePassword";
 import auth_reset_password_request   from "@/views/auth/resetPasswordRequest";
 import auth_reset_password_with_code from "@/views/auth/resetPasswordWithCode";
 import tale_upsert                   from "@/views/tale/upsert";
+import tale_feed                     from "@/views/tale/feed";
 
 Vue.use(Router);
 
@@ -43,6 +44,10 @@ export default new Router({
         {
             path:      "/tale/upsert/:id",
             component: tale_upsert
+        },
+        {
+            path:      "/tale/feed",
+            component: tale_feed
         },
         //##################################################
         //##################################################
