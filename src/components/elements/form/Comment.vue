@@ -1,85 +1,121 @@
 <template>
-    <div class="form-group mt-3 text-center">
-        <input v-model="body" type="text" class="form-control">
-        <button
-                @click="ajaCommentSend"
-                type="button"
-                class="btn btn-lg btn-primary"
-        >{{submitTxt}}
-        </button>
-        <span
-                @click="() => {this.body = '';}"
-                class="btn btn-lg btn-danger"
-        >{{resetTxt}}</span>
+    <div>
+        <div v-for="(tale, index) in feed" v-bind:key="tale.id"
+             :class="{
+                'ml-0':tale.level == 1,
+                'ml-5':tale.level == 2,
+             }"
+        >
+            <div class="container">
+                <!--<div class="row align-items-center">-->
+                <!--    <div class="col-1"><h3>{{tale.id}}</h3></div>-->
+                <!--</div>-->
+                <div class="row">
+                    <div class="col">
+                        <img :src="tale.owner_emblem" height="50px">
+                        {{tale.owner_firstname}} {{tale.owner_lastname}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="ck-content bg-light">
+                            <div v-html="tale.body"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <Comment v-if="tale.level < 2"
+                     :level="tale.level+1"
+                     type="COMMENT"
+                     :root_tale_id="root_tale_id"
+                     :answer_to_tale_id="tale.id"
+            ></Comment>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="alina-form form-group mt-3 text-right"
+             :class="{
+                'ml-0':level == 1,
+                'ml-5':level == 2,
+             }"
+        >
+            <input v-model="body" type="text" class="form-control">
+            <span @click="() => {this.body = '';}" class="btn btn-lg btn-danger">{{resetTxt}}</span>
+            <button @click="ajaCommentSend" type="button" class="btn btn-lg btn-primary">{{submitTxt}}</button>
+        </div>
     </div>
 </template>
 
 <script>
     import AjaxAlina from "@/services/AjaxAlina";
     import ConfigApi from "@/configs/ConfigApi";
+    import UtilsArray from "@/Utils/UtilsArray";
+    import Comment from "@/components/elements/form/Comment";
 
     export default {
-        name:    "Comment",
+        name:       "Comment",
+        components: {
+            Comment
+        },
         data() {
             return {
-                body: "",
+                options:        {
+                    urlFeed:       `${ConfigApi.url_base}/tale/feed`,
+                    urlCommentAdd: `${ConfigApi.url_base}/tale/CommentAdd`,
+                },
+                body:           "",
+                feed:           [],
+                feedPagination: {
+                    pageCurrentNumber: 1,
+                    pageSize:          3,
+                    rowsTotal:         0,
+                    pagesTotal:        0,
+                },
             }
         },
-        props:   {
-            level:                   {
+        props:      {
+            level:             {
                 type:    Number,
                 default: 1,
             },
-            root_tale_id:            {
-                type:    Number,
-                default: null,
-            },
-            answer_to_tale_id:       {
-                type:    Number,
-                default: null,
-            },
-            type:                    {
+            type:              {
                 type:    String,
-                default: "COMMENT",
+                default: 'COMMENT',
+            },
+            root_tale_id:      {
+                type:    Number,
+                default: null,
+            },
+            answer_to_tale_id: {
+                type:    Number,
+                default: null,
             },
             //
-            pageSize:                {
-                type:    Number,
-                default: 5,
-            },
-            pageCurrentNumber:       {
-                type:    Number,
-                default: 1,
-            },
-            //
-            onAjaCommentSentSuccess: Function,
-            submitTxt:               {
-                default: "Submit"
-            },
-            resetTxt:                {
-                default: "Clear"
-            },
+            submitTxt:         {default: "Submit"},
+            resetTxt:          {default: "Clear"},
         },
-        methods: {
-            ajaGetComments(){
+        created() {
+            this.ajaGetComments();
+        },
+        methods:    {
+            ajaGetComments() {
                 AjaxAlina.newInst({
                     method: 'GET',
-                    url:    this.options.urlFeed,
+                    url:    `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}/${this.answer_to_tale_id}`,
                     onDone: (aja) => {
-                        UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tales);
+                        //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
+                        this.feed           = aja.respBody.data.tale;
                         this.feedPagination = aja.respBody.meta.tale;
-                        console.log(">>>____________________________");
-                        console.log("onDone");
-                        console.log(this.feed);
-                        console.log("<<<____________________________");
                     }
                 })
-
+                .go();
             },
             ajaCommentSend(event) {
+                const _t = this;
                 AjaxAlina.newInst({
                     method:     'POST',
-                    url:        `${ConfigApi.url_base}/tale/CommentAdd`,
+                    url:        this.options.urlCommentAdd,
                     enctype:    'application/json',
                     postParams: {
                         "level":             this.level,
@@ -90,15 +126,10 @@
                         "form_id":           "actionCommentAdd",
                     },
                     onDone:     (aja) => {
-                        if (this.onAjaCommentSentSuccess) {
-                            this.onAjaCommentSentSuccess(aja);
-                        }
-                        console.log(">>>____________________________");
-                        console.log("ajaCommentSend");
-                        console.log(aja);
-                        console.log(aja.respBody);
-                        console.log(event);
-                        console.log("<<<____________________________");
+                        _t.ajaGetComments();
+                        // if (this.onAjaCommentSentSuccess) {
+                        //     this.onAjaCommentSentSuccess(aja);
+                        // }
                     }
                 })
                 .go();

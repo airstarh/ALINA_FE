@@ -18,7 +18,7 @@
                     <div class="container">
                         <div class="row align-items-center">
                             <div class="col"><h3>{{tale.header}}</h3></div>
-                            <div class="col"><h3>{{tale.id}}</h3></div>
+                            <div class="col-1"><h3>{{tale.id}}</h3></div>
                         </div>
                         <div class="row">
                             <div class="col">
@@ -36,7 +36,7 @@
 
                         <div class="row">
                             <div class="col">
-                                <div class="alina-form">
+                                <div>
                                     <Comment
                                             :level="1"
                                             type="COMMENT"
@@ -48,8 +48,6 @@
                         </div>
 
                     </div>
-                    <div class="clearfix"></div>
-
                     <div class="clearfix"></div>
                 </div>
                 <!-- endregion Tale -->
@@ -92,7 +90,7 @@
         name:       "tale_feed",
         components: {
             StandardButtons,
-            ckeditor: CKEditor.component,
+            //ckeditor: CKEditor.component,
             Comment,
             Paginator
         },
@@ -107,8 +105,8 @@
                 feedPagination: {
                     pageCurrentNumber: 1,
                     pageSize:          5,
-                    rowsTotal:         null,
-                    pagesTotal:        null,
+                    rowsTotal:         0,
+                    pagesTotal:        0,
                 },
             }
         },
@@ -147,14 +145,9 @@
                     method: 'GET',
                     url:    `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
                     onDone: (aja) => {
-                        //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tales);
-                        this.feed           = aja.respBody.data.tales;
+                        //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
+                        this.feed           = aja.respBody.data.tale;
                         this.feedPagination = aja.respBody.meta.tale;
-                        /////
-                        console.log(">>>____________________________");
-                        console.log("onDone");
-                        console.log(this.feedPagination);
-                        console.log("<<<____________________________");
                     }
                 })
                 .go();
