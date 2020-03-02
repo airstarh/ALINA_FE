@@ -1,15 +1,19 @@
 <template>
-    <div class="nav text-center">
-        <<<
+    <div class="text-center">
+        <span class="btn" @click="onClickPage(pageSize, 1)"> <<< </span>
+        <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
         <span
                 v-for="(v, i) in pagesArray"
-                class="nav-item nav-link btn"
+                class="btn"
                 :class="{ 'btn-primary': v==pageCurrentNumber}"
                 @click="onClickPage(pageSize, v)"
         >
             {{v}}
         </span>
-        >>>
+        <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
+        <span class="btn" @click="onClickPage(pageSize, pagesTotal)"> >>> </span>
+        <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
+        <span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>
     </div>
 </template>
 
@@ -22,9 +26,11 @@
         data() {
             return {
                 pagesArray: [],
+                rowStart:   0,
+                rowEnd:     0,
             }
         },
-        created(){
+        created() {
             //this.calcPagesArray();
         },
         props:   {
@@ -52,11 +58,19 @@
                 // arr.unshift('Previous');
                 // arr.push('Next');
                 this.pagesArray = arr;
+                this.rowStart   = this.pageCurrentNumber * this.pageSize - this.pageSize + 1;
+                this.rowEnd     = this.pageCurrentNumber * this.pageSize >= this.rowsTotal ? this.rowsTotal : this.pageCurrentNumber * this.pageSize;
                 //this.$forceUpdate();
             }
         },
         watch:   {
-            pagesTotal: function (newVal, oldVal) {
+            pagesTotal:        function (newVal, oldVal) {
+                this.calcPagesArray();
+            },
+            pageCurrentNumber: function (newVal, oldVal) {
+                this.calcPagesArray();
+            },
+            pageSize:          function (newVal, oldVal) {
                 this.calcPagesArray();
             }
         }
