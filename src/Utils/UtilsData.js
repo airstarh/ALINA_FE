@@ -139,4 +139,20 @@ export default class UtilsData {
 
         return formData;
     }
+
+    static paginator(objPageInfo) {
+        const pg = {
+            pageCurrentNumber: objPageInfo.pageCurrentNumber,
+            pageSize:          objPageInfo.pageSize,
+            rowsTotal:         objPageInfo.rowsTotal,
+            pagesTotal:        objPageInfo.pagesTotal,
+            pagesArray:        [],
+            url:               '',
+        };
+
+
+
+        return pg;
+    }
+
 }

@@ -43,6 +43,15 @@
                 default: "COMMENT",
             },
             //
+            pageSize:                {
+                type:    Number,
+                default: 5,
+            },
+            pageCurrentNumber:       {
+                type:    Number,
+                default: 1,
+            },
+            //
             onAjaCommentSentSuccess: Function,
             submitTxt:               {
                 default: "Submit"
@@ -52,6 +61,21 @@
             },
         },
         methods: {
+            ajaGetComments(){
+                AjaxAlina.newInst({
+                    method: 'GET',
+                    url:    this.options.urlFeed,
+                    onDone: (aja) => {
+                        UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tales);
+                        this.feedPagination = aja.respBody.meta.tale;
+                        console.log(">>>____________________________");
+                        console.log("onDone");
+                        console.log(this.feed);
+                        console.log("<<<____________________________");
+                    }
+                })
+
+            },
             ajaCommentSend(event) {
                 AjaxAlina.newInst({
                     method:     'POST',
