@@ -15,39 +15,37 @@
                 <!-- region Tale -->
                 <div v-for="(tale, index) in feed" v-bind:key="tale.id">
                     <hr>
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col"><h3>{{tale.header}}</h3></div>
-                            <div class="col-1"><h3>{{tale.id}}</h3></div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <img :src="tale.owner_emblem" height="50px">
-                                {{tale.owner_firstname}} {{tale.owner_lastname}}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="ck-content bg-light">
-                                    <div v-html="tale.body"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col">
-                                <div>
-                                    <Comment
-                                            :level="1"
-                                            type="COMMENT"
-                                            :root_tale_id="tale.id"
-                                            :answer_to_tale_id="tale.id"
-                                    ></Comment>
-                                </div>
-                            </div>
-                        </div>
-
+                    <div class="row align-items-center">
+                        <div class="col"><h3>{{tale.header}}</h3></div>
+                        <div class="col-1"><h3>{{tale.id}}</h3></div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="50px">
+                            {{tale.owner_firstname || 'Batwoman'}} {{tale.owner_lastname}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="ck-content bg-light">
+                                <div v-html="tale.body"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div>
+                                <Comment
+                                        :level="1"
+                                        type="COMMENT"
+                                        :root_tale_id="tale.id"
+                                        :answer_to_tale_id="tale.id"
+                                ></Comment>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="clearfix"></div>
                 </div>
                 <!-- endregion Tale -->
@@ -78,10 +76,6 @@
     import Comment from "@/components/elements/form/Comment";
     import Paginator from "@/components/elements/form/Paginator";
     //#####
-    import CKEditor from '@ckeditor/ckeditor5-vue';
-    import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-    //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
-    import ConfigCkEditor from "@/configs/ConfigCkEditor";
     import UtilsArray from "@/Utils/UtilsArray";
     import Obj from "@/Utils/UtilsObject";
     //#####
@@ -90,16 +84,13 @@
         name:       "tale_feed",
         components: {
             StandardButtons,
-            //ckeditor: CKEditor.component,
             Comment,
             Paginator
         },
         data() {
             return {
                 options:        {
-                    urlFeed:      `${ConfigApi.url_base}/tale/feed`,
-                    editorConfig: ConfigCkEditor,
-                    editor:       ClassicEditor,
+                    urlFeed: `${ConfigApi.url_base}/tale/feed`,
                 },
                 feed:           [],
                 feedPagination: {
@@ -128,9 +119,6 @@
             this.ajaGetFeed();
         },
         methods:    {
-            onCkEditorReady(ck) {
-
-            },
             getRouteParam(paramName, to) {
                 if (UtilsData.empty(to)) {to = this.$route;}
                 let res = null;

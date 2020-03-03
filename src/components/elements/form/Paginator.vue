@@ -14,6 +14,7 @@
         <span class="btn" @click="onClickPage(pageSize, pagesTotal)"> >>> </span>
         <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
         <span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>
+        <span class="btn" @click="onClickMore(pageSize, pageCurrentNumber+1)">More</span>
     </div>
 </template>
 
@@ -50,7 +51,14 @@
                 type:    Number,
                 default: 1234
             },
-            onClickPage:       Function,
+            onClickPage:       {
+                type:    Function,
+                default: () => {}
+            },
+            onClickMore:       {
+                type:    Function,
+                default: () => {}
+            },
         },
         methods: {
             calcPagesArray() {

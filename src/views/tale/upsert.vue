@@ -44,8 +44,8 @@
     //#####
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-    //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     import ConfigCkEditor from "@/configs/ConfigCkEditor";
+    //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     //#####
 
     export default {
