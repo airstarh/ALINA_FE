@@ -1,20 +1,22 @@
 <template>
     <div class="text-center">
-        <span class="btn" @click="onClickPage(pageSize, 1)"> <<< </span>
-        <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
-        <span
-                v-for="(v, i) in pagesArray"
-                class="btn"
-                :class="{ 'btn-primary': v==pageCurrentNumber}"
-                @click="onClickPage(pageSize, v)"
-        >
-            {{v}}
+        <span v-if="pageCurrentNumber<pagesTotal">
+            <span class="btn" @click="onClickPage(pageSize, 1)"> <<< </span>
+            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
+            <span
+                    v-for="(v, i) in pagesArray"
+                    class="btn"
+                    :class="{ 'btn-primary': v==pageCurrentNumber}"
+                    @click="onClickPage(pageSize, v)"
+            >
+                {{v}}
+            </span>
+            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
+            <span class="btn" @click="onClickPage(pageSize, pagesTotal)"> >>> </span>
+            <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
+            <span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>
+            <span class="btn" @click="onClickMore(pageSize, pageCurrentNumber+1)">More</span>
         </span>
-        <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
-        <span class="btn" @click="onClickPage(pageSize, pagesTotal)"> >>> </span>
-        <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
-        <span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>
-        <span class="btn" @click="onClickMore(pageSize, pageCurrentNumber+1)">More</span>
     </div>
 </template>
 
@@ -35,6 +37,10 @@
             //this.calcPagesArray();
         },
         props:   {
+            more:              {
+                type:    Boolean,
+                default: false
+            },
             pageCurrentNumber: {
                 type:    Number,
                 default: 1

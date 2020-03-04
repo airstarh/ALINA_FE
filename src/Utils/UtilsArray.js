@@ -31,6 +31,18 @@ export default class UtilsArray {
         return arr;
     }
 
+    static elRemoveByIndex(arr, i) {
+        return arr.splice(i, 1);
+    }
+
+    static elRemoveByValue(arr, v) {
+        if (arr.includes(v)) {
+            const i = arr.indexOf(v);
+            UtilsArray.elRemoveByIndex(arr, i);
+        }
+        return arr;
+    }
+
     static clear(arr) {
         return arr.splice(0, arr.length);
     }
@@ -42,7 +54,7 @@ export default class UtilsArray {
      * */
     static vueSensitiveConcat(arr1, arr2) {
         //return [].splice.apply(arr1, [arr1.length+1, 0].concat(arr2));
-        return arr1.splice(arr1.length+1, 0, ...arr2);
+        return arr1.splice(arr1.length + 1, 0, ...arr2);
     }
 
     //endregion Elements Manipulations

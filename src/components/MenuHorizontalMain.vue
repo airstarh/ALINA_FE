@@ -7,6 +7,8 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
+                    <b-nav-item to="/tale/feed">Feed</b-nav-item>
+                    <b-nav-item to="/tale/upsert">Upsert</b-nav-item>
                     <b-nav-item to="/">Home</b-nav-item>
                     <b-nav-item to="/about">About</b-nav-item>
                     <b-nav-item to="/RestCall">RestCall</b-nav-item>

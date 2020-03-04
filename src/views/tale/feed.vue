@@ -14,16 +14,13 @@
                 <!--##################################################-->
                 <!-- region Tale -->
                 <div v-for="(tale, index) in feed" v-bind:key="tale.id">
-                    <hr>
-                    <div class="row align-items-center">
-                        <div class="col"><h3>{{tale.header}}</h3></div>
-                        <div class="col-1"><h3>{{tale.id}}</h3></div>
-                    </div>
                     <div class="row">
                         <div class="col">
-                            <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="50px">
+                            <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="100px">
                             {{tale.owner_firstname || 'Batwoman'}} {{tale.owner_lastname}}
                         </div>
+                        <div class="col"><h2>{{tale.header}}</h2></div>
+                        <div class="col-1"><h3>{{tale.id}}</h3></div>
                     </div>
                     <div class="row">
                         <div class="col">
@@ -45,7 +42,13 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="cpl mx-auto mt-5 mb-5 text-center">
+                            <h3>¯\_(ツ)_/¯</h3>
+                            <!--<img src="/divider001.png" alt="divider" height="80px">-->
+                        </div>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
                 <!-- endregion Tale -->
