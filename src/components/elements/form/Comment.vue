@@ -1,10 +1,30 @@
 <template>
     <div :style="options.style">
-        <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id"
+
+        <div>
+            <b-button v-b-toggle.collapse-1 variant="primary">Toggle Collapse</b-button>
+            <b-collapse id="collapse-1" class="mt-2">
+                <b-card>
+                    <p class="card-text">Collapse contents Here</p>
+                    <b-button v-b-toggle.collapse-1-inner size="sm">Toggle Inner Collapse</b-button>
+                    <b-collapse id="collapse-1-inner" class="mt-2">
+                        <b-card>Hello!</b-card>
+                    </b-collapse>
+                </b-card>
+            </b-collapse>
+        </div>
+
+        <div class="alina-form text-right"
+             v-if="level==1"
+             :style="options.styleComment"
         >
-            <!--<div class="row align-items-center">-->
-            <!--    <div class="col-1"><h3>{{tale.id}}</h3></div>-->
-            <!--</div>-->
+            <!--<input v-model="body" type="text" class="form-control">-->
+            <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+            to {{answer_to_tale_id}} to {{root_tale_id}}
+            <span @click="() => {this.body = '';}" class="btn btn-sm btn-warning">{{resetTxt}}</span>
+            <button @click="ajaCommentSend" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
+        </div>
+        <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id">
             <div :style="options.styleComment">
                 <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                     <div class="col">
@@ -15,7 +35,7 @@
                 </div>
                 <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                     <div class="col">
-                        <div class="ck-content bg-light">
+                        <div class="ck-content">
                             <div v-html="tale.body"></div>
                         </div>
                     </div>
@@ -27,9 +47,6 @@
                 </div>
 
                 <div class="row">
-                    <div class="col text-left">
-
-                    </div>
                     <div class="col text-right">
                         <span @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">Delete</span>
                         <span @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Edit</span>
@@ -56,11 +73,10 @@
                 :pagesTotal="parseInt(feedPagination.pagesTotal)"
                 :onClickPage="pageChange"
                 :onClickMore="onClickMore"
+                :onClickAll="onClickAll"
         ></Paginator>
         <div class="clearfix"></div>
-        <div class="alina-form form-group text-right"
-             :style="options.styleComment"
-        >
+        <div class="alina-form text-right" :style="options.styleComment">
             <!--<input v-model="body" type="text" class="form-control">-->
             <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
             to {{answer_to_tale_id}} to {{root_tale_id}}
@@ -99,10 +115,10 @@
                     editorConfig:   ConfigCkEditor,
                     editor:         ClassicEditor,
                     style:          {
-                        "margin-left": this.level == 1 ? '' : 150 + 'px',
+                        "margin-left": this.level == 1 ? '0' : 5 + '%',
                     },
                     styleComment:   {
-                        "border-left": this.level == 1 ? '#ACAEAF solid 10px' : '#E9ECEF solid 10px'
+                        "border-left": this.level == 1 ? '#ACAEAF solid 10px' : '#ACAEAF solid 10px'
                     }
 
                 },
@@ -112,8 +128,8 @@
                 body:           "",
                 feed:           [],
                 feedPagination: {
-                    pageCurrentNumber: 1,
-                    pageSize:          3,
+                    pageCurrentNumber: 'last',
+                    pageSize:          this.level == 1 ?  3 : 3,
                     rowsTotal:         0,
                     pagesTotal:        0,
                 },
@@ -176,10 +192,7 @@
                         "form_id":           "actionCommentAdd",
                     },
                     onDone:     (aja) => {
-                        _t.ajaGetComments();
-                        // if (this.onAjaCommentSentSuccess) {
-                        //     this.onAjaCommentSentSuccess(aja);
-                        // }
+                        _t.feed.push(aja.respBody.data);
                     }
                 })
                 .go();
@@ -195,6 +208,12 @@
                 this.feedPagination.pageSize          = pageSize;
                 this.feedPagination.pageCurrentNumber = pageCurrentNumber;
                 this.ajaGetComments(true);
+            },
+
+            onClickAll(pageSize, pageCurrentNumber) {
+                this.feedPagination.pageSize          = pageSize;
+                this.feedPagination.pageCurrentNumber = pageCurrentNumber;
+                this.ajaGetComments(false);
             },
 
             toggleCommentEditMode(comment, feedIndex) {

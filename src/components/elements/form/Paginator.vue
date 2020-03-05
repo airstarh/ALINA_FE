@@ -1,22 +1,24 @@
 <template>
-    <div class="text-center">
-        <span v-if="pageCurrentNumber<pagesTotal">
-            <span class="btn" @click="onClickPage(pageSize, 1)"> <<< </span>
-            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
-            <span
-                    v-for="(v, i) in pagesArray"
-                    class="btn"
-                    :class="{ 'btn-primary': v==pageCurrentNumber}"
-                    @click="onClickPage(pageSize, v)"
-            >
+    <div class="text-left">
+
+        <span class="btn" @click="onClickPage(pageSize, 1)"> <<< </span>
+        <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
+        <span
+                v-for="(v, i) in pagesArray"
+                class="btn"
+                :class="{ 'btn-primary': v==pageCurrentNumber}"
+                @click="onClickPage(pageSize, v)"
+        >
                 {{v}}
             </span>
-            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
-            <span class="btn" @click="onClickPage(pageSize, pagesTotal)"> >>> </span>
-            <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
-            <span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>
-            <span class="btn" @click="onClickMore(pageSize, pageCurrentNumber+1)">More</span>
+        <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
+        <span class="btn" @click="onClickPage(pageSize, pagesTotal)"> >>> </span>
+        <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
+        <span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>
+        <span v-if="pageCurrentNumber<pagesTotal">
+            <span class="btn" @click="onClickMore(pageSize, pageCurrentNumber+1)">More(+{{pageSize}})</span>
         </span>
+        <span class="btn" @click="onClickAll(rowsTotal, 1)">All({{rowsTotal}})</span>
     </div>
 </template>
 
@@ -65,6 +67,10 @@
                 type:    Function,
                 default: () => {}
             },
+            onClickAll:        {
+                type:    Function,
+                default: () => {}
+            }
         },
         methods: {
             calcPagesArray() {
@@ -74,6 +80,7 @@
                 this.pagesArray = arr;
                 this.rowStart   = this.pageCurrentNumber * this.pageSize - this.pageSize + 1;
                 this.rowEnd     = this.pageCurrentNumber * this.pageSize >= this.rowsTotal ? this.rowsTotal : this.pageCurrentNumber * this.pageSize;
+                if (this.rowStart > this.rowEnd) {this.rowStart = this.rowEnd}
                 //this.$forceUpdate();
             }
         },

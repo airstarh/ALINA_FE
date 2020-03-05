@@ -24,7 +24,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="ck-content bg-light">
+                            <div class="ck-content">
                                 <div v-html="tale.body"></div>
                             </div>
                         </div>
