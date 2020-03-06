@@ -1,88 +1,95 @@
 <template>
     <div :style="options.style">
 
-        <div>
-            <b-button v-b-toggle.collapse-1 variant="primary">Toggle Collapse</b-button>
-            <b-collapse id="collapse-1" class="mt-2">
-                <b-card>
-                    <p class="card-text">Collapse contents Here</p>
-                    <b-button v-b-toggle.collapse-1-inner size="sm">Toggle Inner Collapse</b-button>
-                    <b-collapse id="collapse-1-inner" class="mt-2">
-                        <b-card>Hello!</b-card>
-                    </b-collapse>
-                </b-card>
-            </b-collapse>
+        <!---->
+        <!---->
+        <!---->
+        <div :style="options.styleComment" v-if="level!=1">
+            <b-button v-b-toggle="'collapse-'+answer_to_tale_id">Answers</b-button>
         </div>
-
-        <div class="alina-form text-right"
-             v-if="level==1"
-             :style="options.styleComment"
-        >
-            <!--<input v-model="body" type="text" class="form-control">-->
-            <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
-            to {{answer_to_tale_id}} to {{root_tale_id}}
-            <span @click="() => {this.body = '';}" class="btn btn-sm btn-warning">{{resetTxt}}</span>
-            <button @click="ajaCommentSend" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
-        </div>
-        <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id">
-            <div :style="options.styleComment">
-                <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
-                    <div class="col">
-                        <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="25px">
-                        {{tale.owner_firstname || 'Batwoman' }} {{tale.owner_lastname}}
-                        {{tale.id}} to {{tale.answer_to_tale_id}}
+        <b-collapse :id="'collapse-'+answer_to_tale_id" :visible="level == 1">
+            <div class="alina-form text-right"
+                 v-if="level==1"
+                 :style="options.styleComment"
+            >
+                <!--<input v-model="body" type="text" class="form-control">-->
+                <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+                to {{answer_to_tale_id}} to {{root_tale_id}}
+                <span @click="() => {this.body = '';}" class="btn btn-sm btn-warning">{{resetTxt}}</span>
+                <button @click="ajaCommentSend" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
+            </div>
+            <!--##################################################-->
+            <!--##################################################-->
+            <!--##################################################-->
+            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id">
+                <div :style="options.styleComment">
+                    <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
+                        <div class="col">
+                            <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="25px">
+                            {{tale.owner_firstname || 'Batwoman' }} {{tale.owner_lastname}}
+                            {{tale.id}} to {{tale.answer_to_tale_id}}
+                        </div>
                     </div>
-                </div>
-                <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
-                    <div class="col">
-                        <div class="ck-content">
-                            <div v-html="tale.body"></div>
+                    <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
+                        <div class="col">
+                            <div class="ck-content">
+                                <div v-html="tale.body"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" v-if="state.feedsInEdit.includes(tale.id)">
+                        <div class="col">
+                            <ckeditor v-model="tale.body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col text-right">
+                            <span @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">Delete</span>
+                            <span @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Edit</span>
+                            <span @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Cancel</span>
+                            <span @click="ajaSaveComment(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-success">Save</span>
                         </div>
                     </div>
                 </div>
-                <div class="row" v-if="state.feedsInEdit.includes(tale.id)">
-                    <div class="col">
-                        <ckeditor v-model="tale.body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col text-right">
-                        <span @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">Delete</span>
-                        <span @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Edit</span>
-                        <span @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Cancel</span>
-                        <span @click="ajaSaveComment(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-success">Save</span>
-                    </div>
-                </div>
+                <div class="clearfix"></div>
+                <Comment v-if="tale.level < 2"
+                         :level="tale.level+1"
+                         type="COMMENT"
+                         :root_tale_id="root_tale_id"
+                         :answer_to_tale_id="tale.id"
+                ></Comment>
+                <div class="clearfix"></div>
             </div>
+            <!--##################################################-->
+            <!--##################################################-->
+            <!--##################################################-->
             <div class="clearfix"></div>
-            <Comment v-if="tale.level < 2"
-                     :level="tale.level+1"
-                     type="COMMENT"
-                     :root_tale_id="root_tale_id"
-                     :answer_to_tale_id="tale.id"
-            ></Comment>
+            <Paginator
+                    :style="options.styleComment"
+                    :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+                    :pageSize="parseInt(feedPagination.pageSize)"
+                    :rowsTotal="parseInt(feedPagination.rowsTotal)"
+                    :pagesTotal="parseInt(feedPagination.pagesTotal)"
+                    :onClickPage="pageChange"
+                    :onClickMore="onClickMore"
+                    :onClickAll="onClickAll"
+            ></Paginator>
             <div class="clearfix"></div>
-        </div>
-        <div class="clearfix"></div>
-        <Paginator
-                :style="options.styleComment"
-                :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                :pageSize="parseInt(feedPagination.pageSize)"
-                :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                :onClickPage="pageChange"
-                :onClickMore="onClickMore"
-                :onClickAll="onClickAll"
-        ></Paginator>
-        <div class="clearfix"></div>
-        <div class="alina-form text-right" :style="options.styleComment">
-            <!--<input v-model="body" type="text" class="form-control">-->
-            <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
-            to {{answer_to_tale_id}} to {{root_tale_id}}
-            <span @click="() => {this.body = '';}" class="btn btn-sm btn-warning">{{resetTxt}}</span>
-            <button @click="ajaCommentSend" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
-        </div>
+            <div class="alina-form text-right" :style="options.styleComment">
+                <!--<input v-model="body" type="text" class="form-control">-->
+                <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+                to {{answer_to_tale_id}} to {{root_tale_id}}
+                <span @click="() => {this.body = '';}" class="btn btn-sm btn-warning">{{resetTxt}}</span>
+                <button @click="ajaCommentSend" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
+            </div>
+        </b-collapse>
+        <!---->
+        <!---->
+        <!---->
+        <!---->
+
+
     </div>
 </template>
 
@@ -129,7 +136,7 @@
                 feed:           [],
                 feedPagination: {
                     pageCurrentNumber: 'last',
-                    pageSize:          this.level == 1 ?  3 : 3,
+                    pageSize:          this.level == 1 ? 3 : 3,
                     rowsTotal:         0,
                     pagesTotal:        0,
                 },
