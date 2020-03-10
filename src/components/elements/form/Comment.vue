@@ -26,7 +26,7 @@
 
                             <br>
                             <!--<router-link :to="'/tale/upsert/'+tale.id">-->
-                                {{tale.publish_at | unix_to_date_time}}
+                            {{tale.publish_at | unix_to_date_time}}
                             <!--</router-link>-->
                         </div>
                     </div>
@@ -45,26 +45,25 @@
 
                     <div class="row">
                         <div class="col text-right">
-                            <span @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">Delete</span>
-                            <span @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Edit</span>
-                            <span @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Cancel</span>
-                            <span @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-success">Save</span>
+                            <span v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
+                                <span @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">Delete</span>
+                                <span @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Edit</span>
+                                <span @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Cancel</span>
+                                <span @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-success">Save</span>
+                            </span>
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"></div>
                 <Comment v-if="tale.level < 2"
                          :level="tale.level+1"
                          type="COMMENT"
                          :root_tale_id="root_tale_id"
                          :answer_to_tale_id="tale.id"
                 ></Comment>
-                <div class="clearfix"></div>
             </div>
             <!--##################################################-->
             <!--##################################################-->
             <!--##################################################-->
-            <div class="clearfix"></div>
             <Paginator
                     :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
                     :pageSize="parseInt(feedPagination.pageSize)"
@@ -74,8 +73,7 @@
                     :onClickMore="onClickMore"
                     :onClickAll="onClickAll"
             ></Paginator>
-            <div class="clearfix"></div>
-            <div class="alina-form text-right">
+            <div class="alina-form text-right" v-if="CU.isLoggedIn()">
                 <!--<input v-model="body" type="text" class="form-control">-->
                 <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                 to {{answer_to_tale_id}} to {{root_tale_id}}
@@ -102,6 +100,7 @@
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
     import ConfigCkEditor from "@/configs/ConfigCkEditor";
+    import CurrentUser from "@/services/CurrentUser";
     //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     //#####
     export default {
@@ -113,6 +112,7 @@
         },
         data() {
             return {
+                CU:             CurrentUser.obj(),
                 options:        {
                     urlFeed:       `${ConfigApi.url_base}/tale/feed`,
                     urlTaleUpsert: `${ConfigApi.url_base}/tale/upsert`,

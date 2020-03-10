@@ -13,7 +13,11 @@
                         {{post.publish_at | unix_to_date_time}}
                     </div>
                     <div class="col">
-                        <span @click="options.modeEdit = !options.modeEdit" v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</span>
+                        <span v-if="CU.ownsOrAdminOrModerator(post.owner_id)">
+                            <span @click="options.modeEdit = !options.modeEdit" class="btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</span>
+                            <span @click="()=>{}" class="btn btn-danger">Delete</span>
+                        </span>
+
                     </div>
                 </div>
                 <!--##################################################-->
@@ -52,10 +56,9 @@
                     </div>
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                     <hr>
-                    <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>
-                    <input type="hidden" v-model="post.id" class="form-control">
-                    <input type="hidden" v-model="post.form_id" class="form-control">
-                    <StandardButtons :onGo="runAJax"></StandardButtons>
+                    <div v-if="CU.isAdmin()">
+                        <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>
+                    </div>
                 </div>
                 <!--##################################################-->
                 <!--##################################################-->
@@ -117,11 +120,12 @@
                     modeEdit:     false
                 },
                 post:    {
-                    id:         null,
-                    header:     '',
-                    body:       '',
-                    publish_at: '',
-                    form_id:    'actionUpsert',
+                    id:           null,
+                    header:       '',
+                    body:         '',
+                    publish_at:   '',
+                    is_submitted: 0,
+                    form_id:      'actionUpsert',
                 }
             }
         },
@@ -146,12 +150,6 @@
         },
         //endregion Router Hooks
         //##################################################
-        updated() {
-            const vm = this;
-            const to = this.$route;
-            const id = vm.getRouteParam('id', to);
-            vm.ajaxGetTale(id);
-        },
         methods:    {
             onCkEditorReady(ck) {
                 // let res;
@@ -205,6 +203,7 @@
                     ,
                     onDone: (aja) => {
                         _t.post = aja.respBody.data;
+                        if (_t.post.is_submitted == 0) {_t.options.modeEdit = true;}
                         //###############
                         //region Fix Double get
                         if (UtilsData.empty(id)) {

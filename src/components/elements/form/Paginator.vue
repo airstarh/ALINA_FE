@@ -1,18 +1,17 @@
 <template>
     <div class="text-left">
-
-        <span class="btn" @click="onClickPage(pageSize, 1)"> <<< </span>
-        <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
-        <span
-                v-for="(v, i) in pagesArray"
-                class="btn"
-                :class="{ 'btn-primary': v==pageCurrentNumber}"
-                @click="onClickPage(pageSize, v)"
-        >
-                {{v}}
-            </span>
-        <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
-        <span class="btn" @click="onClickPage(pageSize, pagesTotal)"> >>> </span>
+        <span v-if="pagesTotal>1">
+            <span class="btn" @click="onClickPage(pageSize, 1)" :class="{ 'btn-primary': 1==pageCurrentNumber}"> <<< </span>
+            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
+            <span
+                    v-for="(v, i) in pagesArray"
+                    class="btn"
+                    :class="{ 'btn-primary': v==pageCurrentNumber}"
+                    @click="onClickPage(pageSize, v)"
+            >{{v}}</span>
+            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
+            <span class="btn" @click="onClickPage(pageSize, pagesTotal)" :class="{ 'btn-primary': pagesTotal==pageCurrentNumber}"> >>> </span>
+        </span>
         <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
         <span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>
         <span v-if="pageCurrentNumber<pagesTotal">
@@ -74,13 +73,23 @@
         },
         methods: {
             calcPagesArray() {
-                const arr = new Array(this.pagesTotal).fill(null).map((x, i) => ++i);
+                let arr   = new Array(this.pagesTotal).fill(null).map((x, i) => ++i);
+                arr       = [];
+                const pcn = this.pageCurrentNumber;
+                arr.unshift(pcn);
+                if (pcn - 1 > 0) {arr.unshift(pcn - 1)}
+                if (pcn - 2 > 0) {arr.unshift(pcn - 2)}
+                if (pcn + 1 <= this.pagesTotal) {arr.push(pcn + 1)}
+                if (pcn + 2 <= this.pagesTotal) {arr.push(pcn + 2)}
+
                 // arr.unshift('Previous');
                 // arr.push('Next');
                 this.pagesArray = arr;
-                this.rowStart   = this.pageCurrentNumber * this.pageSize - this.pageSize + 1;
                 this.rowEnd     = this.pageCurrentNumber * this.pageSize >= this.rowsTotal ? this.rowsTotal : this.pageCurrentNumber * this.pageSize;
+                //this.rowStart   = this.pageCurrentNumber * this.pageSize - this.pageSize + 1;
+                this.rowStart   = this.rowEnd - this.pageSize + 1;
                 if (this.rowStart > this.rowEnd) {this.rowStart = this.rowEnd}
+                if (this.rowStart <= 0) {this.rowStart = 1}
                 //this.$forceUpdate();
             }
         },

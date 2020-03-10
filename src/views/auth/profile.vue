@@ -4,7 +4,7 @@
             <div class="col-11">
                 <h1>{{post.firstname || post.mail}} {{post.lastname}}</h1>
             </div>
-            <div class="col">
+            <div class="col" v-if="CU.ownsOrAdminOrModerator(post.id)">
                 <span @click="options.modeEdit = !options.modeEdit" class="btn btn-info">Edit</span>
             </div>
         </div>
@@ -191,7 +191,7 @@
                     url:            `${ConfigApi.url_base}/auth/profile`,
                     urlEmblem:      `${ConfigApi.url_base}/FileUpload/CkEditor`,
                     dateFields:     ['birth'],
-                    modeEdit:       true,
+                    modeEdit:       false,
                 },
                 post:    {
                     id:           '',
@@ -280,7 +280,9 @@
                     url:        this.options.url,
                     postParams: this.post,
                     onDone:     (aja) => {
-                        //ToDo: ???
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            this.options.modeEdit = false;
+                        }
                     }
                 })
                 .go();

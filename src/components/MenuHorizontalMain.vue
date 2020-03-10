@@ -8,12 +8,12 @@
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
                     <b-nav-item to="/tale/feed">Feed</b-nav-item>
-                    <b-nav-item to="/tale/upsert">Upsert</b-nav-item>
-                    <b-nav-item to="/">Home</b-nav-item>
-                    <b-nav-item to="/about">About</b-nav-item>
-                    <b-nav-item to="/RestCall">RestCall</b-nav-item>
-                    <b-nav-item to="/auth/login">LogIn</b-nav-item>
-                    <b-nav-item to="/auth/logout">LogOut</b-nav-item>
+
+                    <b-nav-item-dropdown text="Admin Tools" right v-if="CU.isAdmin()">
+                        <b-dropdown-item to="/RestCall">RestCall</b-dropdown-item>
+                        <b-dropdown-item to="/">Home</b-dropdown-item>
+                        <b-dropdown-item to="/about">about</b-dropdown-item>
+                    </b-nav-item-dropdown>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
@@ -30,12 +30,12 @@
                     <!--    >-->
                     <!--</b-nav-form>-->
 
-                    <b-nav-item-dropdown text="Lang" right>
-                        <b-dropdown-item href="#">EN</b-dropdown-item>
-                        <b-dropdown-item href="#">ES</b-dropdown-item>
-                        <b-dropdown-item href="#">RU</b-dropdown-item>
-                        <b-dropdown-item href="#">FA</b-dropdown-item>
-                    </b-nav-item-dropdown>
+                    <!--<b-nav-item-dropdown text="Lang" right>-->
+                    <!--    <b-dropdown-item href="#">EN</b-dropdown-item>-->
+                    <!--    <b-dropdown-item href="#">ES</b-dropdown-item>-->
+                    <!--    <b-dropdown-item href="#">RU</b-dropdown-item>-->
+                    <!--    <b-dropdown-item href="#">FA</b-dropdown-item>-->
+                    <!--</b-nav-item-dropdown>-->
 
                     <b-nav-item-dropdown right>
                         <!-- Using 'button-content' slot -->

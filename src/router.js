@@ -17,8 +17,8 @@ export default new Router({
     routes: [
         {
             path:      "/",
-            name:      "home",
-            component: Home
+            name:      "feed",
+            component: tale_feed
         },
         {
             path:      "/about",
