@@ -86,6 +86,9 @@ const ConfigCkEditor = {
             'alignRight'
         ],
     },
+    mediaEmbed:{
+        previewsInData:true
+    },
     // ckfinder:     {
     //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`
     // },

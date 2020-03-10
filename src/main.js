@@ -24,8 +24,31 @@ const VueCookie = require('vue-cookie');
 Vue.use(VueCookie);
 //#####
 import VueDateFns   from "vue-date-fns";
+import UtilsDate    from "@/Utils/UtilsDate";
 
 Vue.use(VueDateFns);
+//#####
+Vue.filter('capitalize', function (value) {
+    if (!value) return '';
+    value = value.toString();
+    return value.charAt(0).toUpperCase() + value.slice(1)
+});
+Vue.filter('unix_to_date', function (value, format = "YYYY-MM-DD") {
+    if (!value) return '';
+    value = parseInt(value);
+    return UtilsDate.UnixSecsToFormat(value, format);
+});
+
+Vue.filter('unix_to_date_time', function (value, format = "YYYY-MM-DD H:m:s") {
+    if (!value) return '';
+    value = parseInt(value);
+    return UtilsDate.UnixSecsToFormat(value, format);
+});
+
+Vue.filter('unix_secs_to_date_obj', function (value) {
+    value = parseInt(value);
+    return UtilsDate.toDateObj(value, true);
+});
 //#####
 export const AppAlina = new Vue({
     router,

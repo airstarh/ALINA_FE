@@ -16,11 +16,21 @@
                 <div v-for="(tale, index) in feed" v-bind:key="tale.id">
                     <div class="row">
                         <div class="col">
-                            <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="100px">
-                            {{tale.owner_firstname || 'Batwoman'}} {{tale.owner_lastname}}
+                            <a :href="tale.owner_emblem" target="_blank">
+                                <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="100px" class="float-left rounded-circle mr-1">
+                            </a>
+
+                            <router-link :to="'/auth/profile/'+tale.owner_id">
+                                {{tale.owner_firstname || 'Batwoman'}} {{tale.owner_lastname}}
+                            </router-link>
+
+                            <br>
+                            <router-link :to="'/tale/upsert/'+tale.id">
+                                {{tale.publish_at | unix_to_date_time}}
+                            </router-link>
                         </div>
                         <div class="col"><h2>{{tale.header}}</h2></div>
-                        <div class="col-1"><h3>{{tale.id}}</h3></div>
+                        <!--<div class="col-1"><h3>{{tale.id}}</h3></div>-->
                     </div>
                     <div class="row">
                         <div class="col">

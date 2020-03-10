@@ -2,9 +2,25 @@
     <div class="container">
         <div class="row">
             <div class="col mx-auto">
-                <div class="alina-form">
-                    <h1>Your tale {{post.id}}</h1>
-                    <StandardButtons :onGo="runAJax"></StandardButtons>
+                <!---->
+                <!---->
+                <!---->
+                <div class="row">
+                    <div class="col">
+                        <img :src="post.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="100px" class="float-left rounded-circle mr-1">
+                        {{post.owner_firstname || 'Batwoman'}} {{post.owner_lastname}}
+                        <br>
+                        {{post.publish_at | unix_to_date_time}}
+                    </div>
+                    <div class="col">
+                        <span @click="options.modeEdit = !options.modeEdit" v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</span>
+                    </div>
+                </div>
+                <!--##################################################-->
+                <!--##################################################-->
+                <!--##################################################-->
+                <div class="alina-form" v-if="options.modeEdit">
+                    <div>#{{post.id}}</div>
                     <input type="text" v-model="post.header" placeholder="Header" class="form-control">
                     <ckeditor
                             v-model="post.body"
@@ -13,21 +29,59 @@
                             @ready="onCkEditorReady"
                             :fileUploadResponse="fileUploadResponse"
                     ></ckeditor>
-                    <hr>
+                    <!---->
+                    <!---->
+                    <!---->
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Publish at</span>
+                        </div>
+                        <ui-datepicker
+                                picker-type="modal"
+                                orientation="portrait"
+                                :value="post.publish_at | unix_secs_to_date_obj"
+                                @input="onChangeDateField('post.publish_at', $event)"
+                                :startOfWeek="1"
+                                :customFormatter="uiDatePickerCustomFormatter"
+                        ></ui-datepicker>
+                    </div>
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                     <hr>
-                    <div class="ck-content bg-light">
+                    <div class="ck-content">
                         <div v-html="post.body"></div>
                     </div>
-                    <hr>
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                     <hr>
                     <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>
-                    <input type="text" v-model="post.publish_at" placeholder="Publish at" class="form-control">
                     <input type="hidden" v-model="post.id" class="form-control">
                     <input type="hidden" v-model="post.form_id" class="form-control">
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                 </div>
+                <!--##################################################-->
+                <!--##################################################-->
+                <!--##################################################-->
+                <div v-if="!options.modeEdit">
+                    <div class="row">
+                        <div class="col"><h2>{{post.header}}</h2></div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="ck-content">
+                                <div v-html="post.body"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <Comment v-if="post.level < 2"
+                             :level="post.level+1"
+                             type="COMMENT"
+                             :root_tale_id="post.id"
+                             :answer_to_tale_id="post.id"
+                    ></Comment>
+                </div>
+                <!--    -->
+                <!--    -->
+                <!--    -->
             </div>
         </div>
     </div>
@@ -41,10 +95,13 @@
     import ConfigApi from "@/configs/ConfigApi";
     import AjaxAlina from "@/services/AjaxAlina";
     import CurrentUser from "@/services/CurrentUser";
+    import Comment from "@/components/elements/form/Comment";
     //#####
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
     import ConfigCkEditor from "@/configs/ConfigCkEditor";
+    import UtilsObject from "@/Utils/UtilsObject";
+    import UtilsDate from "@/Utils/UtilsDate";
     //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     //#####
 
@@ -52,10 +109,12 @@
         name:       "tale_upsert",
         data() {
             return {
+                CU:      CurrentUser.obj(),
                 options: {
                     url:          `${ConfigApi.url_base}/tale/upsert`,
                     editorConfig: ConfigCkEditor,
                     editor:       ClassicEditor,
+                    modeEdit:     false
                 },
                 post:    {
                     id:         null,
@@ -68,7 +127,8 @@
         },
         components: {
             StandardButtons,
-            ckeditor: CKEditor.component
+            ckeditor: CKEditor.component,
+            Comment,
         },
         //##################################################
         //region Router Hooks
@@ -87,7 +147,10 @@
         //endregion Router Hooks
         //##################################################
         updated() {
-
+            const vm = this;
+            const to = this.$route;
+            const id = vm.getRouteParam('id', to);
+            vm.ajaxGetTale(id);
         },
         methods:    {
             onCkEditorReady(ck) {
@@ -116,7 +179,10 @@
                     url:        this.options.url,
                     postParams: this.post,
                     onDone:     (aja) => {
-                        this.post = aja.respBody.data;
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            this.post             = aja.respBody.data;
+                            this.options.modeEdit = false;
+                        }
                     }
                 })
                 .go();
@@ -150,6 +216,15 @@
                 })
                 .go();
             },
+
+            uiDatePickerCustomFormatter(dateObj) {
+                return this.$date(dateObj, "YYYY-MM-DD");
+            },
+
+            onChangeDateField(thisKey, dateObj) {
+                UtilsObject.setByPath(this, thisKey, UtilsDate.toUnixTimeSecs(dateObj));
+            },
+
             fileUploadResponse: function (evt) {
                 console.log(">>>____________________________");
                 console.log("fileUploadResponse");

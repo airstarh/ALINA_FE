@@ -99,6 +99,30 @@ export default class CurrentUser {
         return res;
     }
 
+    isModerator(name) {
+        let res = false;
+        if (this.isLoggedIn()) {
+            if (this.hasRole("moderator")) {
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    owns(id) {
+        let res = false;
+        if (this.isLoggedIn()) {
+            if (this.attributes.id == id) {
+                res = true;
+            }
+        }
+        return res;
+    }
+
+    ownsOrAdminOrModerator(id) {
+        return this.owns(id) || this.isAdmin() || this.isModerator();
+    }
+
     name() {
         const a  = this.attributes;
         let name = a.mail;

@@ -164,7 +164,7 @@
             },
 
             dateplayer() {
-                this.dateExample = UtilsDate.fromUnixTimeSecs(1578535140);
+                this.dateExample = UtilsDate.UnixSecsToFormat(1578535140);
             },
 
             log() {

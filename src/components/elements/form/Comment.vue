@@ -4,30 +4,30 @@
         <!---->
         <!---->
         <!---->
-        <div :style="options.styleComment" v-if="level!=1">
-            <b-button v-b-toggle="'collapse-'+answer_to_tale_id">Answers</b-button>
+        <div v-if="level!=1">
+            <b-button v-b-toggle="'collapse-'+answer_to_tale_id">Answers {{feedPagination.rowsTotal}}</b-button>
         </div>
         <b-collapse :id="'collapse-'+answer_to_tale_id" :visible="level == 1">
-            <div class="alina-form text-right"
-                 v-if="level==1"
-                 :style="options.styleComment"
-            >
-                <!--<input v-model="body" type="text" class="form-control">-->
-                <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
-                to {{answer_to_tale_id}} to {{root_tale_id}}
-                <span @click="() => {this.body = '';}" class="btn btn-sm btn-warning">{{resetTxt}}</span>
-                <button @click="ajaCommentSend" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
-            </div>
+
             <!--##################################################-->
             <!--##################################################-->
             <!--##################################################-->
-            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id">
-                <div :style="options.styleComment">
+            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id" class="mb-5">
+                <div>
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
-                            <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="25px">
-                            {{tale.owner_firstname || 'Batwoman' }} {{tale.owner_lastname}}
-                            {{tale.id}} to {{tale.answer_to_tale_id}}
+                            <a :href="tale.owner_emblem" target="_blank">
+                                <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" :height="level == 1 ? '70px': '35px'" class="float-left rounded-circle mr-1">
+                            </a>
+
+                            <router-link :to="'/auth/profile/'+tale.owner_id">
+                                {{tale.owner_firstname || 'Batwoman'}} {{tale.owner_lastname}}
+                            </router-link>
+
+                            <br>
+                            <!--<router-link :to="'/tale/upsert/'+tale.id">-->
+                                {{tale.publish_at | unix_to_date_time}}
+                            <!--</router-link>-->
                         </div>
                     </div>
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
@@ -48,7 +48,7 @@
                             <span @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">Delete</span>
                             <span @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Edit</span>
                             <span @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Cancel</span>
-                            <span @click="ajaSaveComment(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-success">Save</span>
+                            <span @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-success">Save</span>
                         </div>
                     </div>
                 </div>
@@ -66,7 +66,6 @@
             <!--##################################################-->
             <div class="clearfix"></div>
             <Paginator
-                    :style="options.styleComment"
                     :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
                     :pageSize="parseInt(feedPagination.pageSize)"
                     :rowsTotal="parseInt(feedPagination.rowsTotal)"
@@ -76,12 +75,12 @@
                     :onClickAll="onClickAll"
             ></Paginator>
             <div class="clearfix"></div>
-            <div class="alina-form text-right" :style="options.styleComment">
+            <div class="alina-form text-right">
                 <!--<input v-model="body" type="text" class="form-control">-->
                 <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                 to {{answer_to_tale_id}} to {{root_tale_id}}
                 <span @click="() => {this.body = '';}" class="btn btn-sm btn-warning">{{resetTxt}}</span>
-                <button @click="ajaCommentSend" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
+                <button @click="ajaCommentAdd" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
             </div>
         </b-collapse>
         <!---->
@@ -115,18 +114,16 @@
         data() {
             return {
                 options:        {
-                    urlFeed:        `${ConfigApi.url_base}/tale/feed`,
-                    urlCommentAdd:  `${ConfigApi.url_base}/tale/CommentAdd`,
-                    urlCommentEdit: `${ConfigApi.url_base}/tale/upsert`,
-                    urlCommentDel:  `${ConfigApi.url_base}/tale/delete`,
-                    editorConfig:   ConfigCkEditor,
-                    editor:         ClassicEditor,
-                    style:          {
+                    urlFeed:       `${ConfigApi.url_base}/tale/feed`,
+                    urlTaleUpsert: `${ConfigApi.url_base}/tale/upsert`,
+                    urlCommentDel: `${ConfigApi.url_base}/tale/delete`,
+                    editorConfig:  ConfigCkEditor,
+                    editor:        ClassicEditor,
+                    style:         {
                         "margin-left": this.level == 1 ? '0' : 5 + '%',
+                        "border-left": this.level == 1 ? '#D369BA solid 3px' : '#5440D1 solid 2px'
                     },
-                    styleComment:   {
-                        "border-left": this.level == 1 ? '#ACAEAF solid 10px' : '#ACAEAF solid 10px'
-                    }
+                    styleComment:  {}
 
                 },
                 state:          {
@@ -184,11 +181,11 @@
                 .go();
             },
 
-            ajaCommentSend(event) {
+            ajaCommentAdd(event) {
                 const _t = this;
                 AjaxAlina.newInst({
                     method:     'POST',
-                    url:        this.options.urlCommentAdd,
+                    url:        this.options.urlTaleUpsert,
                     enctype:    'application/json',
                     postParams: {
                         "level":             this.level,
@@ -199,7 +196,9 @@
                         "form_id":           "actionCommentAdd",
                     },
                     onDone:     (aja) => {
-                        _t.feed.push(aja.respBody.data);
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            _t.feed.push(aja.respBody.data);
+                        }
                     }
                 })
                 .go();
@@ -232,15 +231,17 @@
                 }
             },
 
-            ajaSaveComment(comment, feedIndex) {
+            ajaCommentSave(comment, feedIndex) {
                 const _t        = this;
                 comment.form_id = 'actionUpsert';
                 AjaxAlina.newInst({
                     method:     'POST',
-                    url:        `${this.options.urlCommentEdit}/${comment.id}`,
+                    url:        `${this.options.urlTaleUpsert}/${comment.id}`,
                     postParams: comment,
                     onDone:     (aja) => {
-                        this.toggleCommentEditMode(comment, feedIndex);
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            this.toggleCommentEditMode(comment, feedIndex);
+                        }
                     }
                 })
                 .go();
@@ -259,7 +260,7 @@
                     url:        `${this.options.urlCommentDel}/${comment.id}`,
                     postParams: comment,
                     onDone:     (aja) => {
-                        if (aja.respBody.data.success == 1) {
+                        if (aja.respBody.meta.alina_response_success == 1) {
                             UtilsArray.elRemoveByIndex(this.feed, feedIndex);
                         }
                     }
