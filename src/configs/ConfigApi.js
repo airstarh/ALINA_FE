@@ -14,6 +14,6 @@ const ConfigApi = {
                 "x-requested-with": "AlinaFetchApi",
             }
         }
-    },
+    }
 };
 export default ConfigApi;

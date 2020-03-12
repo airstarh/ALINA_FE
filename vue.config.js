@@ -1,17 +1,15 @@
-module.exports              = {
-    // Deprecated since Vue CLI 3.3, please use publicPath instead
-    //baseUrl: '.',
-    publicPath: '.',
-    devServer:  {
-        clientLogLevel: 'error'
-    }
-};
-//#####
 const path                  = require('path');
 const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
 const {styles}              = require('@ckeditor/ckeditor5-dev-utils');
 
 module.exports = {
+    // Deprecated since Vue CLI 3.3, please use publicPath instead
+    //baseUrl: '.',
+    publicPath: '.',
+    devServer:  {
+        clientLogLevel:   'error',
+        disableHostCheck: true
+    },
     // The source of CKEditor is encapsulated in ES6 modules. By default, the code
     // from the node_modules directory is not transpiled, so you must explicitly tell
     // the CLI tools to transpile JavaScript files in all ckeditor5-* modules.
