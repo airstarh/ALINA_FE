@@ -7,16 +7,23 @@
                 <!---->
                 <div class="row">
                     <div class="col">
-                        <img :src="post.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="100px" class="float-left rounded-circle mr-1">
-                        {{post.owner_firstname || 'Batwoman'}} {{post.owner_lastname}}
+                        <a :href="post.owner_emblem" target="_blank">
+                            <img :src="post.owner_emblem || '/anarki.png'" height="100px" class="float-left rounded-circle mr-1">
+                        </a>
+
+                        <router-link :to="'/auth/profile/'+post.owner_id">
+                            {{post.owner_firstname || 'Anonymous'}} {{post.owner_lastname}}
+                        </router-link>
+
                         <br>
+
                         {{post.publish_at | unix_to_date_time}}
                     </div>
                     <div class="col">
-                        <span v-if="CU.ownsOrAdminOrModerator(post.owner_id)">
-                            <span @click="options.modeEdit = !options.modeEdit" class="btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</span>
-                            <span @click="()=>{}" class="btn btn-danger">Delete</span>
-                        </span>
+                        <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row">
+                            <div @click="()=>{}" class="col btn btn-danger">Delete</div>
+                            <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
+                        </div>
 
                     </div>
                 </div>

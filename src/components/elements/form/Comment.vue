@@ -17,11 +17,11 @@
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <a :href="tale.owner_emblem" target="_blank">
-                                <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" :height="level == 1 ? '70px': '35px'" class="float-left rounded-circle mr-1">
+                                <img :src="tale.owner_emblem || '/anarki.png'" :height="level == 1 ? '70px': '35px'" class="float-left rounded-circle mr-1">
                             </a>
 
                             <router-link :to="'/auth/profile/'+tale.owner_id">
-                                {{tale.owner_firstname || 'Batwoman'}} {{tale.owner_lastname}}
+                                {{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
                             </router-link>
 
                             <br>
@@ -44,13 +44,14 @@
                     </div>
 
                     <div class="row">
+                        <div class="col">&nbsp;</div>
                         <div class="col text-right">
-                            <span v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
-                                <span @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">Delete</span>
-                                <span @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Edit</span>
-                                <span @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-info">Cancel</span>
-                                <span @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-success">Save</span>
-                            </span>
+                            <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id)" class="row">
+                                <div @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">Delete</div>
+                                <div @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Edit</div>
+                                <div @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Cancel</div>
+                                <div @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">Save</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -73,12 +74,18 @@
                     :onClickMore="onClickMore"
                     :onClickAll="onClickAll"
             ></Paginator>
-            <div class="alina-form text-right" v-if="CU.isLoggedIn()">
+            <div class=" alina-form text-right" v-if="CU.isLoggedIn()">
                 <!--<input v-model="body" type="text" class="form-control">-->
                 <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
-                to {{answer_to_tale_id}} to {{root_tale_id}}
-                <span @click="() => {this.body = '';}" class="btn btn-sm btn-warning">{{resetTxt}}</span>
-                <button @click="ajaCommentAdd" type="button" class="btn btn-sm btn-success">{{submitTxt}}</button>
+                <div class="row">
+                    <div class="col"></div>
+                    <div class="col">
+                        <div class="row">
+                            <div @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{resetTxt}}</div>
+                            <div @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{submitTxt}}</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </b-collapse>
         <!---->

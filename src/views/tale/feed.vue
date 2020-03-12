@@ -17,11 +17,11 @@
                     <div class="row">
                         <div class="col">
                             <a :href="tale.owner_emblem" target="_blank">
-                                <img :src="tale.owner_emblem || 'https://www.tokkoro.com/picsup/5675648-batwoman-wallpapers.jpg'" height="100px" class="float-left rounded-circle mr-1">
+                                <img :src="tale.owner_emblem || '/anarki.png'" height="100px" class="float-left rounded-circle mr-1">
                             </a>
 
                             <router-link :to="'/auth/profile/'+tale.owner_id">
-                                {{tale.owner_firstname || 'Batwoman'}} {{tale.owner_lastname}}
+                                {{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
                             </router-link>
 
                             <br>
@@ -30,7 +30,6 @@
                             </router-link>
                         </div>
                         <div class="col"><h2>{{tale.header}}</h2></div>
-                        <!--<div class="col-1"><h3>{{tale.id}}</h3></div>-->
                     </div>
                     <div class="row">
                         <div class="col">

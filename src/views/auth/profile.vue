@@ -1,11 +1,13 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-11">
+            <div class="col">
                 <h1>{{post.firstname || post.mail}} {{post.lastname}}</h1>
             </div>
             <div class="col" v-if="CU.ownsOrAdminOrModerator(post.id)">
-                <span @click="options.modeEdit = !options.modeEdit" class="btn btn-info">Edit</span>
+                <div class="row">
+                    <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
+                </div>
             </div>
         </div>
         <div v-if="options.modeEdit">
@@ -26,12 +28,6 @@
                 </div>
                 <div class="col-6">
                     <div class="alina-form">
-                        <input type="hidden" v-model="post.form_id" class="form-control">
-                        <input type="hidden" v-model="post.id" class="form-control">
-
-                        <!--##################################################-->
-
-                        <!--##################################################-->
                         <div class="row mt-4 justify-content-center align-items-center">
                             <div class="col-12 text-center">
                                 <a :href="'mailto:'+post.mail">
@@ -119,7 +115,7 @@
 
                         <div class="row mt-4 justify-content-center align-items-center">
                             <div class="col-6 text-right">
-                                <label for="firstname">firstname</label>
+                                First Name
                             </div>
                             <div class="col-6">
                                 {{post.firstname}}
@@ -130,7 +126,7 @@
 
                         <div class="row mt-4 justify-content-center align-items-center">
                             <div class="col-6 text-right">
-                                <label for="lastname">lastname</label>
+                                Last name
                             </div>
                             <div class="col-6">
                                 {{post.lastname}}
@@ -141,7 +137,7 @@
 
                         <div class="row mt-4 justify-content-center align-items-center">
                             <div class="col-6 text-right">
-                                <label for="birth">birth</label>
+                                Birth date
                             </div>
                             <div class="col-6">
                                 {{post.birth | unix_to_date }}
