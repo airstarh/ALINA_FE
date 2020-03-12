@@ -2,13 +2,15 @@
     <div class="container">
         <div class="row">
             <div class="col mx-auto">
-                <Paginator
-                        :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                        :pageSize="parseInt(feedPagination.pageSize)"
-                        :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                        :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                        :onClickPage="pageChange"
-                ></Paginator>
+                <div class="mb-5 text-center">
+                    <Paginator
+                            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+                            :pageSize="parseInt(feedPagination.pageSize)"
+                            :rowsTotal="parseInt(feedPagination.rowsTotal)"
+                            :pagesTotal="parseInt(feedPagination.pagesTotal)"
+                            :onClickPage="pageChange"
+                    ></Paginator>
+                </div>
                 <!--##################################################-->
                 <!--##################################################-->
                 <!--##################################################-->
@@ -17,7 +19,8 @@
                     <div class="row">
                         <div class="col">
                             <a :href="tale.owner_emblem" target="_blank">
-                                <img :src="tale.owner_emblem || '/anarki.png'" height="100px" class="float-left rounded-circle mr-1">
+                                <img v-if="tale.owner_emblem" :src="tale.owner_emblem" height="150px" class="float-left rounded-circle mr-1">
+                                <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" height="150x" class="float-left rounded-circle mr-1">
                             </a>
 
                             <router-link :to="'/auth/profile/'+tale.owner_id">
@@ -65,13 +68,15 @@
                 <!--##################################################-->
                 <!--##################################################-->
 
-                <Paginator
-                        :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                        :pageSize="parseInt(feedPagination.pageSize)"
-                        :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                        :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                        :onClickPage="pageChange"
-                ></Paginator>
+                <div class="mt-5 text-center">
+                    <Paginator
+                            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+                            :pageSize="parseInt(feedPagination.pageSize)"
+                            :rowsTotal="parseInt(feedPagination.rowsTotal)"
+                            :pagesTotal="parseInt(feedPagination.pagesTotal)"
+                            :onClickPage="pageChange"
+                    ></Paginator>
+                </div>
             </div>
         </div>
     </div>

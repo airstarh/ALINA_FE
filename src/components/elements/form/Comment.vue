@@ -4,20 +4,21 @@
         <!---->
         <!---->
         <!---->
-        <div v-if="level!=1">
+        <div class="mb-5">
             <b-button v-b-toggle="'collapse-'+answer_to_tale_id">Answers {{feedPagination.rowsTotal}}</b-button>
         </div>
-        <b-collapse :id="'collapse-'+answer_to_tale_id" :visible="level == 1">
+        <b-collapse :id="'collapse-'+answer_to_tale_id" :visible="level == 3" class="mb-5">
 
             <!--##################################################-->
             <!--##################################################-->
             <!--##################################################-->
-            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id" class="mb-5">
+            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id" class="mt-1">
                 <div>
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <a :href="tale.owner_emblem" target="_blank">
-                                <img :src="tale.owner_emblem || '/anarki.png'" :height="level == 1 ? '70px': '35px'" class="float-left rounded-circle mr-1">
+                                <img v-if="tale.owner_emblem" :src="tale.owner_emblem" :height="level==1?'70px':'40px'" class="float-left rounded-circle mr-1">
+                                <img v-if="!tale.owner_emblem" src="../../../assets/anarki.png" :height="level==1?'70px':'40px'" class="float-left rounded-circle mr-1">
                             </a>
 
                             <router-link :to="'/auth/profile/'+tale.owner_id">
@@ -74,7 +75,7 @@
                     :onClickMore="onClickMore"
                     :onClickAll="onClickAll"
             ></Paginator>
-            <div class=" alina-form text-right" v-if="CU.isLoggedIn()">
+            <div class=" alina-form mt-2 mb-2" v-if="CU.isLoggedIn()">
                 <!--<input v-model="body" type="text" class="form-control">-->
                 <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                 <div class="row">
@@ -128,6 +129,7 @@
                     editor:        ClassicEditor,
                     style:         {
                         "margin-left": this.level == 1 ? '0' : 5 + '%',
+                        "padding-left": "1mm",
                         "border-left": this.level == 1 ? '#D369BA solid 3px' : '#5440D1 solid 2px'
                     },
                     styleComment:  {}
@@ -205,6 +207,7 @@
                     onDone:     (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
                             _t.feed.push(aja.respBody.data);
+                            ++_t.feedPagination.rowsTotal;
                         }
                     }
                 })

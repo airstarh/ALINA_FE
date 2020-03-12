@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        <img alt="Vue logo" src="../assets/logo.png"/>
         <div>
             <h1>{{ sProp }} : mapped from Store</h1>
         </div>

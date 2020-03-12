@@ -8,7 +8,8 @@
                 <div class="row">
                     <div class="col">
                         <a :href="post.owner_emblem" target="_blank">
-                            <img :src="post.owner_emblem || '/anarki.png'" height="100px" class="float-left rounded-circle mr-1">
+                            <img v-if="post.owner_emblem" :src="post.owner_emblem" height="100px" class="float-left rounded-circle mr-1">
+                            <img v-if="!post.owner_emblem" src="../../assets/anarki.png" height="100px" class="float-left rounded-circle mr-1">
                         </a>
 
                         <router-link :to="'/auth/profile/'+post.owner_id">
@@ -127,12 +128,16 @@
                     modeEdit:     false
                 },
                 post:    {
-                    id:           null,
-                    header:       '',
-                    body:         '',
-                    publish_at:   '',
-                    is_submitted: 0,
-                    form_id:      'actionUpsert',
+                    id:              null,
+                    header:          '',
+                    body:            '',
+                    publish_at:      '',
+                    is_submitted:    0,
+                    form_id:         'actionUpsert',
+                    owner_emblem:    '',
+                    owner_firstname: '',
+                    owner_lastname:  '',
+                    owner_id:        '',
                 }
             }
         },
