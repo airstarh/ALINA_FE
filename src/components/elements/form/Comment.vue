@@ -130,7 +130,7 @@
                     style:         {
                         "margin-left": this.level == 1 ? '0' : 5 + '%',
                         "padding-left": "1mm",
-                        "border-left": this.level == 1 ? '#D369BA solid 3px' : '#5440D1 solid 2px'
+                        "border-left": this.level == 1 ? '#E9ECEF solid 3px' : '#A9ABAD solid 2px'
                     },
                     styleComment:  {}
 
