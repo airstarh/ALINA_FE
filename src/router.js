@@ -5,6 +5,7 @@ import RestCall                      from "@/views/RestCall.vue";
 import auth_login                    from "@/views/auth/login";
 import auth_logout                   from "@/views/auth/logout";
 import auth_profile                  from "@/views/auth/profile";
+import auth_register                 from "@/views/auth/register";
 import auth_change_password          from "@/views/auth/changePassword";
 import auth_reset_password_request   from "@/views/auth/resetPasswordRequest";
 import auth_reset_password_with_code from "@/views/auth/resetPasswordWithCode";
@@ -69,6 +70,11 @@ export default new Router({
         {
             path:      "/auth/profile/:id",
             component: auth_profile
+        },
+        {
+            path:      "/auth/register",
+            name:      "auth_register",
+            component: auth_register
         },
         {
             path:      "/auth/change_password",

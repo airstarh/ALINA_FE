@@ -43,6 +43,7 @@
                             <em>{{this.CU.name()}}</em>
                         </template>
                         <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">LogIn</b-dropdown-item>
+                        <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">Register</b-dropdown-item>
                         <b-dropdown-item to="/auth/reset_password_request" v-if="!CU.isLoggedIn()">Reset password request</b-dropdown-item>
                         <b-dropdown-item to="/auth/reset_password_with_code" v-if="!CU.isLoggedIn()">Reset password with code</b-dropdown-item>
                         <b-dropdown-item to="/auth/profile" v-if="CU.isLoggedIn()">Profile</b-dropdown-item>
