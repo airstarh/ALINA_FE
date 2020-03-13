@@ -16,10 +16,12 @@
                 <div>
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
-                            <a :href="tale.owner_emblem" target="_blank">
-                                <img v-if="tale.owner_emblem" :src="tale.owner_emblem" :height="level==1?'70px':'40px'" class="float-left rounded-circle mr-1">
-                                <img v-if="!tale.owner_emblem" src="../../../assets/anarki.png" :height="level==1?'70px':'40px'" class="float-left rounded-circle mr-1">
-                            </a>
+                            <div class="float-left mr-1 fixed-height-100px">
+                                <a :href="tale.owner_emblem" target="_blank">
+                                    <img v-if="tale.owner_emblem" :src="tale.owner_emblem" :width="level==1?'70px':'40px'" class="rounded-circle">
+                                    <img v-if="!tale.owner_emblem" src="../../../assets/anarki.png" :width="level==1?'70px':'40px'" class="rounded-circle">
+                                </a>
+                            </div>
 
                             <router-link :to="'/auth/profile/'+tale.owner_id">
                                 {{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
@@ -128,9 +130,9 @@
                     editorConfig:  ConfigCkEditor,
                     editor:        ClassicEditor,
                     style:         {
-                        "margin-left": this.level == 1 ? '0' : 5 + '%',
+                        "margin-left":  this.level == 1 ? '0' : 5 + '%',
                         "padding-left": "1mm",
-                        "border-left": this.level == 1 ? '#E9ECEF solid 3px' : '#A9ABAD solid 2px'
+                        "border-left":  this.level == 1 ? '#E9ECEF solid 3px' : '#A9ABAD solid 2px'
                     },
                     styleComment:  {}
 

@@ -12,8 +12,10 @@
             <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
             <span class="btn" @click="onClickPage(pageSize, pagesTotal)" :class="{ 'btn-secondary': pagesTotal==pageCurrentNumber}"> >>> </span>
         </span>
-        <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
-        <span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>
+        <span v-if="pagesTotal>1">
+            <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
+        </span>
+        <!--<span class="btn">{{rowStart}}-{{rowEnd}}/{{rowsTotal}}</span>-->
         <span v-if="pageCurrentNumber<pagesTotal">
             <span v-if="onClickMore" class="btn" @click="onClickMore(pageSize, pageCurrentNumber+1)">More(+{{pageSize}})</span>
         </span>

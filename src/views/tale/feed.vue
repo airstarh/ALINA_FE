@@ -18,10 +18,12 @@
                 <div v-for="(tale, index) in feed" v-bind:key="tale.id">
                     <div class="row">
                         <div class="col">
-                            <a :href="tale.owner_emblem" target="_blank">
-                                <img v-if="tale.owner_emblem" :src="tale.owner_emblem" height="150px" class="float-left rounded-circle mr-1">
-                                <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" height="150x" class="float-left rounded-circle mr-1">
-                            </a>
+                            <div class="float-left mr-1 fixed-height-150px">
+                                <a :href="tale.owner_emblem" target="_blank">
+                                    <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="150px" class="rounded-circle">
+                                    <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" width="150x" class="rounded-circle">
+                                </a>
+                            </div>
 
                             <router-link :to="'/auth/profile/'+tale.owner_id">
                                 {{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
@@ -56,8 +58,8 @@
                     </div>
                     <div class="clearfix"></div>
                     <div class="row">
-                        <div class="cpl mx-auto mt-5 mb-5 text-center">
-                            <h3>¯\_(ツ)_/¯</h3>
+                        <div v-if="index!=feed.length-1" class="cpl mx-auto mt-5 mb-5 text-center">
+                            <h4>¯\_(ツ)_/¯</h4>
                             <!--<img src="/divider001.png" alt="divider" height="80px">-->
                         </div>
                     </div>

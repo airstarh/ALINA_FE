@@ -65,6 +65,16 @@ textarea:focus {
   background-color: $base-background;
 }
 
+.fixed-height-100px {
+  overflow: hidden;
+  max-height: 100px;
+}
+
+.fixed-height-150px {
+  overflow: hidden;
+  max-height: 150px;
+}
+
 /*endregion Common things */
 /*endregion REQUIRED BY INCLUDED FRAMEWORKS*/
 
