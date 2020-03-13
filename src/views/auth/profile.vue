@@ -1,18 +1,16 @@
 <template>
     <div class="container">
         <div class="row">
+            <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
+        </div>
+        <div class="row">
             <div class="col">
-                <h1>{{post.firstname || post.mail}} {{post.lastname}}</h1>
-            </div>
-            <div class="col" v-if="CU.ownsOrAdminOrModerator(post.id)">
-                <div class="row">
-                    <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
-                </div>
+                <h5 class="text-break">ID#{{post.id}}</h5>
             </div>
         </div>
-        <div v-if="options.modeEdit">
-            <div class="row">
-                <div class="col-6">
+        <div v-if="options.modeEdit" class="text-break">
+            <div class="row no-gutters">
+                <div class="col-4">
                     <div class="alina-form">
                         <ui-fileupload
                                 accept="image/*"
@@ -26,7 +24,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col">
                     <div class="alina-form">
                         <div class="row mt-4 justify-content-center align-items-center">
                             <div class="col-12 text-center">
@@ -38,10 +36,8 @@
                         <!--##################################################-->
 
                         <div class="row mt-4 justify-content-center align-items-center">
-                            <div class="col-6 text-right">
-                                <label for="firstname">firstname</label>
-                            </div>
-                            <div class="col-6">
+                            <div class="col">
+                                <label for="firstname">First name</label>
                                 <input v-model="post.firstname" type="text" id="firstname" class="form-control">
                             </div>
                         </div>
@@ -49,10 +45,8 @@
                         <!--##################################################-->
 
                         <div class="row mt-4 justify-content-center align-items-center">
-                            <div class="col-6 text-right">
-                                <label for="lastname">lastname</label>
-                            </div>
-                            <div class="col-6">
+                            <div class="col">
+                                <label for="lastname">Last name</label>
                                 <input v-model="post.lastname" type="text" id="lastname" class="form-control">
                             </div>
                         </div>
@@ -60,10 +54,8 @@
                         <!--##################################################-->
 
                         <div class="row mt-4 justify-content-center align-items-center">
-                            <div class="col-6 text-right">
-                                <label for="birth">birth</label>
-                            </div>
-                            <div class="col-6">
+                            <div class="col">
+                                <label for="birth">Birth</label>
                                 <ui-datepicker
                                         icon="eventpacks"
                                         picker-type="modal"
@@ -94,58 +86,35 @@
         <!--##################################################-->
         <!--##################################################-->
         <!--##################################################-->
-        <div v-if="!options.modeEdit">
+        <div v-if="!options.modeEdit" class="text-break">
             <div class="row">
-                <div class="col-6">
+                <div class="col-4">
                     <a :href="post.emblem" target="_blank">
                         <img :src="post.emblem" width="100%">
                     </a>
                 </div>
-                <div class="col-6">
-                    <div>
-                        <!--##################################################-->
-                        <div class="row mt-4 justify-content-center align-items-center">
-                            <div class="col-12 text-center">
-                                <a :href="'mailto:'+post.mail">
-                                    {{post.mail}}
-                                </a>
-                            </div>
+                <div class="col">
+                    <!--##################################################-->
+                    <div class="row mb-1 justify-content-center align-items-center">
+                        <div class="col font-weight-bold">
+                            {{post.firstname}} {{post.lastname}}
                         </div>
-                        <!--##################################################-->
-
-                        <div class="row mt-4 justify-content-center align-items-center">
-                            <div class="col-6 text-right">
-                                First Name
-                            </div>
-                            <div class="col-6">
-                                {{post.firstname}}
-                            </div>
-                        </div>
-
-                        <!--##################################################-->
-
-                        <div class="row mt-4 justify-content-center align-items-center">
-                            <div class="col-6 text-right">
-                                Last name
-                            </div>
-                            <div class="col-6">
-                                {{post.lastname}}
-                            </div>
-                        </div>
-
-                        <!--##################################################-->
-
-                        <div class="row mt-4 justify-content-center align-items-center">
-                            <div class="col-6 text-right">
-                                Birth date
-                            </div>
-                            <div class="col-6">
-                                {{post.birth | unix_to_date }}
-                            </div>
-                        </div>
-
-                        <!--##################################################-->
                     </div>
+                    <!--##################################################-->
+                    <div class="row mb-1 justify-content-center align-items-center">
+                        <div class="col">
+                            {{post.birth | unix_to_date }}
+                        </div>
+                    </div>
+                    <!--##################################################-->
+                    <div class="row mb-1 justify-content-center align-items-center">
+                        <div class="col-12">
+                            <a :href="'mailto:'+post.mail">
+                                {{post.mail}}
+                            </a>
+                        </div>
+                    </div>
+                    <!--##################################################-->
                 </div>
             </div>
             <div class="row mt-4">

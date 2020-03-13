@@ -16,25 +16,48 @@
                 <!--##################################################-->
                 <!-- region Tale -->
                 <div v-for="(tale, index) in feed" v-bind:key="tale.id">
-                    <div class="row">
-                        <div class="col">
-                            <div class="float-left mr-1 fixed-height-150px">
-                                <a :href="tale.owner_emblem" target="_blank">
+                    <div class="row align-items-top mb-1">
+                        <!--<router-link :to="'/auth/profile/'+tale.owner_id"
+                                     class="col btn btn-primary text-left"
+                        >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}</router-link>
+                        &lt;!&ndash;#####&ndash;&gt;
+                        <router-link :to="'/tale/upsert/'+tale.id"
+                                     class="col btn btn-info text-left"
+                        >{{tale.publish_at | unix_to_date_time}}</router-link>-->
+                        <!--#####-->
+
+                        <!--#####-->
+                    </div>
+                    <div class="row no-gutters">
+                        <h2 class="col">
+                            <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                               class="btn btn-block btn-secondary text-left"
+                               target="_blank"
+                            >{{tale.header}}</a>
+                        </h2>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-auto">
+                            <div class="fixed-height-150px">
+                                <router-link :to="'/auth/profile/'+tale.owner_id">
                                     <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="150px" class="rounded-circle">
                                     <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" width="150x" class="rounded-circle">
-                                </a>
+                                </router-link>
                             </div>
-
-                            <router-link :to="'/auth/profile/'+tale.owner_id">
-                                {{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
+                        </div>
+                        <div class="col text-right">
+                            <router-link :to="'/auth/profile/'+tale.owner_id"
+                                         class="btn btn-sm btn-primary text-left text-break mb-1"
+                            >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
                             </router-link>
-
                             <br>
-                            <router-link :to="'/tale/upsert/'+tale.id">
+                            <router-link :to="'/tale/upsert/'+tale.id"
+                                         class="btn btn-sm btn-info text-left mb-1">
                                 {{tale.publish_at | unix_to_date_time}}
                             </router-link>
+                            <br>
                         </div>
-                        <div class="col"><h2>{{tale.header}}</h2></div>
+
                     </div>
                     <div class="row">
                         <div class="col">
@@ -46,20 +69,19 @@
 
                     <div class="row">
                         <div class="col">
-                            <div>
-                                <Comment
-                                        :level="1"
-                                        type="COMMENT"
-                                        :root_tale_id="tale.id"
-                                        :answer_to_tale_id="tale.id"
-                                ></Comment>
-                            </div>
+                            <Comment
+                                    :level="1"
+                                    type="COMMENT"
+                                    :root_tale_id="tale.id"
+                                    :answer_to_tale_id="tale.id"
+                            ></Comment>
                         </div>
                     </div>
                     <div class="clearfix"></div>
+                    <div class="clearfix"></div>
                     <div class="row">
                         <div v-if="index!=feed.length-1" class="cpl mx-auto mt-5 mb-5 text-center">
-                            <h4>¯\_(ツ)_/¯</h4>
+                            <!--<h4>¯\_(ツ)_/¯</h4>-->
                             <!--<img src="/divider001.png" alt="divider" height="80px">-->
                         </div>
                     </div>
@@ -108,6 +130,7 @@
         },
         data() {
             return {
+                ConfigApi:      ConfigApi,
                 options:        {
                     urlFeed: `${ConfigApi.url_base}/tale/feed`,
                 },

@@ -5,28 +5,33 @@
                 <!---->
                 <!---->
                 <!---->
-                <div class="row">
-                    <div class="col">
-                        <a :href="post.owner_emblem" target="_blank">
-                            <img v-if="post.owner_emblem" :src="post.owner_emblem" height="100px" class="float-left rounded-circle mr-1">
-                            <img v-if="!post.owner_emblem" src="../../assets/anarki.png" height="100px" class="float-left rounded-circle mr-1">
-                        </a>
+                <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row mb-1">
+                    <div @click="()=>{}" class="col btn btn-danger">Delete</div>
+                    <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
+                </div>
 
-                        <router-link :to="'/auth/profile/'+post.owner_id">
-                            {{post.owner_firstname || 'Anonymous'}} {{post.owner_lastname}}
-                        </router-link>
-
-                        <br>
-
-                        {{post.publish_at | unix_to_date_time}}
-                    </div>
-                    <div class="col">
-                        <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row">
-                            <div @click="()=>{}" class="col btn btn-danger">Delete</div>
-                            <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
+                <div class="row no-gutters mt-4">
+                    <div class="col-auto">
+                        <div class="fixed-height-150px">
+                            <router-link :to="'/auth/profile/'+post.owner_id">
+                                <img v-if="post.owner_emblem" :src="post.owner_emblem" width="100px" class="rounded-circle">
+                                <img v-if="!post.owner_emblem" src="../../assets/anarki.png" width="100px" class="rounded-circle">
+                            </router-link>
                         </div>
-
                     </div>
+                    <div class="col text-right">
+                        <router-link :to="'/auth/profile/'+post.owner_id"
+                                     class="btn btn-sm btn-primary text-left text-break mb-1"
+                        >{{post.owner_firstname || 'Anonymous'}} {{post.owner_lastname}}
+                        </router-link>
+                        <br>
+                        <router-link :to="'/tale/upsert/'+post.id"
+                                     class="btn btn-sm btn-info text-left mb-1">
+                            {{post.publish_at | unix_to_date_time}}
+                        </router-link>
+                        <br>
+                    </div>
+
                 </div>
                 <!--##################################################-->
                 <!--##################################################-->
@@ -72,8 +77,13 @@
                 <!--##################################################-->
                 <!--##################################################-->
                 <div v-if="!options.modeEdit">
-                    <div class="row">
-                        <div class="col"><h2>{{post.header}}</h2></div>
+                    <div class="row no-gutters mt-4 mb-2">
+                        <h1 class="col">
+                            <a :href="`${ConfigApi.url_base}/tale/upsert/${post.id}`"
+                               class="btn btn-block btn-secondary text-left"
+                               target="_blank"
+                            >{{post.header}}</a>
+                        </h1>
                     </div>
                     <div class="row">
                         <div class="col">
@@ -120,14 +130,15 @@
         name:       "tale_upsert",
         data() {
             return {
-                CU:      CurrentUser.obj(),
-                options: {
+                CU:        CurrentUser.obj(),
+                ConfigApi: ConfigApi,
+                options:   {
                     url:          `${ConfigApi.url_base}/tale/upsert`,
                     editorConfig: ConfigCkEditor,
                     editor:       ClassicEditor,
                     modeEdit:     false
                 },
-                post:    {
+                post:      {
                     id:              null,
                     header:          '',
                     body:            '',
