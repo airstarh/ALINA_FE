@@ -5,9 +5,15 @@
         <!---->
         <!---->
         <div class="mb-5">
-            <b-button v-b-toggle="'collapse-'+answer_to_tale_id">Answers {{feedPagination.rowsTotal}}</b-button>
+            <b-button v-b-toggle="'collapse-'+answer_to_tale_id"
+
+            >Comment {{feedPagination.rowsTotal > 0 ? feedPagination.rowsTotal: ''}}</b-button>
         </div>
-        <b-collapse :id="'collapse-'+answer_to_tale_id" :visible="level == 3" class="mb-5">
+        <b-collapse :id="'collapse-'+answer_to_tale_id"
+                    @show="onExpandCommentList"
+                    :visible="level == 3"
+                    class="mb-5"
+        >
 
             <!--##################################################-->
             <!--##################################################-->
@@ -172,7 +178,7 @@
             resetTxt:          {default: "Clear"},
         },
         created() {
-            this.ajaGetComments();
+
         },
         methods:    {
             ajaGetComments(more = false) {
@@ -265,6 +271,7 @@
             },
 
             ajaDeleteComment(comment, feedIndex) {
+                if (!confirm("Are you sure?")) {return;}
                 const _t        = this;
                 comment.form_id = 'actionDelete';
                 AjaxAlina.newInst({
@@ -279,6 +286,9 @@
                 })
                 .go();
 
+            },
+            onExpandCommentList(){
+                this.ajaGetComments();
             }
 
         }

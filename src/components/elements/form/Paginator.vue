@@ -37,7 +37,7 @@
             }
         },
         created() {
-            //this.calcPagesArray();
+            this.calcPagesArray();
         },
         props:   {
             more:              {
@@ -46,11 +46,11 @@
             },
             pageCurrentNumber: {
                 type:    Number,
-                default: 1
+                default: -1
             },
             pageSize:          {
                 type:    Number,
-                default: 3
+                default: 0
             },
             rowsTotal:         {
                 type:    Number,

@@ -6,7 +6,7 @@
                 <!---->
                 <!---->
                 <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row mb-1">
-                    <div @click="()=>{}" class="col btn btn-danger">Delete</div>
+                    <div @click="ajaDeleteTale(post)" class="col btn btn-danger">Delete</div>
                     <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
                 </div>
 
@@ -43,8 +43,6 @@
                             v-model="post.body"
                             :editor="options.editor"
                             :config="options.editorConfig"
-                            @ready="onCkEditorReady"
-                            :fileUploadResponse="fileUploadResponse"
                     ></ckeditor>
                     <!---->
                     <!---->
@@ -134,6 +132,7 @@
                 ConfigApi: ConfigApi,
                 options:   {
                     url:          `${ConfigApi.url_base}/tale/upsert`,
+                    urlDelete:    `${ConfigApi.url_base}/tale/delete`,
                     editorConfig: ConfigCkEditor,
                     editor:       ClassicEditor,
                     modeEdit:     false
@@ -174,17 +173,6 @@
         //endregion Router Hooks
         //##################################################
         methods:    {
-            onCkEditorReady(ck) {
-                // let res;
-                // if (ck && ck.ui) {
-                //     res = Array.from(ck.ui.componentFactory.names('image'));
-                // }
-                //
-                // console.log(">>>____________________________");
-                // console.log("onCkEditorReady");
-                // console.log(res);
-                // console.log("<<<____________________________");
-            },
             getRouteParam(paramName, to) {
                 if (UtilsData.empty(to)) {to = this.$route;}
                 let res = null;
@@ -239,6 +227,23 @@
                 .go();
             },
 
+            ajaDeleteTale(tale) {
+                if (!confirm("Are you sure?")) {return;}
+                const _t     = this;
+                tale.form_id = 'actionDelete';
+                AjaxAlina.newInst({
+                    method:     'POST',
+                    url:        `${this.options.urlDelete}/${tale.id}`,
+                    postParams: tale,
+                    onDone:     (aja) => {
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            _t.$router.replace({path: `/tale/feed`});
+                        }
+                    }
+                })
+                .go();
+            },
+
             uiDatePickerCustomFormatter(dateObj) {
                 return this.$date(dateObj, "YYYY-MM-DD");
             },
@@ -246,17 +251,6 @@
             onChangeDateField(thisKey, dateObj) {
                 UtilsObject.setByPath(this, thisKey, UtilsDate.toUnixTimeSecs(dateObj));
             },
-
-            fileUploadResponse: function (evt) {
-                console.log(">>>____________________________");
-                console.log("fileUploadResponse");
-                console.log(arguments);
-                console.log("<<<____________________________");
-            }
-
         }
     };
 </script>
-<!--##################################################-->
-<!--##################################################-->
-<!--##################################################-->

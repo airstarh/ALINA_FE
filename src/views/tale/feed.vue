@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="feed.length > 0">
         <div class="row">
             <div class="col mx-auto">
                 <div class="mb-5 text-center">
@@ -178,6 +178,9 @@
                         //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
                         this.feed           = aja.respBody.data.tale;
                         this.feedPagination = aja.respBody.meta.tale;
+                        //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
+                        //#####//#####//#####
+                        document.getElementById('alina-body-wrapper').scrollTop = 0;
                     }
                 })
                 .go();
