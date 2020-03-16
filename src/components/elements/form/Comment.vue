@@ -6,8 +6,12 @@
         <!---->
         <div class="mb-5">
             <b-button v-b-toggle="'collapse-'+answer_to_tale_id"
-
-            >Comment {{feedPagination.rowsTotal > 0 ? feedPagination.rowsTotal: ''}}</b-button>
+                      :class="{
+                      'btn-lg':level==1,
+                      'btn-sm':level>1,
+                      }"
+            >Comment {{feedPagination.rowsTotal > 0 ? feedPagination.rowsTotal: ''}}
+            </b-button>
         </div>
         <b-collapse :id="'collapse-'+answer_to_tale_id"
                     @show="onExpandCommentList"
@@ -150,7 +154,7 @@
                 feed:           [],
                 feedPagination: {
                     pageCurrentNumber: 'last',
-                    pageSize:          this.level == 1 ? 3 : 3,
+                    pageSize:          this.level == 1 ? 10 : 10,
                     rowsTotal:         0,
                     pagesTotal:        0,
                 },
@@ -287,7 +291,7 @@
                 .go();
 
             },
-            onExpandCommentList(){
+            onExpandCommentList() {
                 this.ajaGetComments();
             }
 

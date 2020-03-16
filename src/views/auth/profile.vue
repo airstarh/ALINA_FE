@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div class="row" v-if="CU.ownsOrAdminOrModerator(post.id)">
             <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
         </div>
         <div class="row">
             <div class="col">
-                <h5 class="text-break">ID#{{post.id}}</h5>
+                <h5 class="text-break">Profile #{{post.id}}</h5>
             </div>
         </div>
         <div v-if="options.modeEdit" class="text-break">

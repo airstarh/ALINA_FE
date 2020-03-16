@@ -19,7 +19,9 @@
         <span v-if="pageCurrentNumber<pagesTotal">
             <span v-if="onClickMore" class="btn" @click="onClickMore(pageSize, pageCurrentNumber+1)">More(+{{pageSize}})</span>
         </span>
-        <span v-if="onClickAll" class="btn" @click="onClickAll(rowsTotal, 1)">All({{rowsTotal}})</span>
+        <span v-if="rowsTotal>0">
+            <span v-if="onClickAll" class="btn" @click="onClickAll(rowsTotal, 1)">All({{rowsTotal}})</span>
+        </span>
     </div>
 </template>
 
