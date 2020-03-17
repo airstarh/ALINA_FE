@@ -1,4 +1,5 @@
-import ConfigApi from "@/configs/ConfigApi";
+import ConfigApi   from "@/configs/ConfigApi";
+import CurrentUser from "@/services/CurrentUser";
 
 /**
  * https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#implementing-a-custom-upload-adapter
@@ -95,6 +96,11 @@ export class MyUploadAdapter {
         // like authentication and CSRF protection. For instance, you can use
         // XMLHttpRequest.setRequestHeader() to set the request headers containing
         // the CSRF token generated earlier by your application.
+        //this.xhr.setRequestHeader('','');
+        const CU = CurrentUser.obj();
+        this.xhr.setRequestHeader('x-requested-with', 'AlinaFetchApi');
+        this.xhr.setRequestHeader('uid', CU.attributes.id);
+        this.xhr.setRequestHeader('token', CU.attributes.token);
 
         // Send the request.
         this.xhr.send(data);
