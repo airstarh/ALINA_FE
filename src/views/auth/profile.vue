@@ -86,7 +86,7 @@
         <!--##################################################-->
         <!--##################################################-->
         <!--##################################################-->
-        <div v-if="!options.modeEdit" class="text-break">
+        <div v-if="!options.modeEdit" class="notranslate text-break">
             <div class="row">
                 <div class="col-4">
                     <a :href="post.emblem" target="_blank">

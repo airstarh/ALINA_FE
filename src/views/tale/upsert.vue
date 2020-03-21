@@ -19,7 +19,7 @@
                             </router-link>
                         </div>
                     </div>
-                    <div class="col text-right">
+                    <div class="notranslate col text-right" translate="no">
                         <router-link :to="'/auth/profile/'+post.owner_id"
                                      class="btn btn-sm btn-primary text-left text-break mb-1"
                         >{{post.owner_firstname || 'Anonymous'}} {{post.owner_lastname}}
@@ -76,7 +76,7 @@
                 <!--##################################################-->
                 <div v-if="!options.modeEdit">
                     <div class="row no-gutters mt-4 mb-2">
-                        <h1 class="col">
+                        <h1 class="col" :lang="post.lang">
                             <a :href="`${ConfigApi.url_base}/tale/upsert/${post.id}`"
                                class="btn btn-block btn-secondary text-left"
                                target="_blank"
@@ -85,7 +85,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="ck-content">
+                            <div class="ck-content" :lang="post.lang">
                                 <div v-html="post.body"></div>
                             </div>
                         </div>
