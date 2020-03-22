@@ -17,7 +17,7 @@
                 <!-- region Tale -->
                 <div v-for="(tale, index) in feed" v-bind:key="tale.id">
                     <div class="row no-gutters">
-                        <h2 class="col" :lang="tale.lang">
+                        <h2 class="notranslate col" :lang="tale.lang">
                             <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                class="btn btn-block btn-secondary text-left"
                                target="_blank"
@@ -33,7 +33,7 @@
                                 </router-link>
                             </div>
                         </div>
-                        <div class="notranslate col text-right" translate="no">
+                        <div class="notranslate col text-right">
                             <router-link :to="'/auth/profile/'+tale.owner_id"
                                          class="btn btn-sm btn-primary text-left text-break mb-1"
                             >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
@@ -50,7 +50,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="ck-content" :lang="tale.lang">
-                                <div v-html="tale.body"></div>
+                                <div class="notranslate" v-html="tale.body"></div>
                             </div>
                         </div>
                     </div>

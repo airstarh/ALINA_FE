@@ -76,6 +76,7 @@
             <div class="row mt-4">
                 <div class="col">
                     <ckeditor
+                            class="notranslate"
                             v-model="post.about_myself"
                             :editor="options.CkEditorObj"
                             :config="options.CkEditorConfig"
@@ -86,7 +87,7 @@
         <!--##################################################-->
         <!--##################################################-->
         <!--##################################################-->
-        <div v-if="!options.modeEdit" class="notranslate text-break">
+        <div v-if="!options.modeEdit" class="text-break">
             <div class="row">
                 <div class="col-4">
                     <a :href="post.emblem" target="_blank">
@@ -96,7 +97,7 @@
                 <div class="col">
                     <!--##################################################-->
                     <div class="row mb-1 justify-content-center align-items-center">
-                        <div class="col font-weight-bold">
+                        <div class="notranslate col font-weight-bold">
                             {{post.firstname}} {{post.lastname}}
                         </div>
                     </div>
@@ -120,7 +121,7 @@
             <div class="row mt-4">
                 <div class="col">
                     <div class="ck-content">
-                        <div v-html="post.about_myself"></div>
+                        <div class="notranslate" v-html="post.about_myself"></div>
                     </div>
                 </div>
             </div>

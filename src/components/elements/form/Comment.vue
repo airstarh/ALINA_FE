@@ -33,8 +33,9 @@
                                 </a>
                             </div>
 
-                            <router-link :to="'/auth/profile/'+tale.owner_id">
-                                {{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
+                            <router-link :to="'/auth/profile/'+tale.owner_id"
+                                         class="notranslate"
+                            >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
                             </router-link>
 
                             <br>
@@ -46,13 +47,13 @@
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <div class="ck-content">
-                                <div v-html="tale.body"></div>
+                                <div class="notranslate" v-html="tale.body"></div>
                             </div>
                         </div>
                     </div>
                     <div class="row" v-if="state.feedsInEdit.includes(tale.id)">
                         <div class="col">
-                            <ckeditor v-model="tale.body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+                            <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                         </div>
                     </div>
 
@@ -87,9 +88,9 @@
                     :onClickMore="onClickMore"
                     :onClickAll="onClickAll"
             ></Paginator>
-            <div class=" alina-form mt-2 mb-2" v-if="CU.isLoggedIn()">
+            <div class="alina-form mt-2 mb-2" v-if="CU.isLoggedIn()">
                 <!--<input v-model="body" type="text" class="form-control">-->
-                <ckeditor v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+                <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                 <div class="row">
                     <div class="col"></div>
                     <div class="col">

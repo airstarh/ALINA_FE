@@ -19,7 +19,7 @@
                             </router-link>
                         </div>
                     </div>
-                    <div class="notranslate col text-right" translate="no">
+                    <div class="notranslate col text-right">
                         <router-link :to="'/auth/profile/'+post.owner_id"
                                      class="btn btn-sm btn-primary text-left text-break mb-1"
                         >{{post.owner_firstname || 'Anonymous'}} {{post.owner_lastname}}
@@ -38,8 +38,9 @@
                 <!--##################################################-->
                 <div class="alina-form" v-if="options.modeEdit">
                     <div>#{{post.id}}</div>
-                    <input type="text" v-model="post.header" placeholder="Header" class="form-control">
+                    <input type="text" v-model="post.header" placeholder="Header" class="notranslate form-control">
                     <ckeditor
+                            class="notranslate"
                             v-model="post.body"
                             :editor="options.editor"
                             :config="options.editorConfig"
@@ -47,11 +48,12 @@
                     <!---->
                     <!---->
                     <!---->
-                    <div class="input-group mb-3">
+                    <div class="input-group mt-1 mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Publish at</span>
                         </div>
                         <ui-datepicker
+                                class="notranslate"
                                 picker-type="modal"
                                 orientation="portrait"
                                 :value="post.publish_at | unix_secs_to_date_obj"
@@ -76,7 +78,7 @@
                 <!--##################################################-->
                 <div v-if="!options.modeEdit">
                     <div class="row no-gutters mt-4 mb-2">
-                        <h1 class="col" :lang="post.lang">
+                        <h1 class="notranslate col" :lang="post.lang">
                             <a :href="`${ConfigApi.url_base}/tale/upsert/${post.id}`"
                                class="btn btn-block btn-secondary text-left"
                                target="_blank"
@@ -86,7 +88,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="ck-content" :lang="post.lang">
-                                <div v-html="post.body"></div>
+                                <div class="notranslate" v-html="post.body"></div>
                             </div>
                         </div>
                     </div>
