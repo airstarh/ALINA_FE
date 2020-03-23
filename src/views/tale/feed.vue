@@ -1,93 +1,100 @@
 <template>
-    <div class="container" v-if="feed.length > 0">
+    <div class="container">
         <div class="row">
-            <div class="col mx-auto">
-                <div class="mb-5 text-center">
-                    <Paginator
-                            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                            :pageSize="parseInt(feedPagination.pageSize)"
-                            :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                            :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                            :onClickPage="pageChange"
-                    ></Paginator>
-                </div>
-                <!--##################################################-->
-                <!--##################################################-->
-                <!--##################################################-->
-                <!-- region Tale -->
-                <div v-for="(tale, index) in feed" v-bind:key="tale.id">
-                    <div class="row no-gutters">
-                        <h2 class="notranslate col" :lang="tale.lang">
-                            <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                               class="btn btn-block btn-secondary text-left"
-                               target="_blank"
-                            >{{tale.header}}</a>
-                        </h2>
+            <div class="col">
+                <div class="input-group mb-3">
+                    <div class="input-group-append">
+                        <button @click="searchClear" class="input-group-text btn btn-danger">clear</button>
                     </div>
-                    <div class="row no-gutters">
-                        <div class="col-auto">
-                            <div class="fixed-height-150px">
-                                <router-link :to="'/auth/profile/'+tale.owner_id">
-                                    <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="150px" class="rounded-circle">
-                                    <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" width="150x" class="rounded-circle">
+                    <input type="text" class="form-control" aria-label="Search" v-model="feedSearch">
+                    <div class="input-group-append">
+                        <button @click="search" class="input-group-text btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-if="feed.length > 0">
+            <div class="row">
+                <div class="col mx-auto">
+                    <div class="mb-5 text-center">
+                        <Paginator
+                                :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+                                :pageSize="parseInt(feedPagination.pageSize)"
+                                :rowsTotal="parseInt(feedPagination.rowsTotal)"
+                                :pagesTotal="parseInt(feedPagination.pagesTotal)"
+                                :onClickPage="pageChange"
+                        ></Paginator>
+                    </div>
+                    <!--##################################################-->
+                    <!--##################################################-->
+                    <!--##################################################-->
+                    <!-- region Tale -->
+                    <div v-for="(tale, index) in feed" v-bind:key="tale.id">
+                        <div class="row no-gutters">
+                            <h2 class="notranslate col" :lang="tale.lang">
+                                <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                   class="btn btn-block btn-secondary text-left"
+                                   target="_blank"
+                                >{{tale.header}}</a>
+                            </h2>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-auto">
+                                <div class="fixed-height-150px">
+                                    <router-link :to="'/auth/profile/'+tale.owner_id">
+                                        <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="150px" class="rounded-circle">
+                                        <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" width="150x" class="rounded-circle">
+                                    </router-link>
+                                </div>
+                            </div>
+                            <div class="notranslate col text-right">
+                                <router-link :to="'/auth/profile/'+tale.owner_id"
+                                             class="btn btn-sm btn-primary text-left text-break mb-1"
+                                >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
                                 </router-link>
+                                <br>
+                                <router-link :to="'/tale/upsert/'+tale.id"
+                                             class="btn btn-sm btn-info text-left mb-1">
+                                    {{tale.publish_at | unix_to_date_time}}
+                                </router-link>
+                                <br>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="ck-content" :lang="tale.lang">
+                                    <div class="notranslate" v-html="tale.body"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="notranslate col text-right">
-                            <router-link :to="'/auth/profile/'+tale.owner_id"
-                                         class="btn btn-sm btn-primary text-left text-break mb-1"
-                            >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
-                            </router-link>
-                            <br>
-                            <router-link :to="'/tale/upsert/'+tale.id"
-                                         class="btn btn-sm btn-info text-left mb-1">
-                                {{tale.publish_at | unix_to_date_time}}
-                            </router-link>
-                            <br>
-                        </div>
 
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="ck-content" :lang="tale.lang">
-                                <div class="notranslate" v-html="tale.body"></div>
+                        <div class="row">
+                            <div class="col">
+                                <Comment
+                                        :level="1"
+                                        type="COMMENT"
+                                        :root_tale_id="tale.id"
+                                        :answer_to_tale_id="tale.id"
+                                ></Comment>
                             </div>
                         </div>
+                        <div class="clearfix"></div>
                     </div>
+                    <!-- endregion Tale -->
+                    <!--##################################################-->
+                    <!--##################################################-->
+                    <!--##################################################-->
 
-                    <div class="row">
-                        <div class="col">
-                            <Comment
-                                    :level="1"
-                                    type="COMMENT"
-                                    :root_tale_id="tale.id"
-                                    :answer_to_tale_id="tale.id"
-                            ></Comment>
-                        </div>
+                    <div class="mt-5 text-center">
+                        <Paginator
+                                :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+                                :pageSize="parseInt(feedPagination.pageSize)"
+                                :rowsTotal="parseInt(feedPagination.rowsTotal)"
+                                :pagesTotal="parseInt(feedPagination.pagesTotal)"
+                                :onClickPage="pageChange"
+                        ></Paginator>
                     </div>
-                    <div class="clearfix"></div>
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div v-if="index!=feed.length-1" class="cpl mx-auto mt-5 mb-5 text-center">
-                            <!--<h4>¯\_(ツ)_/¯</h4>-->
-                            <!--<img src="/divider001.png" alt="divider" height="80px">-->
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!-- endregion Tale -->
-                <!--##################################################-->
-                <!--##################################################-->
-                <!--##################################################-->
-
-                <div class="mt-5 text-center">
-                    <Paginator
-                            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                            :pageSize="parseInt(feedPagination.pageSize)"
-                            :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                            :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                            :onClickPage="pageChange"
-                    ></Paginator>
                 </div>
             </div>
         </div>
@@ -122,6 +129,7 @@
                 options:        {
                     urlFeed: `${ConfigApi.url_base}/tale/feed`,
                 },
+                feedSearch:     '',
                 feed:           [],
                 feedPagination: {
                     pageCurrentNumber: 1,
@@ -159,10 +167,17 @@
             },
             //##################################################
             ajaGetFeed() {
+                // #####
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                console.log("this.$route");
+                console.log(this.$route);
+                console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                // #####
                 AjaxAlina.newInst({
-                    method: 'GET',
-                    url:    `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
-                    onDone: (aja) => {
+                    method:    'GET',
+                    url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
+                    getParams: this.$route.query,
+                    onDone:    (aja) => {
                         //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
                         this.feed           = aja.respBody.data.tale;
                         this.feedPagination = aja.respBody.meta.tale;
@@ -179,8 +194,19 @@
                 this.ajaGetFeed();
             },
             //##################################################
-
+            search() {
+                this.$router.push({path: `/tale/feed`, query: {txt: this.feedSearch}});
+            },
+            searchClear() {
+                this.feedSearch = '';
+                this.$router.push({path: `/tale/feed`, query: {}});
+            }
             //##################################################
+        },
+        watch:      {
+            $route(to, from) {
+                this.ajaGetFeed();
+            }
         }
     };
 </script>
