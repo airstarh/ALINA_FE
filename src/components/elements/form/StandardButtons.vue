@@ -19,7 +19,7 @@
         props: {
             onGo:      Function,
             submitTxt: {
-                default: "Submit"
+                default: "sim-sim"
             },
             resetTxt:  {
                 default: "Reset"
