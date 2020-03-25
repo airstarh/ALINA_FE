@@ -33,7 +33,7 @@
                         <div class="row no-gutters">
                             <h2 class="notranslate col" :lang="tale.lang">
                                 <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                   class="btn btn-block btn-secondary text-left"
+                                   class="btn btn-block btn-secondary text-left display-3"
                                    target="_blank"
                                 >{{tale.header}}</a>
                             </h2>
@@ -80,7 +80,7 @@
                                 ></Comment>
                             </div>
                         </div>
-                        <div class="clearfix"></div>
+                        <div class="clearfix mt-5"></div>
                     </div>
                     <!-- endregion Tale -->
                     <!--##################################################-->
@@ -208,3 +208,6 @@
 <!--##################################################-->
 <!--##################################################-->
 <!--##################################################-->
+<style>
+    .btn.display-3 {font-size: 2rem;}
+</style>

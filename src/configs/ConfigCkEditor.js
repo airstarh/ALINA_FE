@@ -57,6 +57,10 @@ const ConfigCkEditor = {
     ],
     toolbar:      {
         items: [
+            //'ckfinder',
+            'imageUpload',
+            'mediaEmbed',
+            '|',
             'removeFormat',
             'bold',
             'italic',
@@ -80,10 +84,6 @@ const ConfigCkEditor = {
             'tableRow',
             'tableColumn',
             'mergeTableCells',
-            '|',
-            //'ckfinder',
-            'imageUpload',
-            'mediaEmbed',
             '|',
             'undo',
             'redo'

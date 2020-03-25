@@ -15,7 +15,7 @@
                         <ui-fileupload
                                 accept="image/*"
                                 :multiple="false"
-                                name="userfile[]"
+                                :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
                                 @change="onChangeFileField"
                         >Select an image
                         </ui-fileupload>
@@ -150,8 +150,9 @@
         name:       "auth_profile",
         data() {
             return {
-                CU:      CurrentUser.obj(),
-                options: {
+                ConfigApi: ConfigApi,
+                CU:        CurrentUser.obj(),
+                options:   {
                     CkEditorConfig: ConfigCkEditor,
                     CkEditorObj:    ClassicEditor,
                     url:            `${ConfigApi.url_base}/auth/profile`,
@@ -159,7 +160,7 @@
                     dateFields:     ['birth'],
                     modeEdit:       false,
                 },
-                post:    {
+                post:      {
                     id:           '',
                     mail:         '',
                     firstname:    '',

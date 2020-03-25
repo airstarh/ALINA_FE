@@ -7,7 +7,7 @@
         <div class="mb-5">
             <b-button v-b-toggle="'collapse-'+answer_to_tale_id"
                       :class="{
-                      'btn-lg':level==1,
+                      'btn-md':level==1,
                       'btn-sm':level>1,
                       }"
             >Comments: {{commentsTotal}}
@@ -61,10 +61,10 @@
                         <div class="col">&nbsp;</div>
                         <div class="col text-right">
                             <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id)" class="row">
-                                <div @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">Delete</div>
-                                <div @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Edit</div>
-                                <div @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Cancel</div>
-                                <div @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">sim-sim</div>
+                                <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">Delete</button>
+                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Edit</button>
+                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Cancel</button>
+                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">sim-sim</button>
                             </div>
                         </div>
                     </div>
@@ -96,8 +96,8 @@
                     <div class="col"></div>
                     <div class="col">
                         <div class="row">
-                            <div @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{resetTxt}}</div>
-                            <div @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{submitTxt}}</div>
+                            <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{resetTxt}}</button>
+                            <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{submitTxt}}</button>
                         </div>
                     </div>
                 </div>
@@ -142,9 +142,9 @@
                     editorConfig:  ConfigCkEditor,
                     editor:        ClassicEditor,
                     style:         {
-                        "margin-left":  this.level == 1 ? '0' : 5 + '%',
+                        "margin-left":  this.level == 1 ? '0' : 10 + '%',
                         "padding-left": "1mm",
-                        "border-left":  this.level == 1 ? '#E9ECEF solid 3px' : '#A9ABAD solid 2px'
+                        "border-left":  this.level == 1 ? '#A9ABAD solid 2px' : '#A9ABAD solid 2px'
                     },
                     styleComment:  {}
 
@@ -226,6 +226,7 @@
                         if (aja.respBody.meta.alina_response_success == 1) {
                             _t.feed.push(aja.respBody.data);
                             ++_t.feedPagination.rowsTotal;
+                            this.body = '';
                         }
                     }
                 })
