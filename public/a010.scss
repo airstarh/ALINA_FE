@@ -75,11 +75,32 @@ textarea:focus {
   max-height: 150px;
 }
 
+ul,
+li
+{
+  /*http://htmlbook.ru/css/list-style-position*/
+  list-style-position: inside;
+}
+
+.ck-content .todo-list .todo-list__label>input {
+  -webkit-appearance: none;
+  display: inline-block;
+  position: relative;
+  width: var(--ck-todo-list-checkmark-size);
+  height: var(--ck-todo-list-checkmark-size);
+  vertical-align: middle;
+  border: 0;
+   left: 10px;
+  margin-right: 25px;
+   right: 0;
+  margin-left: 0;
+}
+
 /*endregion Common things */
 /*endregion REQUIRED BY INCLUDED FRAMEWORKS*/
 
 //region Form
-form, .alina-form {
+.alina-form {
   background-color: #e9ecef;
   padding: 2mm;
 }

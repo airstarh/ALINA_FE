@@ -22,6 +22,7 @@ import Subscript                     from '@ckeditor/ckeditor5-basic-styles/src/
 import Superscript                   from '@ckeditor/ckeditor5-basic-styles/src/superscript';
 import MediaEmbed                    from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import List                          from '@ckeditor/ckeditor5-list/src/list';
+import TodoList                      from '@ckeditor/ckeditor5-list/src/todolist';
 
 const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
@@ -50,6 +51,7 @@ const ConfigCkEditor = {
         ImageStyle,
         ImageResize,
         List,
+        TodoList,
     ],
     toolbar:      {
         items: [
@@ -60,6 +62,7 @@ const ConfigCkEditor = {
             '|',
             'bulletedList',
             'numberedList',
+            'todoList',
             '|',
             'code',
             'subscript',

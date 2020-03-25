@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div class="row no-gutters">
             <div class="col mx-auto">
                 <!---->
                 <!---->
                 <!---->
-                <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row mb-1">
+                <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row no-gutters mb-1">
                     <div @click="ajaDeleteTale(post)" class="col btn btn-danger">Delete</div>
                     <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
                 </div>
