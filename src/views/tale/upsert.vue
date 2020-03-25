@@ -98,6 +98,7 @@
                              type="COMMENT"
                              :root_tale_id="post.id"
                              :answer_to_tale_id="post.id"
+                             :count_by_answer_to_tale_id="post.count_answer_to_tale_id"
                     ></Comment>
                 </div>
                 <!--    -->

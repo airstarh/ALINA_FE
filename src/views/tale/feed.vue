@@ -76,6 +76,7 @@
                                         type="COMMENT"
                                         :root_tale_id="tale.id"
                                         :answer_to_tale_id="tale.id"
+                                        :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
                                 ></Comment>
                             </div>
                         </div>
@@ -167,12 +168,6 @@
             },
             //##################################################
             ajaGetFeed() {
-                // #####
-                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                console.log("this.$route");
-                console.log(this.$route);
-                console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-                // #####
                 AjaxAlina.newInst({
                     method:    'GET',
                     url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,

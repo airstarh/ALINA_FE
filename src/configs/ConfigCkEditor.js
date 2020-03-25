@@ -7,7 +7,6 @@ import Alignment                     from '@ckeditor/ckeditor5-alignment/src/ali
 import Table                         from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar                  from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import PasteFromOffice               from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
-//##
 import EasyImage                     from '@ckeditor/ckeditor5-easy-image/src/easyimage';
 import Image                         from '@ckeditor/ckeditor5-image/src/image';
 import ImageToolbar                  from '@ckeditor/ckeditor5-image/src/imagetoolbar';
@@ -22,6 +21,7 @@ import Code                          from '@ckeditor/ckeditor5-basic-styles/src/
 import Subscript                     from '@ckeditor/ckeditor5-basic-styles/src/subscript';
 import Superscript                   from '@ckeditor/ckeditor5-basic-styles/src/superscript';
 import MediaEmbed                    from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
+import List                          from '@ckeditor/ckeditor5-list/src/list';
 
 const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
@@ -49,6 +49,7 @@ const ConfigCkEditor = {
         ImageCaption,
         ImageStyle,
         ImageResize,
+        List,
     ],
     toolbar:      {
         items: [
@@ -56,6 +57,10 @@ const ConfigCkEditor = {
             'italic',
             'underline',
             'strikethrough',
+            '|',
+            'bulletedList',
+            'numberedList',
+            '|',
             'code',
             'subscript',
             'superscript',
@@ -86,8 +91,8 @@ const ConfigCkEditor = {
             'alignRight'
         ],
     },
-    mediaEmbed:{
-        previewsInData:true
+    mediaEmbed:   {
+        previewsInData: true
     },
     // ckfinder:     {
     //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`

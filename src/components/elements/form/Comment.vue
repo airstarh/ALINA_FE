@@ -10,7 +10,7 @@
                       'btn-lg':level==1,
                       'btn-sm':level>1,
                       }"
-            >Comment {{feedPagination.rowsTotal > 0 ? feedPagination.rowsTotal: ''}}
+            >Comments: {{commentsTotal}}
             </b-button>
         </div>
         <b-collapse :id="'collapse-'+answer_to_tale_id"
@@ -64,7 +64,7 @@
                                 <div @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">Delete</div>
                                 <div @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Edit</div>
                                 <div @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Cancel</div>
-                                <div @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">Save</div>
+                                <div @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">sim-sim</div>
                             </div>
                         </div>
                     </div>
@@ -74,6 +74,7 @@
                          type="COMMENT"
                          :root_tale_id="root_tale_id"
                          :answer_to_tale_id="tale.id"
+                         :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
                 ></Comment>
             </div>
             <!--##################################################-->
@@ -162,25 +163,29 @@
             }
         },
         props:      {
-            level:             {
+            level:                      {
                 type:    Number,
                 default: 1,
             },
-            type:              {
+            type:                       {
                 type:    String,
                 default: 'COMMENT',
             },
-            root_tale_id:      {
+            root_tale_id:               {
                 type:    Number,
                 default: null,
             },
-            answer_to_tale_id: {
+            answer_to_tale_id:          {
                 type:    Number,
                 default: null,
+            },
+            count_by_answer_to_tale_id: {
+                type:    Number,
+                default: 0,
             },
             //
-            submitTxt:         {default: "Submit"},
-            resetTxt:          {default: "Clear"},
+            submitTxt:                  {default: "sim-sim"},
+            resetTxt:                   {default: "Clear"},
         },
         created() {
 
@@ -296,6 +301,20 @@
                 this.ajaGetComments();
             }
 
+        },
+        // #####
+        computed:   {
+            // a computed getter
+            commentsTotal: function () {
+                let res = 0;
+                if (this.feedPagination.rowsTotal) {
+                    res = this.feedPagination.rowsTotal;
+                }
+                if (this.count_by_answer_to_tale_id) {
+                    res = this.count_by_answer_to_tale_id;
+                }
+                return res;
+            }
         }
     };
 </script>
