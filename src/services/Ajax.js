@@ -115,8 +115,8 @@ export default class Ajax {
         if (typeof _t['hookBeforeAjaxStarted'] === 'function') {
             _t.hookBeforeAjaxStarted();
         }
-
-        const myRequest = new Request(this.urlBuild(), p);
+        const u = this.urlBuild();
+        const myRequest = new Request(u, p);
         return fetch(myRequest)
         .then(resp => {
             this.resp = resp;
@@ -133,6 +133,7 @@ export default class Ajax {
                 }
                 console.error(">>>____________________________");
                 console.error("RESPONSE NOT OK");
+                console.error(u);
                 console.error(resp);
                 console.error("<<<____________________________");
                 throw new Error('RESPONSE NOT OK');

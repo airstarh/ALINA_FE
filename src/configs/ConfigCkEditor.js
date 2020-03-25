@@ -23,6 +23,7 @@ import Superscript                   from '@ckeditor/ckeditor5-basic-styles/src/
 import MediaEmbed                    from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import List                          from '@ckeditor/ckeditor5-list/src/list';
 import TodoList                      from '@ckeditor/ckeditor5-list/src/todolist';
+import RemoveFormat                  from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 
 const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
@@ -52,9 +53,11 @@ const ConfigCkEditor = {
         ImageResize,
         List,
         TodoList,
+        RemoveFormat,
     ],
     toolbar:      {
         items: [
+            'removeFormat',
             'bold',
             'italic',
             'underline',

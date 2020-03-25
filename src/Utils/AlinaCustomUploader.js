@@ -1,5 +1,6 @@
 import ConfigApi   from "@/configs/ConfigApi";
 import CurrentUser from "@/services/CurrentUser";
+import MessagesObj from "@/services/MessagesObj";
 
 /**
  * https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#implementing-a-custom-upload-adapter
@@ -58,7 +59,15 @@ export class MyUploadAdapter {
             //
             // Your integration may handle upload errors in a different way so make sure
             // it is done properly. The reject() function must be called when the upload fails.
-            if (!response || response.error) {
+
+            if (!response || response.error || (response.meta && response.meta.alina_response_success == 0)) {
+                // if (response.messages) {
+                //     let msgs = [];
+                //     msgs = msgs.concat(response.messages);
+                //     msgs.forEach((item) => {
+                //         MessagesObj.add(item);
+                //     });
+                // }
                 return reject(response && response.error ? response.error.message : genericErrorText);
             }
 
