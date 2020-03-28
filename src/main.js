@@ -15,10 +15,14 @@ import KeenUI       from "keen-ui";
 
 Vue.use(KeenUI);
 //#####
-import VueLodash    from 'vue-lodash';
+/*Initial approach leads to constant console error message: You gave to install lodash*/
+/*Or Uncaught TypeError: Cannot redefine property: lodash*/
+//import VueLodash    from 'vue-lodash';
+import lodash       from "lodash";
+Vue.prototype.lodash = lodash;
 
-const options = {name: 'lodash'}; // customize the way you want to call it
-Vue.use(VueLodash, options); // options is optional
+//const options = {name: 'lodash', lodash: lodash}; // customize the way you want to call it
+//Vue.use(VueLodash, options); // options is optional
 //#####
 const VueCookie = require('vue-cookie');
 Vue.use(VueCookie);
@@ -48,6 +52,10 @@ Vue.filter('unix_to_date_time', function (value, format = "YYYY-MM-DD H:m:s") {
 Vue.filter('unix_secs_to_date_obj', function (value) {
     value = parseInt(value);
     return UtilsDate.toDateObj(value, true);
+});
+
+Vue.filter('json_str', function (value) {
+    return JSON.stringify(value);
 });
 //#####
 export const AppAlina = new Vue({

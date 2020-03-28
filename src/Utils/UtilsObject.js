@@ -1,7 +1,7 @@
 //import UtilsData from "./UtilsData";
 
 import UtilsData from "./UtilsData";
-import * as _    from "lodash";
+import * as lodash    from "lodash";
 
 export default class UtilsObject {
     // ##################################################
@@ -95,8 +95,8 @@ export default class UtilsObject {
      * https://lodash.com/docs/4.17.15#mergeWith
      */
     static mergeRecursively(...objs) {
-        const resObj = _.mergeWith({}, ...objs, function (oldV, newV) {
-            if (_.isArray(oldV)) {
+        const resObj = lodash.mergeWith({}, ...objs, function (oldV, newV) {
+            if (lodash.isArray(oldV)) {
                 return oldV.concat(newV);
             }
         });
