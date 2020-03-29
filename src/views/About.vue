@@ -1,16 +1,12 @@
 <template>
     <div>
-        <img alt="Vue logo" src="../assets/logo.png"/>
+        <img alt="Vue logo" src="../assets/logo.png" height="10px"/>
         <div>
-            <h1>{{ sProp }} : mapped from Store</h1>
+            <div><h1>{{ sProp }} : mapped from Store</h1></div>
+            <div><h1>{{ $store.state.egStoreModule.sProp }} : direct from Store</h1></div>
+            <button @click="methChangeProp">Change Prop</button>
+            <button @click="log">log</button>
         </div>
-        <div>
-            <h1>{{ $store.state.egStoreModule.sProp }} : direct from Store</h1>
-        </div>
-        <button @click="methChangeProp">Change Prop</button>
-        <button @click="log">log</button>
-        <br>
-        <br>
         <div>
             <h1>Date FNS</h1>
             <!--<div>Now: {{ now }}</div>-->
@@ -19,13 +15,18 @@
             <div>Now: {{ new Date() | date('DD MMMM YYYY') }}</div>
             <div>Now: {{ $date(new Date(), 'DD MMMM YYYY') }}</div>
             <div>Now: {{ $date(new Date(), 'X') }}</div>
-            <div>Now: {{ $date(new Date(), 'x') }}</div>
             <br>
             {{dateExample}}
         </div>
         <br>
+        <div>
+            <!--##########-->
+            <h1>Lodash</h1>
+            <div>{{lodashExample | json_str}}</div>
+            <div>{{lodashExample2 | json_str}}</div>
+            <!--##########-->
+        </div>
         <br>
-
         <div>
             <!-- Using modifiers -->
             <b-button v-b-modal.my-modal>Show Modal</b-button>
@@ -130,8 +131,8 @@
 
 <script>
     import {mapActions, mapGetters, mapState} from "vuex";
-    import AnObject                           from "../services/AnObject";
-    import UtilsDate                          from "@/Utils/UtilsDate";
+    import AnObject from "../services/AnObject";
+    import UtilsDate from "@/Utils/UtilsDate";
 
     export default {
         name: "EgStoreModuleComponent",
@@ -139,19 +140,23 @@
             const twoWeeksFromNow = new Date();
             twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
             return {
-                picker8:     null,
-                AnObject:    AnObject,
-                dateExample: 'DEFAULT VALUE',
+                lodashExample: [1, 2, 3, 4],
+                picker8:       null,
+                AnObject:      AnObject,
+                dateExample:   'DEFAULT VALUE',
             };
         },
 
-        created(){
+        created() {
             this.dateplayer();
         },
 
         computed: {
             ...mapState("egStoreModule", ["sProp"]),
-            ...mapGetters("egStoreModule", ["gProp"])
+            ...mapGetters("egStoreModule", ["gProp"]),
+            lodashExample2() {
+                return this.lodash.partition(this.lodashExample, n => n % 2);
+            }
         },
 
         methods: {
@@ -171,7 +176,7 @@
                 console.log("log ++++++++++");
                 console.log(this.sProp);
             }
-        }
+        },
     };
 </script>
 
