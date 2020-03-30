@@ -9,7 +9,7 @@
     >
         <div
                 v-for="item in MessagesObj.store"
-                v-bind:class="item.status"
+                v-bind:class="MessagesObj.statusClasses[item.status]"
         >
             <pre>{{ item.text }}</pre>
         </div>
@@ -18,7 +18,7 @@
 
 <script>
     import MessagesObj from "@/services/MessagesObj";
-    import UtilsArray  from "@/Utils/UtilsArray";
+    import UtilsArray from "@/Utils/UtilsArray";
 
     export default {
         name:     "Messages",

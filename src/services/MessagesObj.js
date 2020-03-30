@@ -2,11 +2,17 @@ import UtilsArray from "@/Utils/UtilsArray";
 import UtilsData  from "@/Utils/UtilsData";
 
 const MessagesObj = {
-    store: [],
-    item:  {
+    store:         [],
+    item:          {
         "text":   "",
-        "status": "alert alert-info",
+        "status": 0,
     },
+    statusClasses: [
+        'alert alert-success',
+        'alert alert-info',
+        'alert alert-warning',
+        'alert alert-danger',
+    ],
 
     set(item) {
         const res = Object.assign({}, this.item);
