@@ -55,16 +55,12 @@
 
                         <div class="row mt-4 justify-content-center align-items-center">
                             <div class="col">
-                                <label for="birth">Birth</label>
-                                <ui-datepicker
-                                        icon="eventpacks"
-                                        picker-type="modal"
-                                        :value="post.birth | unix_secs_to_date_obj"
-                                        @input="onChangeDateField('post.birth', $event)"
-                                        :startOfWeek="1"
-                                        orientation="portrait"
-                                        :customFormatter="uiDatePickerCustomFormatter"
-                                ></ui-datepicker>
+                                <AlinaDatePicker
+                                        v-model="post.birth"
+                                        label="Birth"
+                                        idq="birth"
+                                        class="notranslate"
+                                ></AlinaDatePicker>
                             </div>
                         </div>
 
@@ -139,6 +135,7 @@
     import CurrentUser from "@/services/CurrentUser";
     import UtilsDate from "@/Utils/UtilsDate";
     import UtilsData from "@/Utils/UtilsData";
+    import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
     //#####
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
@@ -174,7 +171,8 @@
         },
         components: {
             StandardButtons,
-            ckeditor: CKEditor.component
+            ckeditor: CKEditor.component,
+            AlinaDatePicker
         },
         //##################################################
         //region Router Hooks
@@ -235,12 +233,6 @@
             },
             //endregion Define User
             //##################################################
-            //region Birth\
-            uiDatePickerCustomFormatter(dateObj) {
-                return this.$date(dateObj, "YYYY-MM-DD");
-            },
-            //endregion Birth
-            //##################################################
             runAJax() {
                 const oAjax = AjaxAlina.newInst({
                     method:     'POST',
@@ -272,11 +264,6 @@
                 .go();
 
             },
-            //##################################################
-            onChangeDateField(thisKey, dateObj) {
-                UtilsObject.setByPath(this, thisKey, UtilsDate.toUnixTimeSecs(dateObj));
-            }
-            //##################################################
         }
     };
 </script>

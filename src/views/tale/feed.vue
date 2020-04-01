@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div class="row no-gutters">
             <div class="col">
                 <div class="input-group mb-3">
                     <div class="input-group-append">
@@ -14,7 +14,7 @@
             </div>
         </div>
         <div v-if="feed.length > 0">
-            <div class="row">
+            <div class="row no-gutters">
                 <div class="col mx-auto">
                     <div class="mb-5 text-center">
                         <Paginator

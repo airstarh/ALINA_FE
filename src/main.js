@@ -43,7 +43,7 @@ Vue.filter('unix_to_date', function (value, format = "YYYY-MM-DD") {
     return UtilsDate.UnixSecsToFormat(value, format);
 });
 
-Vue.filter('unix_to_date_time', function (value, format = "YYYY-MM-DD H:m:s") {
+Vue.filter('unix_to_date_time', function (value, format = "YYYY-MM-DD HH:mm:ss") {
     if (!value) return '';
     value = parseInt(value);
     return UtilsDate.UnixSecsToFormat(value, format);

@@ -49,18 +49,12 @@
                     <!---->
                     <!---->
                     <div class="input-group mt-1 mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Publish at</span>
-                        </div>
-                        <ui-datepicker
+                        <AlinaDatePicker
+                                v-model="post.publish_at"
+                                label="Publish at"
+                                idq="publish_at"
                                 class="notranslate"
-                                picker-type="modal"
-                                orientation="portrait"
-                                :value="post.publish_at | unix_secs_to_date_obj"
-                                @input="onChangeDateField('post.publish_at', $event)"
-                                :startOfWeek="1"
-                                :customFormatter="uiDatePickerCustomFormatter"
-                        ></ui-datepicker>
+                        ></AlinaDatePicker>
                     </div>
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                     <hr>
@@ -118,6 +112,7 @@
     import AjaxAlina from "@/services/AjaxAlina";
     import CurrentUser from "@/services/CurrentUser";
     import Comment from "@/components/elements/form/Comment";
+    import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
     //#####
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
@@ -158,6 +153,7 @@
             StandardButtons,
             ckeditor: CKEditor.component,
             Comment,
+            AlinaDatePicker
         },
         //##################################################
         //region Router Hooks
@@ -245,14 +241,6 @@
                     }
                 })
                 .go();
-            },
-
-            uiDatePickerCustomFormatter(dateObj) {
-                return this.$date(dateObj, "YYYY-MM-DD");
-            },
-
-            onChangeDateField(thisKey, dateObj) {
-                UtilsObject.setByPath(this, thisKey, UtilsDate.toUnixTimeSecs(dateObj));
             },
         }
     };

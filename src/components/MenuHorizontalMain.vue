@@ -7,7 +7,7 @@
 
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item to="/tale/feed">Feed</b-nav-item>
+                    <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()">Add tale</b-nav-item>
 
                     <b-nav-item-dropdown text="Admin Tools" right v-if="CU.isAdmin()">
                         <b-dropdown-item to="/RestCall">RestCall</b-dropdown-item>
@@ -46,9 +46,10 @@
                         <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">Register</b-dropdown-item>
                         <b-dropdown-item to="/auth/reset_password_request" v-if="!CU.isLoggedIn()">Reset password request</b-dropdown-item>
                         <b-dropdown-item to="/auth/reset_password_with_code" v-if="!CU.isLoggedIn()">Reset password with code</b-dropdown-item>
+                        <!---->
+                        <b-dropdown-item to="/tale/upsert" v-if="CU.isLoggedIn()">Add tale</b-dropdown-item>
                         <b-dropdown-item to="/auth/profile" v-if="CU.isLoggedIn()">Profile</b-dropdown-item>
                         <b-dropdown-item to="/auth/change_password" v-if="CU.isLoggedIn()">Change password</b-dropdown-item>
-                        <b-dropdown-item to="/tale/upsert" v-if="CU.isLoggedIn()">Add tale</b-dropdown-item>
                         <b-dropdown-item to="/auth/logout" v-if="CU.isLoggedIn()">LogOut</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
@@ -69,10 +70,10 @@
         },
         watch: {
             "CU": function (v) {
-                console.log(">>>____________________________");
-                console.log("v");
-                console.log(v);
-                console.log("<<<____________________________");
+                // console.log(">>>____________________________");
+                // console.log("v");
+                // console.log(v);
+                // console.log("<<<____________________________");
             }
         }
     };
