@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container border border-primary">
         <img alt="Vue logo" src="../assets/logo.png" height="10px"/>
         <div>
             <div><h1>{{ sProp }} : mapped from Store</h1></div>

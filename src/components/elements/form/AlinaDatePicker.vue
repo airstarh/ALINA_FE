@@ -1,52 +1,41 @@
 <template>
 
-    <div class="">
-        <div class="input-group mb-2 ">
-            <div class="row no-gutters align-items-center">
-                <div class="col">
-                    <div class="input-group-prepend" v-if="label.length">
-                        <div class="input-group-text">{{label}}</div>
+    <div class="input-group mb-2 ">
+        <div class="row no-gutters align-items-center">
+            <div class="col-auto mt-2" v-if="label.length">
+                <div class="input-group-text">{{label}}</div>
+            </div>
+            <div class="col">
+                <div class="row text-right">
+                    <div class="col text-nowrap mt-2">
+                        <label class="sr-only" :for="`year-${idq}`">year</label>
+                        <input v-model="year" size="4" type="number" max="9999" class="ch4" :id="`year-${idq}`" placeholder="YEAR">
+                        <span>-</span>
+                        <label class="sr-only" :for="`month-${idq}`">month</label>
+                        <input v-model="month" size="2" type="number" max="12" class="ch2" :id="`month-${idq}`" placeholder="MONTH">
+                        <span>-</span>
+                        <label class="sr-only" :for="`day-${idq}`">day</label>
+                        <input v-model="day" size="2" type="number" max="31" class="ch2" :id="`day-${idq}`" placeholder="DAT">
                     </div>
-                </div>
-                <div class="col-auto">
-                    <div class="row text-right">
-                        <div class="col">
-                            <label class="sr-only" :for="`year-${idq}`">year</label>
-                            <input v-model="year" size="4" type="number" max="9999" class="ch4" :id="`year-${idq}`" placeholder="YEAR">
-                            <span>-</span>
-                            <label class="sr-only" :for="`month-${idq}`">month</label>
-                            <input v-model="month" size="2" type="number" max="12" class="ch2" :id="`month-${idq}`" placeholder="MONTH">
-                            <span>-</span>
-                            <label class="sr-only" :for="`day-${idq}`">day</label>
-                            <input v-model="day" size="2" type="number" max="31" class="ch2" :id="`day-${idq}`" placeholder="DAT">
-                        </div>
+                    <div class="col text-nowrap mt-2">
+                        <span>@</span>
+                        <label class="sr-only" :for="`hour-${idq}`">hour</label>
+                        <input v-model="hour" size="2" type="number" max="23" class="ch2" :id="`hour-${idq}`" placeholder="HOUR">
+                        <span>&nbsp;:&nbsp;</span>
+                        <label class="sr-only" :for="`min-${idq}`">min</label>
+                        <input v-model="min" size="2" type="number" max="59" class="ch2" :id="`min-${idq}`" placeholder="MIN">
+                        <span>&nbsp;:&nbsp;</span>
+                        <label class="sr-only" :for="`sec-${idq}`">sec</label>
+                        <input v-model="sec" size="2" type="number" max="59" class=" ch2" :id="`sec-${idq}`" placeholder="SEC">
                     </div>
-                    <!---->
-                    <div class="row text-right mt-2">
-                        <div class="col">
-                            <span>@</span>
-                            <label class="sr-only" :for="`hour-${idq}`">hour</label>
-                            <input v-model="hour" size="2" type="number" max="23" class="ch2" :id="`hour-${idq}`" placeholder="HOUR">
-                            <span>&nbsp;:&nbsp;</span>
-                            <label class="sr-only" :for="`min-${idq}`">min</label>
-                            <input v-model="min" size="2" type="number" max="59" class="ch2" :id="`min-${idq}`" placeholder="MIN">
-                            <span>&nbsp;:&nbsp;</span>
-                            <label class="sr-only" :for="`sec-${idq}`">sec</label>
-                            <input v-model="sec" size="2" type="number" max="59" class=" ch2" :id="`sec-${idq}`" placeholder="SEC">
-                        </div>
+                    <div class="col text-nowrap mt-2">
+                        &nbsp;{{emittedRes | unix_to_date_time}}
                     </div>
-                    <!---->
-                    <div class="row mt-2">
-                        <div class="col">
-                            &nbsp;{{emittedRes | unix_to_date_time}}
-                        </div>
-                    </div>
-
                 </div>
             </div>
-
-
         </div>
+    </div>
+
 
     </div>
 </template>
