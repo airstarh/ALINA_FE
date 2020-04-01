@@ -8,6 +8,14 @@
             <button @click="log">log</button>
         </div>
         <div>
+            <h1>AlinaDatePicker</h1>
+            <AlinaDatePicker
+                    v-model="uts"
+                    class="notranslate"
+            ></AlinaDatePicker>
+            <div>{{uts}} ||| {{uts | unix_to_date_time}}</div>
+        </div>
+        <div>
             <h1>Date FNS</h1>
             <!--<div>Now: {{ now }}</div>-->
             <div>Now: {{ new Date() | date }}</div>
@@ -133,9 +141,13 @@
     import {mapActions, mapGetters, mapState} from "vuex";
     import AnObject from "../services/AnObject";
     import UtilsDate from "@/Utils/UtilsDate";
+    import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
 
     export default {
-        name: "EgStoreModuleComponent",
+        name:       "EgStoreModuleComponent",
+        components: {
+            AlinaDatePicker
+        },
         data() {
             const twoWeeksFromNow = new Date();
             twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
@@ -144,6 +156,7 @@
                 picker8:       null,
                 AnObject:      AnObject,
                 dateExample:   'DEFAULT VALUE',
+                uts:           1,
             };
         },
 
@@ -170,6 +183,7 @@
 
             dateplayer() {
                 this.dateExample = UtilsDate.UnixSecsToFormat(1578535140);
+                this.uts         = 477152940;
             },
 
             log() {
