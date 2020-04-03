@@ -1,7 +1,7 @@
 //import UtilsData from "./UtilsData";
 
-import UtilsData from "./UtilsData";
-import * as lodash    from "lodash";
+import UtilsData   from "./UtilsData";
+import * as lodash from "lodash";
 
 export default class UtilsObject {
     // ##################################################
@@ -84,11 +84,12 @@ export default class UtilsObject {
     //endregion Get Set by path.
     // ##################################################
     static eraseEmpty(o) {
-        for (let p in o) {
+        Object.entries(o).forEach(([p, v]) => {
             if (o[p] === "" || o[p] === null) {
                 delete o[p];
             }
-        }
+        });
+        return o;
     }
 
     /**

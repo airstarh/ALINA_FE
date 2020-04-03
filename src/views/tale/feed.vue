@@ -124,12 +124,19 @@
             Comment,
             Paginator
         },
+        props:      {
+            queryProps: {
+                type:    Object,
+                default: () => ({}),
+            },
+        },
         data() {
             return {
                 ConfigApi:      ConfigApi,
                 options:        {
                     urlFeed: `${ConfigApi.url_base}/tale/feed`,
                 },
+                queryData:      () => ({}),
                 feedSearch:     '',
                 feed:           [],
                 feedPagination: {
@@ -166,6 +173,13 @@
                 }
                 return res;
             },
+            queryFunction(q) {
+                return Obj.eraseEmpty({
+                    ...this.queryData,
+                    ...this.queryProps,
+                    ...q
+                });
+            },
             //##################################################
             ajaGetFeed() {
                 AjaxAlina.newInst({
@@ -190,11 +204,11 @@
             },
             //##################################################
             search() {
-                this.$router.push({path: `/tale/feed`, query: {txt: this.feedSearch}});
+                this.$router.push({path: `/tale/feed`, query: this.queryFunction({txt: this.feedSearch})});
             },
             searchClear() {
                 this.feedSearch = '';
-                this.$router.push({path: `/tale/feed`, query: {}});
+                this.$router.push({path: `/tale/feed`, query: this.queryFunction({txt: ""})});
             }
             //##################################################
         },
@@ -209,5 +223,7 @@
 <!--##################################################-->
 <!--##################################################-->
 <style>
-    .btn.display-3 {font-size: 2rem;}
+    .btn.display-3 {
+        font-size: 2rem;
+    }
 </style>
