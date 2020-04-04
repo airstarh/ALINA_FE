@@ -3,11 +3,14 @@
         <b-navbar toggleable="lg" type="dark" variant="dark">
             <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
 
+            <b-navbar-nav class="flex-row">
+                <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()"><b-icon-plus-circle-fill></b-icon-plus-circle-fill></b-nav-item>
+            </b-navbar-nav>
+            <!---->
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
-                    <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()">Add tale</b-nav-item>
+
 
                     <b-nav-item-dropdown text="Admin Tools" right v-if="CU.isAdmin()">
                         <b-dropdown-item to="/RestCall">RestCall</b-dropdown-item>
@@ -60,7 +63,6 @@
 
 <script>
     import CurrentUser from "@/services/CurrentUser";
-
     export default {
         name:  "MenuHorizontalMain",
         data() {

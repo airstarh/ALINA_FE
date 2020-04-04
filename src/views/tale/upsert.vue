@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container p-0">
         <div class="row no-gutters">
             <div class="col mx-auto">
                 <!---->
@@ -36,7 +36,7 @@
                 <!--##################################################-->
                 <!--##################################################-->
                 <!--##################################################-->
-                <div class="alina-form" v-if="options.modeEdit">
+                <div class="" v-if="options.modeEdit">
                     <div>#{{post.id}}</div>
                     <input type="text" v-model="post.header" placeholder="Header" class="notranslate form-control">
                     <ckeditor
@@ -61,7 +61,6 @@
                     <div class="ck-content">
                         <div v-html="post.body"></div>
                     </div>
-                    <StandardButtons :onGo="runAJax"></StandardButtons>
                     <hr>
                     <div v-if="CU.isAdmin()">
                         <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>

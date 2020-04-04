@@ -59,11 +59,6 @@ export default class UtilsURL {
      * ToDo: Untested. From: https://stackoverflow.com/a/42604801/3142281
      */
     static castGetObjectToString(params, prefix) {
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        console.log("castGetObjectToStringparams");
-        console.log(params);
-        console.log(prefix);
-        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         const query = Object.keys(params).map((key) => {
             const value = params[key];
 
