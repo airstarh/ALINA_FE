@@ -136,7 +136,9 @@
                 options:        {
                     urlFeed: `${ConfigApi.url_base}/tale/feed`,
                 },
-                queryData:      () => ({}),
+                queryData:      {
+
+                },
                 feedSearch:     '',
                 feed:           [],
                 feedPagination: {
@@ -164,6 +166,7 @@
         created() {
             this.ajaGetFeed();
         },
+        //##################################################
         methods:    {
             getRouteParam(paramName, to) {
                 if (UtilsData.empty(to)) {to = this.$route;}
@@ -174,18 +177,19 @@
                 return res;
             },
             queryFunction(q) {
-                return Obj.eraseEmpty({
+                const res = Obj.eraseEmpty({
+                    ...{},
                     ...this.queryData,
-                    ...this.queryProps,
                     ...q
                 });
+                this.$router.push({path: `/tale/feed`, query: res});
             },
             //##################################################
             ajaGetFeed() {
                 AjaxAlina.newInst({
                     method:    'GET',
                     url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
-                    getParams: this.$route.query,
+                    getParams: {...{}, ...this.queryProps, ...this.$route.query},
                     onDone:    (aja) => {
                         //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
                         this.feed           = aja.respBody.data.tale;
@@ -204,11 +208,11 @@
             },
             //##################################################
             search() {
-                this.$router.push({path: `/tale/feed`, query: this.queryFunction({txt: this.feedSearch})});
+                this.queryFunction({txt: this.feedSearch});
             },
             searchClear() {
                 this.feedSearch = '';
-                this.$router.push({path: `/tale/feed`, query: this.queryFunction({txt: ""})});
+                this.queryFunction({txt: ""});
             }
             //##################################################
         },
