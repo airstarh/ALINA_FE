@@ -6,7 +6,7 @@
                     <div class="input-group-append">
                         <button @click="searchClear" class="input-group-text btn btn-danger">clear</button>
                     </div>
-                    <input type="text" class="form-control" aria-label="Search" v-model="feedSearch">
+                    <input type="text" class="form-control" aria-label="Search" v-model="queryData.txt">
                     <div class="input-group-append">
                         <button @click="search" class="input-group-text btn btn-primary">Search</button>
                     </div>
@@ -137,9 +137,8 @@
                     urlFeed: `${ConfigApi.url_base}/tale/feed`,
                 },
                 queryData:      {
-
+                    txt: '',
                 },
-                feedSearch:     '',
                 feed:           [],
                 feedPagination: {
                     pageCurrentNumber: 1,
@@ -208,11 +207,11 @@
             },
             //##################################################
             search() {
-                this.queryFunction({txt: this.feedSearch});
+                this.queryFunction({});
             },
             searchClear() {
-                this.feedSearch = '';
-                this.queryFunction({txt: ""});
+                this.queryData.txt = '';
+                this.queryFunction({});
             }
             //##################################################
         },
