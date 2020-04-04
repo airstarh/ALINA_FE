@@ -144,7 +144,7 @@
                     style:         {
                         "margin-left":  this.level == 1 ? '0' : 10 + '%',
                         "padding-left": "1mm",
-                        "border-left":  this.level == 1 ? '#A9ABAD solid 2px' : '#A9ABAD solid 2px'
+                        "border-left":  this.level == 1 ? '#A9ABAD solid 7px' : '#A9ABAD solid 2px'
                     },
                     styleComment:  {}
 

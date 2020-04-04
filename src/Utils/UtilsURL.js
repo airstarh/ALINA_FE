@@ -1,3 +1,5 @@
+import UtilsData from "@/Utils/UtilsData";
+
 export default class UtilsURL {
 
     /*
@@ -57,6 +59,11 @@ export default class UtilsURL {
      * ToDo: Untested. From: https://stackoverflow.com/a/42604801/3142281
      */
     static castGetObjectToString(params, prefix) {
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log("castGetObjectToStringparams");
+        console.log(params);
+        console.log(prefix);
+        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
         const query = Object.keys(params).map((key) => {
             const value = params[key];
 
@@ -65,7 +72,8 @@ export default class UtilsURL {
             else if (params.constructor === Object)
                 key = (prefix ? `${prefix}[${key}]` : key);
 
-            if (typeof value === 'object')
+            //if (typeof value === 'object')
+            if (UtilsData.isObject(value))
                 return UtilsURL.castGetObjectToString(value, key);
             else
                 return `${key}=${encodeURIComponent(value)}`;
@@ -75,9 +83,9 @@ export default class UtilsURL {
     }
 
     // ##################################################
-	/**
-	 * https://www.abeautifulsite.net/parsing-urls-in-javascript
-	 * */
+    /**
+     * https://www.abeautifulsite.net/parsing-urls-in-javascript
+     * */
     static parseURL(url) {
         const parser       = document.createElement('a');
         const searchObject = {};

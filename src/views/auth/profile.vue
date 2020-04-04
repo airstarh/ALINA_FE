@@ -1,9 +1,9 @@
 <template>
-    <div class="container">
+    <div class="container p-0">
         <div class="row" v-if="CU.ownsOrAdminOrModerator(post.id)">
             <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
         </div>
-        <div class="row">
+        <div class="row no-gutters">
             <div class="col">
                 <h5 class="text-break">Profile #{{post.id}}</h5>
             </div>
@@ -122,6 +122,10 @@
                 </div>
             </div>
         </div>
+        <tale_feed
+                :doShowAuthorInfo="false"
+                :queryProps="{'owner':getCurrentId()}"
+        ></tale_feed>
     </div>
 </template>
 <!--##################################################-->
@@ -136,6 +140,7 @@
     import UtilsDate from "@/Utils/UtilsDate";
     import UtilsData from "@/Utils/UtilsData";
     import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
+    import tale_feed from "@/views/tale/feed";
     //#####
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
@@ -172,7 +177,8 @@
         components: {
             StandardButtons,
             ckeditor: CKEditor.component,
-            AlinaDatePicker
+            AlinaDatePicker,
+            tale_feed
         },
         //##################################################
         //region Router Hooks
@@ -197,13 +203,18 @@
             //region Define User
             getCurrentId(to) {
                 let id = null;
+                if (!to) {
+                    if (this && this.$router && this.$router.currentRoute && this.$router.currentRoute) {
+                        to = this.$router.currentRoute;
+                    }
+                }
                 if (to && to.params && to.params.id) {
                     id = to.params.id;
                 } else {
                     id = CurrentUser.obj().attributes.id;
                 }
                 if (UtilsData.empty(id)) {
-                    this.$router.replace({path: `/auth/login`});
+                    //this.$router.replace({path: `/auth/login`});
                 }
                 return id;
             },

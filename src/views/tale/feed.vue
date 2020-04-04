@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container p-0">
         <div class="row no-gutters">
             <div class="col">
                 <div class="input-group mb-3">
@@ -39,20 +39,20 @@
                             </h2>
                         </div>
                         <div class="row no-gutters">
-                            <div class="col-auto">
+                            <div class="col-auto" v-if="doShowAuthorInfo">
                                 <div class="fixed-height-150px">
                                     <router-link :to="'/auth/profile/'+tale.owner_id">
                                         <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="150px" class="rounded-circle">
-                                        <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" width="150x" class="rounded-circle">
+                                        <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" width="150px" class="rounded-circle">
                                     </router-link>
                                 </div>
                             </div>
                             <div class="notranslate col text-right">
-                                <router-link :to="'/auth/profile/'+tale.owner_id"
+                                <router-link v-if="doShowAuthorInfo" :to="'/auth/profile/'+tale.owner_id"
                                              class="btn btn-sm btn-primary text-left text-break mb-1"
                                 >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
                                 </router-link>
-                                <br>
+                                <div class="clearfix"></div>
                                 <router-link :to="'/tale/upsert/'+tale.id"
                                              class="btn btn-sm btn-info text-left mb-1">
                                     {{tale.publish_at | unix_to_date_time}}
@@ -125,7 +125,13 @@
             Paginator
         },
         props:      {
-            queryProps: {
+            // #####
+            doShowAuthorInfo: {
+                type:    Boolean,
+                default: true,
+            },
+            // #####
+            queryProps:       {
                 type:    Object,
                 default: () => ({}),
             },
@@ -175,13 +181,14 @@
                 }
                 return res;
             },
-            queryFunction(q) {
-                const res = Obj.eraseEmpty({
+            queryFunction(q = {}) {
+                const res   = Obj.eraseEmpty({
                     ...{},
                     ...this.queryData,
                     ...q
                 });
-                this.$router.push({path: `/tale/feed`, query: res});
+                const path1 = this.$router.currentRoute.path;
+                this.$router.push({path: path1, query: res});
             },
             //##################################################
             ajaGetFeed() {
@@ -207,11 +214,11 @@
             },
             //##################################################
             search() {
-                this.queryFunction({});
+                this.queryFunction();
             },
             searchClear() {
                 this.queryData.txt = '';
-                this.queryFunction({});
+                this.queryFunction();
             }
             //##################################################
         },
