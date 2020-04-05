@@ -19,10 +19,9 @@
 <script>
     // @ is an alias to /src
     import StandardButtons from "@/components/elements/form/StandardButtons";
-    import ConfigApi       from "@/configs/ConfigApi";
-    import AjaxAlina       from "@/services/AjaxAlina";
-    import CurrentUser     from "@/services/CurrentUser";
-
+    import ConfigApi from "@/configs/ConfigApi";
+    import AjaxAlina from "@/services/AjaxAlina";
+    import CurrentUser from "@/services/CurrentUser";
     export default {
         name:       "auth_login",
         data() {
@@ -47,10 +46,7 @@
                     postParams: this.post,
                     method:     'POST',
                     onDone:     (aja) => {
-                        const id = CurrentUser.obj().attributes.id;
-                        // if (id) {
-                        //     this.$router.replace({path: `/auth/profile`});
-                        // }
+                        //...
                     }
                 })
                 .go();

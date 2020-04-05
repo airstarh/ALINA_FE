@@ -24,8 +24,10 @@ Vue.prototype.lodash = lodash;
 //const options = {name: 'lodash', lodash: lodash}; // customize the way you want to call it
 //Vue.use(VueLodash, options); // options is optional
 //#####
-const VueCookie = require('vue-cookie');
-Vue.use(VueCookie);
+import VueCookies          from 'vue-cookies';
+Vue.use(VueCookies);
+Vue.$cookies.config('1d','/', '', true, 'None');
+Vue.$cookies.set('sewa', 'pisewa');
 //#####
 import VueDateFns          from "vue-date-fns";
 import UtilsDate           from "@/Utils/UtilsDate";

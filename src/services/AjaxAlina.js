@@ -5,7 +5,6 @@ import UtilsObject from "@/Utils/UtilsObject";
 import ConfigApi   from "@/configs/ConfigApi";
 import SpinnerObj  from "@/services/SpinnerObj";
 import Router      from '@/router';
-
 export default class AjaxAlina extends Ajax {
     //##################################################
     setOptions(options = {}) {
@@ -18,11 +17,13 @@ export default class AjaxAlina extends Ajax {
     hookBeforeAjaxStarted() {
         SpinnerObj.isOn = true;
     }
+
     //##################################################
     hookResponseNotOk() {
         SpinnerObj.isOn = false;
         MessagesObj.set('Bad response');
     }
+
     //##################################################
     hookProcessResponse() {
         //##########
@@ -66,6 +67,5 @@ export default class AjaxAlina extends Ajax {
         //##########
         SpinnerObj.isOn = false;
         //##########
-
     };
 }

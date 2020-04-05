@@ -1,7 +1,6 @@
 import UtilsURL    from "../Utils/UtilsURL";
 import UtilsObject from "../Utils/UtilsObject";
 import UtilsData   from "../Utils/UtilsData";
-
 export default class Ajax {
     // ##################################################
     //region Class behaviour settings
@@ -55,6 +54,7 @@ export default class Ajax {
         this.options = UtilsObject.mergeRecursively(this.options, options);
         return this;
     }
+
     //endregion Instance
     // ##################################################
     // ##################################################
@@ -62,7 +62,6 @@ export default class Ajax {
     go() {
         const _t   = this;
         const opts = this.options;
-
         // Headers
         const h = new Headers();
         for (let hp in opts.headers) {
@@ -81,7 +80,6 @@ export default class Ajax {
             referrer:    opts.referrer,
             enctype:     opts.enctype
         };
-
         // POST
         if (opts.method !== "GET") {
             if (opts.reqFlagPostRaw) {
@@ -107,7 +105,6 @@ export default class Ajax {
                 }
             }
         }
-
         // ##################################################
         // ##################################################
         // ##################################################
@@ -115,7 +112,7 @@ export default class Ajax {
         if (typeof _t['hookBeforeAjaxStarted'] === 'function') {
             _t.hookBeforeAjaxStarted();
         }
-        const u = this.urlBuild();
+        const u         = this.urlBuild();
         const myRequest = new Request(u, p);
         return fetch(myRequest)
         .then(resp => {
@@ -188,7 +185,6 @@ export default class Ajax {
                 _t.respType = 'blob';
                 return blob;
             });
-
         } else {
             return resp.blob()
             .then(blob => {

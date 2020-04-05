@@ -1,6 +1,5 @@
 import UtilsArray from "@/Utils/UtilsArray";
 import UtilsData  from "@/Utils/UtilsData";
-
 const MessagesObj = {
     store:         [],
     item:          {
@@ -13,7 +12,6 @@ const MessagesObj = {
         'alert alert-warning',
         'alert alert-danger',
     ],
-
     set(item) {
         const res = Object.assign({}, this.item);
         if (UtilsData.isString(item)) {
@@ -23,7 +21,6 @@ const MessagesObj = {
         }
         this.add(res);
     },
-
     add(message) {
         this.store.push(message);
     },
@@ -31,5 +28,4 @@ const MessagesObj = {
         UtilsArray.clear(this.store)
     }
 };
-
 export default MessagesObj;

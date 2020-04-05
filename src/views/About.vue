@@ -8,6 +8,15 @@
             <button @click="log">log</button>
         </div>
         <div>
+            <br>
+            <button
+                    @click="onClickBadResponse()"
+                    class="btn btn-lg btn-primary">TEST AJAX
+            </button>
+            <br>
+            <br>
+        </div>
+        <div>
             <h1>AlinaDatePicker</h1>
             <AlinaDatePicker
                     v-model="uts"
@@ -142,7 +151,9 @@
     import AnObject from "../services/AnObject";
     import UtilsDate from "@/Utils/UtilsDate";
     import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
-
+    import AjaxAlina from "@/services/AjaxAlina";
+    import ConfigApi from "@/configs/ConfigApi";
+    import MessagesObj from "@/services/MessagesObj";
     export default {
         name:       "EgStoreModuleComponent",
         components: {
@@ -159,33 +170,41 @@
                 uts:           1,
             };
         },
-
         created() {
             this.dateplayer();
         },
-
-        computed: {
+        computed:   {
             ...mapState("egStoreModule", ["sProp"]),
             ...mapGetters("egStoreModule", ["gProp"]),
             lodashExample2() {
                 return this.lodash.partition(this.lodashExample, n => n % 2);
             }
         },
-
-        methods: {
+        methods:    {
             ...mapActions("egStoreModule", ["aProp"]),
-
             methChangeProp() {
                 const value = this.sProp + 3;
                 this.aProp(value);
                 //this.flag = !this.flag;
             },
-
             dateplayer() {
                 this.dateExample = UtilsDate.UnixSecsToFormat(1578535140);
                 this.uts         = 477152940;
             },
-
+            onClickBadResponse() {
+                AjaxAlina.newInst({
+                    method: 'GET',
+                    url:    `${ConfigApi.url_base}/admintests/errors`,
+                    onDone: (aja) => {
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            MessagesObj.set('SUCCESS');
+                        } else {
+                            MessagesObj.set('FAIL');
+                        }
+                    }
+                })
+                .go();
+            },
             log() {
                 console.log("log ++++++++++");
                 console.log(this.sProp);
