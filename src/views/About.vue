@@ -201,6 +201,10 @@
                         } else {
                             MessagesObj.set('FAIL');
                         }
+                        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                        console.log("document.cookie");
+                        console.log(document.cookie);
+                        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                     }
                 })
                 .go();

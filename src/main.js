@@ -3,6 +3,7 @@ import App                 from "@/App.vue";
 import router              from "@/router";
 import store               from "@/store/store";
 import 'whatwg-fetch'
+import ConfigApi           from "@/configs/ConfigApi";
 //#####
 Vue.config.productionTip = false;
 //#####
@@ -26,8 +27,9 @@ Vue.prototype.lodash = lodash;
 //#####
 import VueCookies          from 'vue-cookies';
 Vue.use(VueCookies);
-Vue.$cookies.config('1d','/', '', true, 'None');
-Vue.$cookies.set('sewa', 'pisewa');
+//let d = ConfigApi.url_base;
+Vue.$cookies.config('1d', '/', '', true, 'None');
+Vue.$cookies.set('fgp', '11223344');
 //#####
 import VueDateFns          from "vue-date-fns";
 import UtilsDate           from "@/Utils/UtilsDate";

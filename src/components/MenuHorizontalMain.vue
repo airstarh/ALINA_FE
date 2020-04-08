@@ -1,10 +1,12 @@
 <template>
     <div class="mb-1">
-        <b-navbar toggleable="lg" type="dark" variant="dark">
+        <b-navbar toggleable="lg" type="dark" class="alina-navigator">
             <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
 
             <b-navbar-nav class="flex-row">
-                <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()"><b-icon-plus-circle-fill></b-icon-plus-circle-fill></b-nav-item>
+                <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()">
+                    <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
+                </b-nav-item>
             </b-navbar-nav>
             <!---->
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -80,3 +82,8 @@
         }
     };
 </script>
+<style>
+    .alina-navigator {
+        background-color: #8F2DA8;
+    }
+</style>

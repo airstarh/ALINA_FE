@@ -102,6 +102,18 @@
                     </div>
                 </div>
             </div>
+            <div v-if="!CU.isLoggedIn()">
+                <router-link to="/auth/login"
+                             class="btn btn-sm btn-primary"
+                >Login
+                </router-link>
+                or
+                <router-link to="/auth/register"
+                             class="btn btn-sm btn-primary"
+                >Register
+                </router-link>
+                to post comments
+            </div>
         </b-collapse>
         <!---->
         <!---->
@@ -147,7 +159,6 @@
                         "border-left":  this.level == 1 ? '#A9ABAD solid 7px' : '#A9ABAD solid 2px'
                     },
                     styleComment:  {}
-
                 },
                 state:          {
                     feedsInEdit: []
@@ -188,7 +199,6 @@
             resetTxt:                   {default: "Clear"},
         },
         created() {
-
         },
         methods:    {
             ajaGetComments(more = false) {
@@ -207,7 +217,6 @@
                 })
                 .go();
             },
-
             ajaCommentAdd(event) {
                 const _t = this;
                 AjaxAlina.newInst({
@@ -232,25 +241,21 @@
                 })
                 .go();
             },
-
             pageChange(pageSize, pageCurrentNumber) {
                 this.feedPagination.pageSize          = pageSize;
                 this.feedPagination.pageCurrentNumber = pageCurrentNumber;
                 this.ajaGetComments();
             },
-
             onClickMore(pageSize, pageCurrentNumber) {
                 this.feedPagination.pageSize          = pageSize;
                 this.feedPagination.pageCurrentNumber = pageCurrentNumber;
                 this.ajaGetComments(true);
             },
-
             onClickAll(pageSize, pageCurrentNumber) {
                 this.feedPagination.pageSize          = pageSize;
                 this.feedPagination.pageCurrentNumber = pageCurrentNumber;
                 this.ajaGetComments(false);
             },
-
             toggleCommentEditMode(comment, feedIndex) {
                 if (!this.state.feedsInEdit.includes(comment.id)) {
                     comment.bodyPrevious = comment.body;
@@ -259,7 +264,6 @@
                     UtilsArray.elRemoveByValue(this.state.feedsInEdit, comment.id);
                 }
             },
-
             ajaCommentSave(comment, feedIndex) {
                 const _t        = this;
                 comment.form_id = 'actionUpsert';
@@ -275,12 +279,10 @@
                 })
                 .go();
             },
-
             commentCancelEdit(comment, feedIndex) {
                 comment.body = comment.bodyPrevious;
                 this.toggleCommentEditMode(comment, feedIndex);
             },
-
             ajaDeleteComment(comment, feedIndex) {
                 if (!confirm("Are you sure?")) {return;}
                 const _t        = this;
@@ -296,12 +298,10 @@
                     }
                 })
                 .go();
-
             },
             onExpandCommentList() {
                 this.ajaGetComments();
             }
-
         },
         // #####
         computed:   {

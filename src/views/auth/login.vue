@@ -2,13 +2,13 @@
     <div class="container h-100">
         <div class="row align-items-center h-100">
             <div class="col-md-6 mx-auto">
-                <form action="" method="post" enctype="multipart/form-data">
+                <div class="alina-form">
                     <h1>Login</h1>
                     <input type="text" v-model="post.mail" placeholder="Mail" class="form-control">
                     <input type="password" v-model="post.password" placeholder="Password" class="form-control">
                     <input type="hidden" v-model="post.form_id" class="form-control">
                     <StandardButtons :onGo="runAJax"></StandardButtons>
-                </form>
+                </div>
             </div>
         </div>
     </div>

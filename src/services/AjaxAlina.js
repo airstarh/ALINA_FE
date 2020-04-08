@@ -62,6 +62,7 @@ export default class AjaxAlina extends Ajax {
             CU.applyAttributes(this.respBody["CurrentUser"]);
             ConfigApi.AjaxAlina.options.headers.uid   = CU.attributes.id;
             ConfigApi.AjaxAlina.options.headers.token = CU.attributes.token;
+            ConfigApi.AjaxAlina.options.headers.fgp   = CU.attributes.fingerprint;
         }
         //endregion CurrentUser
         //##########

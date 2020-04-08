@@ -2,7 +2,7 @@
     <div class="container h-100">
         <div class="row align-items-center h-100">
             <div class="col-md-6 mx-auto">
-                <form action="" method="post" enctype="multipart/form-data">
+                <div class="alina-form">
                     <h1>LogOut</h1>
                     <div v-if="CU.isLoggedIn()">You are logged in</div>
                     <div v-if="!CU.isLoggedIn()">You are logged out</div>
@@ -11,7 +11,7 @@
                             :onGo="runAJax"
                             submit-txt="Bye-bye"
                     ></StandardButtons>
-                </form>
+                </div>
             </div>
         </div>
     </div>
