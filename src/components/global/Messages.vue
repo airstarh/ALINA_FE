@@ -6,6 +6,7 @@
             class="messages"
             title="Messages"
             :ok-only="true"
+            size="lg"
     >
         <div
                 v-for="item in MessagesObj.store"

@@ -35,7 +35,7 @@
                                 <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                    class="btn btn-block btn-secondary text-left display-3"
                                    target="_blank"
-                                >{{tale.header}}</a>
+                                >{{tale.header || '¯\_(ツ)_/¯' }}</a>
                             </h2>
                         </div>
                         <div class="row no-gutters">

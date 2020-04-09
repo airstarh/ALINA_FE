@@ -223,16 +223,10 @@
                     url:    `${this.options.url}/${id}`,
                     method: 'GET',
                     onDone: (aja) => {
-                        Object.entries(this.post).forEach(([k, v]) => {
-                            if (aja.respBody.data.user.hasOwnProperty(k)) {
-                                // if (this.options.dateFields.includes(k)) {
-                                //     this.post[k] = UtilsDate.toDateObj(aja.respBody.data.user[k], true);
-                                // } else {
-                                //     this.post[k] = aja.respBody.data.user[k];
-                                // }
-                                this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
-                            }
-                        });
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
+                            this.options.modeEdit = false;
+                        }
                         //#####
                         if (callback) {
                             callback();
@@ -251,6 +245,7 @@
                     postParams: this.post,
                     onDone:     (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
+                            this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
                             this.options.modeEdit = false;
                         }
                     }

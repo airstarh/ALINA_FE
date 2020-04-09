@@ -2,6 +2,15 @@
     <div class="container h-100">
         <div class="row align-items-center h-100">
             <div class="col-md-6 mx-auto">
+                <router-link to="/auth/login"
+                             class="btn btn-sm btn-primary"
+                >Login
+                </router-link>
+                or
+                <router-link to="/auth/register"
+                             class="btn btn-sm btn-primary"
+                >Register
+                </router-link>
                 <div class="alina-form">
                     <h1>Reset password request</h1>
                     <input type="text" v-model="post.mail" placeholder="Mail" class="form-control">

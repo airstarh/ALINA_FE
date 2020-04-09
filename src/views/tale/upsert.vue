@@ -75,7 +75,7 @@
                             <a :href="`${ConfigApi.url_base}/tale/upsert/${post.id}`"
                                class="btn btn-block btn-secondary text-left"
                                target="_blank"
-                            >{{post.header}}</a>
+                            >{{post.header || '¯\_(ツ)_/¯' }}</a>
                         </h1>
                     </div>
                     <div class="row">

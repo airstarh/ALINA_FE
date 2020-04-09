@@ -2,11 +2,19 @@
     <div class="container h-100">
         <div class="row align-items-center h-100">
             <div class="col-md-6 mx-auto">
+                <router-link to="/auth/reset_password_request"
+                             class="btn btn-sm btn-primary"
+                >Reset password
+                </router-link>
+                or
+                <router-link to="/auth/register"
+                             class="btn btn-sm btn-primary"
+                >Register
+                </router-link>
                 <div class="alina-form">
                     <h1>Login</h1>
                     <input type="text" v-model="post.mail" placeholder="Mail" class="form-control">
                     <input type="password" v-model="post.password" placeholder="Password" class="form-control">
-                    <input type="hidden" v-model="post.form_id" class="form-control">
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                 </div>
             </div>
