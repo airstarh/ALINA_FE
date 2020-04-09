@@ -89,7 +89,7 @@
                     <Comment v-if="post.level < 2"
                              :level="post.level+1"
                              type="COMMENT"
-                             :root_tale_id="post.id"
+                             :root_tale_id="post.root_tale_id ? post.root_tale_id : post.id"
                              :answer_to_tale_id="post.id"
                              :count_by_answer_to_tale_id="post.count_answer_to_tale_id"
                     ></Comment>
@@ -120,7 +120,6 @@
     import UtilsDate from "@/Utils/UtilsDate";
     //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     //#####
-
     export default {
         name:       "tale_upsert",
         data() {
@@ -179,7 +178,6 @@
                 }
                 return res;
             },
-
             runAJax() {
                 AjaxAlina.newInst({
                     method:     'POST',
@@ -194,7 +192,6 @@
                 })
                 .go();
             },
-
             ajaxGetTale(id) {
                 const _t = this;
                 //###############
@@ -224,7 +221,6 @@
                 })
                 .go();
             },
-
             ajaDeleteTale(tale) {
                 if (!confirm("Are you sure?")) {return;}
                 const _t     = this;

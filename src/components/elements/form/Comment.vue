@@ -1,9 +1,5 @@
 <template>
     <div :style="options.style">
-
-        <!---->
-        <!---->
-        <!---->
         <div class="mb-5">
             <b-button v-b-toggle="'collapse-'+answer_to_tale_id"
                       :class="{
@@ -22,7 +18,12 @@
             <!--##################################################-->
             <!--##################################################-->
             <!--##################################################-->
-            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id" class="mt-1">
+            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id" class="mt-1"
+                 :data-id="tale.id"
+                 :data-to="tale.answer_to_tale_id"
+                 :data-root="root_tale_id"
+                 :data-index="feedIndex"
+            >
                 <div>
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
@@ -72,7 +73,7 @@
                 <Comment v-if="tale.level < 2"
                          :level="tale.level+1"
                          type="COMMENT"
-                         :root_tale_id="root_tale_id"
+                         :root_tale_id="tale.root_tale_id"
                          :answer_to_tale_id="tale.id"
                          :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
                 ></Comment>
