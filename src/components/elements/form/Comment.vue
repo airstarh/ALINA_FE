@@ -1,7 +1,7 @@
 <template>
     <div :style="options.style">
         <div class="mb-5">
-            <b-button v-b-toggle="'collapse-'+answer_to_tale_id"
+            <b-button v-b-toggle="`collapse-${answer_to_tale_id}`"
                       :class="{
                       'btn-md':level==1,
                       'btn-sm':level>1,
@@ -9,7 +9,7 @@
             >Comments: {{commentsTotal}}
             </b-button>
         </div>
-        <b-collapse :id="'collapse-'+answer_to_tale_id"
+        <b-collapse :id="`collapse-${answer_to_tale_id}`"
                     @show="onExpandCommentList"
                     :visible="level == 3"
                     class="mb-5"
@@ -23,6 +23,9 @@
                  :data-to="tale.answer_to_tale_id"
                  :data-root="root_tale_id"
                  :data-index="feedIndex"
+                 :class="{
+                    highlight: $route.query.highlight == tale.id,
+                 }"
             >
                 <div>
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
@@ -204,16 +207,19 @@
         methods:    {
             ajaGetComments(more = false) {
                 AjaxAlina.newInst({
-                    method: 'GET',
-                    url:    `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}/${this.answer_to_tale_id}`,
-                    onDone: (aja) => {
-                        if (more) {
-                            UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
-                        } else {
-                            this.feed = [];
-                            this.feed = aja.respBody.data.tale;
+                    method:    'GET',
+                    getParams: this.$route.query,
+                    url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}/${this.answer_to_tale_id}`,
+                    onDone:    (aja) => {
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            if (more) {
+                                UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
+                            } else {
+                                this.feed = [];
+                                this.feed = aja.respBody.data.tale;
+                            }
+                            this.feedPagination = aja.respBody.meta.tale;
                         }
-                        this.feedPagination = aja.respBody.meta.tale;
                     }
                 })
                 .go();
@@ -302,6 +308,15 @@
             },
             onExpandCommentList() {
                 this.ajaGetComments();
+            },
+            processQuery() {
+                const pathCurrent = this.$router.currentRoute.path;
+                const query       = this.$route.query;
+                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                console.log("xxx");
+                console.log(pathCurrent);
+                console.log(query);
+                console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
             }
         },
         // #####
@@ -321,4 +336,8 @@
     };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+    .highlight{
+        background-color: #f4ff81;
+    }
+</style>
