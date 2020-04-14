@@ -10,7 +10,7 @@
             </b-button>
         </div>
         <b-collapse :id="`collapse-${answer_to_tale_id}`"
-                    @show="onExpandCommentList"
+                    @show="onExpandCommentList(`collapse-${answer_to_tale_id}`)"
                     :visible="level == 3"
                     class="mb-5"
         >
@@ -23,11 +23,11 @@
                  :data-to="tale.answer_to_tale_id"
                  :data-root="root_tale_id"
                  :data-index="feedIndex"
-                 :class="{
-                    highlight: $route.query.highlight == tale.id,
-                 }"
             >
-                <div>
+                <div :class="{
+                        highlight: $route.query.highlight == tale.id,
+                    }"
+                >
                     <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <div class="float-left mr-1 fixed-height-100px">
@@ -139,6 +139,8 @@
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
     import ConfigCkEditor from "@/configs/ConfigCkEditor";
     import CurrentUser from "@/services/CurrentUser";
+    import AlinaStorage from "@/services/AlinaStorage";
+    import UtilsData from "@/Utils/UtilsData";
     //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     //#####
     export default {
@@ -202,13 +204,38 @@
             submitTxt:                  {default: "sim-sim"},
             resetTxt:                   {default: "Clear"},
         },
-        created() {
+        //beforeUpdate() {
+        //created() {
+        //updated() {
+        mounted() {
+            this.processQuery();
+            // this.$nextTick(function () {
+            //     this.processQuery();
+            // });
+        },
+        updated() {
+            this.processQuery();
+            // this.$nextTick(function () {
+            //     this.processQuery();
+            // });
+        },
+        destroyed() {
+            AlinaStorage.Comment.expanded = [];
         },
         methods:    {
             ajaGetComments(more = false) {
+                // #####
+                const q = this.$route.query;
+                let GET = {};
+                if (q.expand && q.expand != this.answer_to_tale_id) {
+                    if (this.level == 1) {
+                        GET.expand = q.expand;
+                    }
+                }
+                // #####
                 AjaxAlina.newInst({
                     method:    'GET',
-                    getParams: this.$route.query,
+                    getParams: GET,
                     url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}/${this.answer_to_tale_id}`,
                     onDone:    (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
@@ -306,17 +333,40 @@
                 })
                 .go();
             },
-            onExpandCommentList() {
+            onExpandCommentList(collapseId) {
                 this.ajaGetComments();
+                AlinaStorage.Comment.expanded.push(collapseId);
             },
             processQuery() {
                 const pathCurrent = this.$router.currentRoute.path;
-                const query       = this.$route.query;
-                console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                console.log("xxx");
-                console.log(pathCurrent);
-                console.log(query);
-                console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+                const q           = this.$route.query;
+                let idRoot        = null;
+                let id            = null;
+                if (q.expand) {
+                    idRoot = `collapse-${this.root_tale_id}`;
+                    if (!AlinaStorage.Comment.expanded.includes(idRoot)) {
+                        this.$root.$emit('bv::toggle::collapse', idRoot);
+                    }
+                    //#####
+                    this.feed.forEach((e, i) => {
+                        if (e.id == q.expand) {
+                            id = `collapse-${q.expand}`;
+                            if (!AlinaStorage.Comment.expanded.includes(id)) {
+                                this.$root.$emit('bv::toggle::collapse', id);
+                            }
+                        }
+                    });
+                }
+            },
+        },
+        // #####
+        watch:      {
+            $route(to, from) {
+                const q = this.$route.query;
+                if (UtilsData.empty(q.expand)) {
+                    this.feedPagination.pageCurrentNumber = 'last';
+                }
+                this.ajaGetComments();
             }
         },
         // #####
@@ -337,7 +387,7 @@
 </script>
 
 <style scoped lang="scss">
-    .highlight{
+    .highlight {
         background-color: #f4ff81;
     }
 </style>
