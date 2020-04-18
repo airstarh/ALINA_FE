@@ -11,9 +11,8 @@ import auth_reset_password_request   from "@/views/auth/resetPasswordRequest";
 import auth_reset_password_with_code from "@/views/auth/resetPasswordWithCode";
 import tale_upsert                   from "@/views/tale/upsert";
 import tale_feed                     from "@/views/tale/feed";
-
+import notification                  from "@/views/auth/notification";
 Vue.use(Router);
-
 export default new Router({
     routes: [
         {
@@ -90,10 +89,13 @@ export default new Router({
             path:      "/auth/reset_password_with_code",
             name:      "auth_reset_password_with_code",
             component: auth_reset_password_with_code
-        }
+        },
+        {
+            path:      "/notification",
+            component: notification
+        },
         //##################################################
         //##################################################
         //##################################################
-
     ]
 });

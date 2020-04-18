@@ -4,8 +4,16 @@
             <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
 
             <b-navbar-nav class="flex-row">
-                <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()">
+                <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="mr-3">
                     <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
+                </b-nav-item>
+                <b-nav-item to="/notification" v-if="CU.isLoggedIn()" class="mr-3">
+                    <b-icon-info-circle-fill></b-icon-info-circle-fill>
+                    <sup
+                            v-if="CU.attributes.count_notifications"
+                            class="btn btn-small btn-warning rounded-circle p-0 m-0"
+                            style="font-size: .8rem; line-height: 1.2rem; height:1.2rem; vertical-align: middle; left:-.3rem"
+                    >&nbsp;{{CU.attributes.count_notifications}}&nbsp;</sup>
                 </b-nav-item>
             </b-navbar-nav>
             <!---->

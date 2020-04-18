@@ -76,7 +76,7 @@
                                         type="COMMENT"
                                         :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
                                         :answer_to_tale_id="tale.id"
-                                        :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
+                                        :count_by_answer_to_tale_id="tale.count_root_tale_id"
                                 ></Comment>
                             </div>
                         </div>
