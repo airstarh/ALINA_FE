@@ -1,32 +1,33 @@
 import UtilsData from "@/Utils/UtilsData";
-
 export default class CurrentUser {
     //##################################################
     /**@type {CurrentUser}*/
     static inst = null;
     attributes  = {
-        "id":               null,
-        "mail":             null,
-        "password":         null,
-        "firstname":        null,
-        "lastname":         null,
-        "emblem":           null,
-        "birth":            null,
-        "language":         null,
-        "timezone":         null,
-        "is_verified":      null,
-        "banned_till":      null,
-        "created_at":       null,
-        "is_deleted":       null,
-        "last_time":        null,
-        "last_browser_enc": null,
-        "last_ip":          null,
-        "fingerprint":      null,
-        "about_myself":     null,
-        "reset_code":       null,
-        "reset_required":   null,
-        "rbac_user_role":   [],
+        "id":                  null,
+        "mail":                null,
+        "password":            null,
+        "firstname":           null,
+        "lastname":            null,
+        "emblem":              null,
+        "birth":               null,
+        "language":            null,
+        "timezone":            null,
+        "is_verified":         null,
+        "banned_till":         null,
+        "created_at":          null,
+        "is_deleted":          null,
+        "last_time":           null,
+        "last_browser_enc":    null,
+        "last_ip":             null,
+        "fingerprint":         null,
+        "about_myself":        null,
+        "reset_code":          null,
+        "reset_required":      null,
+        "count_notifications": 0,
+        "rbac_user_role":      [],
     };
+
     //##################################################
     /**
      * @return {CurrentUser}
@@ -43,6 +44,7 @@ export default class CurrentUser {
         }
         return _static.inst;
     }
+
     //##################################################
     applyAttributes(obj) {
         this.attributes = {}; // :-)
@@ -51,6 +53,7 @@ export default class CurrentUser {
         }
         window.localStorage.setItem("CurrentUser", JSON.stringify(this.attributes));
     };
+
     //##################################################
     isLoggedIn() {
         if (this.attributes.hasOwnProperty("id")) {
@@ -60,6 +63,7 @@ export default class CurrentUser {
         }
         return false;
     }
+
     //##################################################
     hasRole(name) {
         let res = false;

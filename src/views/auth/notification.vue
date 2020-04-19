@@ -97,6 +97,7 @@
         data() {
             return {
                 ConfigApi:      ConfigApi,
+                CU:             CurrentUser.obj(),
                 options:        {
                     urlFeed:        `${ConfigApi.url_base}/notification/SelectListLatest`,
                     urlMarkAsShown: `${ConfigApi.url_base}/notification/MarkAsShownEarlierThan`,
@@ -146,7 +147,7 @@
                     url:    `${this.options.urlMarkAsShown}/${latest}`,
                     onDone: (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
-                            //
+                            this.CU.attributes.count_notifications = 0;
                         }
                     }
                 })
