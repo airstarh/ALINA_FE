@@ -85,7 +85,7 @@
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div class="text-right">
                         <Like
                                 :pAmountLikes="post.count_like"
                                 :pCurrentUserLiked="post.current_user_liked"
@@ -141,16 +141,18 @@
                     modeEdit:     false
                 },
                 post:      {
-                    id:              null,
-                    header:          '',
-                    body:            '',
-                    publish_at:      '',
-                    is_submitted:    0,
-                    form_id:         'actionUpsert',
-                    owner_emblem:    '',
-                    owner_firstname: '',
-                    owner_lastname:  '',
-                    owner_id:        '',
+                    id:                 null,
+                    header:             '',
+                    body:               '',
+                    publish_at:         '',
+                    is_submitted:       0,
+                    form_id:            'actionUpsert',
+                    owner_emblem:       '',
+                    owner_firstname:    '',
+                    owner_lastname:     '',
+                    owner_id:           '',
+                    count_like:         '',
+                    current_user_liked: '',
                 }
             }
         },

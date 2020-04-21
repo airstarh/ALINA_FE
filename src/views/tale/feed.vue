@@ -68,7 +68,14 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="text-right">
+                            <Like
+                                    :pAmountLikes="tale.count_like"
+                                    :pCurrentUserLiked="tale.current_user_liked"
+                                    ref_table="tale"
+                                    :ref_id="tale.id"
+                            ></Like>
+                        </div>
                         <div class="row">
                             <div class="col">
                                 <Comment
@@ -111,6 +118,7 @@
     import AjaxAlina from "@/services/AjaxAlina";
     import CurrentUser from "@/services/CurrentUser";
     import Comment from "@/components/elements/form/Comment";
+    import Like from "@/components/elements/form/Like";
     import Paginator from "@/components/elements/form/Paginator";
     //#####
     import UtilsArray from "@/Utils/UtilsArray";
@@ -121,6 +129,7 @@
         components: {
             StandardButtons,
             Comment,
+            Like,
             Paginator
         },
         props:      {

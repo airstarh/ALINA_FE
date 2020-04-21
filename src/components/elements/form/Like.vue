@@ -1,17 +1,17 @@
 <template>
-    <div class="text-center">
+    <span>
         <button
                 @click="onLike"
-                class="btn btn-primary btn-sm"
+                class="btn btn-sm"
         >
-            <span v-if="dCurrentUserLiked">uNLike</span>
-            <span v-if="!dCurrentUserLiked">Like</span>
+            <span v-if="dCurrentUserLiked" class="text-danger"><b-icon-heart-fill></b-icon-heart-fill></span>
+            <span v-if="!dCurrentUserLiked"><b-icon-heart></b-icon-heart></span>
         </button>
         <button
                 class="btn btn-primary btn-sm"
         >{{dAmountLikes}}
         </button>
-    </div>
+    </span>
 </template>
 
 <script>
@@ -22,11 +22,11 @@
         name:    "Like",
         props:   {
             pAmountLikes:      {
-                type:    Number,
+                type:    Number | String,
                 default: 0,
             },
             pCurrentUserLiked: {
-                type:    Number,
+                type:    Number | String,
                 default: 0,
             },
             ref_table:         {
@@ -46,9 +46,12 @@
                 CU:                CurrentUser.obj(),
                 dCurrentUserLiked: 0,
                 dAmountLikes:      0,
-                user_id:           null,
                 val:               0
             };
+        },
+        mounted(){
+            this.dCurrentUserLiked = this.pCurrentUserLiked;
+            this.dAmountLikes = this.pAmountLikes;
         },
         watch:   {
             pAmountLikes() {
@@ -60,11 +63,14 @@
         },
         methods: {
             onLike() {
+                if (!this.CU.isLoggedIn()) {
+                    alert('Only logged-in users are allowed to like :-)');
+                    return;
+                }
                 this.val = 1;
                 const o  = {
                     "ref_table": this.ref_table,
                     "ref_id":    this.ref_id,
-                    "user_id":   this.user_id,
                     "val":       this.val,
                     "form_id":   'actionProcess',
                 };
@@ -82,11 +88,11 @@
                 .go();
             },
             watchWhoLikes() {
-
             },
             log() {
                 console.log("log ++++++++++");
-                console.log(this);
+                console.log(this.dAmountLikes);
+                console.log(this.pAmountLikes);
             }
         }
     };

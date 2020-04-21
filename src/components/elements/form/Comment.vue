@@ -55,21 +55,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" v-if="state.feedsInEdit.includes(tale.id)">
+                    <div class="row no-gutters" v-if="state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col">&nbsp;</div>
-                        <div class="col text-right">
-                            <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id)" class="row">
+                    <div class="row no-gutters m-buttons-1">
+                        <div class="col">
+                            <div class="text-right">
+                                <Like
+                                        :pAmountLikes="tale.count_like"
+                                        :pCurrentUserLiked="tale.current_user_liked"
+                                        ref_table="tale"
+                                        :ref_id="tale.id"
+                                ></Like>
+                            </div>
+                        </div>
+                        <div class="col text-right" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
+                            <span class="row no-gutters">
                                 <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">Delete</button>
                                 <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Edit</button>
                                 <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Cancel</button>
                                 <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">sim-sim</button>
-                            </div>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -96,10 +105,10 @@
             <div class="alina-form mt-2 mb-2" v-if="CU.isLoggedIn()">
                 <!--<input v-model="body" type="text" class="form-control">-->
                 <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
-                <div class="row">
+                <div class="row no-gutters">
                     <div class="col"></div>
                     <div class="col">
-                        <div class="row">
+                        <div class="row no-gutters">
                             <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{resetTxt}}</button>
                             <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{submitTxt}}</button>
                         </div>
@@ -133,8 +142,8 @@
     import ConfigApi from "@/configs/ConfigApi";
     import UtilsArray from "@/Utils/UtilsArray";
     import Comment from "@/components/elements/form/Comment";
+    import Like from "@/components/elements/form/Like";
     import Paginator from "@/components/elements/form/Paginator";
-    //#####
     import CKEditor from '@ckeditor/ckeditor5-vue';
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
     import ConfigCkEditor from "@/configs/ConfigCkEditor";
@@ -147,6 +156,7 @@
         name:       "Comment",
         components: {
             Paginator,
+            Like,
             Comment,
             ckeditor: CKEditor.component
         },

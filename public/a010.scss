@@ -29,6 +29,8 @@ html {
   box-sizing: border-box;
 }
 
+html, body { overflow-x: hidden; }
+
 html {
   height: 100%;
 }
@@ -75,6 +77,10 @@ textarea:focus {
   max-height: 150px;
 }
 
+.m-buttons-1 button
+{
+  margin-left: 1px;
+}
 ul,
 li
 {
