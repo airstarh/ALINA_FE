@@ -1,5 +1,5 @@
 <template>
-    <div class="container p-0">
+    <div class="p-0">
         <div class="row no-gutters">
             <div class="col mx-auto">
                 <!---->
