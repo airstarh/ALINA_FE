@@ -2,15 +2,48 @@
     <span>
         <button
                 @click="onLike"
-                class="btn btn-sm"
+                class="btn btn-lg"
         >
             <span v-if="dCurrentUserLiked" class="text-danger"><b-icon-heart-fill></b-icon-heart-fill></span>
             <span v-if="!dCurrentUserLiked"><b-icon-heart></b-icon-heart></span>
         </button>
         <button
-                class="btn btn-primary btn-sm"
+                @click="ajaGetFeed"
+                class="btn btn-primary btn-lg"
         >{{dAmountLikes}}
         </button>
+        <!---->
+        <b-modal
+                id="like"
+                v-model="flagModalShown"
+                class="like"
+                title="Likers"
+                :ok-only="true"
+                size="lg"
+        >
+        <div
+                v-for="(item,index) in feed"
+                class="mb-1"
+        >
+            <div class="row no-gutters">
+                <div class="col-auto">
+                    <img :src="item.from_emblem" :alt="item.from_firstname" width="70px">
+                </div>
+                <div class="col pl-2">
+                    <a :href="`/#/auth/profile/${item.user_id}`" target="_blank">
+                    {{item.from_firstname}} {{item.from_lastname}}
+                    </a>
+                </div>
+            </div>
+            <Paginator
+                    :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+                    :pageSize="parseInt(feedPagination.pageSize)"
+                    :rowsTotal="parseInt(feedPagination.rowsTotal)"
+                    :pagesTotal="parseInt(feedPagination.pagesTotal)"
+                    :onClickPage="pageChange"
+            ></Paginator>
+        </div>
+    </b-modal>
     </span>
 </template>
 
@@ -18,9 +51,13 @@
     import CurrentUser from "@/services/CurrentUser";
     import ConfigApi from "@/configs/ConfigApi";
     import AjaxAlina from "@/services/AjaxAlina";
+    import Paginator from "@/components/elements/form/Paginator";
     export default {
-        name:    "Like",
-        props:   {
+        name:       "Like",
+        components: {
+            Paginator
+        },
+        props:      {
             pAmountLikes:      {
                 type:    Number | String,
                 default: 0,
@@ -41,19 +78,29 @@
         data() {
             return {
                 options:           {
-                    urlLike: `${ConfigApi.url_base}/like/process`
+                    urlLike: `${ConfigApi.url_base}/like/process`,
+                    urlFeed: `${ConfigApi.url_base}/like/selectlist`
                 },
                 CU:                CurrentUser.obj(),
+                feed:              [],
+                feedPagination:    {
+                    pageCurrentNumber: 1,
+                    pageSize:          10,
+                    rowsTotal:         0,
+                    pagesTotal:        0,
+                },
+                flagModalShown:    false,
+                // #####
                 dCurrentUserLiked: 0,
                 dAmountLikes:      0,
                 val:               0
             };
         },
-        mounted(){
+        mounted() {
             this.dCurrentUserLiked = this.pCurrentUserLiked;
-            this.dAmountLikes = this.pAmountLikes;
+            this.dAmountLikes      = this.pAmountLikes;
         },
-        watch:   {
+        watch:      {
             pAmountLikes() {
                 this.dAmountLikes = this.pAmountLikes;
             },
@@ -61,7 +108,7 @@
                 this.dCurrentUserLiked = this.pCurrentUserLiked;
             }
         },
-        methods: {
+        methods:    {
             onLike() {
                 if (!this.CU.isLoggedIn()) {
                     alert('Only logged-in users are allowed to like :-)');
@@ -87,7 +134,29 @@
                 })
                 .go();
             },
-            watchWhoLikes() {
+            ajaGetFeed() {
+                if (this.dAmountLikes < 1) {return;}
+                const ps        = this.feedPagination.pageSize;
+                const pn        = this.feedPagination.pageCurrentNumber;
+                const ref_table = this.ref_table;
+                const ref_id    = this.ref_id;
+                AjaxAlina.newInst({
+                    method: 'GET',
+                    url:    `${this.options.urlFeed}/${ps}/${pn}/${ref_table}/${ref_id}`,
+                    onDone: (aja) => {
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            this.feed           = aja.respBody.data;
+                            this.feedPagination = aja.respBody.meta.lk;
+                            this.flagModalShown = true;
+                        }
+                    }
+                })
+                .go();
+            },
+            pageChange(pageSize, pageCurrentNumber) {
+                this.feedPagination.pageSize          = pageSize;
+                this.feedPagination.pageCurrentNumber = pageCurrentNumber;
+                this.ajaGetFeed();
             },
             log() {
                 console.log("log ++++++++++");
