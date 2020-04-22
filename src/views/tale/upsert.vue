@@ -45,10 +45,8 @@
                             :editor="options.editor"
                             :config="options.editorConfig"
                     ></ckeditor>
-                    <!---->
-                    <!---->
-                    <!---->
-                    <div class="input-group mt-1 mb-3">
+
+                    <div class="mt-1 mb-3 no-gutters">
                         <AlinaDatePicker
                                 v-model="post.publish_at"
                                 label="Publish at"
