@@ -1,41 +1,40 @@
 <template>
     <div class="container p-0">
         <div v-if="feed.length == 0">List is empty</div>
-        <div v-if="feed.length > 0">
-            <div class="row no-gutters">
-                <div class="col mx-auto">
-                    <div class="mb-5 text-center">
-                        <Paginator
-                                :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                                :pageSize="parseInt(feedPagination.pageSize)"
-                                :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                                :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                                :onClickPage="pageChange"
-                        ></Paginator>
+        <div v-if="feed.length > 0" class="row no-gutters p-0">
+            <div class="col mx-auto">
+                <div class="mb-5 text-center">
+                    <Paginator
+                            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+                            :pageSize="parseInt(feedPagination.pageSize)"
+                            :rowsTotal="parseInt(feedPagination.rowsTotal)"
+                            :pagesTotal="parseInt(feedPagination.pagesTotal)"
+                            :onClickPage="pageChange"
+                    ></Paginator>
+                </div>
+                <!--##################################################-->
+                <!--##################################################-->
+                <!--##################################################-->
+                <!-- region Feed -->
+                <div class="row no-gutters mb-5">
+                    <div class="col">
+                        <button
+                                @click="ajaDeleteAll"
+                                class="btn btn-danger"
+                        >Delete all
+                        </button>
                     </div>
-                    <!--##################################################-->
-                    <!--##################################################-->
-                    <!--##################################################-->
-                    <!-- region Feed -->
-                    <div class="row mb-5">
-                        <div class="col">
-                            <button
-                                    @click="ajaDeleteAll"
-                                    class="btn btn-danger"
-                            >Delete all
-                            </button>
-                        </div>
-                    </div>
-                    <div v-for="(item, index) in feed" v-bind:key="item.id"
-                         class="row no-gutters mb-3"
-                         :class="{
+                </div>
+                <div v-for="(item, index) in feed" v-bind:key="item.id"
+                     class="row no-gutters mb-3"
+                     :class="{
                             'ishown': item.is_shown
                          }"
-                    >
+                >
                         <span class="col-auto">
                             <img v-if="item.from_emblem" :src="item.from_emblem" width="50px" class="rounded-circle">
                         </span>
-                        <span class="col">
+                    <span class="col">
                             <span v-html="item.txt"></span>
                             <br>
                             <span><b>{{item.from_firstname}} {{item.from_lastname}}</b></span>
@@ -44,27 +43,26 @@
                                 <i>{{item.created_at | unix_to_date_time}}</i>
                             </span>
                         </span>
-                        <span class="col-auto">
+                    <span class="col-auto">
                             <button
                                     class="btn btn-danger"
                                     @click="ajaDeleteItem(item.id, index)">Delete</button>
                         </span>
-                        <hr>
-                    </div>
-                    <!-- endregion Feed -->
-                    <!--##################################################-->
-                    <!--##################################################-->
-                    <!--##################################################-->
+                    <hr>
+                </div>
+                <!-- endregion Feed -->
+                <!--##################################################-->
+                <!--##################################################-->
+                <!--##################################################-->
 
-                    <div class="mt-5 text-center">
-                        <Paginator
-                                :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                                :pageSize="parseInt(feedPagination.pageSize)"
-                                :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                                :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                                :onClickPage="pageChange"
-                        ></Paginator>
-                    </div>
+                <div class="mt-5 text-center">
+                    <Paginator
+                            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+                            :pageSize="parseInt(feedPagination.pageSize)"
+                            :rowsTotal="parseInt(feedPagination.rowsTotal)"
+                            :pagesTotal="parseInt(feedPagination.pagesTotal)"
+                            :onClickPage="pageChange"
+                    ></Paginator>
                 </div>
             </div>
         </div>

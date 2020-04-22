@@ -14,11 +14,8 @@
                     :visible="level == 3"
                     class="mb-5"
         >
-
-            <!--##################################################-->
-            <!--##################################################-->
-            <!--##################################################-->
-            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id" class="mt-1"
+            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id"
+                 class="mt-1"
                  :data-id="tale.id"
                  :data-to="tale.answer_to_tale_id"
                  :data-root="root_tale_id"
@@ -28,7 +25,7 @@
                         highlight: $route.query.highlight == tale.id,
                     }"
                 >
-                    <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
+                    <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <div class="float-left mr-1 fixed-height-100px">
                                 <a :href="tale.owner_emblem" target="_blank">
@@ -48,7 +45,7 @@
                             <!--</router-link>-->
                         </div>
                     </div>
-                    <div class="row" v-if="!state.feedsInEdit.includes(tale.id)">
+                    <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <div class="ck-content">
                                 <div class="notranslate" v-html="tale.body"></div>
@@ -102,15 +99,16 @@
                     :onClickMore="onClickMore"
                     :onClickAll="onClickAll"
             ></Paginator>
-            <div class="alina-form mt-2 mb-2" v-if="CU.isLoggedIn()">
-                <!--<input v-model="body" type="text" class="form-control">-->
-                <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
-                <div class="row no-gutters">
-                    <div class="col"></div>
-                    <div class="col">
-                        <div class="row no-gutters">
-                            <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{resetTxt}}</button>
-                            <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{submitTxt}}</button>
+            <div class="row no-gutters">
+                <div class="col alina-form mt-2 mb-2" v-if="CU.isLoggedIn()">
+                    <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+                    <div class="row no-gutters">
+                        <div class="col"></div>
+                        <div class="col">
+                            <div class="row no-gutters">
+                                <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{resetTxt}}</button>
+                                <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{submitTxt}}</button>
+                            </div>
                         </div>
                     </div>
                 </div>

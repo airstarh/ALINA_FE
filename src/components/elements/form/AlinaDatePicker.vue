@@ -6,7 +6,7 @@
                 <div class="input-group-text">{{label}}</div>
             </div>
             <div class="col">
-                <div class="row text-right">
+                <div class="row no-gutters text-right">
                     <div class="col text-nowrap mt-2">
                         <label class="sr-only" :for="`year-${idq}`">year</label>
                         <input v-model="year" size="4" type="number" max="9999" class="ch4" :id="`year-${idq}`" placeholder="YEAR">

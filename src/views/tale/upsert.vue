@@ -76,7 +76,7 @@
                             >{{post.header || '¯\_(ツ)_/¯' }}</a>
                         </h1>
                     </div>
-                    <div class="row">
+                    <div class="row no-gutters">
                         <div class="col">
                             <div class="ck-content" :lang="post.lang">
                                 <div class="notranslate" v-html="post.body"></div>

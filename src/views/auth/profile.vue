@@ -1,6 +1,6 @@
 <template>
     <div class="container p-0">
-        <div class="row" v-if="CU.ownsOrAdminOrModerator(post.id)">
+        <div class="row no-gutters" v-if="CU.ownsOrAdminOrModerator(post.id)">
             <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
         </div>
         <div class="row no-gutters">
@@ -24,9 +24,9 @@
                         </a>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col pl-2">
                     <div class="alina-form">
-                        <div class="row mt-4 justify-content-center align-items-center">
+                        <div class="row no-gutters mt-4 justify-content-center align-items-center">
                             <div class="col-12 text-center">
                                 <a :href="'mailto:'+post.mail">
                                     {{post.mail}}
@@ -35,7 +35,7 @@
                         </div>
                         <!--##################################################-->
 
-                        <div class="row mt-4 justify-content-center align-items-center">
+                        <div class="row no-gutters mt-4 justify-content-center align-items-center">
                             <div class="col">
                                 <label for="firstname">First name</label>
                                 <input v-model="post.firstname" type="text" id="firstname" class="form-control">
@@ -44,7 +44,7 @@
 
                         <!--##################################################-->
 
-                        <div class="row mt-4 justify-content-center align-items-center">
+                        <div class="row no-gutters mt-4 justify-content-center align-items-center">
                             <div class="col">
                                 <label for="lastname">Last name</label>
                                 <input v-model="post.lastname" type="text" id="lastname" class="form-control">
@@ -53,7 +53,7 @@
 
                         <!--##################################################-->
 
-                        <div class="row mt-4 justify-content-center align-items-center">
+                        <div class="row no-gutters mt-4 justify-content-center align-items-center">
                             <div class="col">
                                 <AlinaDatePicker
                                         v-model="post.birth"
@@ -69,7 +69,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row mt-4">
+            <div class="row no-gutters mt-4">
                 <div class="col">
                     <ckeditor
                             class="notranslate"
@@ -84,27 +84,27 @@
         <!--##################################################-->
         <!--##################################################-->
         <div v-if="!options.modeEdit" class="text-break">
-            <div class="row">
+            <div class="row no-gutters">
                 <div class="col-4">
                     <a :href="post.emblem" target="_blank">
                         <img :src="post.emblem" width="100%">
                     </a>
                 </div>
-                <div class="col">
+                <div class="col pl-2">
                     <!--##################################################-->
-                    <div class="row mb-1 justify-content-center align-items-center">
+                    <div class="row no-gutters mb-1 justify-content-center align-items-center">
                         <div class="notranslate col font-weight-bold">
                             {{post.firstname}} {{post.lastname}}
                         </div>
                     </div>
                     <!--##################################################-->
-                    <div class="row mb-1 justify-content-center align-items-center">
+                    <div class="row no-gutters mb-1 justify-content-center align-items-center">
                         <div class="col">
                             {{post.birth | unix_to_date }}
                         </div>
                     </div>
                     <!--##################################################-->
-                    <div class="row mb-1 justify-content-center align-items-center">
+                    <div class="row no-gutters mb-1 justify-content-center align-items-center">
                         <div class="col-12">
                             <a :href="'mailto:'+post.mail">
                                 {{post.mail}}
@@ -114,7 +114,7 @@
                     <!--##################################################-->
                 </div>
             </div>
-            <div class="row mt-4">
+            <div class="row no-gutters mt-4">
                 <div class="col">
                     <div class="ck-content">
                         <div class="notranslate" v-html="post.about_myself"></div>

@@ -61,7 +61,7 @@
                             </div>
 
                         </div>
-                        <div class="row">
+                        <div class="row no-gutters">
                             <div class="col">
                                 <div class="ck-content" :lang="tale.lang">
                                     <div class="notranslate" v-html="tale.body"></div>
@@ -76,7 +76,7 @@
                                     :ref_id="tale.id"
                             ></Like>
                         </div>
-                        <div class="row">
+                        <div class="row no-gutters">
                             <div class="col">
                                 <Comment
                                         :level="1"
