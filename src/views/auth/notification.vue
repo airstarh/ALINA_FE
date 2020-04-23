@@ -32,12 +32,16 @@
                          }"
                 >
                         <span class="col-auto">
-                            <img v-if="item.from_emblem" :src="item.from_emblem" width="50px" class="rounded-circle">
+                            <a :href="`/#/auth/profile/${item.from_id}`">
+                                <img v-if="item.from_emblem" :src="item.from_emblem" width="50px" class="rounded-circle">
+                            </a>
                         </span>
-                    <span class="col">
+                    <span class="col pl-1">
                             <span v-html="item.txt"></span>
                             <br>
-                            <span><b>{{item.from_firstname}} {{item.from_lastname}}</b></span>
+                            <a :href="`/#/auth/profile/${item.from_id}`">
+                                <span><b>{{item.from_firstname}} {{item.from_lastname}}</b></span>
+                            </a>
                             <br>
                             <span>
                                 <i>{{item.created_at | unix_to_date_time}}</i>

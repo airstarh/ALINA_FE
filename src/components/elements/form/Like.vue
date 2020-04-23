@@ -27,10 +27,12 @@
         >
             <div class="row no-gutters">
                 <div class="col-auto">
-                    <img :src="item.from_emblem" :alt="item.from_firstname" width="70px">
+                    <a :href="`/#/auth/profile/${item.user_id}`">
+                        <img :src="item.from_emblem" :alt="item.from_firstname" width="70px">
+                    </a>
                 </div>
                 <div class="col pl-2">
-                    <a :href="`/#/auth/profile/${item.user_id}`" target="_blank">
+                    <a :href="`/#/auth/profile/${item.user_id}`" target="_blank" class="btn btn-primary">
                     {{item.from_firstname}} {{item.from_lastname}}
                     </a>
                 </div>
@@ -58,19 +60,19 @@
             Paginator
         },
         props:      {
-            pAmountLikes:          {
+            pAmountLikes:      {
                 type:    Number | String,
                 default: 0,
             },
-            pCurrentUserLiked:     {
+            pCurrentUserLiked: {
                 type:    Number | String,
                 default: 0,
             },
-            ref_table:             {
+            ref_table:         {
                 type:    String,
                 default: 'tale',
             },
-            ref_id:                {
+            ref_id:            {
                 type:    Number,
                 default: 0,
             },

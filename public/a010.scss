@@ -102,6 +102,26 @@ li
   margin-left: 0;
 }
 
+p
+, .ck-content p
+, code
+, .ck-content code
+{
+  margin:0;
+  padding:0;
+  border: 0;
+  line-height: 1;
+}
+
+p
+, .ck-content p{
+  line-height: 1.5;
+}
+
+code, .ck-content code {
+  color: black;
+  padding-left: 1em;
+}
 /*endregion Common things */
 /*endregion REQUIRED BY INCLUDED FRAMEWORKS*/
 
