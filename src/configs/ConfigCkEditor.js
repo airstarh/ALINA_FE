@@ -18,13 +18,13 @@ import Font                          from '@ckeditor/ckeditor5-font/src/font';
 import Underline                     from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Strikethrough                 from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import Code                          from '@ckeditor/ckeditor5-basic-styles/src/code';
+import CodeBlock                     from '@ckeditor/ckeditor5-code-block/src/codeblock';
 import Subscript                     from '@ckeditor/ckeditor5-basic-styles/src/subscript';
 import Superscript                   from '@ckeditor/ckeditor5-basic-styles/src/superscript';
 import MediaEmbed                    from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import List                          from '@ckeditor/ckeditor5-list/src/list';
 import TodoList                      from '@ckeditor/ckeditor5-list/src/todolist';
 import RemoveFormat                  from '@ckeditor/ckeditor5-remove-format/src/removeformat';
-
 const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
     plugins:      [
@@ -32,6 +32,7 @@ const ConfigCkEditor = {
         Superscript,
         Subscript,
         Code,
+        CodeBlock,
         Strikethrough,
         Underline,
         Font,
@@ -72,6 +73,7 @@ const ConfigCkEditor = {
             'todoList',
             '|',
             'code',
+            'codeBlock',
             'subscript',
             'superscript',
             'fontColor',
@@ -99,6 +101,18 @@ const ConfigCkEditor = {
     },
     mediaEmbed:   {
         previewsInData: true
+    },
+    link: {
+        decorators: {
+            addTargetToExternalLinks: {
+                mode: 'manual',
+                label: 'Open in a new tab',
+                attributes: {
+                    target: '_blank',
+                    rel: 'noopener noreferrer'
+                }
+            }
+        },
     },
     // ckfinder:     {
     //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`
