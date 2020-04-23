@@ -59,6 +59,14 @@
                     </div>
 
                     <div class="row no-gutters m-buttons-1">
+                        <div class="col text-right" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
+                            <span class="row no-gutters">
+                                <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">Delete</button>
+                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Edit</button>
+                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Cancel</button>
+                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">sim-sim</button>
+                            </span>
+                        </div>
                         <div class="col">
                             <div class="text-right">
                                 <Like
@@ -68,14 +76,6 @@
                                         :ref_id="tale.id"
                                 ></Like>
                             </div>
-                        </div>
-                        <div class="col text-right" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
-                            <span class="row no-gutters">
-                                <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">Delete</button>
-                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Edit</button>
-                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Cancel</button>
-                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">sim-sim</button>
-                            </span>
                         </div>
                     </div>
                 </div>

@@ -58,19 +58,19 @@
             Paginator
         },
         props:      {
-            pAmountLikes:      {
+            pAmountLikes:          {
                 type:    Number | String,
                 default: 0,
             },
-            pCurrentUserLiked: {
+            pCurrentUserLiked:     {
                 type:    Number | String,
                 default: 0,
             },
-            ref_table:         {
+            ref_table:             {
                 type:    String,
                 default: 'tale',
             },
-            ref_id:            {
+            ref_id:                {
                 type:    Number,
                 default: 0,
             },
