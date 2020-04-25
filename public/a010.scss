@@ -78,35 +78,33 @@ textarea:focus {
 }
 
 .m-buttons-1 button
+,.m-buttons-1 a
 {
   margin-left: 1px;
 }
 
 .ck-content{
-  padding: 0 10px 0 10px;
+  padding: 0;
 }
 
 .ck-content li {
-  margin-left: 1.5em;
+  margin-left: 2em;
 }
 
-p
-, .ck-content p
-, code
+  .ck-content p
 , .ck-content code
 {
   margin:0;
-  padding:0;
+  padding:0 2px 0 2px;
   border: 0;
   line-height: 1;
 }
 
-p
-, .ck-content p{
+.ck-content p{
   line-height: 1.5;
 }
 
-code, .ck-content code {
+.ck-content code {
   color: black;
   padding-left: .5em;
   padding-right: .5em;

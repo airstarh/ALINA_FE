@@ -20,7 +20,8 @@
                         >Select an image
                         </ui-fileupload>
                         <a :href="post.emblem" target="_blank">
-                            <img :src="post.emblem" width="100%">
+                            <img v-if="post.emblem" :src="post.emblem" width="100%">
+                            <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
                         </a>
                     </div>
                 </div>
@@ -87,7 +88,8 @@
             <div class="row no-gutters">
                 <div class="col-4">
                     <a :href="post.emblem" target="_blank">
-                        <img :src="post.emblem" width="100%">
+                        <img v-if="post.emblem" :src="post.emblem" width="100%">
+                        <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
                     </a>
                 </div>
                 <div class="col pl-2">
@@ -147,7 +149,6 @@
     import ConfigCkEditor from "@/configs/ConfigCkEditor";
     import UtilsObject from "@/Utils/UtilsObject";
     //#####
-
     export default {
         name:       "auth_profile",
         data() {
@@ -196,7 +197,6 @@
         //endregion Router Hooks
         //##################################################
         created() {
-
         },
         methods:    {
             //##################################################
@@ -224,7 +224,7 @@
                     method: 'GET',
                     onDone: (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
-                            this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
+                            this.post             = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
                             this.options.modeEdit = false;
                         }
                         //#####
@@ -234,7 +234,6 @@
                     }
                 })
                 .go();
-
             },
             //endregion Define User
             //##################################################
@@ -245,7 +244,7 @@
                     postParams: this.post,
                     onDone:     (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
-                            this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
+                            this.post             = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
                             this.options.modeEdit = false;
                         }
                     }
@@ -254,7 +253,6 @@
             },
             //##################################################
             onChangeFileField(fileList, event) {
-
                 AjaxAlina.newInst({
                     method:     'POST',
                     url:        this.options.urlEmblem,
@@ -268,7 +266,6 @@
                     }
                 })
                 .go();
-
             },
         }
     };

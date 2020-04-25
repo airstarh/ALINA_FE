@@ -6,7 +6,7 @@
                              class="btn btn-sm btn-primary"
                 >Reset password
                 </router-link>
-                or
+                &nbsp;
                 <router-link to="/auth/login"
                              class="btn btn-sm btn-primary"
                 >Login

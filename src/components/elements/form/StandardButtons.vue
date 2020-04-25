@@ -1,15 +1,15 @@
 <template>
-    <div class="form-group mt-3 text-center">
+    <div class="form-group mt-3 text-center m-buttons-1">
         <button
                 @click="event => {return this.onGo(event);}"
                 type="button"
                 class="btn btn-lg btn-primary"
         >{{submitTxt}}
         </button>
-        <span
+        <a
                 @click="() => {this.$router.go()}"
-                class="btn btn-lg btn-danger"
-        >{{resetTxt}}</span>
+                class="btn btn-lg btn-danger text-white"
+        >{{resetTxt}}</a>
     </div>
 </template>
 

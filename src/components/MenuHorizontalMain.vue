@@ -1,5 +1,5 @@
 <template>
-    <div class="mb-1">
+    <div class="mb-1" id="alina-main-menu">
         <b-navbar toggleable="lg" type="dark" class="alina-navigator">
             <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
 
@@ -15,16 +15,25 @@
                             style="font-size: .8rem; line-height: 1.2rem; height:1.2rem; vertical-align: middle; left:-.3rem"
                     >&nbsp;{{CU.attributes.count_notifications}}&nbsp;</sup>
                 </b-nav-item>
+
+                <b-nav-item to="/auth/login" v-if="!CU.isLoggedIn()" class="mr-3">
+                    <button class="btn-sm btn-light">Login</button>
+                </b-nav-item>
+                <b-nav-item to="/auth/register" v-if="!CU.isLoggedIn()" class="mr-3">
+                    <button class="btn-sm btn-light">Register</button>
+                </b-nav-item>
             </b-navbar-nav>
-            <!---->
+
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
 
+                    <!--<b-nav-item to="/auth/profile" v-if="CU.isLoggedIn()" class="mr-3">-->
+                    <!--    <b-icon-person-fill></b-icon-person-fill>-->
+                    <!--</b-nav-item>-->
 
                     <b-nav-item-dropdown text="Admin Tools" right v-if="CU.isAdmin()">
                         <b-dropdown-item to="/RestCall">RestCall</b-dropdown-item>
-                        <b-dropdown-item to="/">Home</b-dropdown-item>
                         <b-dropdown-item to="/about">about</b-dropdown-item>
                     </b-nav-item-dropdown>
                 </b-navbar-nav>
@@ -53,7 +62,10 @@
                     <b-nav-item-dropdown right>
                         <!-- Using 'button-content' slot -->
                         <template slot="button-content">
-                            <em>{{this.CU.name()}}</em>
+                            <!--<em>{{this.CU.name()}}</em>-->
+                            <img :src="CU.attributes.emblem" :alt="CU.attributes.firstname" height="40px" v-if="CU.attributes.emblem">
+                            <img v-if="!CU.isLoggedIn()" src="../assets/anarki.png" height="40px">
+                            <span>{{CU.attributes.firstname || '...'}}</span>
                         </template>
                         <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">LogIn</b-dropdown-item>
                         <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">Register</b-dropdown-item>
@@ -91,7 +103,7 @@
     };
 </script>
 <style>
-    .alina-navigator {
+    #alina-main-menu .alina-navigator {
         background-color: #8F2DA8;
     }
 </style>

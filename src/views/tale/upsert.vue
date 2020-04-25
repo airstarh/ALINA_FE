@@ -1,13 +1,14 @@
 <template>
     <div class="container p-0">
-        <div class="row no-gutters">
+        <div v-if="!post.id">...</div>
+        <div class="row no-gutters" v-if="post.id">
             <div class="col mx-auto">
                 <!---->
                 <!---->
                 <!---->
-                <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row no-gutters mb-1">
-                    <div @click="ajaDeleteTale(post)" class="col btn btn-danger">Delete</div>
-                    <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
+                <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row no-gutters mb-1 m-buttons-1">
+                    <button @click="ajaDeleteTale(post)" class="col btn btn-danger">Delete</button>
+                    <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</button>
                 </div>
 
                 <div class="row no-gutters mt-4">
@@ -38,6 +39,7 @@
                 <!-- ##################################################-->
                 <div class="" v-if="options.modeEdit">
                     <div>#{{post.id}}</div>
+                    <StandardButtons :onGo="runAJax"></StandardButtons>
                     <input type="text" v-model="post.header" placeholder="Header" class="notranslate form-control">
                     <ckeditor
                             class="notranslate"
@@ -55,6 +57,9 @@
                         ></AlinaDatePicker>
                     </div>
                     <StandardButtons :onGo="runAJax"></StandardButtons>
+
+                    <hr>
+                    <div class="display-3">Result:</div>
                     <hr>
                     <div class="ck-content">
                         <div v-html="post.body"></div>
@@ -163,18 +168,23 @@
         },
         //##################################################
         //region Router Hooks
-        beforeRouteEnter(to, from, next) {
-            next((vm) => {
-                const id = vm.getRouteParam('id', to);
-                vm.ajaxGetTale(id);
-            })
-        },
-        beforeRouteUpdate(to, from, next) {
+        mounted(){
             const vm = this;
-            const id = vm.getRouteParam('id', to);
+            const id = vm.getRouteParam('id');
             vm.ajaxGetTale(id);
-            next();
         },
+        // beforeRouteEnter(to, from, next) {
+        //     next((vm) => {
+        //         const id = vm.getRouteParam('id', to);
+        //         vm.ajaxGetTale(id);
+        //     })
+        // },
+        // beforeRouteUpdate(to, from, next) {
+        //     const vm = this;
+        //     const id = vm.getRouteParam('id', to);
+        //     vm.ajaxGetTale(id);
+        //     next();
+        // },
         //endregion Router Hooks
         //##################################################
         methods:    {
