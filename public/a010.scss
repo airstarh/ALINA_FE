@@ -2,34 +2,21 @@
 @import '../node_modules/bootstrap/scss/bootstrap';
 @import '../node_modules/bootstrap-vue/src/index.scss';
 @import '../node_modules/keen-ui/dist/keen-ui.css';
-
-/*region REQUIRED BY INCLUDED FRAMEWORKS*/
+/*#####*/
 $base-background: #9BDAFF;
-
-/*region Keen required*/
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-/*$brand-primary-color: #673AB7;
-$brand-accent-color: #FF4081;*/
-
-html {
-  font-size: 100%;
-}
-
-/*endregion Keen required*/
-
-/*region Common things */
+/*$brand-primary-color: #673AB7;*/
+/*$brand-accent-color: #FF4081;*/
+/*#####*/
+/*region FUNDAMENTAL */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body { overflow-x: hidden; }
+html, body {
+  overflow-x: hidden;
+}
 
 html {
   height: 100%;
@@ -39,7 +26,7 @@ body {
   height: 100%;
   position: relative;
   overflow: hidden;
-  //padding-top: 60px;
+  /*padding-top: 60px;*/
 }
 
 #alina-body-wrapper {
@@ -51,8 +38,40 @@ body {
   height: 100%;
   overflow: -moz-scrollbars-vertical;
   overflow: scroll;
+}
 
-  //border: orange solid 2px;
+/*endregion FUNDAMENTAL */
+/*#####*/
+/*region REQUIRED BY INCLUDED FRAMEWORKS*/
+/*region Keen required*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+}
+
+/*endregion Keen required*/
+/*endregion REQUIRED BY INCLUDED FRAMEWORKS*/
+/* ################################################## */
+/*region tiny adjustments*/
+/*region Form*/
+.alina-form {
+  background-color: #e9ecef;
+  padding: 2mm;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background-color: #9BDAFF;
+}
+
+.m-buttons-1 button, .m-buttons-1 a {
+  margin-left: 1px;
 }
 
 /*.btn {
@@ -60,12 +79,7 @@ body {
   margin-left: 1mm;
   margin-bottom: 1mm;
 }*/
-
-input:focus,
-select:focus,
-textarea:focus {
-  background-color: $base-background;
-}
+/*endregion Form*/
 
 .fixed-height-100px {
   overflow: hidden;
@@ -77,13 +91,10 @@ textarea:focus {
   max-height: 150px;
 }
 
-.m-buttons-1 button
-,.m-buttons-1 a
-{
-  margin-left: 1px;
-}
-
-.ck-content{
+/*endregion tiny adjustments*/
+/* ################################################## */
+/*region ck-editor*/
+.ck-content {
   padding: 0;
 }
 
@@ -91,16 +102,14 @@ textarea:focus {
   margin-left: 2em;
 }
 
-  .ck-content p
-, .ck-content code
-{
-  margin:0;
-  padding:0 2px 0 2px;
+.ck-content p, .ck-content code {
+  margin: 0;
+  padding: 0 2px 0 2px;
   border: 0;
   line-height: 1;
 }
 
-.ck-content p{
+.ck-content p {
   line-height: 1.5;
 }
 
@@ -109,13 +118,6 @@ textarea:focus {
   padding-left: .5em;
   padding-right: .5em;
 }
-/*endregion Common things */
-/*endregion REQUIRED BY INCLUDED FRAMEWORKS*/
 
-//region Form
-.alina-form {
-  background-color: #e9ecef;
-  padding: 2mm;
-}
-
-//endregion Form
+/*endregion ck-editor*/
+/* ################################################## */
