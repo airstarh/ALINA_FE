@@ -19,9 +19,14 @@ export default class AjaxAlina extends Ajax {
     }
 
     //##################################################
-    hookResponseNotOk() {
+    hookResponseNotOk(resp) {
         SpinnerObj.isOn = false;
-        MessagesObj.set('Bad response');
+        MessagesObj.set(`Server error. Status ${resp.status}`, 3);
+    }
+
+    hookNetworkError() {
+        SpinnerObj.isOn = false;
+        MessagesObj.set(`Network error. Check internet connection.`, 3);
     }
 
     //##################################################
@@ -32,12 +37,8 @@ export default class AjaxAlina extends Ajax {
                 const formId       = this.respBody["data"]["form_id"];
                 const vocRedirects = ConfigApi.vocRedirects;
                 if (UtilsObject.hasOwnPropertyCaseInsensitive(vocRedirects, formId)) {
-                    console.log(">>>____________________________");
-                    console.log("Redirected!");
-                    console.log(formId);
-                    console.log("<<<____________________________");
                     if (this.classBehaviour.followRedirects) {
-                        Router.replace(vocRedirects[formId]);
+                        Router.push(vocRedirects[formId]);
                     }
                 }
             }

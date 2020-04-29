@@ -63,7 +63,7 @@ export default class Ajax {
         const _t   = this;
         const opts = this.options;
         // Headers
-        const h = new Headers();
+        const h    = new Headers();
         for (let hp in opts.headers) {
             if (opts.headers.hasOwnProperty(hp)) {
                 h.append(hp, opts.headers[hp]);
@@ -127,13 +127,10 @@ export default class Ajax {
             if (!resp.ok) {
                 if (typeof _t['hookResponseNotOk'] === 'function') {
                     _t.hookResponseNotOk(resp);
+                } else {
+                    alert(`Server answered with status ${resp.status}`);
+                    //throw new Error('RESPONSE NOT OK');
                 }
-                console.error(">>>____________________________");
-                console.error("RESPONSE NOT OK");
-                console.error(u);
-                console.error(resp);
-                console.error("<<<____________________________");
-                throw new Error('RESPONSE NOT OK');
             }
             //endregion Response not OK
             return _t.handleResponse(resp);
@@ -152,10 +149,11 @@ export default class Ajax {
         })
         //##################################################
         .catch(error => {
-            console.error(">>>____________________________");
-            console.error("COMMON REQUEST ERROR");
-            console.error(error);
-            console.error("<<<____________________________");
+            if (typeof _t['hookNetworkError'] === 'function') {
+                _t.hookNetworkError(error);
+            } else {
+                alert('Network error. Check internet connection.');
+            }
         });
     }
 

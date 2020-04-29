@@ -4,9 +4,10 @@ const {styles}              = require('@ckeditor/ckeditor5-dev-utils');
 module.exports              = {
     // Deprecated since Vue CLI 3.3, please use publicPath instead
     //baseUrl: '.',
-    //publicPath:            '.',
-    publicPath:            '/apps/vue/',
+    publicPath:            '.',
+    //publicPath:            '/apps/vue/',
     devServer:             {
+        public:           'https://localhost:8082',
         https:            true,
         clientLogLevel:   'error',
         disableHostCheck: true

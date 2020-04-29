@@ -4,7 +4,7 @@ const MessagesObj = {
     store:         [],
     item:          {
         "text":   "",
-        "status": 0,
+        "status": 1,
     },
     statusClasses: [
         'alert alert-success',
@@ -12,12 +12,15 @@ const MessagesObj = {
         'alert alert-warning',
         'alert alert-danger',
     ],
-    set(item) {
+    set(item, status = null) {
         const res = Object.assign({}, this.item);
         if (UtilsData.isString(item)) {
             res.text = item;
         } else if (UtilsData.isObject(item)) {
             Object.assign(res, item)
+        }
+        if (status) {
+            res.status = status;
         }
         this.add(res);
     },
