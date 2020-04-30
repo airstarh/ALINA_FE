@@ -13,6 +13,12 @@
                     @click="onClickBadResponse()"
                     class="btn btn-lg btn-primary">TEST AJAX
             </button>
+            &nbsp;
+            <a
+                    href="https://alinazero/Auth/ResetPasswordRequest"
+                    class="btn btn-lg btn-primary"
+            >Test origin</a>
+
             <br>
             <br>
         </div>
@@ -155,7 +161,7 @@
     import ConfigApi from "@/configs/ConfigApi";
     import MessagesObj from "@/services/MessagesObj";
     export default {
-        name:       "EgStoreModuleComponent",
+        name:       "About",
         components: {
             AlinaDatePicker
         },
