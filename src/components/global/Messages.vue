@@ -12,7 +12,7 @@
                 v-for="item in MessagesObj.store"
                 v-bind:class="MessagesObj.statusClasses[item.status]"
         >
-            <pre>{{ item.text }}</pre>
+            <pre v-html="item.text"></pre>
         </div>
     </b-modal>
 </template>
