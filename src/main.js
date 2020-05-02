@@ -3,14 +3,18 @@ import App                 from "@/App.vue";
 import router              from "@/router";
 import store               from "@/store/store";
 import 'whatwg-fetch'
-import ConfigApi           from "@/configs/ConfigApi";
 //#####
 Vue.config.productionTip = false;
+//#####
+import VueCookies          from 'vue-cookies';
+Vue.use(VueCookies);
+Vue.$cookies.config('1d', '/', '', true, 'None');
+//Vue.$cookies.set('test', '11223344');
 //#####
 import BootstrapVue        from "bootstrap-vue";
 Vue.use(BootstrapVue);
 import "../public/a010.scss";
-//##
+//#####
 import {BootstrapVueIcons} from 'bootstrap-vue'
 Vue.use(BootstrapVueIcons);
 //#####
@@ -24,12 +28,6 @@ import lodash              from "lodash";
 Vue.prototype.lodash = lodash;
 //const options = {name: 'lodash', lodash: lodash}; // customize the way you want to call it
 //Vue.use(VueLodash, options); // options is optional
-//#####
-import VueCookies          from 'vue-cookies';
-Vue.use(VueCookies);
-//let d = ConfigApi.url_base;
-Vue.$cookies.config('1d', '/', '', true, 'None');
-Vue.$cookies.set('fgp', '11223344');
 //#####
 import VueDateFns          from "vue-date-fns";
 import UtilsDate           from "@/Utils/UtilsDate";

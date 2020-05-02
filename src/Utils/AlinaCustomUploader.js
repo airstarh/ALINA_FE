@@ -1,6 +1,7 @@
 import ConfigApi   from "@/configs/ConfigApi";
 import CurrentUser from "@/services/CurrentUser";
 import MessagesObj from "@/services/MessagesObj";
+import UtilsSys    from "@/Utils/UtilsSys";
 
 /**
  * https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#implementing-a-custom-upload-adapter
@@ -59,7 +60,6 @@ export class MyUploadAdapter {
             if (!response || response.error || (response.meta && response.meta.alina_response_success == 0)) {
                 return reject(response && response.error ? response.error.message : genericErrorText);
             }
-
             //region ALINA
             // if (response.messages) {
             //     let msgs = [];
@@ -69,7 +69,6 @@ export class MyUploadAdapter {
             //     });
             // }
             //endregion ALINA
-
             // If the upload is successful, resolve the upload promise with an object containing
             // at least the "default" URL, pointing to the image on the server.
             // This URL will be used to display the image in the content. Learn more in the
@@ -106,7 +105,7 @@ export class MyUploadAdapter {
         this.xhr.setRequestHeader('x-requested-with', 'AlinaFetchApi');
         this.xhr.setRequestHeader('uid', CU.attributes.id);
         this.xhr.setRequestHeader('token', CU.attributes.token);
-        this.xhr.setRequestHeader('fgp', CU.attributes.fingerprint);
+        this.xhr.setRequestHeader('fgp', ConfigApi.AjaxAlina.options.headers.fgp);
         // Send the request.
         this.xhr.send(data);
     }

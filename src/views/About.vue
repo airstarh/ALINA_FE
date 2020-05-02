@@ -15,7 +15,7 @@
             </button>
             &nbsp;
             <a
-                    href="https://alinazero/Auth/ResetPasswordRequest"
+                    :href="`${ConfigApi.url_base}/Auth/ResetPasswordRequest`"
                     class="btn btn-lg btn-primary"
             >Test origin</a>
 
@@ -169,6 +169,7 @@
             const twoWeeksFromNow = new Date();
             twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
             return {
+                ConfigApi,
                 lodashExample: [1, 2, 3, 4],
                 picker8:       null,
                 AnObject:      AnObject,
@@ -207,10 +208,6 @@
                         } else {
                             MessagesObj.set('FAIL');
                         }
-                        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                        console.log("document.cookie");
-                        console.log(document.cookie);
-                        console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
                     }
                 })
                 .go();

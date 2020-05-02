@@ -8,9 +8,8 @@
 </template>
 <script>
     import MenuHorizontalMain from "@/components/MenuHorizontalMain";
-    import Messages           from "@/components/global/Messages";
-    import Spinner            from "@/components/global/Spinner";
-
+    import Messages from "@/components/global/Messages";
+    import Spinner from "@/components/global/Spinner";
     export default {
         name:       "App",
         components: {

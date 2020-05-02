@@ -24,9 +24,12 @@ export default class AjaxAlina extends Ajax {
         MessagesObj.set(`Server error. Status ${resp.status}`, 3);
     }
 
-    hookNetworkError() {
+    hookNetworkError(e) {
         SpinnerObj.isOn = false;
         MessagesObj.set(`Network error. Check internet connection.`, 3);
+        console.log(">>>>>>>>>>>>>>>>>>>>");
+        console.error(e);
+        console.log("<<<<<<<<<<<<<<<<<<<<");
     }
 
     //##################################################
@@ -63,7 +66,6 @@ export default class AjaxAlina extends Ajax {
             CU.applyAttributes(this.respBody["CurrentUser"]);
             ConfigApi.AjaxAlina.options.headers.uid   = CU.attributes.id;
             ConfigApi.AjaxAlina.options.headers.token = CU.attributes.token;
-            ConfigApi.AjaxAlina.options.headers.fgp   = CU.attributes.fingerprint;
         }
         //endregion CurrentUser
         //##########

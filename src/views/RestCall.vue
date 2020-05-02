@@ -304,8 +304,6 @@
                 Object.entries(this.reqCookie).forEach((ind_val) => {
                     const ind       = ind_val[0];
                     const val       = ind_val[1];
-                    //this.$cookie.set(ind, val, 1);
-                    document.cookie = "name=oeschger";
                     document.cookie = `${ind}=${val}`;
                 });
                 //#####
