@@ -18,6 +18,11 @@
                     :href="`${ConfigApi.url_base}/Auth/ResetPasswordRequest`"
                     class="btn btn-lg btn-primary"
             >Test origin</a>
+            &nbsp;
+            <button
+                    @click="onTestPost()"
+                    class="btn btn-lg btn-primary">TEST POST
+            </button>
 
             <br>
             <br>
@@ -203,6 +208,23 @@
                     method: 'GET',
                     url:    `${ConfigApi.url_base}/admintests/errors`,
                     onDone: (aja) => {
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            MessagesObj.set('SUCCESS');
+                        } else {
+                            MessagesObj.set('FAIL');
+                        }
+                    }
+                })
+                .go();
+            },
+            onTestPost() {
+                AjaxAlina.newInst({
+                    method:     'POST',
+                    url:        `${ConfigApi.url_base}/admintests/TestPost`,
+                    postParams: {
+                        form_id: 'lalala'
+                    },
+                    onDone:     (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
                             MessagesObj.set('SUCCESS');
                         } else {

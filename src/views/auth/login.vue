@@ -49,12 +49,17 @@
         },
         methods:    {
             runAJax() {
-                const oAjax = AjaxAlina.newInst({
+                const _t = this;
+                AjaxAlina.newInst({
                     url:        this.options.url,
                     postParams: this.post,
                     method:     'POST',
                     onDone:     (aja) => {
-                        //...
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            _t.$router.replace({path: '/auth/profile'});
+                        } else {
+                            //
+                        }
                     }
                 })
                 .go();
