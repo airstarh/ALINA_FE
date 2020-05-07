@@ -14,7 +14,8 @@
                     :visible="level == 3"
                     class="mb-5"
         >
-            <div v-for="(tale, feedIndex) in feed" v-bind:key="tale.id"
+            <div v-for="(tale, feedIndex) in feed"
+                 :key="tale.id"
                  class="mt-1"
                  :data-id="tale.id"
                  :data-to="tale.answer_to_tale_id"
@@ -25,7 +26,9 @@
                         highlight: $route.query.highlight == tale.id,
                     }"
                 >
-                    <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
+                    <div
+                            class="row no-gutters"
+                            v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <div class="float-left mr-1 fixed-height-100px">
                                 <a :href="tale.owner_emblem" target="_blank">
@@ -204,7 +207,6 @@
         mounted() {
             this.processQuery();
         },
-
         destroyed() {
             AlinaStorage.Comment.expanded = [];
         },
