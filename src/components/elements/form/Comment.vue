@@ -87,9 +87,6 @@
                          :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
                 ></Comment>
             </div>
-            <!--##################################################-->
-            <!--##################################################-->
-            <!--##################################################-->
             <Paginator
                     :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
                     :pageSize="parseInt(feedPagination.pageSize)"
@@ -126,12 +123,6 @@
                 to post comments
             </div>
         </b-collapse>
-        <!---->
-        <!---->
-        <!---->
-        <!---->
-
-
     </div>
 </template>
 
@@ -148,8 +139,6 @@
     import CurrentUser from "@/services/CurrentUser";
     import AlinaStorage from "@/services/AlinaStorage";
     import UtilsData from "@/Utils/UtilsData";
-    //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
-    //#####
     export default {
         name:       "Comment",
         components: {
@@ -212,21 +201,10 @@
             submitTxt:                  {default: "sim-sim"},
             resetTxt:                   {default: "Clear"},
         },
-        //beforeUpdate() {
-        //created() {
-        //updated() {
         mounted() {
             this.processQuery();
-            // this.$nextTick(function () {
-            //     this.processQuery();
-            // });
         },
-        updated() {
-            this.processQuery();
-            // this.$nextTick(function () {
-            //     this.processQuery();
-            // });
-        },
+
         destroyed() {
             AlinaStorage.Comment.expanded = [];
         },

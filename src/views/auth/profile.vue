@@ -1,7 +1,8 @@
 <template>
     <div class="container p-0">
-        <div class="row no-gutters" v-if="CU.ownsOrAdminOrModerator(post.id)">
-            <div @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</div>
+        <div class="row no-gutters m-buttons-1" v-if="CU.ownsOrAdminOrModerator(post.id)">
+            <button @click="ajaDeleteUser(post)" class="col btn btn-danger">Suicide</button>
+            <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</button>
         </div>
         <div class="row no-gutters">
             <div class="col">
@@ -160,6 +161,7 @@
                     CkEditorObj:    ClassicEditor,
                     url:            `${ConfigApi.url_base}/auth/profile`,
                     urlEmblem:      `${ConfigApi.url_base}/FileUpload/CkEditor`,
+                    urlDelete:      `${ConfigApi.url_base}/auth/UserDelete`,
                     dateFields:     ['birth'],
                     modeEdit:       false,
                 },
@@ -236,6 +238,24 @@
                 .go();
             },
             //endregion Define User
+            //##################################################
+            ajaDeleteUser(post) {
+                if (!confirm("Are you sure?")) {return;}
+                if (!confirm("Are you REALLY sure???")) {return;}
+                const _t     = this;
+                post.form_id = 'actionUserDelete';
+                AjaxAlina.newInst({
+                    method:     'POST',
+                    url:        `${this.options.urlDelete}/${post.id}`,
+                    postParams: post,
+                    onDone:     (aja) => {
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            _t.$router.replace({path: `/tale/feed`});
+                        }
+                    }
+                })
+                .go();
+            },
             //##################################################
             runAJax() {
                 const oAjax = AjaxAlina.newInst({

@@ -12,7 +12,7 @@
                 class="btn btn-primary btn-lg"
         >{{dAmountLikes}}
         </button>
-        <!---->
+
         <b-modal
                 id="like"
                 v-model="flagModalShown"
@@ -160,11 +160,6 @@
                 this.feedPagination.pageCurrentNumber = pageCurrentNumber;
                 this.ajaGetFeed();
             },
-            log() {
-                console.log("log ++++++++++");
-                console.log(this.dAmountLikes);
-                console.log(this.pAmountLikes);
-            }
         }
     };
 </script>

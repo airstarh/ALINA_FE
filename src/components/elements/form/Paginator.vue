@@ -28,7 +28,6 @@
 <script>
     import AjaxAlina from "@/services/AjaxAlina";
     import ConfigApi from "@/configs/ConfigApi";
-
     export default {
         name:    "Paginator",
         data() {
@@ -85,7 +84,6 @@
                 if (pcn - 2 > 0) {arr.unshift(pcn - 2)}
                 if (pcn + 1 <= this.pagesTotal) {arr.push(pcn + 1)}
                 if (pcn + 2 <= this.pagesTotal) {arr.push(pcn + 2)}
-
                 // arr.unshift('Previous');
                 // arr.push('Next');
                 this.pagesArray = arr;

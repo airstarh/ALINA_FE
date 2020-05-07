@@ -26,8 +26,6 @@
                         ></Paginator>
                     </div>
                     <!--##################################################-->
-                    <!--##################################################-->
-                    <!--##################################################-->
                     <!-- region Tale -->
                     <div v-for="(tale, index) in feed" v-bind:key="tale.id">
                         <div class="row no-gutters">
@@ -91,9 +89,6 @@
                     </div>
                     <!-- endregion Tale -->
                     <!--##################################################-->
-                    <!--##################################################-->
-                    <!--##################################################-->
-
                     <div class="mt-5 text-center">
                         <Paginator
                                 :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
@@ -108,9 +103,6 @@
         </div>
     </div>
 </template>
-<!--##################################################-->
-<!--##################################################-->
-<!--##################################################-->
 <script>
     import UtilsData from "@/Utils/UtilsData";
     import StandardButtons from "@/components/elements/form/StandardButtons";
@@ -120,10 +112,8 @@
     import Comment from "@/components/elements/form/Comment";
     import Like from "@/components/elements/form/Like";
     import Paginator from "@/components/elements/form/Paginator";
-    //#####
     import UtilsArray from "@/Utils/UtilsArray";
     import Obj from "@/Utils/UtilsObject";
-    //#####
     export default {
         name:       "tale_feed",
         components: {
@@ -162,33 +152,10 @@
                 },
             }
         },
-        //##################################################
-        //region Router Hooks
-        beforeRouteEnter(to, from, next) {
-            next((vm) => {
-                //
-            })
-        },
-        beforeRouteUpdate(to, from, next) {
-            const vm = this;
-            //
-            next();
-        },
-        //endregion Router Hooks
-        //##################################################
         created() {
             this.ajaGetFeed();
         },
-        //##################################################
         methods:    {
-            getRouteParam(paramName, to) {
-                if (UtilsData.empty(to)) {to = this.$route;}
-                let res = null;
-                if (to && to.params && to.params[paramName]) {
-                    res = to.params[paramName];
-                }
-                return res;
-            },
             queryFunction(q = {}) {
                 const res   = Obj.eraseEmpty({
                     ...{},
@@ -198,19 +165,19 @@
                 const path1 = this.$router.currentRoute.path;
                 this.$router.push({path: path1, query: res});
             },
-            //##################################################
             ajaGetFeed() {
                 AjaxAlina.newInst({
                     method:    'GET',
                     url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
                     getParams: {...{}, ...this.queryProps, ...this.$route.query},
                     onDone:    (aja) => {
-                        //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
-                        this.feed           = aja.respBody.data.tale;
-                        this.feedPagination = aja.respBody.meta.tale;
-                        //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
-                        //#####//#####//#####
-                        document.getElementById('alina-body-wrapper').scrollTop = 0;
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
+                            this.feed           = aja.respBody.data.tale;
+                            this.feedPagination = aja.respBody.meta.tale;
+                            //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
+                            document.getElementById('alina-body-wrapper').scrollTop = 0;
+                        }
                     }
                 })
                 .go();
@@ -220,7 +187,6 @@
                 this.feedPagination.pageCurrentNumber = pageCurrentNumber;
                 this.ajaGetFeed();
             },
-            //##################################################
             search() {
                 this.queryFunction();
             },
@@ -228,7 +194,6 @@
                 this.queryData.txt = '';
                 this.queryFunction();
             }
-            //##################################################
         },
         watch:      {
             $route(to, from) {
@@ -237,9 +202,6 @@
         }
     };
 </script>
-<!--##################################################-->
-<!--##################################################-->
-<!--##################################################-->
 <style>
     .btn.display-3 {
         font-size: 2rem;
