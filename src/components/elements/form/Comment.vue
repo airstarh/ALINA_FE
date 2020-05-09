@@ -207,6 +207,9 @@
         mounted() {
             this.processQuery();
         },
+        updated() {
+            this.processQuery();
+        },
         destroyed() {
             AlinaStorage.Comment.expanded = [];
         },

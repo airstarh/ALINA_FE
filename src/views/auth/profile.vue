@@ -282,7 +282,9 @@
                         "userfile": fileList,
                     },
                     onDone:     (aja) => {
-                        this.post.emblem = aja.respBody.data.url;
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            this.post.emblem = aja.respBody.data.url;
+                        }
                     }
                 })
                 .go();

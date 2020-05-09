@@ -1,7 +1,7 @@
 import ConfigApi   from "@/configs/ConfigApi";
 import CurrentUser from "@/services/CurrentUser";
 import MessagesObj from "@/services/MessagesObj";
-import UtilsSys    from "@/Utils/UtilsSys";
+import SpinnerObj  from "@/services/SpinnerObj";
 
 /**
  * https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#implementing-a-custom-upload-adapter
@@ -16,6 +16,7 @@ export class MyUploadAdapter {
 
     // Starts the upload process.
     upload() {
+        SpinnerObj.isOn = true;
         return this.loader.file
         .then(file => new Promise((resolve, reject) => {
             this._initRequest();
@@ -46,11 +47,26 @@ export class MyUploadAdapter {
     _initListeners(resolve, reject, file) {
         const xhr              = this.xhr;
         const loader           = this.loader;
-        const genericErrorText = `Couldn't upload file: ${file.name}.`;
+        //const genericErrorText = `Couldn't upload file: ${file.name}.`;
+        const genericErrorText = null;
         xhr.addEventListener('error', () => reject(genericErrorText));
         xhr.addEventListener('abort', () => reject());
         xhr.addEventListener('load', () => {
             const response = xhr.response;
+            // #####
+            //region ALINA
+            SpinnerObj.isOn = false;
+            if (response) {
+                if (response.messages) {
+                    let msgs = [];
+                    msgs     = msgs.concat(response.messages);
+                    msgs.forEach((item) => {
+                        MessagesObj.add(item);
+                    });
+                }
+            }
+            //endregion ALINA
+            // #####
             // This example assumes the XHR server's "response" object will come with
             // an "error" which has its own "message" that can be passed to reject()
             // in the upload promise.
@@ -60,15 +76,6 @@ export class MyUploadAdapter {
             if (!response || response.error || (response.meta && response.meta.alina_response_success == 0)) {
                 return reject(response && response.error ? response.error.message : genericErrorText);
             }
-            //region ALINA
-            // if (response.messages) {
-            //     let msgs = [];
-            //     msgs = msgs.concat(response.messages);
-            //     msgs.forEach((item) => {
-            //         MessagesObj.add(item);
-            //     });
-            // }
-            //endregion ALINA
             // If the upload is successful, resolve the upload promise with an object containing
             // at least the "default" URL, pointing to the image on the server.
             // This URL will be used to display the image in the content. Learn more in the
