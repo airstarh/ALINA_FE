@@ -1,19 +1,36 @@
 <template v-if="SpinnerObj.isOn">
-    <div id="spinner"
-         :style="{
-			'display':isDisplayed()
-		 }"
-         @click="()=>{SpinnerObj.isOn = !SpinnerObj.isOn}"
+    <div
+            class="container-fluid"
+            id="spinner"
+            :style="{
+                'display':isDisplayed()
+            }"
     >
-        <div id="spinner-image-container">
-            <b-spinner label="Loading..."></b-spinner>
+        <div
+                id="spinner-row"
+                class="row h-100 align-items-center"
+                @click="()=>{SpinnerObj.isOn = !SpinnerObj.isOn}"
+        >
+            <div class="col-sm-3">&nbsp;</div>
+            <div
+                    class="col-sm-6"
+                    id="spinner-image-container"
+                    style="text-align: center"
+            >
+                <b-spinner
+                        tag="span"
+                        variant="light"
+                        type="grow"
+                        style="width: 15rem; height: 15rem;"
+                        label="Loading..."></b-spinner>
+            </div>
+            <div class="col-sm-3">&nbsp;</div>
         </div>
     </div>
 </template>
 
 <script>
     import SpinnerObj from "@/services/SpinnerObj";
-
     export default {
         name:       'Spinner',
         props:      {},
@@ -40,12 +57,17 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(100, 100, 100, 0.1);
+        background-color: rgba(100, 100, 100, 0.5);
     }
-
+    #spinner-row{
+        /*border: red solid 11px;*/
+    }
     #spinner #spinner-image-container {
-        position: absolute;
-        left: 50%;
-        top: 50%;
+        margin-top: auto;
+        margin-bottom: auto;
+        /*border: #a1d solid 11px;*/
+        /*position: absolute;*/
+        /*left: 50%;*/
+        /*top: 50%;*/
     }
 </style>

@@ -7,11 +7,11 @@
             <button @click="methChangeProp">Change Prop</button>
             <button @click="log">log</button>
         </div>
-        <div>
+        <div class="m-buttons-1">
             <br>
             <button
                     @click="onClickBadResponse()"
-                    class="btn btn-lg btn-primary">TEST AJAX
+                    class="btn btn-lg btn-primary">TEST Bad Response
             </button>
             &nbsp;
             <a
@@ -22,6 +22,11 @@
             <button
                     @click="onTestPost()"
                     class="btn btn-lg btn-primary">TEST POST
+            </button>
+            &nbsp;
+            <button
+                    @click="onTestSpinner()"
+                    class="btn btn-lg btn-primary">TEST SPINNER
             </button>
 
             <br>
@@ -165,6 +170,7 @@
     import AjaxAlina from "@/services/AjaxAlina";
     import ConfigApi from "@/configs/ConfigApi";
     import MessagesObj from "@/services/MessagesObj";
+    import SpinnerObj from "@/services/SpinnerObj";
     export default {
         name:       "About",
         components: {
@@ -233,6 +239,9 @@
                     }
                 })
                 .go();
+            },
+            onTestSpinner() {
+                SpinnerObj.isOn = true;
             },
             log() {
                 console.log("log ++++++++++");
