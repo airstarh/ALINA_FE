@@ -39,7 +39,7 @@
                 <!-- ##################################################-->
                 <div class="" v-if="options.modeEdit">
                     <div>#{{post.id}}</div>
-                    <StandardButtons :onGo="runAJax"></StandardButtons>
+                    <StandardButtons :onGo="ajaPostTale"></StandardButtons>
                     <input type="text" v-model="post.header" placeholder="Header" class="notranslate form-control">
                     <ckeditor
                             class="notranslate"
@@ -56,7 +56,7 @@
                                 class="notranslate"
                         ></AlinaDatePicker>
                     </div>
-                    <StandardButtons :onGo="runAJax"></StandardButtons>
+                    <StandardButtons :onGo="ajaPostTale"></StandardButtons>
 
                     <hr>
                     <div class="display-3">Result:</div>
@@ -168,7 +168,7 @@
         },
         //##################################################
         //region Router Hooks
-        mounted(){
+        mounted() {
             const vm = this;
             const id = vm.getRouteParam('id');
             vm.ajaxGetTale(id);
@@ -196,7 +196,7 @@
                 }
                 return res;
             },
-            runAJax() {
+            ajaPostTale() {
                 AjaxAlina.newInst({
                     method:     'POST',
                     url:        this.options.url,
@@ -226,15 +226,17 @@
                             : `${_t.options.url}`
                     ,
                     onDone: (aja) => {
-                        _t.post = aja.respBody.data;
-                        if (_t.post.is_submitted == 0) {_t.options.modeEdit = true;}
-                        //###############
-                        //region Fix Double get
-                        if (UtilsData.empty(id)) {
-                            _t.$router.replace({path: `/tale/upsert/${_t.post.id}`});
+                        if (aja.respBody.meta.alina_response_success == 1) {
+                            _t.post = aja.respBody.data;
+                            if (_t.post.is_submitted == 0) {_t.options.modeEdit = true;}
+                            //###############
+                            //region Fix Double get
+                            if (UtilsData.empty(id) && !UtilsData.empty(_t.post.id)) {
+                                _t.$router.replace({path: `/tale/upsert/${_t.post.id}`});
+                            }
+                            //endregion Fix Double get
+                            //###############
                         }
-                        //endregion Fix Double get
-                        //###############
                     }
                 })
                 .go();

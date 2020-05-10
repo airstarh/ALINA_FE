@@ -72,7 +72,7 @@ export default class AjaxAlina extends Ajax {
         //##########
         if (this.respType === 'text') {
             MessagesObj.set(this.respBody, 3);
-            this.options.onDone=()=>{};
+            this.options.onDone = () => {};
         }
         //##########
         SpinnerObj.isOn = false;
