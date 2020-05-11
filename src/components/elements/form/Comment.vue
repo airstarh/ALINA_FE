@@ -55,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row no-gutters" v-if="state.feedsInEdit.includes(tale.id)">
+                    <div class="row no-gutters" v-else>
                         <div class="col">
                             <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                         </div>
@@ -100,7 +100,8 @@
                     :onClickAll="onClickAll"
             ></Paginator>
             <div class="row no-gutters">
-                <div class="col alina-form mt-2 mb-2" v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`collapse-${answer_to_tale_id}`)">
+                <div class="col alina-form mt-2 mb-2"
+                     v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`collapse-${answer_to_tale_id}`)">
                     <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                     <div class="row no-gutters">
                         <div class="col"></div>
@@ -111,19 +112,20 @@
                             </div>
                         </div>
                     </div>
+                    <div>&nbsp;</div>
                 </div>
-            </div>
-            <div v-if="!CU.isLoggedIn()">
-                <router-link to="/auth/login"
-                             class="btn btn-sm btn-primary"
-                >Login
-                </router-link>
-                or
-                <router-link to="/auth/register"
-                             class="btn btn-sm btn-primary"
-                >Register
-                </router-link>
-                to post comments
+                <div v-else class="col">
+                    <router-link to="/auth/login"
+                                 class="btn btn-sm btn-primary"
+                    >Login
+                    </router-link>
+                    or
+                    <router-link to="/auth/register"
+                                 class="btn btn-sm btn-primary"
+                    >Register
+                    </router-link>
+                    to post comments
+                </div>
             </div>
         </b-collapse>
     </div>
