@@ -5,7 +5,6 @@ export default class UtilsArray {
         // let valTemp  = arr[i2];
         // arr[i2]   = arr[i1];
         // arr[i1]   = valTemp;
-
         /**
          * In order to make framework react on Array changes,
          * it is used more complicated way to change order of properties.
@@ -55,6 +54,13 @@ export default class UtilsArray {
     static vueSensitiveConcat(arr1, arr2) {
         //return [].splice.apply(arr1, [arr1.length+1, 0].concat(arr2));
         return arr1.splice(arr1.length + 1, 0, ...arr2);
+    }
+
+    static pushIfNotAlready(arr, val) {
+        if (!arr.includes(val)) {
+            arr.push(val);
+        }
+        return arr;
     }
 
     //endregion Elements Manipulations

@@ -100,7 +100,7 @@
                     :onClickAll="onClickAll"
             ></Paginator>
             <div class="row no-gutters">
-                <div class="col alina-form mt-2 mb-2" v-if="CU.isLoggedIn()">
+                <div class="col alina-form mt-2 mb-2" v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`collapse-${answer_to_tale_id}`)">
                     <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
                     <div class="row no-gutters">
                         <div class="col"></div>
@@ -142,6 +142,7 @@
     import CurrentUser from "@/services/CurrentUser";
     import AlinaStorage from "@/services/AlinaStorage";
     import UtilsData from "@/Utils/UtilsData";
+    import SpinnerObj from "@/services/SpinnerObj";
     export default {
         name:       "Comment",
         components: {
@@ -152,6 +153,7 @@
         },
         data() {
             return {
+                AlinaStorage,
                 CU:             CurrentUser.obj(),
                 options:        {
                     urlFeed:       `${ConfigApi.url_base}/tale/feed`,
@@ -211,7 +213,7 @@
             this.processQuery();
         },
         destroyed() {
-            AlinaStorage.Comment.expanded = [];
+            this.AlinaStorage.Comment.expanded = [];
         },
         methods:    {
             ajaGetComments(more = false) {
@@ -326,24 +328,24 @@
             },
             onExpandCommentList(collapseId) {
                 this.ajaGetComments();
-                AlinaStorage.Comment.expanded.push(collapseId);
+                UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId);
             },
             processQuery() {
                 const pathCurrent = this.$router.currentRoute.path;
                 const q           = this.$route.query;
                 let idRoot        = null;
-                let id            = null;
+                let idAnsw        = null;
                 if (q.expand) {
                     idRoot = `collapse-${this.root_tale_id}`;
-                    if (!AlinaStorage.Comment.expanded.includes(idRoot)) {
+                    if (!this.AlinaStorage.Comment.expanded.includes(idRoot)) {
                         this.$root.$emit('bv::toggle::collapse', idRoot);
                     }
                     //#####
                     this.feed.forEach((e, i) => {
                         if (e.id == q.expand) {
-                            id = `collapse-${q.expand}`;
-                            if (!AlinaStorage.Comment.expanded.includes(id)) {
-                                this.$root.$emit('bv::toggle::collapse', id);
+                            idAnsw = `collapse-${q.expand}`;
+                            if (!this.AlinaStorage.Comment.expanded.includes(idAnsw)) {
+                                this.$root.$emit('bv::toggle::collapse', idAnsw);
                             }
                         }
                     });

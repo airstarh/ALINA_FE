@@ -19,7 +19,7 @@
             >
                 <b-spinner
                         tag="span"
-                        variant="light"
+                        variant="secondary"
 
                         style="width: 15rem; height: 15rem;"
                         label="Loading..."></b-spinner>
@@ -57,7 +57,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(100, 100, 100, 0.5);
+        background-color: rgba(100, 100, 100, 0.1);
         z-index: 99999;
     }
     #spinner #spinner-row{
@@ -66,7 +66,7 @@
     #spinner #spinner-image-container {
         margin-top: auto;
         margin-bottom: auto;
-        opacity: 0.5;
+        /*opacity: 0.5;*/
         /*border: #a1d solid 11px;*/
         /*position: absolute;*/
         /*left: 50%;*/
