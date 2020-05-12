@@ -3,9 +3,6 @@
         <div v-if="!post.id">...</div>
         <div class="row no-gutters" v-if="post.id">
             <div class="col mx-auto">
-                <!---->
-                <!---->
-                <!---->
                 <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row no-gutters mb-1 m-buttons-1">
                     <button @click="ajaDeleteTale(post)" class="col btn btn-danger">Delete</button>
                     <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</button>
@@ -34,9 +31,7 @@
                     </div>
 
                 </div>
-                <!-- ##################################################-->
-                <!-- ##################################################-->
-                <!-- ##################################################-->
+
                 <div class="" v-if="options.modeEdit">
                     <div>#{{post.id}}</div>
                     <StandardButtons :onGo="ajaPostTale"></StandardButtons>
@@ -69,10 +64,7 @@
                         <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>
                     </div>
                 </div>
-                <!--##################################################-->
-                <!--##################################################-->
-                <!--##################################################-->
-                <div v-if="!options.modeEdit">
+                <div v-else>
                     <div class="row no-gutters mt-4 mb-2">
                         <h1 class="notranslate col" :lang="post.lang">
                             <a :href="`${ConfigApi.url_base}/tale/upsert/${post.id}`"
