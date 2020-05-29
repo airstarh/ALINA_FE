@@ -25,8 +25,11 @@ import MediaEmbed                    from '@ckeditor/ckeditor5-media-embed/src/m
 import List                          from '@ckeditor/ckeditor5-list/src/list';
 import TodoList                      from '@ckeditor/ckeditor5-list/src/todolist';
 import RemoveFormat                  from '@ckeditor/ckeditor5-remove-format/src/removeformat';
+import Indent                        from '@ckeditor/ckeditor5-indent/src/indent';
+import IndentBlock                   from '@ckeditor/ckeditor5-indent/src/indentblock';
 const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
+    language:     'en',
     plugins:      [
         MediaEmbed,
         Superscript,
@@ -55,6 +58,8 @@ const ConfigCkEditor = {
         List,
         TodoList,
         RemoveFormat,
+        Indent,
+        IndentBlock
     ],
     toolbar:      {
         items: [
@@ -81,6 +86,8 @@ const ConfigCkEditor = {
             '|',
             'link',
             'alignment',
+            'outdent',
+            'indent',
             '|',
             'insertTable',
             'tableRow',
@@ -90,6 +97,10 @@ const ConfigCkEditor = {
             'undo',
             'redo'
         ]
+    },
+    indentBlock:  {
+        offset: 10,
+        unit:   '%'
     },
     image:        {
         toolbar: ['imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
@@ -102,14 +113,14 @@ const ConfigCkEditor = {
     mediaEmbed:   {
         previewsInData: true
     },
-    link: {
+    link:         {
         decorators: {
             addTargetToExternalLinks: {
-                mode: 'manual',
-                label: 'Open in a new tab',
+                mode:       'manual',
+                label:      'Open in a new tab',
                 attributes: {
                     target: '_blank',
-                    rel: 'noopener noreferrer'
+                    rel:    'noopener noreferrer'
                 }
             }
         },
