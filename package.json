@@ -39,7 +39,7 @@
     "lodash": "^4.17.15",
     "material-design-icons": "^3.0.1",
     "postcss-loader": "^3.0.0",
-    "raw-loader": "^0.5.1",
+    "raw-loader": "^4.0.1",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.0",
     "vue-date-fns": "^1.1.0",
