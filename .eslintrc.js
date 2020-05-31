@@ -30,6 +30,12 @@ module.exports = {
         "vue/v-bind-style":                            "off",
         "vue/mustache-interpolation-spacing":          "off",
         "vue/multiline-html-element-content-newline":  "off",
+        "vue/order-in-components":                     "off",
+        "vue/require-prop-type-constructor":           "off",
+        "vue/prop-name-casing":                        "off",
+        "vue/no-parsing-error":                        "off",
+        "no-cond-assign":                              "off",
+        "no-console":                                  "off",
     },
     parserOptions: {
         parser:     "babel-eslint",

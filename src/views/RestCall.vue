@@ -152,7 +152,8 @@
                 // reqUri:          "http://alinazero:8080/FileUpload/Common",
                 //reqUri:          "http://alinazero:8080/AdminTests/TestMessages?lala[]=1&lala[]=2&lala[]=3&foo=bar",
                 //reqUri:                  "http://alinazero:8080/sources/images/orig.png",
-                reqUri:          "http://alinazero:8080/auth/profile",
+                //reqUri:          "http://alinazero:8080/auth/profile",
+                reqUri:          "https://alinazero/root/index2?lala[]=666",
                 /////////////////////////////////
                 modes:           ["cors", "no-cors", "*same-origin"],
                 mode:            "cors",
@@ -206,7 +207,7 @@
                 enctype:         "multipart/form-data",
                 /////////////////////////////////
                 reqHeaders:      {
-                    "Authorization": "sewa"
+                    "fgp": "sewa"
                 },
                 reqHeadersTxt:   "",
                 /////////////////////////////////

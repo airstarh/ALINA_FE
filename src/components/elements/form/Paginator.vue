@@ -5,6 +5,7 @@
             <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
             <span
                     v-for="(v, i) in pagesArray"
+                    :key="i"
                     class="btn"
                     :class="{ 'btn-secondary': v==pageCurrentNumber}"
                     @click="onClickPage(pageSize, v)"

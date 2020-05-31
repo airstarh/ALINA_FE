@@ -23,6 +23,7 @@
         >
         <div
                 v-for="(item,index) in feed"
+                :key="item.id"
                 class="mb-1"
         >
             <div class="row no-gutters">

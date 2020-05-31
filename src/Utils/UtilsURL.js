@@ -1,22 +1,16 @@
 import UtilsData from "@/Utils/UtilsData";
-
 export default class UtilsURL {
-
     /*
      * ToDo: UnTested. From: https://stackoverflow.com/a/43513777/3142281
      */
     static castGetStringToObject(query) {
-
-        query = query.substring(query.indexOf('?') + 1);
-
+        query        = query.substring(query.indexOf('?') + 1);
         let re       = /([^&=]+)=?([^&]*)/g;
         let decodeRE = /\+/g;
-
-        let decode = function (str) {
+        let decode   = function (str) {
             return decodeURIComponent(str.replace(decodeRE, " "));
         };
-
-        let params = {}, e;
+        let params   = {}, e;
         while (e = re.exec(query)) {
             let k = decode(e[1]), v = decode(e[2]);
             if (k.substring(k.length - 2) === '[]') {
@@ -26,7 +20,6 @@ export default class UtilsURL {
                 params[k] = v;
             }
         }
-
         let assign = function (obj, keyPath, value) {
             let lastKeyIndex = keyPath.length - 1;
             for (let i = 0; i < lastKeyIndex; ++i) {
@@ -38,7 +31,6 @@ export default class UtilsURL {
             }
             obj[keyPath[lastKeyIndex]] = value;
         };
-
         for (let prop in params) {
             let structure = prop.split('[');
             if (structure.length > 1) {
@@ -52,28 +44,25 @@ export default class UtilsURL {
             }
         }
         return params;
-    };
+    }
 
     // ##################################################
     /**
      * ToDo: Untested. From: https://stackoverflow.com/a/42604801/3142281
      */
-    static castGetObjectToString(params, prefix) {
-        const query = Object.keys(params).map((key) => {
-            const value = params[key];
-
-            if (params.constructor === Array)
-                key = `${prefix}[]`;
-            else if (params.constructor === Object)
-                key = (prefix ? `${prefix}[${key}]` : key);
-
-            //if (typeof value === 'object')
-            if (UtilsData.isObject(value))
-                return UtilsURL.castGetObjectToString(value, key);
+    static castGetObjectToString(obj, prefix) {
+        const query = Object.keys(obj).map((getParamName) => {
+            const getParamValue = obj[getParamName];
+            if (UtilsData.isArray(obj))
+                getParamName = `${prefix}[]`;
+            else if (UtilsData.isObject(obj))
+                getParamName = (prefix ? `${prefix}[${getParamName}]` : getParamName);
+            // #####
+            if (UtilsData.isArray(getParamValue))
+                return UtilsURL.castGetObjectToString(getParamValue, getParamName);
             else
-                return `${key}=${encodeURIComponent(value)}`;
+                return `${getParamName}=${encodeURIComponent(getParamValue)}`;
         });
-
         return [].concat.apply([], query).join('&');
     }
 

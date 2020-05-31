@@ -9,7 +9,8 @@
             size="lg"
     >
         <div
-                v-for="item in MessagesObj.store"
+                v-for="(item, i) in MessagesObj.store"
+                :key="i"
                 v-bind:class="MessagesObj.statusClasses[item.status]"
         >
             <pre v-html="item.text"></pre>
