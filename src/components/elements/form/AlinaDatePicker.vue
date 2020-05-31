@@ -6,8 +6,8 @@
                 <div class="input-group-text">{{label}}</div>
             </div>
             <div class="col">
-                <div class="row no-gutters text-right">
-                    <div class="col text-nowrap mt-2">
+                <div class="row no-gutters">
+                    <div class="col-lg text-nowrap mt-2">
                         <label class="sr-only" :for="`year-${idq}`">year</label>
                         <input v-model="year" size="4" type="number" max="9999" class="ch4" :id="`year-${idq}`" placeholder="YEAR">
                         <span>-</span>
@@ -17,7 +17,7 @@
                         <label class="sr-only" :for="`day-${idq}`">day</label>
                         <input v-model="day" size="2" type="number" max="31" class="ch2" :id="`day-${idq}`" placeholder="DAT">
                     </div>
-                    <div class="col text-nowrap mt-2">
+                    <div class="col-lg text-nowrap mt-2">
                         <span>@</span>
                         <label class="sr-only" :for="`hour-${idq}`">hour</label>
                         <input v-model="hour" size="2" type="number" max="23" class="ch2" :id="`hour-${idq}`" placeholder="HOUR">
@@ -28,7 +28,7 @@
                         <label class="sr-only" :for="`sec-${idq}`">sec</label>
                         <input v-model="sec" size="2" type="number" max="59" class=" ch2" :id="`sec-${idq}`" placeholder="SEC">
                     </div>
-                    <div class="col text-nowrap mt-2">
+                    <div class="col-lg text-nowrap mt-2">
                         &nbsp;{{emittedRes | unix_to_date_time}}
                     </div>
                 </div>
@@ -59,7 +59,6 @@
                 type:    String,
                 default: 'Date',
             }
-
         },
         data() {
             return {
