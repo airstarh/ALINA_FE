@@ -43,7 +43,7 @@
                             :config="options.editorConfig"
                     ></ckeditor>
 
-                    <div class="mt-1 mb-3 no-gutters">
+                    <div class="mt-1 mb-3">
                         <AlinaDatePicker
                                 v-model="post.publish_at"
                                 label="Publish at"
@@ -51,7 +51,13 @@
                                 class="notranslate"
                         ></AlinaDatePicker>
                     </div>
-                    <StandardButtons :onGo="ajaPostTale"></StandardButtons>
+                    <div class="mb-3">
+                        <ui-checkbox v-model="post.is_adult_denied" :trueValue="1" :false-value="0" :checked="post.is_adult_denied==1">Not for kids</ui-checkbox>
+                    </div>
+                    <div class="mb-3">
+                        <ui-checkbox v-model="post.is_adv" trueValue="1" false-value="0" :checked="post.is_adv==1">Advertisement</ui-checkbox>
+                    </div>
+                    <StandardButtons :onGo="ajaPostTale" ></StandardButtons>
 
                     <hr>
                     <div class="display-3">Result:</div>
