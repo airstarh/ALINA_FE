@@ -33,7 +33,7 @@
                                     :key="`${tale.id}_1`"
                                     v-if="tale.is_adult_denied == 1 && !feedForceShow.includes(tale.id)"
                                     >
-                                <div class="row no-gutters">
+                                <div class="row no-gutters mb-5">
                                     <div class="img-wrapper">
                                         <img class="img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Parental_Advisory_label.svg/500px-Parental_Advisory_label.svg.png">
                                         <div class="img-overlay">
@@ -264,7 +264,7 @@
     /**/
     .slide-fade-enter-active,
     .slide-fade-leave-active {
-        transition: all 2.05s ease;
+        transition: opacity 2.05s ease;
         opacity: 1;
         max-height: 99999px;
     }
