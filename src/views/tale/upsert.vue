@@ -1,31 +1,31 @@
 <template>
     <div class="container p-0">
-        <div v-if="!post.id">...</div>
-        <div class="row no-gutters" v-if="post.id">
+        <div v-if="!tale.id">...</div>
+        <div class="row no-gutters" v-if="tale.id">
             <div class="col mx-auto">
-                <div v-if="CU.ownsOrAdminOrModerator(post.owner_id)" class="row no-gutters mb-1 m-buttons-1">
-                    <button @click="ajaDeleteTale(post)" class="col btn btn-danger">Delete</button>
+                <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id)" class="row no-gutters mb-1 m-buttons-1">
+                    <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">Delete</button>
                     <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</button>
                 </div>
 
                 <div class="row no-gutters mt-4">
                     <div class="col-auto">
                         <div class="fixed-height-150px">
-                            <router-link :to="'/auth/profile/'+post.owner_id">
-                                <img v-if="post.owner_emblem" :src="post.owner_emblem" width="100px" class="rounded-circle">
-                                <img v-if="!post.owner_emblem" src="../../assets/anarki.png" width="100px" class="rounded-circle">
+                            <router-link :to="'/auth/profile/'+tale.owner_id">
+                                <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100px" class="rounded-circle">
+                                <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" width="100px" class="rounded-circle">
                             </router-link>
                         </div>
                     </div>
                     <div class="notranslate col text-right">
-                        <router-link :to="'/auth/profile/'+post.owner_id"
+                        <router-link :to="'/auth/profile/'+tale.owner_id"
                                      class="btn btn-sm btn-primary text-left text-break mb-1"
-                        >{{post.owner_firstname || 'Anonymous'}} {{post.owner_lastname}}
+                        >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
                         </router-link>
                         <br>
-                        <router-link :to="'/tale/upsert/'+post.id"
+                        <router-link :to="'/tale/upsert/'+tale.id"
                                      class="btn btn-sm btn-info text-left mb-1">
-                            {{post.publish_at | unix_to_date_time}}
+                            {{tale.publish_at | unix_to_date_time}}
                         </router-link>
                         <br>
                     </div>
@@ -33,29 +33,29 @@
                 </div>
 
                 <div class="" v-if="options.modeEdit">
-                    <div>#{{post.id}}</div>
+                    <div>#{{tale.id}}</div>
                     <StandardButtons :onGo="ajaPostTale"></StandardButtons>
-                    <input type="text" v-model="post.header" placeholder="Header" class="notranslate form-control">
+                    <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
                     <ckeditor
                             class="notranslate"
-                            v-model="post.body"
+                            v-model="tale.body"
                             :editor="options.editor"
                             :config="options.editorConfig"
                     ></ckeditor>
 
                     <div class="mt-1 mb-3">
                         <AlinaDatePicker
-                                v-model="post.publish_at"
+                                v-model="tale.publish_at"
                                 label="Publish at"
                                 idq="publish_at"
                                 class="notranslate"
                         ></AlinaDatePicker>
                     </div>
                     <div class="mb-3">
-                        <ui-checkbox v-model="post.is_adult_denied" :trueValue="1" :false-value="0" :checked="post.is_adult_denied==1">Not for kids</ui-checkbox>
+                        <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">Not for kids</ui-checkbox>
                     </div>
                     <div class="mb-3">
-                        <ui-checkbox v-model="post.is_adv" trueValue="1" false-value="0" :checked="post.is_adv==1">Advertisement</ui-checkbox>
+                        <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">Advertisement</ui-checkbox>
                     </div>
                     <StandardButtons :onGo="ajaPostTale" ></StandardButtons>
 
@@ -63,43 +63,75 @@
                     <div class="display-3">Result:</div>
                     <hr>
                     <div class="ck-content">
-                        <div v-html="post.body"></div>
+                        <div v-html="tale.body"></div>
                     </div>
                     <hr>
                     <div v-if="CU.isAdmin()">
-                        <textarea v-model="post.body" placeholder="Body" rows="11" class="form-control"></textarea>
+                        <textarea v-model="tale.body" placeholder="Body" rows="11" class="form-control"></textarea>
                     </div>
                 </div>
                 <div v-else>
                     <div class="row no-gutters mt-4 mb-2">
-                        <h1 class="notranslate col" :lang="post.lang">
-                            <a :href="`${ConfigApi.url_base}/tale/upsert/${post.id}`"
+                        <h1 class="notranslate col" :lang="tale.lang">
+                            <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                class="btn btn-block btn-secondary text-left"
                                target="_blank"
-                            >{{post.header || '¯\_(ツ)_/¯' }}</a>
+                            >{{tale.header || '¯\_(ツ)_/¯' }}</a>
                         </h1>
                     </div>
                     <div class="row no-gutters">
                         <div class="col">
-                            <div class="ck-content" :lang="post.lang">
-                                <div class="notranslate" v-html="post.body"></div>
+                            <div class="ck-content" :lang="tale.lang">
+                                <div class="notranslate" v-html="tale.body"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <Like
-                                :pAmountLikes="post.count_like"
-                                :pCurrentUserLiked="post.current_user_liked"
-                                ref_table="tale"
-                                :ref_id="post.id"
-                        ></Like>
+                    <div class="row no-gutters mb-2">
+                        <div class="col">
+                            <div class="text-left m-buttons-1">
+                                <ShareNetwork
+                                        network="VK"
+                                        :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                        :title="`${tale.header}`"
+                                        :description="`${tale.body_txt}`"
+                                ><button class="btn btn-lg btn-primary">vk</button></ShareNetwork>
+                                <ShareNetwork
+                                        network="facebook"
+                                        :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                        :title="`${tale.header}`"
+                                        :description="`${tale.body_txt}`"
+                                ><button class="btn btn-lg btn-primary">fb</button></ShareNetwork>
+                                <ShareNetwork
+                                        network="Telegram"
+                                        :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                        :title="`${tale.header}`"
+                                        :description="`${tale.body_txt}`"
+                                ><button class="btn btn-lg btn-secondary">Telegram</button></ShareNetwork>
+                                <ShareNetwork
+                                        network="WhatsApp"
+                                        :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                        :title="`${tale.header}`"
+                                        :description="`${tale.body_txt}`"
+                                ><button class="btn btn-lg btn-success">WhatsApp</button></ShareNetwork>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="text-right">
+                                <Like
+                                        :pAmountLikes="tale.count_like"
+                                        :pCurrentUserLiked="tale.current_user_liked"
+                                        ref_table="tale"
+                                        :ref_id="tale.id"
+                                ></Like>
+                            </div>
+                        </div>
                     </div>
-                    <Comment v-if="post.level < 2"
-                             :level="post.level+1"
+                    <Comment v-if="tale.level < 2"
+                             :level="tale.level+1"
                              type="COMMENT"
-                             :root_tale_id="post.root_tale_id ? post.root_tale_id : post.id"
-                             :answer_to_tale_id="post.id"
-                             :count_by_answer_to_tale_id="post.count_root_tale_id"
+                             :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+                             :answer_to_tale_id="tale.id"
+                             :count_by_answer_to_tale_id="tale.count_root_tale_id"
                     ></Comment>
                 </div>
                 <!--    -->
@@ -141,7 +173,7 @@
                     editor:       ClassicEditor,
                     modeEdit:     false
                 },
-                post:      {
+                tale:      {
                     id:                 null,
                     header:             '',
                     body:               '',
@@ -198,10 +230,10 @@
                 AjaxAlina.newInst({
                     method:     'POST',
                     url:        this.options.url,
-                    postParams: this.post,
+                    postParams: this.tale,
                     onDone:     (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
-                            this.post             = aja.respBody.data;
+                            this.tale             = aja.respBody.data;
                             this.options.modeEdit = false;
                         }
                     }
@@ -212,7 +244,7 @@
                 const _t = this;
                 //###############
                 //region Fix Double get
-                if (!UtilsData.empty(id) && id == _t.post.id) {
+                if (!UtilsData.empty(id) && id == _t.tale.id) {
                     return null;
                 }
                 //endregion Fix Double get
@@ -225,12 +257,12 @@
                     ,
                     onDone: (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
-                            _t.post = aja.respBody.data;
-                            if (_t.post.is_submitted == 0) {_t.options.modeEdit = true;}
+                            _t.tale = aja.respBody.data;
+                            if (_t.tale.is_submitted == 0) {_t.options.modeEdit = true;}
                             //###############
                             //region Fix Double get
-                            if (UtilsData.empty(id) && !UtilsData.empty(_t.post.id)) {
-                                _t.$router.replace({path: `/tale/upsert/${_t.post.id}`});
+                            if (UtilsData.empty(id) && !UtilsData.empty(_t.tale.id)) {
+                                _t.$router.replace({path: `/tale/upsert/${_t.tale.id}`});
                             }
                             //endregion Fix Double get
                             //###############

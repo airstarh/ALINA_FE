@@ -32,7 +32,7 @@
                             <div
                                     :key="`${tale.id}_1`"
                                     v-if="tale.is_adult_denied == 1 && !feedForceShow.includes(tale.id)"
-                                    >
+                            >
                                 <div class="row no-gutters mb-5">
                                     <div class="img-wrapper">
                                         <img class="img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Parental_Advisory_label.svg/500px-Parental_Advisory_label.svg.png">
@@ -89,13 +89,45 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <Like
-                                            :pAmountLikes="tale.count_like"
-                                            :pCurrentUserLiked="tale.current_user_liked"
-                                            ref_table="tale"
-                                            :ref_id="tale.id"
-                                    ></Like>
+                                <div class="row no-gutters mb-2">
+                                    <div class="col">
+                                        <div class="text-left m-buttons-1">
+                                            <ShareNetwork
+                                                    network="VK"
+                                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                                    :title="`${tale.header}`"
+                                                    :description="`${tale.body_txt}`"
+                                            ><button class="btn btn-lg btn-primary">vk</button></ShareNetwork>
+                                            <ShareNetwork
+                                                    network="facebook"
+                                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                                    :title="`${tale.header}`"
+                                                    :description="`${tale.body_txt}`"
+                                            ><button class="btn btn-lg btn-primary">fb</button></ShareNetwork>
+                                            <ShareNetwork
+                                                    network="Telegram"
+                                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                                    :title="`${tale.header}`"
+                                                    :description="`${tale.body_txt}`"
+                                            ><button class="btn btn-lg btn-secondary">Telegram</button></ShareNetwork>
+                                            <ShareNetwork
+                                                    network="WhatsApp"
+                                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                                    :title="`${tale.header}`"
+                                                    :description="`${tale.body_txt}`"
+                                            ><button class="btn btn-lg btn-success">WhatsApp</button></ShareNetwork>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="text-right">
+                                            <Like
+                                                    :pAmountLikes="tale.count_like"
+                                                    :pCurrentUserLiked="tale.current_user_liked"
+                                                    ref_table="tale"
+                                                    :ref_id="tale.id"
+                                            ></Like>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="row no-gutters">
                                     <div class="col">
@@ -170,7 +202,7 @@
                 feed:           [],
                 feedPagination: {
                     pageCurrentNumber: 1,
-                    pageSize:          5,
+                    pageSize:          10,
                     rowsTotal:         0,
                     pagesTotal:        0,
                 },
@@ -273,10 +305,12 @@
         max-height: 0;
         opacity: 0;
     }
+
     .slide-fade-leave-to {
         max-height: 0;
         opacity: 0;
     }
+
     /*.slide-fade-leave{*/
     /*    */
     /*}*/
