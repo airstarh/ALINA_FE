@@ -96,26 +96,34 @@
                                                     network="VK"
                                                     :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                                     :title="`${tale.header}`"
-                                                    :description="`${tale.body_txt}`"
-                                            ><button class="btn btn-lg btn-primary">vk</button></ShareNetwork>
+                                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
+                                            >
+                                                <button class="btn btn-lg btn-primary">vk</button>
+                                            </ShareNetwork>
                                             <ShareNetwork
                                                     network="facebook"
                                                     :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                                     :title="`${tale.header}`"
-                                                    :description="`${tale.body_txt}`"
-                                            ><button class="btn btn-lg btn-primary">fb</button></ShareNetwork>
+                                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
+                                            >
+                                                <button class="btn btn-lg btn-primary">fb</button>
+                                            </ShareNetwork>
                                             <ShareNetwork
                                                     network="Telegram"
                                                     :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                                     :title="`${tale.header}`"
-                                                    :description="`${tale.body_txt}`"
-                                            ><button class="btn btn-lg btn-secondary">Telegram</button></ShareNetwork>
+                                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
+                                            >
+                                                <button class="btn btn-lg btn-secondary">Telegram</button>
+                                            </ShareNetwork>
                                             <ShareNetwork
                                                     network="WhatsApp"
                                                     :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                                     :title="`${tale.header}`"
-                                                    :description="`${tale.body_txt}`"
-                                            ><button class="btn btn-lg btn-success">WhatsApp</button></ShareNetwork>
+                                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
+                                            >
+                                                <button class="btn btn-lg btn-success">WhatsApp</button>
+                                            </ShareNetwork>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -170,6 +178,7 @@
     import Paginator from "@/components/elements/form/Paginator";
     import UtilsArray from "@/Utils/UtilsArray";
     import Obj from "@/Utils/UtilsObject";
+    import UtilsStr from "@/Utils/UtilsStr";
     export default {
         name:       "tale_feed",
         components: {
@@ -192,6 +201,7 @@
         },
         data() {
             return {
+                UtilsStr,
                 ConfigApi:      ConfigApi,
                 options:        {
                     urlFeed: `${ConfigApi.url_base}/tale/feed`,

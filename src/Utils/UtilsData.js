@@ -1,5 +1,4 @@
 import UtilsObject from "@/Utils/UtilsObject";
-
 export default class UtilsData {
     static isset(ObjectPropertyOrArrayKey) {
         return (
@@ -136,7 +135,6 @@ export default class UtilsData {
         }
 
         appendFormData(obj, rootName);
-
         return formData;
     }
 
@@ -149,10 +147,6 @@ export default class UtilsData {
             pagesArray:        [],
             url:               '',
         };
-
-
-
         return pg;
     }
-
 }

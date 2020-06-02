@@ -93,25 +93,25 @@
                                         network="VK"
                                         :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                         :title="`${tale.header}`"
-                                        :description="`${tale.body_txt}`"
+                                        :description="UtilsStr.truncate(tale.body_txt, 100)"
                                 ><button class="btn btn-lg btn-primary">vk</button></ShareNetwork>
                                 <ShareNetwork
                                         network="facebook"
                                         :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                         :title="`${tale.header}`"
-                                        :description="`${tale.body_txt}`"
+                                        :description="UtilsStr.truncate(tale.body_txt, 100)"
                                 ><button class="btn btn-lg btn-primary">fb</button></ShareNetwork>
                                 <ShareNetwork
                                         network="Telegram"
                                         :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                         :title="`${tale.header}`"
-                                        :description="`${tale.body_txt}`"
+                                        :description="UtilsStr.truncate(tale.body_txt, 100)"
                                 ><button class="btn btn-lg btn-secondary">Telegram</button></ShareNetwork>
                                 <ShareNetwork
                                         network="WhatsApp"
                                         :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                         :title="`${tale.header}`"
-                                        :description="`${tale.body_txt}`"
+                                        :description="UtilsStr.truncate(tale.body_txt, 100)"
                                 ><button class="btn btn-lg btn-success">WhatsApp</button></ShareNetwork>
                             </div>
                         </div>
@@ -158,12 +158,14 @@
     import ConfigCkEditor from "@/configs/ConfigCkEditor";
     import UtilsObject from "@/Utils/UtilsObject";
     import UtilsDate from "@/Utils/UtilsDate";
+    import UtilsStr from "@/Utils/UtilsStr";
     //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     //#####
     export default {
         name:       "tale_upsert",
         data() {
             return {
+                UtilsStr,
                 CU:        CurrentUser.obj(),
                 ConfigApi: ConfigApi,
                 options:   {

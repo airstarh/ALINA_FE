@@ -13,7 +13,6 @@ module.exports = {
     ],
     rules:         {
         "vue/component-name-in-template-casing":       ["error", "PascalCase"],
-        "no-console":                                  process.env.NODE_ENV === "production" ? "error" : "off",
         "no-debugger":                                 process.env.NODE_ENV === "production" ? "off" : "off",
         "no-unused-vars":                              "off",
         "no-prototype-builtins":                       "off",
@@ -36,6 +35,8 @@ module.exports = {
         "vue/no-parsing-error":                        "off",
         "no-cond-assign":                              "off",
         "no-console":                                  "off",
+        "vue/html-closing-bracket-newline":            "off",
+        "vue/name-property-casing":                    "off",
     },
     parserOptions: {
         parser:     "babel-eslint",
