@@ -32,6 +32,10 @@
                     <!--    <b-icon-person-fill></b-icon-person-fill>-->
                     <!--</b-nav-item>-->
 
+                    <b-nav-item-dropdown text="Tools" right>
+                        <b-dropdown-item :href="`${ConfigApi.url_base}/tools/SerializedDataEditor`">Serialized Data Editor</b-dropdown-item>
+                    </b-nav-item-dropdown>
+
                     <b-nav-item-dropdown text="Admin Tools" right v-if="CU.isAdmin()">
                         <b-dropdown-item to="/RestCall">RestCall</b-dropdown-item>
                         <b-dropdown-item to="/about">about</b-dropdown-item>
@@ -85,10 +89,12 @@
 
 <script>
     import CurrentUser from "@/services/CurrentUser";
+    import ConfigApi from "@/configs/ConfigApi";
     export default {
         name:  "MenuHorizontalMain",
         data() {
             return {
+                ConfigApi,
                 CU: CurrentUser.obj(),
             }
         },
