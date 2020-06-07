@@ -32,12 +32,12 @@
                     <!--    <b-icon-person-fill></b-icon-person-fill>-->
                     <!--</b-nav-item>-->
 
-                    <b-nav-item-dropdown text="Tools" right>
+                    <b-nav-item-dropdown text="Tools" left>
                         <b-dropdown-item :href="`${ConfigApi.url_base}/tools/SerializedDataEditor`">PHP-Serialized Data Editor online</b-dropdown-item>
                         <b-dropdown-item :href="`${ConfigApi.url_base}/tools/JsonSearchReplaceBeautify`">JSON Search-Replace-Beautify online</b-dropdown-item>
                     </b-nav-item-dropdown>
 
-                    <b-nav-item-dropdown text="Admin Tools" right v-if="CU.isAdmin()">
+                    <b-nav-item-dropdown text="Admin Tools" left v-if="CU.isAdmin()">
                         <b-dropdown-item to="/RestCall">RestCall</b-dropdown-item>
                         <b-dropdown-item to="/about">about</b-dropdown-item>
                     </b-nav-item-dropdown>
@@ -69,8 +69,8 @@
                         <template slot="button-content">
                             <!--<em>{{this.CU.name()}}</em>-->
                             <img :src="CU.attributes.emblem" :alt="CU.attributes.firstname" height="40px" v-if="CU.attributes.emblem">
-                            <img v-if="!CU.isLoggedIn()" src="../assets/anarki.png" height="40px">
-                            <span>{{CU.attributes.firstname || '...'}}</span>
+                            <img v-if="!CU.isLoggedIn() || !CU.attributes.emblem" src="@/assets/anarki.png" height="40px">
+                            <span class="mr-1 ml-1">{{CU.attributes.firstname || CU.attributes.mail || '¯\_(ツ)_/¯'}}</span>
                         </template>
                         <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">LogIn</b-dropdown-item>
                         <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">Register</b-dropdown-item>

@@ -1,13 +1,12 @@
 <template>
-    <span>
+    <span class="text-nowrap">
         <button
                 @click="onLike"
                 class="btn btn-lg"
         >
             <span v-if="dCurrentUserLiked" class="text-danger"><b-icon-heart-fill></b-icon-heart-fill></span>
             <span v-if="!dCurrentUserLiked"><b-icon-heart></b-icon-heart></span>
-        </button>
-        <button
+        </button><button
                 @click="ajaGetFeed"
                 class="btn btn-primary btn-lg"
         >{{dAmountLikes}}

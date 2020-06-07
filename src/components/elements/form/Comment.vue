@@ -33,7 +33,7 @@
                             <div class="float-left mr-1 fixed-height-100px">
                                 <a :href="tale.owner_emblem" target="_blank">
                                     <img v-if="tale.owner_emblem" :src="tale.owner_emblem" :width="level==1?'70px':'40px'" class="rounded-circle">
-                                    <img v-if="!tale.owner_emblem" src="../../../assets/anarki.png" :width="level==1?'70px':'40px'" class="rounded-circle">
+                                    <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" :width="level==1?'70px':'40px'" class="rounded-circle">
                                 </a>
                             </div>
 
@@ -50,9 +50,11 @@
                     </div>
                     <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
+                            <div class="mt-3"></div>
                             <div class="ck-content">
                                 <div class="notranslate" v-html="tale.body"></div>
                             </div>
+                            <div class="mt-3"></div>
                         </div>
                     </div>
                     <div class="row no-gutters" v-else>

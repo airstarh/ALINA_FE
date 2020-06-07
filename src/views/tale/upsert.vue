@@ -13,14 +13,15 @@
                         <div class="fixed-height-150px">
                             <router-link :to="'/auth/profile/'+tale.owner_id">
                                 <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100px" class="rounded-circle">
-                                <img v-if="!tale.owner_emblem" src="../../assets/anarki.png" width="100px" class="rounded-circle">
+                                <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" width="100px" class="rounded-circle">
                             </router-link>
                         </div>
                     </div>
-                    <div class="notranslate col text-right">
+                    <div class="notranslate col text-right ml-1">
                         <router-link :to="'/auth/profile/'+tale.owner_id"
                                      class="btn btn-sm btn-primary text-left text-break mb-1"
-                        >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
+                        >
+                            {{UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id)}}
                         </router-link>
                         <br>
                         <router-link :to="'/tale/upsert/'+tale.id"
@@ -79,6 +80,7 @@
                             >{{tale.header || '¯\_(ツ)_/¯' }}</a>
                         </h1>
                     </div>
+                    <div class="mt-3"></div>
                     <div class="row no-gutters">
                         <div class="col">
                             <div class="ck-content" :lang="tale.lang">
@@ -86,6 +88,7 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mt-3"></div>
                     <div class="row no-gutters mb-2">
                         <div class="col">
                             <div class="text-left m-buttons-1">
@@ -115,7 +118,7 @@
                                 ><button class="btn btn-lg btn-success">WhatsApp</button></ShareNetwork>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <div class="text-right">
                                 <Like
                                         :pAmountLikes="tale.count_like"

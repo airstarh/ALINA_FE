@@ -6,7 +6,9 @@
         </div>
         <div class="row no-gutters">
             <div class="col">
+                <div class="mt-2"></div>
                 <h5 class="text-break">Profile #{{post.id}}</h5>
+                <div class="mt-2"></div>
             </div>
         </div>
         <div v-if="options.modeEdit" class="text-break">
@@ -97,7 +99,7 @@
                     <!--##################################################-->
                     <div class="row no-gutters mb-1 justify-content-center align-items-center">
                         <div class="notranslate col font-weight-bold">
-                            {{post.firstname}} {{post.lastname}}
+                            {{UtilsStr.fullName(post.firstname, post.lastname, post.id)}}
                         </div>
                     </div>
                     <!--##################################################-->
@@ -149,11 +151,13 @@
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
     import ConfigCkEditor from "@/configs/ConfigCkEditor";
     import UtilsObject from "@/Utils/UtilsObject";
+    import UtilsStr from "@/Utils/UtilsStr";
     //#####
     export default {
         name:       "auth_profile",
         data() {
             return {
+                UtilsStr,
                 ConfigApi: ConfigApi,
                 CU:        CurrentUser.obj(),
                 options:   {
