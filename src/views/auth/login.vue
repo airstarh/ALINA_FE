@@ -34,6 +34,7 @@
         name:       "auth_login",
         data() {
             return {
+                CurrentUser,
                 options: {
                     url: `${ConfigApi.url_base}/auth/login`
                 },
@@ -47,6 +48,11 @@
         components: {
             StandardButtons
         },
+        created(){
+            if (this.CurrentUser.obj().isLoggedIn()) {
+                this.$router.replace({path: '/tale/feed'});
+            }
+        },
         methods:    {
             runAJax() {
                 const _t = this;
@@ -56,7 +62,7 @@
                     method:     'POST',
                     onDone:     (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
-                            _t.$router.replace({path: '/auth/profile'});
+                            _t.$router.replace({path: '/tale/feed'});
                         } else {
                             //
                         }

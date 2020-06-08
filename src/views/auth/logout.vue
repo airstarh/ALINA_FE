@@ -42,6 +42,9 @@
         components: {
             StandardButtons
         },
+        created(){
+            this.runAJax();
+        },
         methods:    {
             runAJax() {
                 const oAjax = AjaxAlina.newInst({
