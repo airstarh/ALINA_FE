@@ -77,5 +77,5 @@ export default class AjaxAlina extends Ajax {
         //##########
         SpinnerObj.isOn = false;
         //##########
-    };
+    }
 }
