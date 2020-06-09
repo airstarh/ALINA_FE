@@ -18,15 +18,24 @@ html, body {
   overflow-x: hidden;
 }
 
-html {
+/*html {
   height: 100%;
-}
+  overflow: hidden;
+  scrollbar-width: none; !* For Firefox *!
+  -ms-overflow-style: none; !* For Internet Explorer and Edge *!
+}*/
 
-body {
+html, body {
   height: 100%;
   position: relative;
   overflow: hidden;
-  /*padding-top: 60px;*/
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0; /* For Chrome, Safari, and Opera */
 }
 
 #alina-body-wrapper {

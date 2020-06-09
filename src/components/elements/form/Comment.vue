@@ -37,10 +37,11 @@
                                 </a>
                             </div>
 
-                            <router-link :to="'/auth/profile/'+tale.owner_id"
-                                         class="notranslate"
+                            <a :href="`/#/auth/profile/${tale.owner_id}`"
+                               class="notranslate"
+
                             >{{tale.owner_firstname || 'Anonymous'}} {{tale.owner_lastname}}
-                            </router-link>
+                            </a>
 
                             <br>
                             <!--<router-link :to="'/tale/upsert/'+tale.id">-->
@@ -59,7 +60,7 @@
                     </div>
                     <div class="row no-gutters" v-else>
                         <div class="col">
-                            <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+                            <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
                         </div>
                     </div>
 
@@ -104,7 +105,7 @@
             <div class="row no-gutters">
                 <div class="col alina-form mt-2 mb-2"
                      v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`collapse-${answer_to_tale_id}`)">
-                    <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig"></ckeditor>
+                    <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
                     <div class="row no-gutters">
                         <div class="col"></div>
                         <div class="col">
@@ -117,15 +118,15 @@
                     <div>&nbsp;</div>
                 </div>
                 <div v-else class="col">
-                    <router-link to="/auth/login"
-                                 class="btn btn-sm btn-primary"
+                    <a href="/#/auth/login"
+                       class="btn btn-sm btn-primary"
                     >Login
-                    </router-link>
+                    </a>
                     or
-                    <router-link to="/auth/register"
-                                 class="btn btn-sm btn-primary"
+                    <a href="/#/auth/register"
+                       class="btn btn-sm btn-primary"
                     >Register
-                    </router-link>
+                    </a>
                     to post comments
                 </div>
             </div>
@@ -147,6 +148,7 @@
     import AlinaStorage from "@/services/AlinaStorage";
     import UtilsData from "@/Utils/UtilsData";
     import SpinnerObj from "@/services/SpinnerObj";
+    import lodash from 'lodash';
     export default {
         name:       "Comment",
         components: {
@@ -158,6 +160,7 @@
         data() {
             return {
                 AlinaStorage,
+                ConfigApi,
                 CU:             CurrentUser.obj(),
                 options:        {
                     urlFeed:       `${ConfigApi.url_base}/tale/feed`,
@@ -207,14 +210,16 @@
                 default: 0,
             },
             //
-            submitTxt:                  {default: "sim-sim"},
-            resetTxt:                   {default: "Clear"},
+            submitTxt:                  {default: "sim-sim", type: String},
+            resetTxt:                   {default: "Clear", type: String},
         },
         mounted() {
             this.processQuery();
+            this.pageRecalcIframeHeight();
         },
         updated() {
             this.processQuery();
+            this.pageRecalcIframeHeight();
         },
         destroyed() {
             this.AlinaStorage.Comment.expanded = [];
@@ -244,6 +249,7 @@
                             }
                             this.feedPagination = aja.respBody.meta.tale;
                         }
+                        this.pageRecalcIframeHeight();
                     }
                 })
                 .go();
@@ -268,6 +274,7 @@
                             ++_t.feedPagination.rowsTotal;
                             this.body = '';
                         }
+                        this.pageRecalcIframeHeight();
                     }
                 })
                 .go();
@@ -306,6 +313,7 @@
                         if (aja.respBody.meta.alina_response_success == 1) {
                             this.toggleCommentEditMode(comment, feedIndex);
                         }
+                        this.pageRecalcIframeHeight();
                     }
                 })
                 .go();
@@ -326,6 +334,7 @@
                         if (aja.respBody.meta.alina_response_success == 1) {
                             UtilsArray.elRemoveByIndex(this.feed, feedIndex);
                         }
+                        this.pageRecalcIframeHeight();
                     }
                 })
                 .go();
@@ -355,6 +364,9 @@
                     });
                 }
             },
+            pageRecalcIframeHeight: lodash.debounce(() => {
+                ConfigApi.pageRecalcIframeHeight();
+            }, 300),
         },
         // #####
         watch:      {

@@ -1,6 +1,10 @@
 <template>
-    <div id="alina-body-wrapper">
-        <MenuHorizontalMain></MenuHorizontalMain>
+    <div id="alina-body-wrapper"
+         :style="{
+            'overflow': pageIsInIframe ? 'hidden':'scroll'
+         }"
+    >
+        <MenuHorizontalMain v-if="!pageIsInIframe"></MenuHorizontalMain>
         <router-view/>
         <Messages></Messages>
         <Spinner></Spinner>
@@ -13,6 +17,7 @@
     import AlinaStorage from "@/services/AlinaStorage";
     import UtilsArray from "@/Utils/UtilsArray";
     import SpinnerObj from "@/services/SpinnerObj";
+    import ConfigApi from "@/configs/ConfigApi";
     export default {
         name:       "App",
         components: {
@@ -22,7 +27,8 @@
         },
         data() {
             return {
-                AlinaStorage
+                AlinaStorage,
+                ConfigApi
             }
         },
         mounted() {
@@ -34,6 +40,11 @@
                     UtilsArray.elRemoveByValue(this.AlinaStorage.Comment.expanded, collapseId)
                 }
             });
+        },
+        computed:   {
+            pageIsInIframe() {
+                return this.ConfigApi.pageIsInIframe();
+            }
         },
         watch:      {
             $route(to, from) {

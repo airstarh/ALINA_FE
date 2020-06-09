@@ -34,6 +34,7 @@
         name:       "auth_login",
         data() {
             return {
+                referer: null,
                 CurrentUser,
                 options: {
                     url: `${ConfigApi.url_base}/auth/login`
@@ -48,7 +49,12 @@
         components: {
             StandardButtons
         },
-        created(){
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                vm.referer = from.path;
+            })
+        },
+        created() {
             if (this.CurrentUser.obj().isLoggedIn()) {
                 this.$router.replace({path: '/tale/feed'});
             }
@@ -62,9 +68,15 @@
                     method:     'POST',
                     onDone:     (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
-                            _t.$router.replace({path: '/tale/feed'});
-                        } else {
-                            //
+                            if (history) {
+                                history.go(-1);
+                                return true;
+                            }
+                            if (_t.referer) {
+                                _t.$router.replace({path: _t.referer});
+                            } else {
+                                _t.$router.replace({path: '/tale/feed'});
+                            }
                         }
                     }
                 })

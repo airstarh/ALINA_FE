@@ -29,7 +29,7 @@ Vue.prototype.lodash = lodash;
 //const options = {name: 'lodash', lodash: lodash}; // customize the way you want to call it
 //Vue.use(VueLodash, options); // options is optional
 //#####
-import VueSocialSharing from 'vue-social-sharing'
+import VueSocialSharing    from 'vue-social-sharing'
 Vue.use(VueSocialSharing);
 //#####
 import VueDateFns          from "vue-date-fns";

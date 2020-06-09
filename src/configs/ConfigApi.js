@@ -1,7 +1,5 @@
 import UtilsSys from "@/Utils/UtilsSys";
 const ConfigApi = {
-    //"url_base":              "http://alinazero:8080",
-    //"url_base":              "http://192.168.0.105:8080",
     "url_base":              "https://saysimsim.ru",
     //"url_base":              "https://alinazero",
     "ALINA_FILE_UPLOAD_KEY": "userfile[]",
@@ -19,5 +17,29 @@ const ConfigApi = {
             }
         }
     },
+    // ##################################################
+    //region iFrame
+    iFrame:                  null,
+    pageIsInIframe() {
+        if (ConfigApi.iFrame === null && parent && parent.document && parent.document.getElementById) {
+            ConfigApi.iFrame = false;
+            const iframe     = parent.document.getElementById("AlinaIframe001");
+            if (iframe) {
+                ConfigApi.iFrame = iframe;
+            }
+        }
+        return ConfigApi.iFrame;
+    },
+    pageRecalcIframeHeight() {
+        const iframe = ConfigApi.pageIsInIframe();
+        if (iframe) {
+            let el = document.getElementById('alina-body-wrapper');
+            if (el) {
+                iframe.style.height = el.scrollHeight + 150 + 'px';
+            }
+        }
+    }
+    //endregion iFrame
+    // ##################################################
 };
 export default ConfigApi;

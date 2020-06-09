@@ -1,14 +1,21 @@
 <template>
-    <div class="container p-0">
+    <div class="p-0"
+         :class="{
+            'container':!pageIsInIframe,
+            'container-fluid':pageIsInIframe
+         }"
+    >
         <div v-if="!tale.id">...</div>
         <div class="row no-gutters" v-if="tale.id">
-            <div class="col mx-auto">
-                <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id)" class="row no-gutters mb-1 m-buttons-1">
+            <div class="col">
+                <!--region Buttons-->
+                <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
                     <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">Delete</button>
                     <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</button>
                 </div>
-
-                <div class="row no-gutters mt-4">
+                <!--endregion Buttons-->
+                <!--region User Info-->
+                <div class="row no-gutters mt-4" v-if="!pageIsInIframe">
                     <div class="col-auto">
                         <div class="fixed-height-150px">
                             <router-link :to="'/auth/profile/'+tale.owner_id">
@@ -30,123 +37,130 @@
                         </router-link>
                         <br>
                     </div>
-
                 </div>
-
-                <div class="" v-if="options.modeEdit">
-                    <div>#{{tale.id}}</div>
-                    <StandardButtons :onGo="ajaPostTale"></StandardButtons>
-                    <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
-                    <ckeditor
-                            class="notranslate"
-                            v-model="tale.body"
-                            :editor="options.editor"
-                            :config="options.editorConfig"
-                    ></ckeditor>
-
-                    <div class="mt-1 mb-3">
-                        <AlinaDatePicker
-                                v-model="tale.publish_at"
-                                label="Publish at"
-                                idq="publish_at"
+                <!--endregion User Info-->
+                <!--region Tale-->
+                <div v-if="!pageIsInIframe">
+                    <div class="" v-if="options.modeEdit">
+                        <div>#{{tale.id}}</div>
+                        <StandardButtons :onGo="ajaPostTale"></StandardButtons>
+                        <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
+                        <ckeditor
                                 class="notranslate"
-                        ></AlinaDatePicker>
-                    </div>
-                    <div class="mb-3">
-                        <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">Not for kids</ui-checkbox>
-                    </div>
-                    <div class="mb-3">
-                        <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">Advertisement</ui-checkbox>
-                    </div>
-                    <StandardButtons :onGo="ajaPostTale" ></StandardButtons>
+                                v-model="tale.body"
+                                :editor="options.editor"
+                                :config="options.editorConfig"
+                        ></ckeditor>
 
-                    <hr>
-                    <div class="display-3">Result:</div>
-                    <hr>
-                    <div class="ck-content">
-                        <div v-html="tale.body"></div>
+                        <div class="mt-1 mb-3">
+                            <AlinaDatePicker
+                                    v-model="tale.publish_at"
+                                    label="Publish at"
+                                    idq="publish_at"
+                                    class="notranslate"
+                            ></AlinaDatePicker>
+                        </div>
+                        <div class="mb-3">
+                            <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">Not for kids</ui-checkbox>
+                        </div>
+                        <div class="mb-3">
+                            <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">Advertisement</ui-checkbox>
+                        </div>
+                        <StandardButtons :onGo="ajaPostTale"></StandardButtons>
+
+                        <hr>
+                        <div class="display-3">Result:</div>
+                        <hr>
+                        <div class="ck-content">
+                            <div v-html="tale.body"></div>
+                        </div>
+                        <hr>
+                        <div v-if="CU.isAdmin()">
+                            <textarea v-model="tale.body" placeholder="Body" rows="11" class="form-control"></textarea>
+                        </div>
                     </div>
-                    <hr>
-                    <div v-if="CU.isAdmin()">
-                        <textarea v-model="tale.body" placeholder="Body" rows="11" class="form-control"></textarea>
+                    <div v-else>
+                        <div class="row no-gutters mt-4 mb-2">
+                            <h1 class="notranslate col" :lang="tale.lang">
+                                <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                   class="btn btn-block btn-secondary text-left"
+                                   target="_blank"
+                                >{{tale.header || '¯\_(ツ)_/¯' }}</a>
+                            </h1>
+                        </div>
+                        <div class="mt-3"></div>
+                        <div class="row no-gutters">
+                            <div class="col">
+                                <div class="ck-content" :lang="tale.lang">
+                                    <div class="notranslate" v-html="tale.body"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3"></div>
                     </div>
                 </div>
-                <div v-else>
-                    <div class="row no-gutters mt-4 mb-2">
-                        <h1 class="notranslate col" :lang="tale.lang">
-                            <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                               class="btn btn-block btn-secondary text-left"
-                               target="_blank"
-                            >{{tale.header || '¯\_(ツ)_/¯' }}</a>
-                        </h1>
-                    </div>
-                    <div class="mt-3"></div>
-                    <div class="row no-gutters">
-                        <div class="col">
-                            <div class="ck-content" :lang="tale.lang">
-                                <div class="notranslate" v-html="tale.body"></div>
-                            </div>
+                <!--endregion Tale-->
+                <!--region Share & Likes-->
+                <div class="row no-gutters mb-2">
+                    <div class="col">
+                        <div class="text-left m-buttons-1">
+                            <ShareNetwork
+                                    network="VK"
+                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                    :title="`${tale.header}`"
+                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
+                            >
+                                <button class="btn btn-lg btn-primary">vk</button>
+                            </ShareNetwork>
+                            <ShareNetwork
+                                    network="facebook"
+                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                    :title="`${tale.header}`"
+                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
+                            >
+                                <button class="btn btn-lg btn-primary">fb</button>
+                            </ShareNetwork>
+                            <ShareNetwork
+                                    network="Telegram"
+                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                    :title="`${tale.header}`"
+                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
+                            >
+                                <button class="btn btn-lg btn-secondary">Telegram</button>
+                            </ShareNetwork>
+                            <ShareNetwork
+                                    network="WhatsApp"
+                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                    :title="`${tale.header}`"
+                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
+                            >
+                                <button class="btn btn-lg btn-success">WhatsApp</button>
+                            </ShareNetwork>
                         </div>
                     </div>
-                    <div class="mt-3"></div>
-                    <div class="row no-gutters mb-2">
-                        <div class="col">
-                            <div class="text-left m-buttons-1">
-                                <ShareNetwork
-                                        network="VK"
-                                        :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                        :title="`${tale.header}`"
-                                        :description="UtilsStr.truncate(tale.body_txt, 100)"
-                                ><button class="btn btn-lg btn-primary">vk</button></ShareNetwork>
-                                <ShareNetwork
-                                        network="facebook"
-                                        :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                        :title="`${tale.header}`"
-                                        :description="UtilsStr.truncate(tale.body_txt, 100)"
-                                ><button class="btn btn-lg btn-primary">fb</button></ShareNetwork>
-                                <ShareNetwork
-                                        network="Telegram"
-                                        :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                        :title="`${tale.header}`"
-                                        :description="UtilsStr.truncate(tale.body_txt, 100)"
-                                ><button class="btn btn-lg btn-secondary">Telegram</button></ShareNetwork>
-                                <ShareNetwork
-                                        network="WhatsApp"
-                                        :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                        :title="`${tale.header}`"
-                                        :description="UtilsStr.truncate(tale.body_txt, 100)"
-                                ><button class="btn btn-lg btn-success">WhatsApp</button></ShareNetwork>
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <div class="text-right">
-                                <Like
-                                        :pAmountLikes="tale.count_like"
-                                        :pCurrentUserLiked="tale.current_user_liked"
-                                        ref_table="tale"
-                                        :ref_id="tale.id"
-                                ></Like>
-                            </div>
+                    <div class="col-auto">
+                        <div class="text-right">
+                            <Like
+                                    :pAmountLikes="tale.count_like"
+                                    :pCurrentUserLiked="tale.current_user_liked"
+                                    ref_table="tale"
+                                    :ref_id="tale.id"
+                            ></Like>
                         </div>
                     </div>
-                    <Comment v-if="tale.level < 2"
-                             :level="tale.level+1"
-                             type="COMMENT"
-                             :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
-                             :answer_to_tale_id="tale.id"
-                             :count_by_answer_to_tale_id="tale.count_root_tale_id"
-                    ></Comment>
                 </div>
-                <!--    -->
-                <!--    -->
-                <!--    -->
+                <!--endregion Share & Likes-->
+                <Comment v-if="tale.level < 2"
+                         :level="tale.level+1"
+                         type="COMMENT"
+                         :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+                         :answer_to_tale_id="tale.id"
+                         :count_by_answer_to_tale_id="tale.count_root_tale_id"
+                ></Comment>
             </div>
         </div>
     </div>
 </template>
-<!--##################################################-->
-<!--##################################################-->
-<!--##################################################-->
 <script>
     import UtilsData from "@/Utils/UtilsData";
     import StandardButtons from "@/components/elements/form/StandardButtons";
@@ -208,6 +222,9 @@
             const id = vm.getRouteParam('id');
             vm.ajaxGetTale(id);
         },
+        updated() {
+
+        },
         // beforeRouteEnter(to, from, next) {
         //     next((vm) => {
         //         const id = vm.getRouteParam('id', to);
@@ -222,6 +239,11 @@
         // },
         //endregion Router Hooks
         //##################################################
+        computed:   {
+            pageIsInIframe() {
+                return this.ConfigApi.pageIsInIframe();
+            }
+        },
         methods:    {
             getRouteParam(paramName, to) {
                 if (UtilsData.empty(to)) {to = this.$route;}
