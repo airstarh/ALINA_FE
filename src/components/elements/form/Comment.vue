@@ -1,7 +1,7 @@
 <template>
     <div :style="options.style">
         <div class="mb-5">
-            <b-button v-b-toggle="`collapse-${answer_to_tale_id}`"
+            <b-button v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
                       :class="{
                       'btn-md':level==1,
                       'btn-sm':level>1,
@@ -9,8 +9,8 @@
             >Comments: {{commentsTotal}}
             </b-button>
         </div>
-        <b-collapse :id="`collapse-${answer_to_tale_id}`"
-                    @show="onExpandCommentList(`collapse-${answer_to_tale_id}`)"
+        <b-collapse :id="`comment-collapse-${answer_to_tale_id}`"
+                    @show="onExpandCommentList(`comment-collapse-${answer_to_tale_id}`)"
                     :visible="level == 3"
                     class="mb-5"
         >
@@ -104,7 +104,7 @@
             ></Paginator>
             <div class="row no-gutters">
                 <div class="col alina-form mt-2 mb-2"
-                     v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`collapse-${answer_to_tale_id}`)">
+                     v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`comment-collapse-${answer_to_tale_id}`)">
                     <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
                     <div class="row no-gutters">
                         <div class="col"></div>
@@ -147,7 +147,6 @@
     import CurrentUser from "@/services/CurrentUser";
     import AlinaStorage from "@/services/AlinaStorage";
     import UtilsData from "@/Utils/UtilsData";
-    import SpinnerObj from "@/services/SpinnerObj";
     import lodash from 'lodash';
     export default {
         name:       "Comment",
@@ -340,8 +339,8 @@
                 .go();
             },
             onExpandCommentList(collapseId) {
-                this.ajaGetComments();
                 UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId);
+                this.ajaGetComments();
             },
             processQuery() {
                 const pathCurrent = this.$router.currentRoute.path;
@@ -349,14 +348,14 @@
                 let idRoot        = null;
                 let idAnsw        = null;
                 if (q.expand) {
-                    idRoot = `collapse-${this.root_tale_id}`;
+                    idRoot = `comment-collapse-${this.root_tale_id}`;
                     if (!this.AlinaStorage.Comment.expanded.includes(idRoot)) {
                         this.$root.$emit('bv::toggle::collapse', idRoot);
                     }
                     //#####
                     this.feed.forEach((e, i) => {
                         if (e.id == q.expand) {
-                            idAnsw = `collapse-${q.expand}`;
+                            idAnsw = `comment-collapse-${q.expand}`;
                             if (!this.AlinaStorage.Comment.expanded.includes(idAnsw)) {
                                 this.$root.$emit('bv::toggle::collapse', idAnsw);
                             }

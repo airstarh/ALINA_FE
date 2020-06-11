@@ -28,7 +28,8 @@
             <div class="row no-gutters">
                 <div class="col-auto">
                     <a :href="`/#/auth/profile/${item.user_id}`">
-                        <img :src="item.from_emblem" :alt="item.from_firstname" width="70px">
+                        <img v-if="item.from_emblem" :src="item.from_emblem" :alt="item.from_firstname" width="70px">
+                        <img v-if="!item.from_emblem" src="@/assets/anarki.png" width="70px">
                     </a>
                 </div>
                 <div class="col pl-2">

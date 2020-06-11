@@ -33,11 +33,12 @@
         },
         mounted() {
             this.$root.$on('bv::collapse::state', (collapseId, isJustShown) => {
-                if (isJustShown) {
-                    SpinnerObj.isOn = true;
-                    UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId)
-                } else {
-                    UtilsArray.elRemoveByValue(this.AlinaStorage.Comment.expanded, collapseId)
+                if (collapseId.startsWith('comment-collapse-')) {
+                    if (isJustShown) {
+                        UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId)
+                    } else {
+                        UtilsArray.elRemoveByValue(this.AlinaStorage.Comment.expanded, collapseId)
+                    }
                 }
             });
         },
