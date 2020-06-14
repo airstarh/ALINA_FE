@@ -74,8 +74,11 @@
                         <div class="ck-content">
                             <div v-html="tale.body"></div>
                         </div>
-                        <hr>
+
                         <div v-if="CU.isAdmin()">
+                            <hr>
+                            <div class="display-3">HTML:</div>
+                            <hr>
                             <textarea v-model="tale.body" placeholder="Body" rows="11" class="form-control"></textarea>
                         </div>
                     </div>
