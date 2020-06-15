@@ -59,7 +59,7 @@
                                         >{{tale.header || '¯\_(ツ)_/¯' }}</a>
                                     </h2>
                                 </div>
-                                <div class="row no-gutters">
+                                <div class="row no-gutters align-items-center">
                                     <div class="col-auto" v-if="doShowAuthorInfo">
                                         <div class="fixed-height-150px">
                                             <router-link :to="'/auth/profile/'+tale.owner_id">
@@ -68,7 +68,7 @@
                                             </router-link>
                                         </div>
                                     </div>
-                                    <div class="notranslate col text-right ml-1">
+                                    <div class="notranslate col ml-1">
                                         <router-link v-if="doShowAuthorInfo" :to="'/auth/profile/'+tale.owner_id"
                                                      class="btn btn-sm btn-primary text-left text-break mb-1"
                                         >

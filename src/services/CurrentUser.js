@@ -52,7 +52,7 @@ export default class CurrentUser {
             this.attributes[key] = value;
         }
         window.localStorage.setItem("CurrentUser", JSON.stringify(this.attributes));
-    };
+    }
 
     //##################################################
     isLoggedIn() {

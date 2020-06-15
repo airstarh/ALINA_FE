@@ -24,7 +24,7 @@
                             </router-link>
                         </div>
                     </div>
-                    <div class="notranslate col text-right ml-1">
+                    <div class="notranslate col ml-1">
                         <router-link :to="'/auth/profile/'+tale.owner_id"
                                      class="btn btn-sm btn-primary text-left text-break mb-1"
                         >

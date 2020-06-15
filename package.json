@@ -45,21 +45,21 @@
     "vue-cookies": "^1.7.0",
     "vue-date-fns": "^1.1.0",
     "vue-lodash": "^2.1.2",
-    "vue-router": "^3.3.2",
-    "vue-social-sharing": "^3.0.0-beta.10",
+    "vue-router": "^3.3.4",
+    "vue-social-sharing": "^3.0.0-beta.11",
     "vuex": "^3.3.0",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.4.1",
-    "@vue/cli-plugin-eslint": "^4.4.1",
-    "@vue/cli-service": "^4.4.1",
+    "@vue/cli-plugin-babel": "^4.4.4",
+    "@vue/cli-plugin-eslint": "^4.4.4",
+    "@vue/cli-service": "^4.4.4",
     "@vue/eslint-config-prettier": "^6.0.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.1.0",
+    "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-vue": "^6.2.2",
-    "sass": "^1.26.5",
+    "sass": "^1.26.8",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   }
