@@ -20,10 +20,12 @@ module.exports              = {
     ],
     configureWebpack:      {
         plugins: [
+            // ##################################################// ##################################################
+            //region CkEditor Plugin
             // CKEditor needs its own plugin to be built using webpack.
             new CKEditorWebpackPlugin({
                 // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
-                language:                               'en',
+                language: 'en',
                 // Additional languages that will be emitted to the `outputDirectory`.
                 // This option can be set to an array of language codes or `'all'` to build all found languages.
                 // The bundle is optimized for one language when this option is omitted.
@@ -40,12 +42,16 @@ module.exports              = {
                 // addMainLanguageTranslationsToAllAssets: true,
                 // buildAllTranslationsToSeparateFiles:    true,
             })
+            //endregion CkEditor Plugin
+            // ##################################################// ##################################################
         ]
     },
-    // Vue CLI would normally use its own loader to load .svg and .css files, however:
-    //	1. The icons used by CKEditor must be loaded using raw-loader,
-    //	2. The CSS used by CKEditor must be transpiled using PostCSS to load properly.
     chainWebpack:          config => {
+        // ##################################################// ##################################################
+        //region CkEditor
+        // Vue CLI would normally use its own loader to load .svg and .css files, however:
+        //	1. The icons used by CKEditor must be loaded using raw-loader,
+        //	2. The CSS used by CKEditor must be transpiled using PostCSS to load properly.
         // (1.) To handle editor icons, get the default rule for *.svg files first:
         const svgRule = config.module.rule('svg');
         // Then you can either:
@@ -83,6 +89,20 @@ module.exports              = {
                 minify:        true
             });
         });
+        //endregion CkEditor
+        // ##################################################// ##################################################
+        //region vue-svg-loader
+        //---svgRule = config.module.rule('svg');
+        // очищаем все существующие загрузчики.
+        // если вы этого не сделаете, загрузчик ниже будет добавлен
+        // к уже существующим загрузчикам для этого правила.
+        svgRule.uses.clear();
+        // добавляем загрузчик для замены
+        svgRule
+        .use('vue-svg-loader')
+        .loader('vue-svg-loader')
+        //endregion vue-svg-loader
+        // ##################################################// ##################################################
     }
 };
 //#####

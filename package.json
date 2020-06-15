@@ -47,6 +47,7 @@
     "vue-lodash": "^2.1.2",
     "vue-router": "^3.3.4",
     "vue-social-sharing": "^3.0.0-beta.11",
+    "vue-svg-loader": "^0.16.0",
     "vuex": "^3.3.0",
     "whatwg-fetch": "^3.0.0"
   },
