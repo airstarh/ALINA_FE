@@ -15,7 +15,7 @@
                 </div>
                 <!--endregion Buttons-->
                 <!--region User Info-->
-                <div class="row no-gutters mt-4" v-if="!pageIsInIframe">
+                <div class="row no-gutters mt-4 " v-if="!pageIsInIframe">
                     <div class="col-auto">
                         <div class="fixed-height-150px">
                             <router-link :to="'/auth/profile/'+tale.owner_id">
@@ -107,38 +107,7 @@
                 <div class="row no-gutters mb-2">
                     <div class="col">
                         <div class="text-left m-buttons-1">
-                            <ShareNetwork
-                                    network="VK"
-                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                    :title="`${tale.header}`"
-                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
-                            >
-                                <button class="btn btn-lg btn-primary">vk</button>
-                            </ShareNetwork>
-                            <ShareNetwork
-                                    network="facebook"
-                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                    :title="`${tale.header}`"
-                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
-                            >
-                                <button class="btn btn-lg btn-primary">fb</button>
-                            </ShareNetwork>
-                            <ShareNetwork
-                                    network="Telegram"
-                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                    :title="`${tale.header}`"
-                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
-                            >
-                                <button class="btn btn-lg btn-secondary">Telegram</button>
-                            </ShareNetwork>
-                            <ShareNetwork
-                                    network="WhatsApp"
-                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                    :title="`${tale.header}`"
-                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
-                            >
-                                <button class="btn btn-lg btn-success">WhatsApp</button>
-                            </ShareNetwork>
+                            <Share :tale="tale"></Share>
                         </div>
                     </div>
                     <div class="col-auto">
@@ -179,6 +148,7 @@
     import UtilsObject from "@/Utils/UtilsObject";
     import UtilsDate from "@/Utils/UtilsDate";
     import UtilsStr from "@/Utils/UtilsStr";
+    import Share from "@/components/elements/form/Share";
     //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
     //#####
     export default {
@@ -212,6 +182,7 @@
             }
         },
         components: {
+            Share,
             StandardButtons,
             ckeditor: CKEditor.component,
             Comment,
@@ -226,7 +197,6 @@
             vm.ajaxGetTale(id);
         },
         updated() {
-
         },
         // beforeRouteEnter(to, from, next) {
         //     next((vm) => {

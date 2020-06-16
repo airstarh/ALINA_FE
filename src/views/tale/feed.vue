@@ -95,38 +95,7 @@
                                 <div class="row no-gutters mb-2">
                                     <div class="col">
                                         <div class="text-left m-buttons-1">
-                                            <ShareNetwork
-                                                    network="VK"
-                                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                                    :title="`${tale.header}`"
-                                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
-                                            >
-                                                <button class="btn btn-lg btn-primary">vk</button>
-                                            </ShareNetwork>
-                                            <ShareNetwork
-                                                    network="facebook"
-                                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                                    :title="`${tale.header}`"
-                                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
-                                            >
-                                                <button class="btn btn-lg btn-primary">fb</button>
-                                            </ShareNetwork>
-                                            <ShareNetwork
-                                                    network="Telegram"
-                                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                                    :title="`${tale.header}`"
-                                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
-                                            >
-                                                <button class="btn btn-lg btn-secondary">Telegram</button>
-                                            </ShareNetwork>
-                                            <ShareNetwork
-                                                    network="WhatsApp"
-                                                    :url="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                                    :title="`${tale.header}`"
-                                                    :description="UtilsStr.truncate(tale.body_txt, 100)"
-                                            >
-                                                <button class="btn btn-lg btn-success">WhatsApp</button>
-                                            </ShareNetwork>
+                                            <Share :tale="tale"></Share>
                                         </div>
                                     </div>
                                     <div class="col-auto">
@@ -180,6 +149,7 @@
     import CurrentUser from "@/services/CurrentUser";
     import Comment from "@/components/elements/form/Comment";
     import Like from "@/components/elements/form/Like";
+    import Share from "@/components/elements/form/Share";
     import Paginator from "@/components/elements/form/Paginator";
     import UtilsArray from "@/Utils/UtilsArray";
     import Obj from "@/Utils/UtilsObject";
@@ -187,6 +157,7 @@
     export default {
         name:       "tale_feed",
         components: {
+            Share,
             StandardButtons,
             Comment,
             Like,

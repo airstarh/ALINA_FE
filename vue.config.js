@@ -18,6 +18,38 @@ module.exports              = {
     transpileDependencies: [
         /ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/,
     ],
+    pluginOptions:         {
+        // ##################################################
+        //region vue-cli-plugin-svg-sprite
+        svgSprite: {
+            /*
+             * The directory containing your SVG files.
+             */
+            dir:           'src/assets/svg',
+            /*
+             * The reqex that will be used for the Webpack rule.
+             */
+            test:          /\.(svg)(\?.*)?$/,
+            /*
+             * @see https://github.com/kisenka/svg-sprite-loader#configuration
+             */
+            loaderOptions: {
+                extract:         true,
+                filenameHashing: false,
+                //spriteFilename:  'img/icons.[hash:8].svg' // or 'img/icons.svg' if filenameHashing == false
+                spriteFilename:  'alina-sprite.svg',
+            },
+            /*
+             * @see https://github.com/kisenka/svg-sprite-loader#configuration
+             */
+            pluginOptions: {
+                plainSprite: false
+            }
+        }
+        //endregion vue-cli-plugin-svg-sprite
+        // ##################################################
+    },
+    // #####
     configureWebpack:      {
         plugins: [
             // ##################################################// ##################################################
@@ -96,12 +128,22 @@ module.exports              = {
         // очищаем все существующие загрузчики.
         // если вы этого не сделаете, загрузчик ниже будет добавлен
         // к уже существующим загрузчикам для этого правила.
-        svgRule.uses.clear();
+        //--svgRule.uses.clear();
         // добавляем загрузчик для замены
-        svgRule
-        .use('vue-svg-loader')
-        .loader('vue-svg-loader')
+        // svgRule
+        // .use('babel-loader')
+        // .loader('babel-loader')
+        // .end()
+        // .use('vue-svg-loader')
+        // .loader('vue-svg-loader');
         //endregion vue-svg-loader
+        // ##################################################// ##################################################
+        //region vue-cli-plugin-svg-sprite
+        config.module
+        .rule('svg-sprite')
+        .use('svgo-loader')
+        .loader('svgo-loader');
+        //endregion vue-cli-plugin-svg-sprite
         // ##################################################// ##################################################
     }
 };

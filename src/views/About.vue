@@ -1,6 +1,41 @@
 <template>
     <div class="container border border-primary">
         <img alt="Vue logo" src="../assets/logo.png" height="10px"/>
+        <div></div>
+        <span style="color:#76ff03; background-color: #ffb74d">
+            <svg width="55" class="icon--inline" color="currentColor">
+                <use :xlink:href="`${iconFb.url}`"></use>
+            </svg>
+            <svg width="55" class="icon--inline" color="currentColor">
+                <use :xlink:href="`${iconFb.url}`"></use>
+            </svg>
+            <svg width="55" class="icon--inline" color="currentColor">
+                <use :xlink:href="`${iconSk.url}`"></use>
+            </svg>
+
+            <svg width="55">
+                <use :xlink:href="`${iconVk.url}`"></use>
+            </svg>
+
+            <svg width="55">
+                <use :xlink:href="`${iconWp.url}`"></use>
+            </svg>
+
+            <svg width="55" class="icon--inline" color="currentColor">
+                <use :xlink:href="`${iconVi.url}`"></use>
+            </svg>
+
+            <svg width="55">
+                <use :xlink:href="`${iconTg.url}`"></use>
+            </svg>
+
+            <svg width="55">
+                <use :xlink:href="`${iconIn.url}`"></use>
+            </svg>
+        </span>
+        <div>
+
+        </div>
         <div>
             <div><h1>{{ sProp }} : mapped from Store</h1></div>
             <div><h1>{{ $store.state.egStoreModule.sProp }} : direct from Store</h1></div>
@@ -171,6 +206,13 @@
     import ConfigApi from "@/configs/ConfigApi";
     import MessagesObj from "@/services/MessagesObj";
     import SpinnerObj from "@/services/SpinnerObj";
+    import iconVk from "@/assets/svg/socialnets/vk.svg";
+    import iconFb from "@/assets/svg/socialnets/fb.svg";
+    import iconWp from "@/assets/svg/socialnets/whatsapp.svg";
+    import iconTg from "@/assets/svg/socialnets/telgram.svg";
+    import iconIn from "@/assets/svg/socialnets/linkedin.svg";
+    import iconSk from "@/assets/svg/socialnets/skype.svg";
+    import iconVi from "@/assets/svg/socialnets/viber.svg";
     export default {
         name:       "About",
         components: {
@@ -180,6 +222,13 @@
             const twoWeeksFromNow = new Date();
             twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
             return {
+                iconFb,
+                iconVk,
+                iconWp,
+                iconTg,
+                iconVi,
+                iconSk,
+                iconIn,
                 ConfigApi,
                 lodashExample: [1, 2, 3, 4],
                 picker8:       null,
@@ -191,6 +240,9 @@
         created() {
             this.dateplayer();
         },
+        mounted() {
+            this.svg001();
+        },
         computed:   {
             ...mapState("egStoreModule", ["sProp"]),
             ...mapGetters("egStoreModule", ["gProp"]),
@@ -200,6 +252,12 @@
         },
         methods:    {
             ...mapActions("egStoreModule", ["aProp"]),
+            svg001() {
+                console.log(">>>>>>>>>>>>>>>>>>>>");
+                console.log("iconFb");
+                console.log(iconFb);
+                console.log("<<<<<<<<<<<<<<<<<<<<");
+            },
             methChangeProp() {
                 const value = this.sProp + 3;
                 this.aProp(value);
