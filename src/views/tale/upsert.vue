@@ -42,9 +42,11 @@
                 <!--region Tale-->
                 <div v-if="!pageIsInIframe">
                     <div class="" v-if="options.modeEdit">
-                        <div>#{{tale.id}}</div>
                         <StandardButtons :onGo="ajaPostTale"></StandardButtons>
-                        <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
+                        <div>Tale #{{tale.id}}</div>
+                        <h1 class="btn btn-block btn-secondary">
+                            <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
+                        </h1>
                         <ckeditor
                                 class="notranslate"
                                 v-model="tale.body"
@@ -83,7 +85,7 @@
                         </div>
                     </div>
                     <div v-else>
-                        <div class="row no-gutters mt-4 mb-2">
+                        <div class="row no-gutters mt-2 mb-2">
                             <h1 class="notranslate col" :lang="tale.lang">
                                 <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                    class="btn btn-block btn-secondary text-left"
