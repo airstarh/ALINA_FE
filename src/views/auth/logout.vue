@@ -22,10 +22,9 @@
 <script>
     // @ is an alias to /src
     import StandardButtons from "@/components/elements/form/StandardButtons";
-    import ConfigApi       from "@/configs/ConfigApi";
-    import AjaxAlina       from "@/services/AjaxAlina";
-    import CurrentUser     from "@/services/CurrentUser";
-
+    import ConfigApi from "@/configs/ConfigApi";
+    import AjaxAlina from "@/services/AjaxAlina";
+    import CurrentUser from "@/services/CurrentUser";
     export default {
         name:       "auth_logout",
         data() {
@@ -42,7 +41,7 @@
         components: {
             StandardButtons
         },
-        created(){
+        created() {
             this.runAJax();
         },
         methods:    {
@@ -52,11 +51,10 @@
                     postParams: this.post,
                     method:     'POST',
                     onDone:     (aja) => {
-                        //ToDo: auto log out
-                        //this.$router.replace({ path: `/about` });
+                        this.$router.replace({ path: `/tale/feed` });
                     }
                 })
-                    .go();
+                .go();
             }
         }
     };

@@ -63,11 +63,15 @@
                             ></AlinaDatePicker>
                         </div>
                         <div class="mb-3">
+                            <input type="text" v-model="tale.iframe" placeholder="iframe" class="notranslate form-control">
+                        </div>
+                        <div class="mb-3">
                             <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">Not for kids</ui-checkbox>
                         </div>
                         <div class="mb-3">
                             <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">Advertisement</ui-checkbox>
                         </div>
+
                         <StandardButtons :onGo="ajaPostTale"></StandardButtons>
 
                         <hr>
@@ -75,6 +79,9 @@
                         <hr>
                         <div class="ck-content">
                             <div v-html="tale.body"></div>
+                        </div>
+                        <div v-if="tale.iframe" class="mt-3">
+                            <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
                         </div>
 
                         <div v-if="CU.isAdmin()">
@@ -100,6 +107,9 @@
                                     <div class="notranslate" v-html="tale.body"></div>
                                 </div>
                             </div>
+                        </div>
+                        <div v-if="tale.iframe" class="mt-3">
+                            <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
                         </div>
                         <div class="mt-3"></div>
                     </div>

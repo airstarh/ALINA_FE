@@ -48,46 +48,49 @@
                             </div>
                             <div v-else :key="`${tale.id}_2`">
                                 <div class="row no-gutters">
-                                    <h2 class="notranslate col" :lang="tale.lang">
-                                        <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                           class="btn btn-block text-left display-3"
-                                           :class="{
-                                   'btn-secondary':tale.is_adult_denied==0,
-                                   'btn-danger':tale.is_adult_denied==1
-                                   }"
-                                           target="_blank"
-                                        >{{tale.header || '¯\_(ツ)_/¯' }}</a>
-                                    </h2>
-                                </div>
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col-auto" v-if="doShowAuthorInfo">
-                                        <div class="fixed-height-150px">
-                                            <router-link :to="'/auth/profile/'+tale.owner_id">
-                                                <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="150px" class="rounded-circle">
-                                                <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" width="150px" class="rounded-circle">
+                                    <div class="col" style="position: relative">
+                                        <h2 class="notranslate m-0" :lang="tale.lang">
+                                            <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                               class="btn btn-block text-left display-3"
+                                               :class="{
+                                               'btn-secondary':tale.is_adult_denied==0,
+                                               'btn-danger':tale.is_adult_denied==1
+                                           }"
+                                               target="_blank"
+                                            >{{tale.header || '¯\_(ツ)_/¯' }}
+                                            </a>
+                                        </h2>
+                                        <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5em;">
+                                            <router-link :to="'/tale/upsert/'+tale.id"
+                                                         class="btn btn-sm btn-info text-left mb-1">
+                                                {{tale.publish_at | unix_to_date_time}}
                                             </router-link>
                                         </div>
                                     </div>
-                                    <div class="notranslate col ml-1">
-                                        <router-link v-if="doShowAuthorInfo" :to="'/auth/profile/'+tale.owner_id"
-                                                     class="btn btn-sm btn-primary text-left text-break mb-1"
-                                        >
-                                            {{UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id)}}
-                                        </router-link>
-                                        <div class="clearfix"></div>
-                                        <router-link :to="'/tale/upsert/'+tale.id"
-                                                     class="btn btn-sm btn-info text-left mb-1">
-                                            {{tale.publish_at | unix_to_date_time}}
-                                        </router-link>
-                                        <br>
-                                    </div>
 
+
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col " v-if="doShowAuthorInfo">
+                                        <div style="width: 100px; max-height: 150px" class="m-auto">
+                                            <router-link :to="'/auth/profile/'+tale.owner_id" class="center">
+                                                <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100%" class="rounded-circle">
+                                                <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" width="100%" class="rounded-circle">
+                                            </router-link>
+                                        </div>
+                                        <div class="text-center">
+                                            <router-link v-if="doShowAuthorInfo" :to="'/auth/profile/'+tale.owner_id" class="btn btn-sm btn-secondary text-break mb-1">{{UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id)}}</router-link>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="mt-3"></div>
                                 <div class="row no-gutters">
                                     <div class="col">
                                         <div class="ck-content" :lang="tale.lang">
                                             <div class="notranslate" v-html="tale.body"></div>
+                                        </div>
+                                        <div v-if="tale.iframe" class="mt-3">
+                                            <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
                                         </div>
                                     </div>
                                 </div>
