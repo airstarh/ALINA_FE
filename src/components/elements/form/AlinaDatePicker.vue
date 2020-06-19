@@ -8,7 +8,7 @@
             <div class="col">
                 <div class="container">
                     <div class="row no-gutters align-items-center justify-content-start">
-                        <div class="col-auto text-nowrap p-3">
+                        <div class="col-auto text-nowrap p-1">
                             <div class="form-inline">
                                 <div class="text-nowrap">
                                     Y:<input v-model="year" size="4" type="text" max="9999" class="form-control d-inline-block w-25" :id="`year-${idq}`" placeholder="YEAR">
@@ -16,7 +16,7 @@
                                     D:<input v-model="day" size="2" type="text" max="31" class="form-control d-inline-block w-25" :id="`day-${idq}`" placeholder="DAT"></div>
                             </div>
                         </div>
-                        <div class="col-auto text-nowrap p-3">
+                        <div class="col-auto text-nowrap p-1">
                             <div class="form-inline">
                                 <div class="text-nowrap">
                                     h:<input v-model="hour" size="2" type="text" max="23" class="ch2 form-control d-inline w-25" :id="`hour-${idq}`" placeholder="HOUR">
@@ -25,7 +25,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-auto text-nowrap p-3">
+                        <div class="col-auto text-nowrap p-1">
                             <div class="input-group-text">
                                 <i>{{emittedRes | unix_to_date_time}}</i>
                             </div>
