@@ -17,30 +17,25 @@
                 <!--region User Info-->
                 <div class="row no-gutters mt-4 " v-if="!pageIsInIframe">
                     <div class="col-auto">
-                        <div class="fixed-height-150px">
-                            <router-link :to="'/auth/profile/'+tale.owner_id">
+                        <span class="btn-secondary text-left text-break badge-pill p-2">
+                            <router-link :to="'/auth/profile/'+tale.owner_id" class="fixed-height-150px">
                                 <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100px" class="rounded-circle">
                                 <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" width="100px" class="rounded-circle">
                             </router-link>
-                        </div>
+                            <router-link :to="'/auth/profile/'+tale.owner_id" class="text-light">
+                                {{UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id)}}
+                            </router-link>
+                        </span>
                     </div>
                     <div class="notranslate col ml-1">
-                        <router-link :to="'/auth/profile/'+tale.owner_id"
-                                     class="btn btn-sm btn-primary text-left text-break mb-1"
-                        >
-                            {{UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id)}}
-                        </router-link>
-                        <br>
-                        <router-link :to="'/tale/upsert/'+tale.id"
-                                     class="btn btn-sm btn-info text-left mb-1">
-                            {{tale.publish_at | unix_to_date_time}}
-                        </router-link>
+
                         <br>
                     </div>
                 </div>
                 <!--endregion User Info-->
                 <!--region Tale-->
                 <div v-if="!pageIsInIframe">
+                    <!--region Tale. mode Edit-->
                     <div class="" v-if="options.modeEdit">
                         <StandardButtons :onGo="ajaPostTale"></StandardButtons>
                         <div>Tale #{{tale.id}}</div>
@@ -91,14 +86,30 @@
                             <textarea v-model="tale.body" placeholder="Body" rows="11" class="form-control"></textarea>
                         </div>
                     </div>
+                    <!--endregion Tale. mode Edit-->
+                    <!--region Tale. mode Read-->
                     <div v-else>
-                        <div class="row no-gutters mt-2 mb-2">
-                            <h1 class="notranslate col" :lang="tale.lang">
-                                <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                   class="btn btn-block btn-secondary text-left"
-                                   target="_blank"
-                                >{{tale.header || '¯\_(ツ)_/¯' }}</a>
-                            </h1>
+                        <div class="mt-3"></div>
+                        <div class="row no-gutters">
+                            <div class="col" style="position: relative">
+                                <h2 class="notranslate m-0" :lang="tale.lang">
+                                    <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                       class="btn btn-block text-left display-3"
+                                       :class="{
+                                               'btn-secondary':tale.is_adult_denied==0,
+                                               'btn-danger':tale.is_adult_denied==1
+                                           }"
+                                       target="_blank"
+                                    >{{tale.header || '¯\_(ツ)_/¯' }}
+                                    </a>
+                                </h2>
+                                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5em;">
+                                    <router-link :to="'/tale/upsert/'+tale.id"
+                                                 class="btn btn-sm btn-info text-left mb-1">
+                                        {{tale.publish_at | unix_to_date_time}}
+                                    </router-link>
+                                </div>
+                            </div>
                         </div>
                         <div class="mt-3"></div>
                         <div class="row no-gutters">
@@ -113,6 +124,7 @@
                         </div>
                         <div class="mt-3"></div>
                     </div>
+                    <!--endregion Tale. mode Read-->
                 </div>
                 <!--endregion Tale-->
                 <!--region Share & Likes-->
