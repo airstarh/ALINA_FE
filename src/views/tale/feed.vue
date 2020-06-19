@@ -50,7 +50,7 @@
                                 <div class="row no-gutters">
                                     <div class="col">
                                         <h2 :lang="tale.lang"
-                                            class="notranslate btn btn-block text-left display-3"
+                                            class="notranslate btn btn-block text-left display-3 m-0"
                                             :class="{
                                                'btn-secondary':tale.is_adult_denied==0,
                                                'btn-danger':tale.is_adult_denied==1
@@ -73,8 +73,6 @@
                                             <span class="clearfix">&nbsp;</span>
                                         </h2>
                                     </div>
-
-
                                 </div>
                                 <div class="row no-gutters align-items-center">
                                     <div class="col " v-if="doShowAuthorInfo">

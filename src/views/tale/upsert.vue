@@ -27,10 +27,6 @@
                             </router-link>
                         </span>
                     </div>
-                    <div class="notranslate col ml-1">
-
-                        <br>
-                    </div>
                 </div>
                 <!--endregion User Info-->
                 <!--region Tale-->
