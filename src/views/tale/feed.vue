@@ -48,24 +48,30 @@
                             </div>
                             <div v-else :key="`${tale.id}_2`">
                                 <div class="row no-gutters">
-                                    <div class="col" style="position: relative">
-                                        <h2 class="notranslate m-0" :lang="tale.lang">
-                                            <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                               class="btn btn-block text-left display-3"
-                                               :class="{
+                                    <div class="col">
+                                        <h2 :lang="tale.lang"
+                                            class="notranslate btn btn-block text-left display-3"
+                                            :class="{
                                                'btn-secondary':tale.is_adult_denied==0,
                                                'btn-danger':tale.is_adult_denied==1
-                                           }"
+                                            }"
+                                        >
+                                            <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                                target="_blank"
-                                            >{{tale.header || '¯\_(ツ)_/¯' }}
+                                               class="text-light"
+                                            >
+                                                {{tale.header || '¯\_(ツ)_/¯' }}
                                             </a>
+                                            <span>
+                                                <span class="notranslate float-right text-right">
+                                                <router-link :to="'/tale/upsert/'+tale.id"
+                                                             class="btn btn-sm btn-light text-left mb-1"
+                                                >{{tale.publish_at | unix_to_date_time}}
+                                                </router-link>
+                                                </span>
+                                            </span>
+                                            <span class="clearfix">&nbsp;</span>
                                         </h2>
-                                        <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5em;">
-                                            <router-link :to="'/tale/upsert/'+tale.id"
-                                                         class="btn btn-sm btn-info text-left mb-1">
-                                                {{tale.publish_at | unix_to_date_time}}
-                                            </router-link>
-                                        </div>
                                     </div>
 
 
@@ -250,7 +256,7 @@
 </script>
 <style>
     .btn.display-3 {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 
     /*region Centered Button*/

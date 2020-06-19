@@ -1,8 +1,8 @@
 <template>
 
-    <div class="alina-date-picker mb-2 ">
+    <div class="alina-date-picker p-1 rounded">
         <div class="row no-gutters align-items-center justify-content-between">
-            <div class="col-auto" v-if="label.length">
+            <div class="col-auto p-0 m-0" v-if="label.length">
                 <div class="input-group-text">{{label}}</div>
             </div>
             <div class="col">
@@ -11,17 +11,17 @@
                         <div class="col-auto text-nowrap p-1">
                             <div class="form-inline">
                                 <div class="text-nowrap">
-                                    Y:<input v-model="year" size="4" type="text" max="9999" class="form-control d-inline-block w-25" :id="`year-${idq}`" placeholder="YEAR">
-                                    M:<input v-model="month" size="2" type="text" max="12" class="form-control d-inline-block w-25" :id="`month-${idq}`" placeholder="MONTH">
-                                    D:<input v-model="day" size="2" type="text" max="31" class="form-control d-inline-block w-25" :id="`day-${idq}`" placeholder="DAT"></div>
+                                    <small>Y:</small><input v-model="year" size="4" type="text" max="9999" class="form-control-sm d-inline-block w-25" :id="`year-${idq}`" placeholder="YEAR">
+                                    <small>M:</small><input v-model="month" size="2" type="text" max="12" class="form-control-sm d-inline-block w-25" :id="`month-${idq}`" placeholder="MONTH">
+                                    <small>D:</small><input v-model="day" size="2" type="text" max="31" class="form-control-sm d-inline-block w-25" :id="`day-${idq}`" placeholder="DAT"></div>
                             </div>
                         </div>
                         <div class="col-auto text-nowrap p-1">
                             <div class="form-inline">
                                 <div class="text-nowrap">
-                                    h:<input v-model="hour" size="2" type="text" max="23" class="ch2 form-control d-inline w-25" :id="`hour-${idq}`" placeholder="HOUR">
-                                    m:<input v-model="min" size="2" type="text" max="59" class="ch2 form-control d-inline w-25" :id="`min-${idq}`" placeholder="MIN">
-                                    s:<input v-model="sec" size="2" type="text" max="59" class="ch2 form-control d-inline w-25" :id="`sec-${idq}`" placeholder="SEC">
+                                    <small>h:</small><input v-model="hour" size="2" type="text" max="23" class="ch2 form-control-sm d-inline w-25" :id="`hour-${idq}`" placeholder="HOUR">
+                                    <small>m:</small><input v-model="min" size="2" type="text" max="59" class="ch2 form-control-sm d-inline w-25" :id="`min-${idq}`" placeholder="MIN">
+                                    <small>s:</small><input v-model="sec" size="2" type="text" max="59" class="ch2 form-control-sm d-inline w-25" :id="`sec-${idq}`" placeholder="SEC">
                                 </div>
                             </div>
                         </div>
@@ -116,5 +116,7 @@
 </script>
 
 <style scoped lang="scss">
-
+.alina-date-picker{
+    background-color: #ececec;
+}
 </style>

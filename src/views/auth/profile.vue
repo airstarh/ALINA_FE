@@ -11,9 +11,10 @@
                 <div class="mt-2"></div>
             </div>
         </div>
+        <!--region Edit Mode-->
         <div v-if="options.modeEdit" class="text-break">
-            <div class="row no-gutters">
-                <div class="col-4">
+            <div class="row no-gutters p-0">
+                <div class="col-md-4 m-0">
                     <div class="alina-form">
                         <ui-fileupload
                                 accept="image/*"
@@ -28,7 +29,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="col pl-2">
+                <div class="col pl-1 m-0">
                     <div class="alina-form">
                         <div class="row no-gutters mt-4 justify-content-center align-items-center">
                             <div class="col-12 text-center">
@@ -84,12 +85,11 @@
                 </div>
             </div>
         </div>
-        <!--##################################################-->
-        <!--##################################################-->
-        <!--##################################################-->
+        <!--endregion Edit Mode-->
+        <!--region  Read Mode-->
         <div v-if="!options.modeEdit" class="text-break">
             <div class="row no-gutters">
-                <div class="col-4">
+                <div class="col-md-4">
                     <a :href="post.emblem" target="_blank">
                         <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
                         <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
@@ -98,9 +98,9 @@
                 <div class="col pl-2">
                     <!--##################################################-->
                     <div class="row no-gutters mb-1 justify-content-center align-items-center">
-                        <div class="notranslate col font-weight-bold">
+                        <h3 class="notranslate col font-weight-bold">
                             {{UtilsStr.fullName(post.firstname, post.lastname, post.id)}}
-                        </div>
+                        </h3>
                     </div>
                     <!--##################################################-->
                     <div class="row no-gutters mb-1 justify-content-center align-items-center">
@@ -127,6 +127,7 @@
                 </div>
             </div>
         </div>
+        <!--endregion  Read Mode-->
         <tale_feed
                 :doShowAuthorInfo="false"
                 :queryProps="{'owner':getCurrentId()}"
