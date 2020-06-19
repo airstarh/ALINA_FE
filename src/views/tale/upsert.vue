@@ -17,7 +17,7 @@
                 <!--region User Info-->
                 <div class="row no-gutters mt-4 " v-if="!pageIsInIframe">
                     <div class="col-auto">
-                        <span class="btn-secondary text-left text-break badge-pill p-2">
+                        <span class="btn-secondary text-left text-nowrap badge-pill p-2">
                             <router-link :to="'/auth/profile/'+tale.owner_id" class="fixed-height-150px">
                                 <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100px" class="rounded-circle">
                                 <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" width="100px" class="rounded-circle">

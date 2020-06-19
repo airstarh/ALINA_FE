@@ -7,29 +7,24 @@
             </div>
             <div class="col">
                 <div class="row no-gutters">
-                    <div class="col-lg text-nowrap mt-2">
-                        <label class="sr-only" :for="`year-${idq}`">year</label>
-                        <input v-model="year" size="4" type="number" max="9999" class="ch4" :id="`year-${idq}`" placeholder="YEAR">
-                        <span>-</span>
-                        <label class="sr-only" :for="`month-${idq}`">month</label>
-                        <input v-model="month" size="2" type="number" max="12" class="ch2" :id="`month-${idq}`" placeholder="MONTH">
-                        <span>-</span>
-                        <label class="sr-only" :for="`day-${idq}`">day</label>
-                        <input v-model="day" size="2" type="number" max="31" class="ch2" :id="`day-${idq}`" placeholder="DAT">
+                    <div class="col-lg text-nowrap mt-2 pl-3 pr-3">
+                        <div class="form-row">
+                            <div class="col-6 p-0"><input v-model="year" size="4" type="text" max="9999" class="form-control text-right" :id="`year-${idq}`" placeholder="YEAR"></div>
+                            <div class="col-3 p-0"><input v-model="month" size="2" type="text" max="12" class="form-control text-right" :id="`month-${idq}`" placeholder="MONTH"></div>
+                            <div class="col-3 p-0"><input v-model="day" size="2" type="text" max="31" class="form-control text-right" :id="`day-${idq}`" placeholder="DAT"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg text-nowrap mt-2 pl-3 pr-3">
+                        <div class="form-row ">
+                            <div class="col-4 p-0"><input v-model="hour" size="2" type="text" max="23" class="ch2 form-control" :id="`hour-${idq}`" placeholder="HOUR"></div>
+                            <div class="col-4 p-0"><input v-model="min" size="2" type="text" max="59" class="ch2 form-control" :id="`min-${idq}`" placeholder="MIN"></div>
+                            <div class="col-4 p-0"><input v-model="sec" size="2" type="text" max="59" class="ch2 form-control" :id="`sec-${idq}`" placeholder="SEC"></div>
+                        </div>
                     </div>
                     <div class="col-lg text-nowrap mt-2">
-                        <span>@</span>
-                        <label class="sr-only" :for="`hour-${idq}`">hour</label>
-                        <input v-model="hour" size="2" type="number" max="23" class="ch2" :id="`hour-${idq}`" placeholder="HOUR">
-                        <span>&nbsp;:&nbsp;</span>
-                        <label class="sr-only" :for="`min-${idq}`">min</label>
-                        <input v-model="min" size="2" type="number" max="59" class="ch2" :id="`min-${idq}`" placeholder="MIN">
-                        <span>&nbsp;:&nbsp;</span>
-                        <label class="sr-only" :for="`sec-${idq}`">sec</label>
-                        <input v-model="sec" size="2" type="number" max="59" class=" ch2" :id="`sec-${idq}`" placeholder="SEC">
-                    </div>
-                    <div class="col-lg text-nowrap mt-2">
-                        &nbsp;{{emittedRes | unix_to_date_time}}
+                        <div class="input-group-text">
+                            <i>{{emittedRes | unix_to_date_time}}</i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -106,13 +101,5 @@
 </script>
 
 <style scoped lang="scss">
-    .ch4 {
-        width: 8ch !important;
-        text-align: center;
-    }
 
-    .ch2 {
-        width: 4ch !important;
-        text-align: center;
-    }
 </style>
