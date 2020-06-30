@@ -3,11 +3,11 @@ import UtilsData    from "@/Utils/UtilsData";
 export default class UtilsDate {
     //##################################################
     //region Date Obj
-    static FORMAT_DB_DATE_TIME    = "YYYY-MM-DD H:m:s";
-    static FORMAT_DB_DATE_NO_TIME = "YYYY-MM-DD";
+    static FORMAT_DB_DATE_TIME    = "yyyy-MM-dd H:m:s";
+    static FORMAT_DB_DATE_NO_TIME = "yyyy-MM-dd";
 
     static dateObjFormat(dateObj, format = UtilsDate.FORMAT_DB_DATE_TIME) {
-        return dateFilter(dateObj, format, {awareOfUnicodeTokens: true});
+        return dateFilter(dateObj, format);
     }
 
     static toDateObj(d, isUnixSecs = false) {
@@ -31,7 +31,7 @@ export default class UtilsDate {
         return Math.floor(v.getTime() / 1000);
     }
 
-    static UnixSecsToFormat(tmstmp, format = "Do MMM YYYY dddd") {
+    static UnixSecsToFormat(tmstmp, format = "Do MMM yyyy dddd") {
         let date = UtilsDate.toDateObj(tmstmp, true);
         return UtilsDate.dateObjFormat(date, format);
     }
