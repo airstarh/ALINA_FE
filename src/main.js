@@ -36,6 +36,7 @@ import VueDateFns          from "vue-date-fns";
 import UtilsDate           from "@/Utils/UtilsDate";
 Vue.use(VueDateFns);
 //#####
+//ToDo: not in use
 Vue.filter('capitalize', function (value) {
     if (!value) return '';
     value = value.toString();
@@ -50,10 +51,6 @@ Vue.filter('unix_to_date_time', function (value, format = "YYYY-MM-DD HH:mm:ss")
     if (!value) value = 0;
     value = parseInt(value);
     return UtilsDate.UnixSecsToFormat(value, format);
-});
-Vue.filter('unix_secs_to_date_obj', function (value) {
-    value = parseInt(value);
-    return UtilsDate.toDateObj(value, true);
 });
 Vue.filter('json_str', function (value) {
     return JSON.stringify(value);

@@ -7,6 +7,20 @@ export default class UtilsDate {
     static dateObjFormat(dateObj, format = "YYYY-MM-DD H:m:s") {
         return dateFilter(dateObj, format);
     }
+
+    static toDateObj(d, isUnixSecs = false) {
+        let v;
+        if (d instanceof Date) {
+            v = d;
+        } else if (UtilsData.isNumber(d)) {
+            if (isUnixSecs) {
+                d = d * 1000;
+            }
+            v = new Date(d)
+        }
+
+        return v;
+    }
     //endregion Date Obj
     //##################################################
     //region Unix Time Stamp
@@ -28,20 +42,5 @@ export default class UtilsDate {
         return UtilsDate.UnixSecsToFormat(tmstmp, format);
     }
     //endregion Unix Time Stamp
-    //##################################################
-    static toDateObj(d, isUnixSecs = false) {
-        let v;
-        if (d instanceof Date) {
-            v = d;
-        } else if (UtilsData.isNumber(d)) {
-            if (isUnixSecs) {
-                d = d * 1000;
-            }
-            v = new Date(d)
-        }
-
-        return v;
-    }
-
     //##################################################
 }
