@@ -1,11 +1,13 @@
 import {dateFilter} from "vue-date-fns";
 import UtilsData    from "@/Utils/UtilsData";
-
 export default class UtilsDate {
     //##################################################
     //region Date Obj
-    static dateObjFormat(dateObj, format = "YYYY-MM-DD H:m:s") {
-        return dateFilter(dateObj, format);
+    static FORMAT_DB_DATE_TIME    = "YYYY-MM-DD H:m:s";
+    static FORMAT_DB_DATE_NO_TIME = "YYYY-MM-DD";
+
+    static dateObjFormat(dateObj, format = UtilsDate.FORMAT_DB_DATE_TIME) {
+        return dateFilter(dateObj, format, {awareOfUnicodeTokens: true});
     }
 
     static toDateObj(d, isUnixSecs = false) {
@@ -18,9 +20,9 @@ export default class UtilsDate {
             }
             v = new Date(d)
         }
-
         return v;
     }
+
     //endregion Date Obj
     //##################################################
     //region Unix Time Stamp
@@ -34,13 +36,14 @@ export default class UtilsDate {
         return UtilsDate.dateObjFormat(date, format);
     }
 
-    static fromUnixToDateNoTime(tmstmp, format = "YYYY-MM-DD") {
+    static fromUnixToDateNoTime(tmstmp, format = UtilsDate.FORMAT_DB_DATE_NO_TIME) {
         return UtilsDate.UnixSecsToFormat(tmstmp, format);
     }
 
-    static fromUnixToDateTime(tmstmp, format = "YYYY-MM-DD H:m:s") {
+    static fromUnixToDateTime(tmstmp, format = UtilsDate.FORMAT_DB_DATE_TIME) {
         return UtilsDate.UnixSecsToFormat(tmstmp, format);
     }
+
     //endregion Unix Time Stamp
     //##################################################
 }

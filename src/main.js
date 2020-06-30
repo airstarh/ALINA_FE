@@ -36,21 +36,20 @@ import VueDateFns          from "vue-date-fns";
 import UtilsDate           from "@/Utils/UtilsDate";
 Vue.use(VueDateFns);
 //#####
-//ToDo: not in use
 Vue.filter('capitalize', function (value) {
     if (!value) return '';
     value = value.toString();
     return value.charAt(0).toUpperCase() + value.slice(1)
 });
-Vue.filter('unix_to_date', function (value, format = "YYYY-MM-DD") {
+Vue.filter('unix_to_date', function (value) {
     if (!value) return '';
     value = parseInt(value);
-    return UtilsDate.UnixSecsToFormat(value, format);
+    return UtilsDate.fromUnixToDateNoTime(value);
 });
-Vue.filter('unix_to_date_time', function (value, format = "YYYY-MM-DD HH:mm:ss") {
+Vue.filter('unix_to_date_time', function (value) {
     if (!value) value = 0;
     value = parseInt(value);
-    return UtilsDate.UnixSecsToFormat(value, format);
+    return UtilsDate.fromUnixToDateTime(value);
 });
 Vue.filter('json_str', function (value) {
     return JSON.stringify(value);
