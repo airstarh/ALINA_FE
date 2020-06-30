@@ -2,6 +2,7 @@ import EssentialsPlugin              from '@ckeditor/ckeditor5-essentials/src/es
 import BoldPlugin                    from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import ItalicPlugin                  from '@ckeditor/ckeditor5-basic-styles/src/italic';
 import LinkPlugin                    from '@ckeditor/ckeditor5-link/src/link';
+import LinkImage                     from '@ckeditor/ckeditor5-link/src/linkimage';
 import ParagraphPlugin               from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 import Alignment                     from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Table                         from '@ckeditor/ckeditor5-table/src/table';
@@ -55,6 +56,7 @@ const ConfigCkEditor = {
         ImageCaption,
         ImageStyle,
         ImageResize,
+        LinkImage,
         List,
         TodoList,
         RemoveFormat,
@@ -103,11 +105,11 @@ const ConfigCkEditor = {
         unit:   '%'
     },
     image:        {
-        toolbar: ['imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
+        toolbar: ['linkImage', 'imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
         styles:  [
             'full',
             'alignLeft',
-            'alignRight'
+            'alignRight',
         ],
     },
     mediaEmbed:   {
