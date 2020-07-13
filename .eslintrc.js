@@ -37,6 +37,7 @@ module.exports = {
         "no-console":                                  "off",
         "vue/html-closing-bracket-newline":            "off",
         "vue/name-property-casing":                    "off",
+        "no-empty":                                    "off",
     },
     parserOptions: {
         parser:     "babel-eslint",

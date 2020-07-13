@@ -6,17 +6,17 @@
                     <h2>
                         URL (URI) parser
                     </h2>
-                    <StandardButtons :onGo="onSubmit"></StandardButtons>
                     <div class="form-group mt-3">
                         <BtstrpBadge title="URI" badge="url"></BtstrpBadge>
                         <input v-model="url" type="text" class="form-control"/>
                     </div>
-                    <!--##################################################-->
-                    <!--##################################################-->
-                    <!--##################################################-->
-                    <StandardButtons :onGo="onSubmit"></StandardButtons>
+                    <StandardButtons :onGo="fromUrlToDetails" submitTxt="Parse"></StandardButtons>
                 </form>
+                <!-- ################################################## -->
+                <!-- ################################################## -->
+                <!-- ################################################## -->
                 <div class="bg-dark p-1 mt-3">
+                    <StandardButtons :onGo="fromDetailsToUrl" submitTxt="Un-Parse"></StandardButtons>
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Clean URL" badge="urlClean"></BtstrpBadge>
                         <input v-model="urlClean" type="text" class="form-control"/>
@@ -65,10 +65,10 @@
                         <input v-model="port" type="text" class="form-control"/>
                     </div>
 
-                    <!--path-->
+                    <!--pathname-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="path" badge="path"></BtstrpBadge>
-                        <input v-model="path" type="text" class="form-control"/>
+                        <BtstrpBadge title="pathname" badge="pathname"></BtstrpBadge>
+                        <input v-model="pathname" type="text" class="form-control"/>
                     </div>
 
                     <!--getTxt-->
@@ -110,8 +110,8 @@
                 password:          "",
                 domain:            "",
                 port:              "",
-                domainAndPort:     "",
-                path:              "",
+                host:              "",
+                pathname:          "",
                 getTxt:            "",
                 getObj:            {},
                 getObjJsonString:  '',
@@ -127,19 +127,16 @@
             this.fromUrlToDetails();
         },
         methods:    {
-            onSubmit() {
-                this.fromUrlToDetails();
-            },
             fromUrlToDetails() {
                 const res              = UtilsURL.parse(this.url);
                 this.urlClean          = UtilsURL.unparse(res, ['pathname', 'hash']);
                 this.protocol          = res.protocol;
                 this.domain            = res.hostname;
                 this.port              = res.port;
-                this.domainAndPort     = res.host;
+                this.host              = res.host;
                 this.username          = res.username;
                 this.password          = res.password;
-                this.path              = res.pathname;
+                this.pathname          = res.pathname;
                 this.getTxt            = res.search;
                 this.getObj            = res.searchObject;
                 this.getObjJsonString  = JSON.stringify(res.searchObject, null, 6);
@@ -148,8 +145,30 @@
                 this.hashObjJsonString = JSON.stringify(res.hashObject, null, 6);
             },
             fromDetailsToUrl() {
-                this.getObj = JSON.parse(this.getTxt);
-                //#####
+                const parser = {
+                    protocol: this.protocol,
+                    username: this.username,
+                    password: this.password,
+                    hostname: this.domain, //domain name only
+                    port:     this.port,
+                    pathname: UtilsURL.castGetObjectToString(this.getObj),
+                    hash:     UtilsURL.castGetObjectToString(this.hashObj),
+                };
+                this.url     = UtilsURL.unparse(parser);
+            },
+        },
+        watch:      {
+            "getObjJsonString":  function () {
+                try {
+                    this.getObj = JSON.parse(this.getObjJsonString)
+                } catch (e) {
+                }
+            },
+            "hashObjJsonString": function () {
+                try {
+                    this.hashObj = JSON.parse(this.hashObjJsonString)
+                } catch (e) {
+                }
             },
         }
     };

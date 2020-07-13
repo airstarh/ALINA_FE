@@ -145,10 +145,10 @@ export default class UtilsURL {
             str += `:${parser.port}`;
         }
         if (parser.pathname && !exclude.includes('pathname')) {
-            str += `${parser.pathname}`;
+            str += `?${parser.pathname}`;
         }
         if (parser.hash && !exclude.includes('hash')) {
-            str += `${parser.hash}`;
+            str += `#${parser.hash}`;
         }
         return str;
     }
