@@ -41,18 +41,6 @@
                         <input v-model="protocol" type="text" class="form-control"/>
                     </div>
 
-                    <!--domain-->
-                    <div class="form-group mt-3">
-                        <BtstrpBadge title="domain" badge="domain"></BtstrpBadge>
-                        <input v-model="domain" type="text" class="form-control"/>
-                    </div>
-
-                    <!--port-->
-                    <div class="form-group mt-3">
-                        <BtstrpBadge title="port" badge="port"></BtstrpBadge>
-                        <input v-model="port" type="text" class="form-control"/>
-                    </div>
-
                     <!--username-->
                     <div class="form-group mt-3">
                         <BtstrpBadge title="username" badge="username"></BtstrpBadge>
@@ -63,6 +51,18 @@
                     <div class="form-group mt-3">
                         <BtstrpBadge title="password" badge="password"></BtstrpBadge>
                         <input v-model="password" type="text" class="form-control"/>
+                    </div>
+
+                    <!--domain-->
+                    <div class="form-group mt-3">
+                        <BtstrpBadge title="domain" badge="domain"></BtstrpBadge>
+                        <input v-model="domain" type="text" class="form-control"/>
+                    </div>
+
+                    <!--port-->
+                    <div class="form-group mt-3">
+                        <BtstrpBadge title="port" badge="port"></BtstrpBadge>
+                        <input v-model="port" type="text" class="form-control"/>
                     </div>
 
                     <!--path-->
@@ -132,7 +132,7 @@
             },
             fromUrlToDetails() {
                 const res              = UtilsURL.parse(this.url);
-                this.urlClean          = `${res.protocol}//${res.hostname}:${res.port}${res.pathname}`;
+                this.urlClean          = UtilsURL.unparse(res, ['pathname', 'hash']);
                 this.protocol          = res.protocol;
                 this.domain            = res.hostname;
                 this.port              = res.port;
@@ -146,10 +146,6 @@
                 this.hashTxt           = res.hash;
                 this.hashObj           = res.hashObject;
                 this.hashObjJsonString = JSON.stringify(res.hashObject, null, 6);
-                console.log(">>>>>>>>>>>>>>>>>>>>");
-                console.log("res");
-                console.log(res);
-                console.log("<<<<<<<<<<<<<<<<<<<<");
             },
             fromDetailsToUrl() {
                 this.getObj = JSON.parse(this.getTxt);

@@ -98,14 +98,14 @@ export default class UtilsURL {
     }
 
     static parse(url) {
-        const parser           = new URL(url);
-        const oUrlSearchParams =
+        const parser  = new URL(url);
+        const oSearch =
                   UtilsURL
                   .castGetStringToObject(
                       lodash.trimStart(parser.search, '?'
                       ))
         ;
-        const oHash            =
+        const oHash   =
                   UtilsURL
                   .castGetStringToObject(
                       lodash.trimStart(parser.hash, '#'
@@ -120,10 +120,37 @@ export default class UtilsURL {
             port:         parser.port,
             pathname:     parser.pathname,
             search:       parser.search,
-            searchObject: oUrlSearchParams,
+            searchObject: oSearch,
             hash:         parser.hash,
             hashObject:   oHash
         };
+    }
+
+    static unparse(parser, exclude = []) {
+        let str = '';
+        if (parser.protocol && !exclude.includes('protocol')) {
+            str += `${parser.protocol}//`;
+        }
+        if (parser.username && !exclude.includes('username')) {
+            str += `${parser.username}`;
+            if (parser.password && !exclude.includes('password')) {
+                str += `:${parser.password}`;
+            }
+            str += `@`;
+        }
+        if (parser.hostname && !exclude.includes('hostname')) {
+            str += `${parser.hostname}`;
+        }
+        if (parser.port && !exclude.includes('port')) {
+            str += `:${parser.port}`;
+        }
+        if (parser.pathname && !exclude.includes('pathname')) {
+            str += `${parser.pathname}`;
+        }
+        if (parser.hash && !exclude.includes('hash')) {
+            str += `${parser.hash}`;
+        }
+        return str;
     }
 
     //endregion URL Parsers
