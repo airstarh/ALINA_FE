@@ -1,7 +1,9 @@
-import UtilsData from "@/Utils/UtilsData";
+import UtilsData   from "@/Utils/UtilsData";
+import * as lodash from "lodash";
 export default class UtilsURL {
     /*
-     * ToDo: UnTested. From: https://stackoverflow.com/a/43513777/3142281
+     * From: https://stackoverflow.com/a/43513777/3142281
+     * ToDo: adapted for PHP only! Square Brackets []
      */
     static castGetStringToObject(query) {
         query        = query.substring(query.indexOf('?') + 1);
@@ -67,6 +69,7 @@ export default class UtilsURL {
     }
 
     // ##################################################
+    //region URL Parsers
     /**
      * https://www.abeautifulsite.net/parsing-urls-in-javascript
      * */
@@ -93,4 +96,36 @@ export default class UtilsURL {
             hash:         parser.hash
         };
     }
+
+    static parse(url) {
+        const parser           = new URL(url);
+        const oUrlSearchParams =
+                  UtilsURL
+                  .castGetStringToObject(
+                      lodash.trimStart(parser.search, '?'
+                      ))
+        ;
+        const oHash            =
+                  UtilsURL
+                  .castGetStringToObject(
+                      lodash.trimStart(parser.hash, '#'
+                      ))
+        ;
+        return {
+            protocol:     parser.protocol,
+            username:     parser.username,
+            password:     parser.password,
+            host:         parser.host, //domain + port
+            hostname:     parser.hostname, //domain name only
+            port:         parser.port,
+            pathname:     parser.pathname,
+            search:       parser.search,
+            searchObject: oUrlSearchParams,
+            hash:         parser.hash,
+            hashObject:   oHash
+        };
+    }
+
+    //endregion URL Parsers
+    // ##################################################
 }

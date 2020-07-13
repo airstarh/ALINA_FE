@@ -1,8 +1,6 @@
 //import UtilsData from "./UtilsData";
-
 import UtilsData   from "./UtilsData";
 import * as lodash from "lodash";
-
 export default class UtilsObject {
     // ##################################################
     //region Get Set by path.
@@ -18,11 +16,9 @@ export default class UtilsObject {
         let ref       = o;
         for (let i = 0; i <= len; i++) {
             let prop = pathArr[i];
-
             if (UtilsData.isNumber(prop)) {
                 prop = parseInt(prop);
             }
-
             if (typeof ref[prop] !== "undefined") {
                 ref = ref[prop];
             } else {
@@ -39,11 +35,9 @@ export default class UtilsObject {
         for (let i = 0; i < len; i++) {
             let prop       = pathArr[i];
             const nextProp = pathArr[i + 1];
-
             if (UtilsData.isNumber(prop)) {
                 prop = parseInt(prop);
             }
-
             if (prop in ref) {
                 ref = ref[prop];
             } else {
@@ -55,12 +49,10 @@ export default class UtilsObject {
                 ref = ref[prop];
             }
         }
-
         let theLastKey = pathArr[len];
         if (UtilsData.isNumber(theLastKey)) {
             theLastKey = parseInt(theLastKey);
         }
-
         ref[theLastKey] = value;
         return o;
     }
@@ -103,6 +95,7 @@ export default class UtilsObject {
         });
         return resObj;
     }
+
     // ##################################################
     static hasOwnPropertyCaseInsensitive(obj, prop) {
         let res = false;
@@ -116,6 +109,7 @@ export default class UtilsObject {
         }
         return res;
     }
+
     // ##################################################
     static countOwnProps(obj) {
         return Object.keys(obj).length;

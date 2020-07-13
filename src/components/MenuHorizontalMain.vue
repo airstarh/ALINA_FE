@@ -35,6 +35,7 @@
                     <b-nav-item-dropdown text="Tools" left>
                         <b-dropdown-item :href="`${ConfigApi.url_base}/tools/SerializedDataEditor`">PHP-Serialized Data Editor online</b-dropdown-item>
                         <b-dropdown-item :href="`${ConfigApi.url_base}/tools/JsonSearchReplaceBeautify`">JSON Search-Replace-Beautify online</b-dropdown-item>
+                        <b-dropdown-item to="/UrlParser">UrlParser</b-dropdown-item>
                     </b-nav-item-dropdown>
 
                     <b-nav-item-dropdown text="Admin Tools" left v-if="CU.isAdmin()">

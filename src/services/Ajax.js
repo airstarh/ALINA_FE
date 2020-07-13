@@ -1,6 +1,6 @@
-import UtilsURL    from "../Utils/UtilsURL";
-import UtilsObject from "../Utils/UtilsObject";
-import UtilsData   from "../Utils/UtilsData";
+import UtilsURL    from "@/Utils/UtilsURL";
+import UtilsObject from "@/Utils/UtilsObject";
+import UtilsData   from "@/Utils/UtilsData";
 export default class Ajax {
     // ##################################################
     //region Class behaviour settings

@@ -314,10 +314,8 @@
                 //#####
                 if (this.reqFlagPostRaw) {
                     this.reqPost = this.reqPostTxt;
-
                 } else {
                     this.reqPost = JSON.parse(this.reqPostTxt);
-
                     if (this.reqFlagPostFile) {
                         this.reqPost['userfile'] = this.reqFileList;
                     }

@@ -2,6 +2,7 @@ import Vue                           from "vue";
 import Router                        from "vue-router";
 import About                         from "@/views/About.vue";
 import RestCall                      from "@/views/RestCall.vue";
+import UrlParser                     from "@/views/UrlParser.vue";
 import auth_login                    from "@/views/auth/login";
 import auth_logout                   from "@/views/auth/logout";
 import auth_profile                  from "@/views/auth/profile";
@@ -34,6 +35,12 @@ export default new Router({
             path:      "/RestCall",
             name:      "RestCall",
             component: RestCall
+        },
+        // UrlParser
+        {
+            path:      "/UrlParser",
+            name:      "UrlParser",
+            component: UrlParser
         },
         //##################################################
         //##################################################

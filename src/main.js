@@ -35,7 +35,8 @@ Vue.use(VueSocialSharing);
 import VueDateFns          from "vue-date-fns";
 import UtilsDate           from "@/Utils/UtilsDate";
 Vue.use(VueDateFns);
-//#####
+// ##################################################
+//region Filters
 Vue.filter('capitalize', function (value) {
     if (!value) return '';
     value = value.toString();
@@ -52,9 +53,10 @@ Vue.filter('unix_to_date_time', function (value) {
     return UtilsDate.fromUnixToDateTime(value);
 });
 Vue.filter('json_str', function (value) {
-    return JSON.stringify(value);
+    return JSON.stringify(value, null, 6);
 });
-//#####
+//endregion Filters
+// ##################################################
 export const AppAlina = new Vue({
     router,
     store,
