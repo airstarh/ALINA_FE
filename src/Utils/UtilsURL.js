@@ -4,6 +4,7 @@ export default class UtilsURL {
     /*
      * From: https://stackoverflow.com/a/43513777/3142281
      * ToDo: adapted for PHP only! Square Brackets []
+     *  ToDo: Support JAVA array notation
      */
     static castGetStringToObject(query) {
         query        = query.substring(query.indexOf('?') + 1);
@@ -50,7 +51,9 @@ export default class UtilsURL {
 
     // ##################################################
     /**
-     * ToDo: Untested. From: https://stackoverflow.com/a/42604801/3142281
+     * From: https://stackoverflow.com/a/42604801/3142281
+     * ToDo: Support JAVA array notation
+     *  ToDo: Support Simple string for HASH
      */
     static castGetObjectToString(obj, prefix) {
         const query = Object.keys(obj).map((getParamName) => {

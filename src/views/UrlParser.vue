@@ -3,9 +3,9 @@
         <div class="row">
             <div class="col">
                 <form action="" method="post" enctype="multipart/form-data" class="alina-form">
-                    <h2>
-                        URL (URI) parser
-                    </h2>
+                    <h1>
+                        URL parser & URL un-parser
+                    </h1>
                     <div class="form-group mt-3">
                         <BtstrpBadge title="URI" badge="url"></BtstrpBadge>
                         <input v-model="url" type="text" class="form-control"/>
@@ -24,62 +24,62 @@
 
                     <!--region getObjJsonString -->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="getObjJsonString" badge="getObjJsonString"></BtstrpBadge>
+                        <BtstrpBadge title="Get as JSON" badge="getObjJsonString"></BtstrpBadge>
                         <textarea v-model="getObjJsonString" class="form-control" rows="15"></textarea>
                     </div>
                     <!--endregion GET JSON-->
 
                     <!--hashObjJsonString-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="hashObjJsonString" badge="hashObjJsonString"></BtstrpBadge>
+                        <BtstrpBadge title="Hash as JSON" badge="hashObjJsonString"></BtstrpBadge>
                         <textarea v-model="hashObjJsonString" class="form-control" rows="15"></textarea>
                     </div>
 
                     <!--protocol-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="protocol" badge="protocol"></BtstrpBadge>
+                        <BtstrpBadge title="Protocol" badge="protocol"></BtstrpBadge>
                         <input v-model="protocol" type="text" class="form-control"/>
                     </div>
 
                     <!--username-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="username" badge="username"></BtstrpBadge>
+                        <BtstrpBadge title="User Name" badge="username"></BtstrpBadge>
                         <input v-model="username" type="text" class="form-control"/>
                     </div>
 
                     <!--password-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="password" badge="password"></BtstrpBadge>
+                        <BtstrpBadge title="Password" badge="password"></BtstrpBadge>
                         <input v-model="password" type="text" class="form-control"/>
                     </div>
 
                     <!--domain-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="domain" badge="domain"></BtstrpBadge>
+                        <BtstrpBadge title="Domain" badge="domain"></BtstrpBadge>
                         <input v-model="domain" type="text" class="form-control"/>
                     </div>
 
                     <!--port-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="port" badge="port"></BtstrpBadge>
+                        <BtstrpBadge title="Port" badge="port"></BtstrpBadge>
                         <input v-model="port" type="text" class="form-control"/>
                     </div>
 
                     <!--pathname-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="pathname" badge="pathname"></BtstrpBadge>
+                        <BtstrpBadge title="Path" badge="pathname"></BtstrpBadge>
                         <input v-model="pathname" type="text" class="form-control"/>
                     </div>
 
                     <!--getTxt-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="getTxt" badge="getTxt"></BtstrpBadge>
+                        <BtstrpBadge title="Get as string" badge="getTxt"></BtstrpBadge>
                         <input v-model="getTxt" type="text" class="form-control"/>
                     </div>
 
                     <!--hashTxt-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="hashTxt" badge="hashTxt"></BtstrpBadge>
+                        <BtstrpBadge title="Hash as string" badge="hashTxt"></BtstrpBadge>
                         <input v-model="hashTxt" type="text" class="form-control"/>
                     </div>
                 </div>
@@ -154,19 +154,23 @@
                     pathname: UtilsURL.castGetObjectToString(this.getObj),
                     hash:     UtilsURL.castGetObjectToString(this.hashObj),
                 };
+                this.getTxt  = '';
+                this.hashTxt = '';
                 this.url     = UtilsURL.unparse(parser);
             },
         },
         watch:      {
             "getObjJsonString":  function () {
                 try {
-                    this.getObj = JSON.parse(this.getObjJsonString)
+                    this.getObj = JSON.parse(this.getObjJsonString);
+                    this.getTxt = '';
                 } catch (e) {
                 }
             },
             "hashObjJsonString": function () {
                 try {
-                    this.hashObj = JSON.parse(this.hashObjJsonString)
+                    this.hashObj = JSON.parse(this.hashObjJsonString);
+                    this.hashTxt = '';
                 } catch (e) {
                 }
             },
