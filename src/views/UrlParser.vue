@@ -93,6 +93,7 @@
     import StandardButtons from "../components/elements/form/StandardButtons";
     import BtstrpBadge from "../components/elements/BtstrpBadge";
     import UtilsURL from "@/Utils/UtilsURL";
+    import UtilsData from "@/Utils/UtilsData";
     export default {
         name:       "UrlParser",
         components: {
@@ -103,7 +104,7 @@
             return {
                 /////////////////////////////////
                 //region Request
-                url:               "https://USER:PASS@saysimsim.ru:8080/root/index2?p=val&lala[]=666&lala[]=Русские буквы с пробелом#lalala[]=1&lalala[]=Ф Й",
+                url:               "https://USER:PASS@saysimsim.ru:8080/root/index2?p=val&lala[]=1&lala[]=Русские буквы#haha[]=1&haha[]=Ф Й",
                 urlClean:          "",
                 protocol:          "",
                 username:          "",
@@ -161,18 +162,12 @@
         },
         watch:      {
             "getObjJsonString":  function () {
-                try {
-                    this.getObj = JSON.parse(this.getObjJsonString);
-                    this.getTxt = '';
-                } catch (e) {
-                }
+                this.getObj = UtilsData.jsonToObjOrString(this.getObjJsonString);
+                this.getTxt = '';
             },
             "hashObjJsonString": function () {
-                try {
-                    this.hashObj = JSON.parse(this.hashObjJsonString);
-                    this.hashTxt = '';
-                } catch (e) {
-                }
+                this.hashObj = UtilsData.jsonToObjOrString(this.hashObjJsonString);
+                this.hashTxt = '';
             },
         }
     };

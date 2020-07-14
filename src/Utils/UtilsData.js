@@ -149,4 +149,16 @@ export default class UtilsData {
         };
         return pg;
     }
+
+    static jsonToObjOrString(inputValue) {
+        try {
+            let obj = JSON.parse(inputValue);
+            if (UtilsData.empty(obj)) {
+                return inputValue;
+            }
+            return obj;
+        } catch (e) {
+            return inputValue;
+        }
+    }
 }

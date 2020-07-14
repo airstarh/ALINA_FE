@@ -56,6 +56,17 @@ export default class UtilsURL {
      *  ToDo: Support Simple string for HASH
      */
     static castGetObjectToString(obj, prefix) {
+        // #####
+        //region For simple strings
+        if (
+            (UtilsData.isString(obj) || UtilsData.isNumber(obj))
+            &&
+            UtilsData.empty(prefix)
+        ) {
+            return obj;
+        }
+        //endregion For simple strings
+        // #####
         const query = Object.keys(obj).map((getParamName) => {
             const getParamValue = obj[getParamName];
             if (UtilsData.isArray(obj))
