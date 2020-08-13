@@ -11,126 +11,128 @@
                 <div class="mt-2"></div>
             </div>
         </div>
-        <!--region Edit Mode-->
-        <div v-if="options.modeEdit" class="text-break">
-            <div class="row no-gutters p-0">
-                <div class="col-md-4 m-0">
-                    <div class="alina-form">
-                        <ui-fileupload
-                                accept="image/*"
-                                :multiple="false"
-                                :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-                                @change="onChangeFileField"
-                        >Select an image
-                        </ui-fileupload>
+        <div :key="curId">
+            <!--region Edit Mode-->
+            <div v-if="options.modeEdit" class="text-break">
+                <div class="row no-gutters p-0">
+                    <div class="col-md-4 m-0">
+                        <div class="alina-form">
+                            <ui-fileupload
+                                    accept="image/*"
+                                    :multiple="false"
+                                    :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+                                    @change="onChangeFileField"
+                            >Select an image
+                            </ui-fileupload>
+                            <a :href="post.emblem" target="_blank">
+                                <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
+                                <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col pl-1 m-0">
+                        <div class="alina-form">
+                            <div class="row no-gutters mt-4 justify-content-center align-items-center">
+                                <div class="col-12 text-center">
+                                    <a :href="'mailto:'+post.mail">
+                                        {{post.mail}}
+                                    </a>
+                                </div>
+                            </div>
+                            <!--##################################################-->
+
+                            <div class="row no-gutters mt-4 justify-content-center align-items-center">
+                                <div class="col">
+                                    <label for="firstname">First name</label>
+                                    <input v-model="post.firstname" type="text" id="firstname" class="form-control">
+                                </div>
+                            </div>
+
+                            <!--##################################################-->
+
+                            <div class="row no-gutters mt-4 justify-content-center align-items-center">
+                                <div class="col">
+                                    <label for="lastname">Last name</label>
+                                    <input v-model="post.lastname" type="text" id="lastname" class="form-control">
+                                </div>
+                            </div>
+
+                            <!--##################################################-->
+
+                            <div class="row no-gutters mt-4 justify-content-center align-items-center">
+                                <div class="col">
+                                    <AlinaDatePicker
+                                            v-model="post.birth"
+                                            label="Birth"
+                                            idq="birth"
+                                            class="notranslate"
+                                    ></AlinaDatePicker>
+                                </div>
+                            </div>
+
+                            <!--##################################################-->
+                            <StandardButtons :onGo="runAJax"></StandardButtons>
+                        </div>
+                    </div>
+                </div>
+                <div class="row no-gutters mt-4">
+                    <div class="col">
+                        <ckeditor
+                                class="notranslate"
+                                v-model="post.about_myself"
+                                :editor="options.CkEditorObj"
+                                :config="options.CkEditorConfig"
+                        ></ckeditor>
+                    </div>
+                </div>
+            </div>
+            <!--endregion Edit Mode-->
+            <!--region  Read Mode-->
+            <div v-else class="text-break">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
                         <a :href="post.emblem" target="_blank">
                             <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
                             <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
                         </a>
                     </div>
-                </div>
-                <div class="col pl-1 m-0">
-                    <div class="alina-form">
-                        <div class="row no-gutters mt-4 justify-content-center align-items-center">
-                            <div class="col-12 text-center">
+                    <div class="col pl-2">
+                        <!--##################################################-->
+                        <div class="row no-gutters mb-1 justify-content-center align-items-center">
+                            <h3 class="notranslate col font-weight-bold">
+                                {{UtilsStr.fullName(post.firstname, post.lastname, post.id)}}
+                            </h3>
+                        </div>
+                        <!--##################################################-->
+                        <div class="row no-gutters mb-1 justify-content-center align-items-center">
+                            <div class="col">
+                                {{post.birth | unix_to_date }}
+                            </div>
+                        </div>
+                        <!--##################################################-->
+                        <div class="row no-gutters mb-1 justify-content-center align-items-center">
+                            <div class="col-12">
                                 <a :href="'mailto:'+post.mail">
                                     {{post.mail}}
                                 </a>
                             </div>
                         </div>
                         <!--##################################################-->
-
-                        <div class="row no-gutters mt-4 justify-content-center align-items-center">
-                            <div class="col">
-                                <label for="firstname">First name</label>
-                                <input v-model="post.firstname" type="text" id="firstname" class="form-control">
-                            </div>
+                    </div>
+                </div>
+                <div class="row no-gutters mt-4">
+                    <div class="col">
+                        <div class="ck-content">
+                            <div class="notranslate" v-html="post.about_myself"></div>
                         </div>
-
-                        <!--##################################################-->
-
-                        <div class="row no-gutters mt-4 justify-content-center align-items-center">
-                            <div class="col">
-                                <label for="lastname">Last name</label>
-                                <input v-model="post.lastname" type="text" id="lastname" class="form-control">
-                            </div>
-                        </div>
-
-                        <!--##################################################-->
-
-                        <div class="row no-gutters mt-4 justify-content-center align-items-center">
-                            <div class="col">
-                                <AlinaDatePicker
-                                        v-model="post.birth"
-                                        label="Birth"
-                                        idq="birth"
-                                        class="notranslate"
-                                ></AlinaDatePicker>
-                            </div>
-                        </div>
-
-                        <!--##################################################-->
-                        <StandardButtons :onGo="runAJax"></StandardButtons>
                     </div>
                 </div>
             </div>
-            <div class="row no-gutters mt-4">
-                <div class="col">
-                    <ckeditor
-                            class="notranslate"
-                            v-model="post.about_myself"
-                            :editor="options.CkEditorObj"
-                            :config="options.CkEditorConfig"
-                    ></ckeditor>
-                </div>
-            </div>
+            <!--endregion  Read Mode-->
         </div>
-        <!--endregion Edit Mode-->
-        <!--region  Read Mode-->
-        <div v-if="!options.modeEdit" class="text-break">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <a :href="post.emblem" target="_blank">
-                        <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
-                        <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
-                    </a>
-                </div>
-                <div class="col pl-2">
-                    <!--##################################################-->
-                    <div class="row no-gutters mb-1 justify-content-center align-items-center">
-                        <h3 class="notranslate col font-weight-bold">
-                            {{UtilsStr.fullName(post.firstname, post.lastname, post.id)}}
-                        </h3>
-                    </div>
-                    <!--##################################################-->
-                    <div class="row no-gutters mb-1 justify-content-center align-items-center">
-                        <div class="col">
-                            {{post.birth | unix_to_date }}
-                        </div>
-                    </div>
-                    <!--##################################################-->
-                    <div class="row no-gutters mb-1 justify-content-center align-items-center">
-                        <div class="col-12">
-                            <a :href="'mailto:'+post.mail">
-                                {{post.mail}}
-                            </a>
-                        </div>
-                    </div>
-                    <!--##################################################-->
-                </div>
-            </div>
-            <div class="row no-gutters mt-4">
-                <div class="col">
-                    <div class="ck-content">
-                        <div class="notranslate" v-html="post.about_myself"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--endregion  Read Mode-->
         <tale_feed
                 :doShowAuthorInfo="false"
-                :queryProps="{'owner':getCurrentId()}"
+                :queryProps="{'owner':curId}"
         ></tale_feed>
     </div>
 </template>
@@ -188,43 +190,14 @@
             AlinaDatePicker,
             tale_feed
         },
-        //##################################################
-        //region Router Hooks
-        beforeRouteEnter(to, from, next) {
-            next(vm => {
-                const id = vm.getCurrentId(to);
-                vm.fetchProfile(id);
-            })
-        },
-        beforeRouteUpdate(to, from, next) {
-            const vm = this;
-            const id = vm.getCurrentId(to);
-            vm.fetchProfile(id, next);
-        },
-        //endregion Router Hooks
-        //##################################################
         created() {
+            const vm = this;
+            const id = this.curId;
+            vm.fetchProfile(id);
         },
         methods:    {
             //##################################################
             //region Define User
-            getCurrentId(to) {
-                let id = null;
-                if (!to) {
-                    if (this && this.$router && this.$router.currentRoute && this.$router.currentRoute) {
-                        to = this.$router.currentRoute;
-                    }
-                }
-                if (to && to.params && to.params.id) {
-                    id = to.params.id;
-                } else {
-                    id = CurrentUser.obj().attributes.id;
-                }
-                if (UtilsData.empty(id)) {
-                    //this.$router.replace({path: `/auth/login`});
-                }
-                return id;
-            },
             fetchProfile(id, callback) {
                 AjaxAlina.newInst({
                     url:    `${this.options.url}/${id}`,
@@ -233,10 +206,6 @@
                         if (aja.respBody.meta.alina_response_success == 1) {
                             this.post             = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
                             this.options.modeEdit = false;
-                        }
-                        //#####
-                        if (callback) {
-                            callback();
                         }
                     }
                 })
@@ -263,7 +232,7 @@
             },
             //##################################################
             runAJax() {
-                const oAjax = AjaxAlina.newInst({
+                AjaxAlina.newInst({
                     method:     'POST',
                     url:        this.options.url,
                     postParams: this.post,
@@ -294,9 +263,17 @@
                 })
                 .go();
             },
+        },
+        computed:   {
+            curId() {
+                let id = null;
+                if (this && this.$route && this.$route.params && this.$route.params.id) {
+                    id = this.$route.params.id;
+                } else {
+                    id = CurrentUser.obj().attributes.id;
+                }
+                return id;
+            }
         }
     };
 </script>
-<!--##################################################-->
-<!--##################################################-->
-<!--##################################################-->

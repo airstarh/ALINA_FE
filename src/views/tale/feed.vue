@@ -203,6 +203,7 @@
             }
         },
         created() {
+            this.queryData.txt = this.txt;
             this.ajaGetFeed();
         },
         methods:    {
@@ -226,13 +227,13 @@
                             this.feed                                               = aja.respBody.data.tale;
                             this.feedPagination                                     = aja.respBody.meta.tale;
                             //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
-                            document.getElementById('alina-body-wrapper').scrollTop = 0;
                         }
                     }
                 })
                 .go();
             },
             pageChange(pageSize, pageCurrentNumber) {
+                document.getElementById('alina-body-wrapper').scrollTop = 0;
                 this.feedPagination.pageSize          = pageSize;
                 this.feedPagination.pageCurrentNumber = pageCurrentNumber;
                 this.ajaGetFeed();
@@ -248,6 +249,15 @@
         watch:      {
             $route(to, from) {
                 this.ajaGetFeed();
+            }
+        },
+        computed:   {
+            txt: function () {
+                let res = '';
+                if (this.$route.query.txt) {
+                    res = this.$route.query.txt;
+                }
+                return res;
             }
         }
     };

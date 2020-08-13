@@ -5,7 +5,7 @@
          }"
     >
         <MenuHorizontalMain v-if="!pageIsInIframe"></MenuHorizontalMain>
-        <router-view :key="$route.fullPath"></router-view>
+        <router-view></router-view>
         <Messages></Messages>
         <Spinner></Spinner>
     </div>
