@@ -2,11 +2,11 @@
     <div class="container p-0">
         <div class="row no-gutters">
             <div class="col">
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 btn btn-block btn-info">
                     <div class="input-group-append">
                         <button @click="searchClear" class="input-group-text btn btn-danger">clear</button>
                     </div>
-                    <input type="text" class="form-control" aria-label="Search" v-model="queryData.txt">
+                    <input type="text" class="form-control" aria-label="Search" v-model="queryData.txt" placeholder="Search...">
                     <div class="input-group-append">
                         <button @click="search" class="input-group-text btn btn-primary">Search</button>
                     </div>

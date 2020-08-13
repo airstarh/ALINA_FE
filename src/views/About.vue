@@ -80,8 +80,8 @@
             <!--<div>Now: {{ now }}</div>-->
             <div>Now: {{ new Date() | date }}</div>
             <div>Now: {{ $date(new Date()) }}</div>
-            <div>Now: {{ new Date() | date('DD MMMM YYYY') }}</div>
-            <div>Now: {{ $date(new Date(), 'DD MMMM YYYY') }}</div>
+            <div>Now: {{ new Date() | date('dd MMMM yyyy') }}</div>
+            <div>Now: {{ $date(new Date(), 'dd MMMM yyyy') }}</div>
             <div>Now: {{ $date(new Date(), 'X') }}</div>
             <br>
             {{dateExample}}

@@ -130,6 +130,7 @@
             </div>
             <!--endregion  Read Mode-->
         </div>
+        <div class="mt-5"></div>
         <tale_feed
                 :doShowAuthorInfo="false"
                 :queryProps="{'owner':curId}"
