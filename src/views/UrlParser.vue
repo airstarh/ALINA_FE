@@ -7,7 +7,7 @@
                         URL parser & URL un-parser
                     </h1>
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="URI" badge="url"></BtstrpBadge>
+                        <BtstrpBadge title="URI"></BtstrpBadge>
                         <input v-model="url" type="text" class="form-control"/>
                     </div>
                     <StandardButtons :onGo="fromUrlToDetails" submitTxt="Parse"></StandardButtons>
@@ -18,74 +18,74 @@
                 <div class="bg-dark p-1 mt-3">
                     <StandardButtons :onGo="fromDetailsToUrl" submitTxt="Un-Parse"></StandardButtons>
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Clean URL" badge="urlClean" :greyed="true"></BtstrpBadge>
+                        <BtstrpBadge title="Clean URL" :greyed="true"></BtstrpBadge>
                         <input v-model="urlClean" type="text" class="form-control" disabled/>
                     </div>
 
                     <!--protocol-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Protocol" badge="protocol"></BtstrpBadge>
+                        <BtstrpBadge title="Protocol"></BtstrpBadge>
                         <input v-model="protocol" type="text" class="form-control"/>
                     </div>
 
                     <!--username-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="User Name" badge="username"></BtstrpBadge>
+                        <BtstrpBadge title="User Name"></BtstrpBadge>
                         <input v-model="username" type="text" class="form-control"/>
                     </div>
 
                     <!--password-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Password" badge="password"></BtstrpBadge>
+                        <BtstrpBadge title="Password"></BtstrpBadge>
                         <input v-model="password" type="text" class="form-control"/>
                     </div>
 
                     <!--domain-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Domain" badge="domain"></BtstrpBadge>
+                        <BtstrpBadge title="Domain"></BtstrpBadge>
                         <input v-model="domain" type="text" class="form-control"/>
                     </div>
 
                     <!--port-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Port" badge="port"></BtstrpBadge>
+                        <BtstrpBadge title="Port"></BtstrpBadge>
                         <input v-model="port" type="text" class="form-control"/>
                     </div>
 
                     <!--pathname-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Path" badge="pathname" :greyed="true"></BtstrpBadge>
+                        <BtstrpBadge title="Path" badge="edit it below" :greyed="true"></BtstrpBadge>
                         <input v-model="pathname" type="text" class="form-control" disabled/>
                     </div>
 
                     <!--pathnameMultiline-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Path multilined" badge="pathnameMultiline"></BtstrpBadge>
+                        <BtstrpBadge title="Path multilined" badge="each line will be separated with / "></BtstrpBadge>
                         <textarea v-model="pathnameMultiline" class="form-control" rows="15"></textarea>
                     </div>
 
                     <!--getTxt-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Get as string" badge="getTxt" :greyed="true"></BtstrpBadge>
+                        <BtstrpBadge title="Get string" badge="edit it below" :greyed="true"></BtstrpBadge>
                         <input v-model="getTxt" type="text" class="form-control" disabled/>
                     </div>
 
                     <!--region getJsonString -->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Get as JSON" badge="getJsonString"></BtstrpBadge>
+                        <BtstrpBadge title="Get as JSON" badge="use valid JSON only"></BtstrpBadge>
                         <textarea v-model="getJsonString" class="form-control" rows="15"></textarea>
                     </div>
                     <!--endregion GET JSON-->
 
                     <!--hashTxt-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Hash as string" badge="hashTxt" :greyed="true"></BtstrpBadge>
+                        <BtstrpBadge title="Hash as string" badge="edit it below" :greyed="true"></BtstrpBadge>
                         <input v-model="hashTxt" type="text" class="form-control" disabled/>
                     </div>
 
                     <!--hashJsonString-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Hash as JSON" badge="hashJsonString"></BtstrpBadge>
+                        <BtstrpBadge title="Hash as JSON" badge="use valid JSON, simple string, number"></BtstrpBadge>
                         <textarea v-model="hashJsonString" class="form-control" rows="15"></textarea>
                     </div>
 
