@@ -4,7 +4,7 @@
             <div class="col">
                 <form action="" method="post" enctype="multipart/form-data" class="alina-form">
                     <h1>
-                        URL parser & URL un-parser
+                        URL Parser + URL un-Parser (2 in 1)
                     </h1>
                     <div class="form-group mt-3">
                         <BtstrpBadge title="URI"></BtstrpBadge>
