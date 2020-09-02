@@ -18,8 +18,8 @@
                 <div class="bg-dark p-1 mt-3">
                     <StandardButtons :onGo="fromDetailsToUrl" submitTxt="Un-Parse"></StandardButtons>
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Clean URL" badge="urlClean"></BtstrpBadge>
-                        <input v-model="urlClean" type="text" class="form-control"/>
+                        <BtstrpBadge title="Clean URL" badge="urlClean" :greyed="true"></BtstrpBadge>
+                        <input v-model="urlClean" type="text" class="form-control" disabled/>
                     </div>
 
                     <!--protocol-->
@@ -54,33 +54,39 @@
 
                     <!--pathname-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Path" badge="pathname"></BtstrpBadge>
-                        <input v-model="pathname" type="text" class="form-control"/>
+                        <BtstrpBadge title="Path" badge="pathname" :greyed="true"></BtstrpBadge>
+                        <input v-model="pathname" type="text" class="form-control" disabled/>
+                    </div>
+
+                    <!--pathnameMultiline-->
+                    <div class="form-group mt-3">
+                        <BtstrpBadge title="Path multilined" badge="pathnameMultiline"></BtstrpBadge>
+                        <textarea v-model="pathnameMultiline" class="form-control" rows="15"></textarea>
                     </div>
 
                     <!--getTxt-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Get as string" badge="getTxt"></BtstrpBadge>
+                        <BtstrpBadge title="Get as string" badge="getTxt" :greyed="true"></BtstrpBadge>
                         <input v-model="getTxt" type="text" class="form-control" disabled/>
                     </div>
 
-                    <!--region getObjJsonString -->
+                    <!--region getJsonString -->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Get as JSON" badge="getObjJsonString"></BtstrpBadge>
-                        <textarea v-model="getObjJsonString" class="form-control" rows="15"></textarea>
+                        <BtstrpBadge title="Get as JSON" badge="getJsonString"></BtstrpBadge>
+                        <textarea v-model="getJsonString" class="form-control" rows="15"></textarea>
                     </div>
                     <!--endregion GET JSON-->
 
                     <!--hashTxt-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Hash as string" badge="hashTxt"></BtstrpBadge>
+                        <BtstrpBadge title="Hash as string" badge="hashTxt" :greyed="true"></BtstrpBadge>
                         <input v-model="hashTxt" type="text" class="form-control" disabled/>
                     </div>
 
-                    <!--hashObjJsonString-->
+                    <!--hashJsonString-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Hash as JSON" badge="hashObjJsonString"></BtstrpBadge>
-                        <textarea v-model="hashObjJsonString" class="form-control" rows="15"></textarea>
+                        <BtstrpBadge title="Hash as JSON" badge="hashJsonString"></BtstrpBadge>
+                        <textarea v-model="hashJsonString" class="form-control" rows="15"></textarea>
                     </div>
 
                 </div>
@@ -114,27 +120,24 @@
                 port:              "",
                 host:              "",
                 pathname:          "",
+                pathnameMultiline: "",
                 getTxt:            "",
                 getObj:            {},
-                getObjJsonString:  '',
+                getJsonString:     '',
                 hashTxt:           "",
                 hashObj:           {},
-                hashObjJsonString: '',
+                hashJsonString:    '',
                 //endregion Request
                 /////////////////////////////////
             };
         },
         computed:   {},
         created() {
-            this.fromUrlToDetails();
+            //this.fromUrlToDetails();
         },
         methods:    {
             fromUrlToDetails() {
-                const res = UtilsURL.parse(this.url);
-                console.log(">>>>>>>>>>>>>>>>>>>>");
-                console.log("res");
-                console.log(res);
-                console.log("<<<<<<<<<<<<<<<<<<<<");
+                const res              = UtilsURL.parse(this.url);
                 this.urlClean          = UtilsURL.unparse(res, ['pathname', 'hash']);
                 this.protocol          = res.protocol;
                 this.domain            = res.hostname;
@@ -143,12 +146,13 @@
                 this.username          = res.username;
                 this.password          = res.password;
                 this.pathname          = res.pathname;
+                this.pathnameMultiline = res.pathname.split("/").join("\n");
                 this.getTxt            = res.search;
                 this.getObj            = res.searchObject;
-                this.getObjJsonString  = JSON.stringify(res.searchObject, null, 6);
+                this.getJsonString     = JSON.stringify(res.searchObject, null, 6);
                 this.hashTxt           = res.hash;
                 this.hashObj           = res.hashObject;
-                this.hashObjJsonString = JSON.stringify(res.hashObject, null, 6);
+                this.hashJsonString    = JSON.stringify(res.hashObject, null, 6);
             },
             fromDetailsToUrl() {
                 const parser = {
@@ -157,22 +161,29 @@
                     password: this.password,
                     hostname: this.domain, //domain name only
                     port:     this.port,
-                    pathname: UtilsURL.castObjectToGetQueryString(this.getObj),
+                    pathname: this.pathname,
+                    getTxt:   UtilsURL.castObjectToGetQueryString(this.getObj),
                     hash:     UtilsURL.castObjectToGetQueryString(this.hashObj, '', false),
                 };
-                this.getTxt  = '';
-                this.hashTxt = '';
                 this.url     = UtilsURL.unparse(parser);
             },
         },
         watch:      {
-            "getObjJsonString":  function () {
-                this.getObj = UtilsData.jsonToObjOrString(this.getObjJsonString);
+            "getJsonString":     function () {
+                this.getObj = UtilsData.jsonToObjOrString(this.getJsonString);
                 this.getTxt = '?' + UtilsURL.castObjectToGetQueryString(this.getObj);
             },
-            "hashObjJsonString": function () {
-                this.hashObj = UtilsData.jsonToObjOrString(this.hashObjJsonString);
+            "hashJsonString":    function () {
+                this.hashObj = UtilsData.jsonToObjOrString(this.hashJsonString);
                 this.hashTxt = '#' + UtilsURL.castObjectToGetQueryString(this.hashObj, '', false);
+                console.log(">>>>>>>>>>>>>>>>>>>>");
+                console.log("this.hashTxt");
+                console.log(this.hashObj);
+                console.log(this.hashTxt);
+                console.log("<<<<<<<<<<<<<<<<<<<<");
+            },
+            "pathnameMultiline": function () {
+                this.pathname = this.pathnameMultiline.split("\n").join("/");
             },
         }
     };

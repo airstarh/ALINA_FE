@@ -151,6 +151,9 @@ export default class UtilsData {
     }
 
     static jsonToObjOrString(inputValue) {
+        if (inputValue === "{}") {
+            return {};
+        }
         try {
             let obj = JSON.parse(inputValue);
             if (UtilsData.empty(obj)) {

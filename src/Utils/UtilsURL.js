@@ -1,5 +1,6 @@
 import UtilsData   from "@/Utils/UtilsData";
 import * as lodash from "lodash";
+import UtilsStr    from "@/Utils/UtilsStr";
 export default class UtilsURL {
     /*
      * From: https://stackoverflow.com/a/43513777/3142281
@@ -55,7 +56,17 @@ export default class UtilsURL {
      * ToDo: Support JAVA array notation
      *  ToDo: Support Simple string for HASH
      */
-    static castObjectToGetQueryString(obj, prefix, doUrlEncode = true) {
+    static castObjectToGetQueryString(obj, prefix = '', doUrlEncode = true) {
+        // #####
+        //region For Initial empty object
+        if (
+            (UtilsData.empty(obj))
+            &&
+            UtilsData.empty(prefix)
+        ) {
+            return '';
+        }
+        //endregion For  Initial empty object
         // #####
         //region For simple strings
         if (
@@ -71,8 +82,9 @@ export default class UtilsURL {
             let getParamValue = obj[getParamName];
             if (UtilsData.isArray(obj))
                 getParamName = `${prefix}[]`;
-            else if (UtilsData.isObject(obj))
+            else if (UtilsData.isObject(obj)) {
                 getParamName = (prefix ? `${prefix}[${getParamName}]` : getParamName);
+            }
             // #####
             if (UtilsData.isArray(getParamValue))
                 return UtilsURL.castObjectToGetQueryString(getParamValue, getParamName, doUrlEncode);
@@ -114,11 +126,7 @@ export default class UtilsURL {
     }
 
     static parse(url) {
-        const parser = new URL(url);
-        console.log(">>>>>>>>>>>>>>>>>>>>");
-        console.log("parser");
-        console.log(parser);
-        console.log("<<<<<<<<<<<<<<<<<<<<");
+        const parser  = new URL(url);
         const oSearch =
                   UtilsURL
                   .castGetStringToObject(
@@ -147,7 +155,8 @@ export default class UtilsURL {
     }
 
     static unparse(parser, exclude = []) {
-        let str = '';
+        let variative = '';
+        let str       = '';
         if (parser.protocol && !exclude.includes('protocol')) {
             str += `${parser.protocol}//`;
         }
@@ -165,10 +174,18 @@ export default class UtilsURL {
             str += `:${parser.port}`;
         }
         if (parser.pathname && !exclude.includes('pathname')) {
-            str += `?${parser.pathname}`;
+            variative = parser.pathname.startsWith("/") ? parser.pathname : `/${parser.pathname}`;
+            str += variative;
+        }
+        if (parser.getTxt && !exclude.includes('getTxt')) {
+            variative = parser.getTxt.startsWith("?") ? parser.getTxt : `?${parser.getTxt}`;
+            if (variative === '?') {variative = '';}
+            str += variative;
         }
         if (parser.hash && !exclude.includes('hash')) {
-            str += `#${parser.hash}`;
+            variative = parser.hash.startsWith("#") ? parser.hash : `#${parser.hash}`;
+            if (variative === '#') {variative = '';}
+            str += variative;
         }
         return str;
     }
