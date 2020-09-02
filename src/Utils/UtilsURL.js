@@ -55,7 +55,7 @@ export default class UtilsURL {
      * ToDo: Support JAVA array notation
      *  ToDo: Support Simple string for HASH
      */
-    static castGetObjectToString(obj, prefix) {
+    static castObjectToGetQueryString(obj, prefix, doUrlEncode = true) {
         // #####
         //region For simple strings
         if (
@@ -68,16 +68,18 @@ export default class UtilsURL {
         //endregion For simple strings
         // #####
         const query = Object.keys(obj).map((getParamName) => {
-            const getParamValue = obj[getParamName];
+            let getParamValue = obj[getParamName];
             if (UtilsData.isArray(obj))
                 getParamName = `${prefix}[]`;
             else if (UtilsData.isObject(obj))
                 getParamName = (prefix ? `${prefix}[${getParamName}]` : getParamName);
             // #####
             if (UtilsData.isArray(getParamValue))
-                return UtilsURL.castGetObjectToString(getParamValue, getParamName);
-            else
-                return `${getParamName}=${encodeURIComponent(getParamValue)}`;
+                return UtilsURL.castObjectToGetQueryString(getParamValue, getParamName, doUrlEncode);
+            else {
+                getParamValue = doUrlEncode ? encodeURIComponent(getParamValue) : getParamValue;
+                return `${getParamName}=${getParamValue}`;
+            }
         });
         return [].concat.apply([], query).join('&');
     }
@@ -112,7 +114,11 @@ export default class UtilsURL {
     }
 
     static parse(url) {
-        const parser  = new URL(url);
+        const parser = new URL(url);
+        console.log(">>>>>>>>>>>>>>>>>>>>");
+        console.log("parser");
+        console.log(parser);
+        console.log("<<<<<<<<<<<<<<<<<<<<");
         const oSearch =
                   UtilsURL
                   .castGetStringToObject(

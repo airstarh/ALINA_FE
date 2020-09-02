@@ -96,7 +96,7 @@ export default class Ajax {
                         break;
                     case "application/x-www-form-urlencoded":
                         h.append("Content-Type", opts.enctype);
-                        p.body = UtilsURL.castGetObjectToString(opts.postParams);
+                        p.body = UtilsURL.castObjectToGetQueryString(opts.postParams);
                         break;
                     case "text/plain":
                     default:
@@ -208,7 +208,7 @@ export default class Ajax {
         const oldGetStr = url.search;
         const oldGetObj = UtilsURL.castGetStringToObject(oldGetStr);
         const newGetObj = UtilsObject.mergeRecursively(oldGetObj, opts.getParams);
-        const newGetStr = UtilsURL.castGetObjectToString(newGetObj);
+        const newGetStr = UtilsURL.castObjectToGetQueryString(newGetObj);
         opts.getParams  = newGetObj;
         //region Erase initial GET
         url.search      = '';

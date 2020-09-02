@@ -22,19 +22,6 @@
                         <input v-model="urlClean" type="text" class="form-control"/>
                     </div>
 
-                    <!--region getObjJsonString -->
-                    <div class="form-group mt-3">
-                        <BtstrpBadge title="Get as JSON" badge="getObjJsonString"></BtstrpBadge>
-                        <textarea v-model="getObjJsonString" class="form-control" rows="15"></textarea>
-                    </div>
-                    <!--endregion GET JSON-->
-
-                    <!--hashObjJsonString-->
-                    <div class="form-group mt-3">
-                        <BtstrpBadge title="Hash as JSON" badge="hashObjJsonString"></BtstrpBadge>
-                        <textarea v-model="hashObjJsonString" class="form-control" rows="15"></textarea>
-                    </div>
-
                     <!--protocol-->
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Protocol" badge="protocol"></BtstrpBadge>
@@ -74,14 +61,28 @@
                     <!--getTxt-->
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Get as string" badge="getTxt"></BtstrpBadge>
-                        <input v-model="getTxt" type="text" class="form-control"/>
+                        <input v-model="getTxt" type="text" class="form-control" disabled/>
                     </div>
+
+                    <!--region getObjJsonString -->
+                    <div class="form-group mt-3">
+                        <BtstrpBadge title="Get as JSON" badge="getObjJsonString"></BtstrpBadge>
+                        <textarea v-model="getObjJsonString" class="form-control" rows="15"></textarea>
+                    </div>
+                    <!--endregion GET JSON-->
 
                     <!--hashTxt-->
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Hash as string" badge="hashTxt"></BtstrpBadge>
-                        <input v-model="hashTxt" type="text" class="form-control"/>
+                        <input v-model="hashTxt" type="text" class="form-control" disabled/>
                     </div>
+
+                    <!--hashObjJsonString-->
+                    <div class="form-group mt-3">
+                        <BtstrpBadge title="Hash as JSON" badge="hashObjJsonString"></BtstrpBadge>
+                        <textarea v-model="hashObjJsonString" class="form-control" rows="15"></textarea>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -129,7 +130,11 @@
         },
         methods:    {
             fromUrlToDetails() {
-                const res              = UtilsURL.parse(this.url);
+                const res = UtilsURL.parse(this.url);
+                console.log(">>>>>>>>>>>>>>>>>>>>");
+                console.log("res");
+                console.log(res);
+                console.log("<<<<<<<<<<<<<<<<<<<<");
                 this.urlClean          = UtilsURL.unparse(res, ['pathname', 'hash']);
                 this.protocol          = res.protocol;
                 this.domain            = res.hostname;
@@ -152,8 +157,8 @@
                     password: this.password,
                     hostname: this.domain, //domain name only
                     port:     this.port,
-                    pathname: UtilsURL.castGetObjectToString(this.getObj),
-                    hash:     UtilsURL.castGetObjectToString(this.hashObj),
+                    pathname: UtilsURL.castObjectToGetQueryString(this.getObj),
+                    hash:     UtilsURL.castObjectToGetQueryString(this.hashObj, '', false),
                 };
                 this.getTxt  = '';
                 this.hashTxt = '';
@@ -163,11 +168,11 @@
         watch:      {
             "getObjJsonString":  function () {
                 this.getObj = UtilsData.jsonToObjOrString(this.getObjJsonString);
-                this.getTxt = '';
+                this.getTxt = '?' + UtilsURL.castObjectToGetQueryString(this.getObj);
             },
             "hashObjJsonString": function () {
                 this.hashObj = UtilsData.jsonToObjOrString(this.hashObjJsonString);
-                this.hashTxt = '';
+                this.hashTxt = '#' + UtilsURL.castObjectToGetQueryString(this.hashObj, '', false);
             },
         }
     };
