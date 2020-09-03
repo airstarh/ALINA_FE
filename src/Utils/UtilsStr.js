@@ -27,7 +27,17 @@ export default class UtilsStr {
             res.push(fn);
             res.push(ln);
         }
-
         return res.join(' ');
     }
+
+    // #####
+    //region TRIM
+    static trimLeft(str, symb = " "){
+        while (str.indexOf(symb) === 0){
+            str = str.slice(symb.length);
+        }
+        return str;
+    }
+    //endregion TRIM
+    // #####
 }

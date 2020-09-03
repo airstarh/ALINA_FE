@@ -7,8 +7,8 @@
                         URL Parser + URL un-Parser (2 in 1)
                     </h1>
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="URI"></BtstrpBadge>
-                        <input v-model="url" type="text" class="form-control"/>
+                        <BtstrpBadge title="URL"></BtstrpBadge>
+                        <textarea v-model="url" class="form-control" rows="5"></textarea>
                     </div>
                     <StandardButtons :onGo="fromUrlToDetails" submitTxt="Parse"></StandardButtons>
                 </form>
@@ -55,7 +55,10 @@
                     <!--pathname-->
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Path" badge="edit it below" :greyed="true"></BtstrpBadge>
-                        <input v-model="pathname" type="text" class="form-control" disabled/>
+                        <div class="input-group">
+                            <span class="input-group-addon btn btn-secondary">/</span>
+                            <input v-model="pathname" type="text" class="form-control" disabled/>
+                        </div>
                     </div>
 
                     <!--pathnameMultiline-->
@@ -67,12 +70,15 @@
                     <!--getTxt-->
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Get string" badge="edit it below" :greyed="true"></BtstrpBadge>
-                        <input v-model="getTxt" type="text" class="form-control" disabled/>
+                        <div class="input-group">
+                            <span class="input-group-addon btn btn-secondary">?</span>
+                            <input v-model="getTxt" type="text" class="form-control" disabled/>
+                        </div>
                     </div>
 
                     <!--region getJsonString -->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Get as JSON" badge="use valid JSON only"></BtstrpBadge>
+                        <BtstrpBadge title="Get as JSON" badge='use valid JSON only, eg: "Quuted String", 123, [], {}'></BtstrpBadge>
                         <textarea v-model="getJsonString" class="form-control" rows="15"></textarea>
                     </div>
                     <!--endregion GET JSON-->
@@ -80,12 +86,15 @@
                     <!--hashTxt-->
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Hash as string" badge="edit it below" :greyed="true"></BtstrpBadge>
-                        <input v-model="hashTxt" type="text" class="form-control" disabled/>
+                        <div class="input-group">
+                            <span class="input-group-addon btn btn-secondary">#</span>
+                            <input v-model="hashTxt" type="text" class="form-control" disabled/>
+                        </div>
                     </div>
 
                     <!--hashJsonString-->
                     <div class="form-group mt-3">
-                        <BtstrpBadge title="Hash as JSON" badge="use valid JSON, simple string, number"></BtstrpBadge>
+                        <BtstrpBadge title="Hash as JSON" badge='use valid JSON only, eg: "Quuted String", 123, [], {}'></BtstrpBadge>
                         <textarea v-model="hashJsonString" class="form-control" rows="15"></textarea>
                     </div>
 
@@ -101,6 +110,7 @@
     import BtstrpBadge from "../components/elements/BtstrpBadge";
     import UtilsURL from "@/Utils/UtilsURL";
     import UtilsData from "@/Utils/UtilsData";
+    import UtilsStr from "@/Utils/UtilsStr";
     export default {
         name:       "UrlParser",
         components: {
@@ -111,7 +121,7 @@
             return {
                 /////////////////////////////////
                 //region Request
-                url:               "https://USER:PASS@saysimsim.ru:8080/root/index2?p=val&lala[]=1&lala[]=Русские буквы#haha[]=1&haha[]=Ф Й",
+                url:               "https://USER:PASS@saysimsim.ru:8080/root/index2?p=val&lala[]=1&lala[]=Русские буквы#haha[]=1&haha[]=Слово",
                 urlClean:          "",
                 protocol:          "",
                 username:          "",
@@ -137,6 +147,7 @@
         },
         methods:    {
             fromUrlToDetails() {
+                let variative          = '';
                 const res              = UtilsURL.parse(this.url);
                 this.urlClean          = UtilsURL.unparse(res, ['pathname', 'hash']);
                 this.protocol          = res.protocol;
@@ -146,7 +157,8 @@
                 this.username          = res.username;
                 this.password          = res.password;
                 this.pathname          = res.pathname;
-                this.pathnameMultiline = res.pathname.split("/").join("\n");
+                variative              = UtilsStr.trimLeft(res.pathname, "/");
+                this.pathnameMultiline = variative.split("/").join("\n");
                 this.getTxt            = res.search;
                 this.getObj            = res.searchObject;
                 this.getJsonString     = JSON.stringify(res.searchObject, null, 6);
@@ -162,8 +174,8 @@
                     hostname: this.domain, //domain name only
                     port:     this.port,
                     pathname: this.pathname,
-                    getTxt:   UtilsURL.castObjectToGetQueryString(this.getObj),
-                    hash:     UtilsURL.castObjectToGetQueryString(this.hashObj, '', false),
+                    getTxt:   this.getTxt,
+                    hash:     this.hashTxt,
                 };
                 this.url     = UtilsURL.unparse(parser);
             },
@@ -171,16 +183,11 @@
         watch:      {
             "getJsonString":     function () {
                 this.getObj = UtilsData.jsonToObjOrString(this.getJsonString);
-                this.getTxt = '?' + UtilsURL.castObjectToGetQueryString(this.getObj);
+                this.getTxt = UtilsURL.castObjectToGetQueryString(this.getObj);
             },
             "hashJsonString":    function () {
                 this.hashObj = UtilsData.jsonToObjOrString(this.hashJsonString);
-                this.hashTxt = '#' + UtilsURL.castObjectToGetQueryString(this.hashObj, '', false);
-                console.log(">>>>>>>>>>>>>>>>>>>>");
-                console.log("this.hashTxt");
-                console.log(this.hashObj);
-                console.log(this.hashTxt);
-                console.log("<<<<<<<<<<<<<<<<<<<<");
+                this.hashTxt = UtilsURL.castObjectToGetQueryString(this.hashObj, '', false);
             },
             "pathnameMultiline": function () {
                 this.pathname = this.pathnameMultiline.split("\n").join("/");

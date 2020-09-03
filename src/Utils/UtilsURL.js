@@ -5,10 +5,15 @@ export default class UtilsURL {
     /*
      * From: https://stackoverflow.com/a/43513777/3142281
      * ToDo: adapted for PHP only! Square Brackets []
-     *  ToDo: Support JAVA array notation
+     * ToDo: Support JAVA array notation
      */
     static castGetStringToObject(query) {
-        query        = query.substring(query.indexOf('?') + 1);
+        query = query.substring(query.indexOf('?') + 1);
+        // #####
+        if (!query.includes("=")) {
+            return query;
+        }
+        // #####
         let re       = /([^&=]+)=?([^&]*)/g;
         let decodeRE = /\+/g;
         let decode   = function (str) {
@@ -174,16 +179,19 @@ export default class UtilsURL {
             str += `:${parser.port}`;
         }
         if (parser.pathname && !exclude.includes('pathname')) {
-            variative = parser.pathname.startsWith("/") ? parser.pathname : `/${parser.pathname}`;
+            variative = parser.pathname.toString();
+            variative = variative.startsWith("/") ? variative : `/${variative}`;
             str += variative;
         }
         if (parser.getTxt && !exclude.includes('getTxt')) {
-            variative = parser.getTxt.startsWith("?") ? parser.getTxt : `?${parser.getTxt}`;
+            variative = parser.getTxt.toString();
+            variative = variative.startsWith("?") ? variative : `?${variative}`;
             if (variative === '?') {variative = '';}
             str += variative;
         }
         if (parser.hash && !exclude.includes('hash')) {
-            variative = parser.hash.startsWith("#") ? parser.hash : `#${parser.hash}`;
+            variative = parser.hash.toString();
+            variative = variative.startsWith("#") ? variative : `#${variative}`;
             if (variative === '#') {variative = '';}
             str += variative;
         }
