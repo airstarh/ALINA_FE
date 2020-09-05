@@ -10,7 +10,11 @@
                         <BtstrpBadge title="Single line"></BtstrpBadge>
                         <textarea v-model="singleLine" class="form-control" rows="5"></textarea>
                     </div>
-                    <StandardButtons :onGo="toDetails" submitTxt="Parse"></StandardButtons>
+                    <StandardButtons :onGo="toDetails" submitTxt="Parse">
+                        <template v-slot:submitSuffix>
+                            <span><b-icon-arrow-down></b-icon-arrow-down></span>
+                        </template>
+                    </StandardButtons>
                 </form>
                 <!-- ################################################## -->
 
@@ -27,7 +31,11 @@
 
                 <!-- ################################################## -->
                 <div class="bg-dark p-1 mt-3">
-                    <StandardButtons :onGo="fromDetails" submitTxt="Un-Parse"></StandardButtons>
+                    <StandardButtons :onGo="fromDetails" submitTxt="Un-Parse">
+                        <template v-slot:submitSuffix>
+                            <span><b-icon-arrow-up></b-icon-arrow-up></span>
+                        </template>
+                    </StandardButtons>
 
                     <!--pathnameMultiline-->
                     <div class="form-group mt-3">

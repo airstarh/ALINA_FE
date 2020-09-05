@@ -4,8 +4,7 @@
                 @click="event => {return this.onGo(event);}"
                 type="button"
                 class="btn btn-lg btn-primary"
-        >{{submitTxt}}
-        </button>
+        >{{submitTxt}}<slot name="submitSuffix"></slot></button>
         <a
                 @click="() => {this.$router.go()}"
                 class="btn btn-lg btn-danger text-white"

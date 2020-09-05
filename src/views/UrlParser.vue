@@ -10,13 +10,21 @@
                         <BtstrpBadge title="URL"></BtstrpBadge>
                         <textarea v-model="url" class="form-control" rows="5"></textarea>
                     </div>
-                    <StandardButtons :onGo="fromUrlToDetails" submitTxt="Parse"></StandardButtons>
+                    <StandardButtons :onGo="fromUrlToDetails" submitTxt="Parse">
+                        <template v-slot:submitSuffix>
+                            <span><b-icon-arrow-down></b-icon-arrow-down></span>
+                        </template>
+                    </StandardButtons>
                 </form>
                 <!-- ################################################## -->
                 <!-- ################################################## -->
                 <!-- ################################################## -->
                 <div class="bg-dark p-1 mt-3">
-                    <StandardButtons :onGo="fromDetailsToUrl" submitTxt="Un-Parse"></StandardButtons>
+                    <StandardButtons :onGo="fromDetailsToUrl" submitTxt="Un-Parse">
+                        <template v-slot:submitSuffix>
+                            <span><b-icon-arrow-up></b-icon-arrow-up></span>
+                        </template>
+                    </StandardButtons>
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Clean URL" :greyed="true"></BtstrpBadge>
                         <input v-model="urlClean" type="text" class="form-control" disabled/>
