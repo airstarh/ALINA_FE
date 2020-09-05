@@ -111,6 +111,11 @@ const ConfigCkEditor = {
             'alignLeft',
             'alignRight',
         ],
+        upload:  {
+            panel: {
+                items: ['insertImageViaUrl']
+            }
+        }
     },
     mediaEmbed:   {
         previewsInData: true
