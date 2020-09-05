@@ -4,7 +4,11 @@
             <div class="col">
                 <h1 class="mt-3 mb-3">
                     CLI helper
+                    <b-button v-b-toggle.collapse-description class="m-1">Description</b-button>
                 </h1>
+                <b-collapse id="collapse-description" class="ck-content mt-1 mb-1">
+                    <p>This tool is attended to make editing of complex string easier</p>
+                </b-collapse>
                 <form action="" method="post" enctype="multipart/form-data" class="alina-form">
                     <div class="form-group mt-3">
                         <BtstrpBadge title="Single line"></BtstrpBadge>
