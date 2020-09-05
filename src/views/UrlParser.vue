@@ -2,10 +2,10 @@
     <div class="container px-0">
         <div class="row">
             <div class="col">
+                <h1 class="mt-3 mb-3">
+                    URL Parser + URL un-Parser (2 in 1)
+                </h1>
                 <form action="" method="post" enctype="multipart/form-data" class="alina-form">
-                    <h1>
-                        URL Parser + URL un-Parser (2 in 1)
-                    </h1>
                     <div class="form-group mt-3">
                         <BtstrpBadge title="URL"></BtstrpBadge>
                         <textarea v-model="url" class="form-control" rows="5"></textarea>
