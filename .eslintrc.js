@@ -38,6 +38,9 @@ module.exports = {
         "vue/html-closing-bracket-newline":            "off",
         "vue/name-property-casing":                    "off",
         "no-empty":                                    "off",
+        "vue/this-in-template":                        "off",
+        "vue/custom-event-name-casing":                "off",
+        " vue/component-definition-name-casing":       "off",
     },
     parserOptions: {
         parser:     "babel-eslint",

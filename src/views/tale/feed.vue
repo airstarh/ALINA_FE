@@ -203,7 +203,7 @@
             }
         },
         created() {
-            this.queryData.txt = this.txt;
+            this.helperDefineQueryDataTxt();
             this.ajaGetFeed();
         },
         methods:    {
@@ -224,8 +224,8 @@
                     onDone:    (aja) => {
                         if (aja.respBody.meta.alina_response_success == 1) {
                             //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
-                            this.feed                                               = aja.respBody.data.tale;
-                            this.feedPagination                                     = aja.respBody.meta.tale;
+                            this.feed           = aja.respBody.data.tale;
+                            this.feedPagination = aja.respBody.meta.tale;
                             //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
                         }
                     }
@@ -234,8 +234,8 @@
             },
             pageChange(pageSize, pageCurrentNumber) {
                 document.getElementById('alina-body-wrapper').scrollTop = 0;
-                this.feedPagination.pageSize          = pageSize;
-                this.feedPagination.pageCurrentNumber = pageCurrentNumber;
+                this.feedPagination.pageSize                            = pageSize;
+                this.feedPagination.pageCurrentNumber                   = pageCurrentNumber;
                 this.ajaGetFeed();
             },
             search() {
@@ -244,22 +244,20 @@
             searchClear() {
                 this.queryData.txt = '';
                 this.queryFunction();
+            },
+            helperDefineQueryDataTxt() {
+                if (this.$route.query.txt) {
+                    this.queryData.txt = this.$route.query.txt;
+                }
             }
         },
         watch:      {
             $route(to, from) {
+                this.helperDefineQueryDataTxt();
                 this.ajaGetFeed();
             }
         },
-        computed:   {
-            txt: function () {
-                let res = '';
-                if (this.$route.query.txt) {
-                    res = this.$route.query.txt;
-                }
-                return res;
-            }
-        }
+        computed:   {}
     };
 </script>
 <style>

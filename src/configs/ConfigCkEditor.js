@@ -65,9 +65,12 @@ const ConfigCkEditor = {
     ],
     toolbar:      {
         items: [
-            //'ckfinder',
             'imageUpload',
+            'link',
             'mediaEmbed',
+            '|',
+            'undo',
+            'redo',
             '|',
             'removeFormat',
             'bold',
@@ -86,7 +89,6 @@ const ConfigCkEditor = {
             'fontColor',
             'fontBackgroundColor',
             '|',
-            'link',
             'alignment',
             'outdent',
             'indent',
@@ -95,9 +97,6 @@ const ConfigCkEditor = {
             'tableRow',
             'tableColumn',
             'mergeTableCells',
-            '|',
-            'undo',
-            'redo'
         ]
     },
     indentBlock:  {
