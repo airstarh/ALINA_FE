@@ -248,6 +248,8 @@
             helperDefineQueryDataTxt() {
                 if (this.$route.query.txt) {
                     this.queryData.txt = this.$route.query.txt;
+                } else {
+                    this.queryData.txt = '';
                 }
             }
         },
