@@ -1,7 +1,7 @@
 import UtilsSys from "@/Utils/UtilsSys";
 const ConfigApi = {
-    //"url_base":              "https://saysimsim.ru",
-    "url_base":              "https://alinazero",
+    "url_base":              "https://saysimsim.ru",
+    //"url_base":              "https://alinazero",
     "ALINA_FILE_UPLOAD_KEY": "userfile[]",
     "vocRedirects":          {
         "default":                     "/auth/login",

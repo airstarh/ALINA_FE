@@ -3,6 +3,7 @@
          :style="{
             'overflow': pageIsInIframe ? 'hidden':'scroll'
          }"
+         class="bg-dark text-white"
     >
         <MenuHorizontalMain v-if="!pageIsInIframe"></MenuHorizontalMain>
         <router-view></router-view>

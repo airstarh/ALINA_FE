@@ -127,4 +127,8 @@
     };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+    svg {
+        fill: #c845ea;
+    }
+</style>

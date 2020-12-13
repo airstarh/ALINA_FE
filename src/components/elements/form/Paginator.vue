@@ -1,8 +1,8 @@
 <template>
     <div>
         <span v-if="pagesTotal>1">
-            <span class="btn" @click="onClickPage(pageSize, 1)" :class="{ 'btn-secondary': 1==pageCurrentNumber}"> <<< </span>
-            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> < </span>
+            <span class="btn" @click="onClickPage(pageSize, 1)" :class="{ 'btn-secondary': 1==pageCurrentNumber}"> &lt;&lt;&lt; </span>
+            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)"> &lt; </span>
             <span
                     v-for="(v, i) in pagesArray"
                     :key="i"
@@ -10,8 +10,8 @@
                     :class="{ 'btn-secondary': v==pageCurrentNumber}"
                     @click="onClickPage(pageSize, v)"
             >{{v}}</span>
-            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> > </span>
-            <span class="btn" @click="onClickPage(pageSize, pagesTotal)" :class="{ 'btn-secondary': pagesTotal==pageCurrentNumber}"> >>> </span>
+            <span class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)"> &gt; </span>
+            <span class="btn" @click="onClickPage(pageSize, pagesTotal)" :class="{ 'btn-secondary': pagesTotal==pageCurrentNumber}"> &gt;&gt;&gt; </span>
         </span>
         <span v-if="pagesTotal>1">
             <span class="btn">{{pageCurrentNumber}}/{{pagesTotal}}</span>
@@ -110,4 +110,8 @@
     }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+    .btn {
+        color: #eee;
+    }
+</style>

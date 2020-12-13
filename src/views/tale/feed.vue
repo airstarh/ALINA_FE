@@ -48,7 +48,7 @@
                             </div>
                             <div v-else :key="`${tale.id}_2`">
                                 <div class="row no-gutters">
-                                    <div class="col">
+                                    <div class="col" style="position: relative">
                                         <h2 :lang="tale.lang"
                                             class="notranslate btn btn-block text-left display-3 m-0"
                                             :class="{
@@ -57,21 +57,23 @@
                                             }"
                                         >
                                             <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                                               title="View SEO-friendly tale page"
                                                target="_blank"
                                                class="text-light"
+                                               style="display:inline-block; width: 100%"
                                             >
                                                 {{tale.header || '¯\_(ツ)_/¯' }}
                                             </a>
-                                            <span>
-                                                <span class="notranslate float-right text-right">
-                                                <router-link :to="'/tale/upsert/'+tale.id"
-                                                             class="btn btn-sm btn-light text-left mb-1"
-                                                >{{tale.publish_at | unix_to_date_time}}
-                                                </router-link>
-                                                </span>
-                                            </span>
-                                            <span class="clearfix">&nbsp;</span>
                                         </h2>
+                                        <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5em; z-index: 10">
+                                            <router-link
+                                                    title="Edit"
+                                                    :to="'/tale/upsert/'+tale.id"
+                                                    class="btn btn-sm btn-light text-left mb-1"
+                                            >
+                                                {{tale.publish_at | unix_to_date_time}}
+                                            </router-link>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row no-gutters align-items-center">
@@ -314,13 +316,7 @@
         opacity: 0;
     }
 
-    /*.slide-fade-leave{*/
-    /*    */
-    /*}*/
-
-    /*.slide-fade-enter-to {*/
-    /*    max-height: 999999px;*/
-    /*    overflow: auto;*/
-    /*}*/
-    /**/
+    h1 a:hover, h2 a:hover {
+        text-decoration: none
+    }
 </style>

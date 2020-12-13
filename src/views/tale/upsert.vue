@@ -12,6 +12,7 @@
                 <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
                     <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">Delete</button>
                     <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{options.modeEdit ? 'Cancel':'Edit'}}</button>
+                    <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">sim-sim</button>
                 </div>
                 <!--endregion Buttons-->
                 <!--region User Info-->
@@ -33,7 +34,6 @@
                 <div v-if="!pageIsInIframe">
                     <!--region Tale. mode Edit-->
                     <div class="" v-if="options.modeEdit">
-                        <StandardButtons :onGo="ajaPostTale"></StandardButtons>
                         <div>Tale #{{tale.id}}</div>
                         <h1 class="btn btn-block btn-secondary">
                             <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
@@ -88,7 +88,7 @@
                         <div class="mt-3"></div>
                         <div class="row no-gutters">
                             <div class="col" style="position: relative">
-                                <h2 class="notranslate m-0" :lang="tale.lang">
+                                <h1 class="notranslate m-0" :lang="tale.lang">
                                     <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                        class="btn btn-block text-left display-3"
                                        :class="{
@@ -98,7 +98,7 @@
                                        target="_blank"
                                     >{{tale.header || '¯\_(ツ)_/¯' }}
                                     </a>
-                                </h2>
+                                </h1>
                                 <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5em;">
                                     <router-link :to="'/tale/upsert/'+tale.id"
                                                  class="btn btn-sm btn-info text-left mb-1">
@@ -198,6 +198,11 @@
                     owner_id:           '',
                     count_like:         '',
                     current_user_liked: '',
+                    router_alias:       {
+                        id:    null,
+                        url:   null,
+                        alias: null,
+                    },
                 }
             }
         },

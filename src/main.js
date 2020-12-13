@@ -3,37 +3,41 @@ import App                 from "@/App.vue";
 import router              from "@/router";
 import store               from "@/store/store";
 import 'whatwg-fetch'
+import VueCookies          from 'vue-cookies';
+import BootstrapVue        from "bootstrap-vue";
+import "../public/a010.scss";
+import {BootstrapVueIcons} from 'bootstrap-vue'
+import KeenUI              from "keen-ui";
+import lodash              from "lodash";
+import VueSocialSharing    from 'vue-social-sharing'
+import VueDateFns          from "vue-date-fns";
+import UtilsDate           from "@/Utils/UtilsDate";
 //#####
 Vue.config.productionTip = false;
 //#####
-import VueCookies          from 'vue-cookies';
 Vue.use(VueCookies);
 Vue.$cookies.config('1d', '/', '', true, 'None');
 //Vue.$cookies.set('test', '11223344');
 //#####
-import BootstrapVue        from "bootstrap-vue";
+
 Vue.use(BootstrapVue);
-import "../public/a010.scss";
+
 //#####
-import {BootstrapVueIcons} from 'bootstrap-vue'
+
 Vue.use(BootstrapVueIcons);
 //#####
-import KeenUI              from "keen-ui";
+
 Vue.use(KeenUI);
 //#####
 /*Initial approach leads to constant console error message: You gave to install lodash*/
 /*Or Uncaught TypeError: Cannot redefine property: lodash*/
 //import VueLodash    from 'vue-lodash';
-import lodash              from "lodash";
 Vue.prototype.lodash = lodash;
 //const options = {name: 'lodash', lodash: lodash}; // customize the way you want to call it
 //Vue.use(VueLodash, options); // options is optional
 //#####
-import VueSocialSharing    from 'vue-social-sharing'
 Vue.use(VueSocialSharing);
 //#####
-import VueDateFns          from "vue-date-fns";
-import UtilsDate           from "@/Utils/UtilsDate";
 Vue.use(VueDateFns);
 // ##################################################
 //region Filters
