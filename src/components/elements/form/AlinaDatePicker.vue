@@ -3,7 +3,7 @@
     <div class="alina-date-picker p-1 rounded">
         <div class="row no-gutters align-items-center justify-content-between">
             <div class="col-auto p-0 m-0" v-if="label.length">
-                <div class="input-group-text">{{label}}</div>
+                <div>{{label}}</div>
             </div>
             <div class="col">
                 <div class="container">
@@ -26,9 +26,9 @@
                             </div>
                         </div>
                         <div class="col-auto text-nowrap p-1">
-                            <div class="input-group-text">
+                            <span>
                                 <i>{{emittedRes | unix_to_date_time}}</i>
-                            </div>
+                            </span>&nbsp;
                             <span @click="setNow" class="btn btn-sm btn-primary">SET NOW</span>
                         </div>
 
@@ -117,6 +117,5 @@
 
 <style scoped lang="scss">
 .alina-date-picker{
-    background-color: #ececec;
 }
 </style>

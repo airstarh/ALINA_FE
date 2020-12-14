@@ -44,7 +44,10 @@
                                 :editor="options.editor"
                                 :config="options.editorConfig"
                         ></ckeditor>
-
+                        <div class="mb-3"></div>
+                        <div class="mb-3">
+                            <input type="text" v-model="tale.iframe" placeholder="iframe" class="notranslate form-control">
+                        </div>
                         <div class="mt-1 mb-3">
                             <AlinaDatePicker
                                     v-model="tale.publish_at"
@@ -52,9 +55,6 @@
                                     idq="publish_at"
                                     class="notranslate"
                             ></AlinaDatePicker>
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" v-model="tale.iframe" placeholder="iframe" class="notranslate form-control">
                         </div>
                         <div class="mb-3">
                             <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">Not for kids</ui-checkbox>
@@ -72,7 +72,7 @@
                             <div v-html="tale.body"></div>
                         </div>
                         <div v-if="tale.iframe" class="mt-3">
-                            <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
+                            <iframe :src="tale.iframe" frameborder="1" width="100%" height="250px"></iframe>
                         </div>
 
                         <div v-if="CU.isAdmin()">

@@ -396,6 +396,7 @@
 
 <style scoped lang="scss">
     .highlight {
-        background-color: #f4ff81;
+        background-color: #ffb200;
+        color: black;
     }
 </style>

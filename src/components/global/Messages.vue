@@ -51,4 +51,8 @@
     };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+    pre {
+        background-color: transparent;
+    }
+</style>

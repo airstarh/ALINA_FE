@@ -36,7 +36,7 @@
                             </a>
                         </span>
                     <span class="col pl-1">
-                            <span v-html="item.txt"></span>
+                            <span class="backend-text" v-html="item.txt"></span>
                             <br>
                             <a :href="`/#/auth/profile/${item.from_id}`">
                                 <span><b>{{item.from_firstname}} {{item.from_lastname}}</b></span>
@@ -206,10 +206,9 @@
     };
 </script>
 <!--##################################################-->
-<!--##################################################-->
-<!--##################################################-->
 <style>
     .ishown {
-        background-color: #d8d8d8;
+        color: gray;
+        opacity: 0.5;
     }
 </style>
