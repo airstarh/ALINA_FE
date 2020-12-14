@@ -58,7 +58,6 @@
                                         >
                                             <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                                                title="View SEO-friendly tale page"
-                                               target="_blank"
                                                class="text-light"
                                                style="display:inline-block; width: 100%"
                                             >

@@ -31,7 +31,7 @@
                             v-if="!state.feedsInEdit.includes(tale.id)">
                         <div class="col">
                             <div class="float-left mr-1 fixed-height-100px">
-                                <a :href="tale.owner_emblem" target="_blank">
+                                <a :href="tale.owner_emblem">
                                     <img v-if="tale.owner_emblem" :src="tale.owner_emblem" :width="level==1?'70px':'40px'" class="rounded-circle">
                                     <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" :width="level==1?'70px':'40px'" class="rounded-circle">
                                 </a>

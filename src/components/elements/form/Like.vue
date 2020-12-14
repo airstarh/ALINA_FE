@@ -33,7 +33,7 @@
                     </a>
                 </div>
                 <div class="col pl-2">
-                    <a :href="`/#/auth/profile/${item.user_id}`" target="_blank" class="btn btn-primary">
+                    <a :href="`/#/auth/profile/${item.user_id}`" class="btn btn-primary">
                     {{item.from_firstname}} {{item.from_lastname}}
                     </a>
                 </div>

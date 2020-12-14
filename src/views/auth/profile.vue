@@ -24,7 +24,7 @@
                                     @change="onChangeFileField"
                             >Select an image
                             </ui-fileupload>
-                            <a :href="post.emblem" target="_blank">
+                            <a :href="post.emblem">
                                 <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
                                 <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
                             </a>
@@ -91,7 +91,7 @@
             <div v-else class="text-break">
                 <div class="row no-gutters">
                     <div class="col-md-4">
-                        <a :href="post.emblem" target="_blank">
+                        <a :href="post.emblem">
                             <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
                             <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
                         </a>

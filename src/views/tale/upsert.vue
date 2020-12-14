@@ -95,7 +95,6 @@
                                                'btn-secondary':tale.is_adult_denied==0,
                                                'btn-danger':tale.is_adult_denied==1
                                            }"
-                                       target="_blank"
                                     >{{tale.header || '¯\_(ツ)_/¯' }}
                                     </a>
                                 </h1>
