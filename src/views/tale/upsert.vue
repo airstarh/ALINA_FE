@@ -86,11 +86,11 @@
                     <!--region Tale. mode Read-->
                     <div v-else>
                         <div class="mt-3"></div>
-                        <div class="row no-gutters">
+                        <div class="row no-gutters mt-2 mb-2">
                             <div class="col" style="position: relative">
                                 <h1 class="notranslate m-0" :lang="tale.lang">
                                     <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                                       class="btn btn-block text-left display-3"
+                                       class="btn btn-block text-left"
                                        :class="{
                                                'btn-secondary':tale.is_adult_denied==0,
                                                'btn-danger':tale.is_adult_denied==1
@@ -98,7 +98,7 @@
                                     >{{tale.header || '¯\_(ツ)_/¯' }}
                                     </a>
                                 </h1>
-                                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5em;">
+                                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;">
                                     <router-link :to="'/tale/upsert/'+tale.id"
                                                  class="btn btn-sm btn-info text-left mb-1">
                                         {{tale.publish_at | unix_to_date_time}}
@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-3"></div>
+                        <div class="mt-5">&nbsp;</div>
                         <div class="row no-gutters">
                             <div class="col">
                                 <div class="ck-content" :lang="tale.lang">

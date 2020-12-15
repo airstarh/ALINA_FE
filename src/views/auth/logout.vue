@@ -1,6 +1,6 @@
 <template>
-    <div class="container h-100">
-        <div class="row align-items-center h-100">
+    <div class="container">
+        <div class="row align-items-center vh-almost-100">
             <div class="col-md-6 mx-auto">
                 <div class="alina-form">
                     <h1>LogOut</h1>

@@ -136,7 +136,7 @@
                                 this.ajaMarkAsShown();
                             }
                         }
-                        document.getElementById('alina-body-wrapper').scrollTop = 0;
+                        window.scrollTo(0, 0);
                     }
                 })
                 .go();

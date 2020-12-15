@@ -1,7 +1,7 @@
 <template>
     <div id="alina-body-wrapper"
          :style="{
-            'overflow': pageIsInIframe ? 'hidden':'scroll'
+            'overflow': pageIsInIframe ? 'hidden':'auto'
          }"
          class="bg-dark text-white"
     >

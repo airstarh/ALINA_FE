@@ -234,7 +234,7 @@
                 .go();
             },
             pageChange(pageSize, pageCurrentNumber) {
-                document.getElementById('alina-body-wrapper').scrollTop = 0;
+                window.scrollTo(0, 0);
                 this.feedPagination.pageSize                            = pageSize;
                 this.feedPagination.pageCurrentNumber                   = pageCurrentNumber;
                 this.ajaGetFeed();
@@ -263,7 +263,7 @@
         computed:   {}
     };
 </script>
-<style>
+<style scoped lang="scss">
     .btn.display-3 {
         font-size: 1.5rem;
     }
