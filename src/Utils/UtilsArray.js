@@ -47,7 +47,7 @@ export default class UtilsArray {
     }
 
     /**
-     * Why: https://ru.vuejs.org/v2/guide/list.html
+     * Why: https://vuejs.org/v2/guide/list.html
      * Approach: https://stackoverflow.com/a/1348196/3142281
      * In short: Vue does not react on .concat() function
      * */
@@ -61,6 +61,21 @@ export default class UtilsArray {
             arr.push(val);
         }
         return arr;
+    }
+
+    static sortArray(arr, ascending = true, field = null) {
+        return arr.sort(function (a, b) {
+            let el1 = field ? a[field] : a;
+            let el2 = field ? b[field] : b;
+            el1     = String(el1);
+            el2     = String(el2);
+            if (el1.toLowerCase) el1 = el1.toLowerCase();
+            if (el2.toLowerCase) el2 = el2.toLowerCase()
+            const res = ascending
+                        ? el1.localeCompare(el2, undefined, {numeric: true, sensitivity: 'base'})
+                        : -1 * el1.localeCompare(el2, undefined, {numeric: true, sensitivity: 'base'});
+            return res;
+        });
     }
 
     //endregion Elements Manipulations

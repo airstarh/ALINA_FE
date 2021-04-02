@@ -9,6 +9,8 @@ import Table                         from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbar                  from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import PasteFromOffice               from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
 import EasyImage                     from '@ckeditor/ckeditor5-easy-image/src/easyimage';
+import CloudServices                 from '@ckeditor/ckeditor5-cloud-services/src/cloudservices';
+import ImageUpload                   from '@ckeditor/ckeditor5-image/src/imageupload';
 import Image                         from '@ckeditor/ckeditor5-image/src/image';
 import ImageToolbar                  from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageCaption                  from '@ckeditor/ckeditor5-image/src/imagecaption';
@@ -41,7 +43,8 @@ const ConfigCkEditor = {
         Underline,
         Font,
         EasyImage,
-        //CKFinder,
+        CloudServices,
+        ImageUpload,
         EssentialsPlugin,
         BoldPlugin,
         ItalicPlugin,
@@ -131,8 +134,11 @@ const ConfigCkEditor = {
             }
         },
     },
-    // ckfinder:     {
-    //     uploadUrl: `${ConfigApi.url_base}/FileUpload/Common`
+    // cloudServices: {
+    //     isEnabled: false,
+    //     CloudServicesUploadAdapter: {
+    //         isEnabled: false
+    //     }
     // },
 };
 export default ConfigCkEditor;
