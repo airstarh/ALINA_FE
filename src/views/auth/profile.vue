@@ -123,7 +123,7 @@
         <div class="row no-gutters mt-4">
           <div class="col">
             <div class="ck-content">
-              <div class="notranslate" v-html="post.about_myself"></div>
+              <div class="notranslate" v-html="UtilsStr.content(post.about_myself)"></div>
             </div>
           </div>
         </div>

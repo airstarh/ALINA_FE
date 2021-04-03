@@ -53,7 +53,7 @@
             <div class="col">
               <div class="mt-3"></div>
               <div class="ck-content">
-                <div class="notranslate" v-html="tale.body"></div>
+                <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
               </div>
               <div class="mt-3"></div>
             </div>
@@ -135,6 +135,7 @@
 </template>
 
 <script>
+import UtilsStr       from "@/Utils/UtilsStr";
 import AjaxAlina      from "@/services/AjaxAlina";
 import ConfigApi      from "@/configs/ConfigApi";
 import UtilsArray     from "@/Utils/UtilsArray";
@@ -158,6 +159,7 @@ export default {
   },
   data() {
     return {
+      UtilsStr,
       AlinaStorage,
       ConfigApi,
       CU:             CurrentUser.obj(),

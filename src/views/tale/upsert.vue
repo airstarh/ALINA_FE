@@ -69,7 +69,7 @@
             <div class="display-3">Result:</div>
             <hr>
             <div class="ck-content">
-              <div v-html="tale.body"></div>
+              <div v-html="UtilsStr.content(tale.body)"></div>
             </div>
             <div v-if="tale.iframe" class="mt-3">
               <iframe :src="tale.iframe" frameborder="1" width="100%" height="250px"></iframe>
@@ -110,7 +110,7 @@
             <div class="row no-gutters">
               <div class="col">
                 <div class="ck-content" :lang="tale.lang">
-                  <div class="notranslate" v-html="tale.body"></div>
+                  <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
                 </div>
               </div>
             </div>

@@ -25,3 +25,4 @@ raw-loader@0.5.1
 @ckeditor/ckeditor5-editor-classic@latest
 @ckeditor/ckeditor5-essentials@latest
 @ckeditor/ckeditor5-cloud-services@latest
+@ckeditor/ckeditor5-typing@latest

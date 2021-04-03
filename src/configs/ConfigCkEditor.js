@@ -1,3 +1,4 @@
+import TextTransformation            from '@ckeditor/ckeditor5-typing/src/texttransformation';
 import EssentialsPlugin              from '@ckeditor/ckeditor5-essentials/src/essentials';
 import BoldPlugin                    from '@ckeditor/ckeditor5-basic-styles/src/bold';
 import ItalicPlugin                  from '@ckeditor/ckeditor5-basic-styles/src/italic';
@@ -34,6 +35,7 @@ const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
     language:     'en',
     plugins:      [
+        TextTransformation,
         MediaEmbed,
         Superscript,
         Subscript,
@@ -134,6 +136,48 @@ const ConfigCkEditor = {
             }
         },
     },
+    // ##################################################
+    // typing:       {
+    //     transformations: {
+    //         remove: [
+    //             // Do not use the transformations from the
+    //             // 'symbols' and 'quotes' groups.
+    //             'symbols',
+    //             'quotes',
+    //             // As well as the following transformations.
+    //             'arrowLeft',
+    //             'arrowRight'
+    //         ],
+    //         extra:  [
+    //             // Add some custom transformations – e.g. for emojis.
+    //             {from: ':)', to: '🙂'},
+    //             {from: ')))', to: '🙂'},
+    //             {from: ':+1:', to: '👍'},
+    //             {from: ':tada:', to: '🎉'},
+    //             // You can also define patterns using regular expressions.
+    //             // Note: The pattern must end with `$` and all its fragments must be wrapped
+    //             // with capturing groups.
+    //             // The following rule replaces ` "foo"` with ` «foo»`.
+    //             {
+    //                 from: /(^|\s)(")([^"]*)(")$/,
+    //                 to:   [null, '«', null, '»']
+    //             },
+    //             // Finally, you can define `to` as a callback.
+    //             // This (naive) rule will auto-capitalize the first word after a period.
+    //             {
+    //                 from: /(\. )([a-z])$/,
+    //                 to:   matches => [null, matches[1].toUpperCase()]
+    //             },
+    //             {
+    //                 from: /(^|\s)(#[a-zA-Z0-9][\w-]*)(\s+?)$/,
+    //                 to:   matches => {
+    //                     return [null, `<a>${matches[1]}</a>`, null];
+    //                 }
+    //             }
+    //         ],
+    //     }
+    // }
+    // ##################################################
     // cloudServices: {
     //     isEnabled: false,
     //     CloudServicesUploadAdapter: {

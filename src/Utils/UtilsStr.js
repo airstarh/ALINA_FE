@@ -32,12 +32,28 @@ export default class UtilsStr {
 
     // #####
     //region TRIM
-    static trimLeft(str, symb = " "){
-        while (str.indexOf(symb) === 0){
+    static trimLeft(str, symb = " ") {
+        while (str.indexOf(symb) === 0) {
             str = str.slice(symb.length);
         }
         return str;
     }
+
     //endregion TRIM
     // #####
+    // region Regexes
+    static regexHashTagList = /(^|\W)#([a-zA-Zа-яА-Я_]+[0-9\w-]*)/mgi;
+    // endregion Regexes
+    // #####
+    static hashtag(str) {
+        const ht  = UtilsStr.regexHashTagList;
+        const txt = `$1<a href="#/?txt=%23$2">#$2</a>`;
+        let repl  = str.replace(ht, txt);
+        return repl;
+    }
+
+    static content(str) {
+        str = UtilsStr.hashtag(str);
+        return str;
+    }
 }
