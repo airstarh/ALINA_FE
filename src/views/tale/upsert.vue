@@ -10,8 +10,13 @@
       <div class="col">
         <!--region Buttons-->
         <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
+          <!--Delete-->
           <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">Delete</button>
-          <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{ options.modeEdit ? 'Cancel' : 'Edit' }}</button>
+          <!--Edit-->
+          <button @click="onEdit" class="col btn btn-info" v-if="!options.modeEdit">Edit</button>
+          <!--Cancel-->
+          <button @click="onCancel" class="col btn btn-info" v-if="options.modeEdit">Cancel</button>
+          <!--Save-->
           <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">sim-sim</button>
         </div>
         <!--endregion Buttons-->
@@ -45,9 +50,6 @@
                 :config="options.editorConfig"
             ></ckeditor>
             <div class="mb-3"></div>
-            <div class="mb-3">
-              <input type="text" v-model="tale.iframe" placeholder="iframe" class="notranslate form-control">
-            </div>
             <div class="mt-1 mb-3">
               <AlinaDatePicker
                   v-model="tale.publish_at"
@@ -55,6 +57,9 @@
                   idq="publish_at"
                   class="notranslate"
               ></AlinaDatePicker>
+            </div>
+            <div class="mb-3">
+              <input type="text" v-model="tale.iframe" placeholder="iframe" class="notranslate form-control">
             </div>
             <div class="mb-3">
               <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">Not for kids</ui-checkbox>
@@ -92,9 +97,9 @@
                   <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                      class="btn btn-block text-left"
                      :class="{
-                                               'btn-secondary':tale.is_adult_denied==0,
-                                               'btn-danger':tale.is_adult_denied==1
-                                           }"
+                          'btn-secondary':tale.is_adult_denied==0,
+                          'btn-danger':tale.is_adult_denied==1
+                     }"
                   >{{ tale.header || '¯\_(ツ)_/¯' }}
                   </a>
                 </h1>
@@ -190,7 +195,10 @@ export default {
         body:               '',
         publish_at:         '',
         is_submitted:       0,
+        type:               'POST',
         form_id:            'actionUpsert',
+        is_adult_denied:    0,
+        is_adv:             0,
         owner_emblem:       '',
         owner_firstname:    '',
         owner_lastname:     '',
@@ -202,6 +210,9 @@ export default {
           url:   null,
           alias: null,
         },
+      },
+      storage:   {
+        keyTaleLastTouched: 'keyTaleLastTouched',
       }
     }
   },
@@ -213,8 +224,6 @@ export default {
     Like,
     AlinaDatePicker
   },
-  //##################################################
-  //region Router Hooks
   mounted() {
     const vm = this;
     const id = vm.getRouteParam('id');
@@ -222,6 +231,8 @@ export default {
   },
   updated() {
   },
+  //##################################################
+  //region Router Hooks
   // beforeRouteEnter(to, from, next) {
   //     next((vm) => {
   //         const id = vm.getRouteParam('id', to);
@@ -241,6 +252,16 @@ export default {
       return this.ConfigApi.pageIsInIframe();
     }
   },
+  watch:    {
+    tale: {
+      handler(newVal, oldVal) {
+        if (this.options.modeEdit) {
+          this.taleLastTouchedRemember(newVal);
+        }
+      },
+      deep: true
+    }
+  },
   methods:  {
     getRouteParam(paramName, to) {
       if (UtilsData.empty(to)) {to = this.$route;}
@@ -250,6 +271,48 @@ export default {
       }
       return res;
     },
+    // ##################################################
+    // region Functional Actions
+    taleLastTouchedRemember(tale) {
+      localStorage.setItem(this.storage.keyTaleLastTouched, JSON.stringify(tale));
+    },
+    taleLastTouchedRecall() {
+      const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched)
+      if (taleLastTouchedString) {
+        const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
+        if (taleLastTouchedObj && taleLastTouchedObj.id) {
+          if (taleLastTouchedObj.body.length > 10) {
+            if (
+                taleLastTouchedObj.id == this.tale.id
+            ) {
+              if (confirm('Restore from draft?')) {
+                Object.assign(this.tale, taleLastTouchedObj);
+              }
+            }
+          }
+        }
+      }
+    },
+    // endregion Functional Actions
+    // ##################################################
+    // region Event Handlers
+    onEdit() {
+      this.options.modeEdit = true;
+      this.taleLastTouchedRecall();
+    },
+    onCancel() {
+      this.options.modeEdit = false
+      this.taleLastTouchedRemember({});
+      if (this.tale.is_submitted == 0) {
+        this.$router.replace({path: '/'})
+      } else {
+        this.ajaxGetTale(this.tale.id, true);
+      }
+      return null;
+    },
+    // endregion Event Handlers
+    // ##################################################
+    // region CRUD
     ajaPostTale() {
       AjaxAlina.newInst({
         method:     'POST',
@@ -257,19 +320,22 @@ export default {
         postParams: this.tale,
         onDone:     (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.tale             = aja.respBody.data;
+            Object.assign(this.tale, aja.respBody.data)
             this.options.modeEdit = false;
+            this.taleLastTouchedRemember({})
           }
         }
       })
       .go();
     },
-    ajaxGetTale(id) {
+    ajaxGetTale(id, forceGet = false) {
       const _t = this;
       //###############
       //region Fix Double get
       if (!UtilsData.empty(id) && id == _t.tale.id) {
-        return null;
+        if (!forceGet) {
+          return null;
+        }
       }
       //endregion Fix Double get
       //###############
@@ -281,8 +347,11 @@ export default {
         ,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            _t.tale = aja.respBody.data;
-            if (_t.tale.is_submitted == 0) {_t.options.modeEdit = true;}
+            Object.assign(_t.tale, aja.respBody.data)
+            if (_t.tale.is_submitted == 0) {
+              _t.options.modeEdit = true;
+              this.taleLastTouchedRecall();
+            }
             //###############
             //region Fix Double get
             if (UtilsData.empty(id) && !UtilsData.empty(_t.tale.id)) {
@@ -311,6 +380,8 @@ export default {
       })
       .go();
     },
+    // endregion CRUD
+    // ##################################################
   }
 };
 </script>
