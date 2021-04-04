@@ -68,11 +68,23 @@
               <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">Advertisement</ui-checkbox>
             </div>
 
-            <StandardButtons :onGo="ajaPostTale"></StandardButtons>
+            <!--##################################################-->
+            <!--region Buttons-->
+            <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
+              <!--Delete-->
+              <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">Delete</button>
+              <!--Edit-->
+              <button @click="onEdit" class="col btn btn-info" v-if="!options.modeEdit">Edit</button>
+              <!--Cancel-->
+              <button @click="onCancel" class="col btn btn-info" v-if="options.modeEdit">Cancel</button>
+              <!--Save-->
+              <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">sim-sim</button>
+            </div>
+            <!--endregion Buttons-->
+            <!--##################################################-->
 
             <hr>
-            <div class="display-3">Result:</div>
-            <hr>
+            <div class="display-4">Result:</div>
             <div class="ck-content">
               <div v-html="UtilsStr.content(tale.body)"></div>
             </div>
@@ -82,8 +94,7 @@
 
             <div v-if="CU.isAdmin()">
               <hr>
-              <div class="display-3">HTML:</div>
-              <hr>
+              <div class="display-4">HTML:</div>
               <textarea v-model="tale.body" placeholder="Body" rows="11" class="form-control"></textarea>
             </div>
           </div>

@@ -17,10 +17,16 @@
         </b-nav-item>
 
         <b-nav-item to="/auth/login" v-if="!CU.isLoggedIn()" class="mr-3">
-          <button class="btn-sm btn-light">Login</button>
+          <button class="btn-sm btn-dark">
+            <b-icon-check-square-fill></b-icon-check-square-fill>
+            Log-In
+          </button>
         </b-nav-item>
         <b-nav-item to="/auth/register" v-if="!CU.isLoggedIn()" class="mr-3">
-          <button class="btn-sm btn-light">Register</button>
+          <button class="btn-sm btn-dark">
+            <b-icon-person-check></b-icon-person-check>
+            Register
+          </button>
         </b-nav-item>
       </b-navbar-nav>
 
