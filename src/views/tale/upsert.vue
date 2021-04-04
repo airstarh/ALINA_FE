@@ -296,9 +296,7 @@ export default {
             if (
                 taleLastTouchedObj.id == this.tale.id
             ) {
-              if (confirm('Restore from draft?')) {
-                Object.assign(this.tale, taleLastTouchedObj);
-              }
+              Object.assign(this.tale, taleLastTouchedObj);
             }
           }
         }
