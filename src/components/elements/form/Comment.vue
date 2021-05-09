@@ -118,16 +118,16 @@
           <div>&nbsp;</div>
         </div>
         <div v-else class="col">
-          <a href="/#/auth/login"
-             class="btn btn-sm btn-primary"
-          >Login
-          </a>
-          or
-          <a href="/#/auth/register"
-             class="btn btn-sm btn-primary"
-          >Register
-          </a>
-          to post comments
+          <router-link to="/auth/login"
+                       class="btn btn-sm btn-primary"
+          >{{ $t("IMP_LOGIN") }}
+          </router-link>
+          {{ $t("or") }}
+          <router-link to="/auth/register"
+                       class="btn btn-sm btn-primary"
+          >{{ $t("IMP_REGISTER") }}
+          </router-link>
+          {{ $t("to post comments") }}
         </div>
       </div>
     </b-collapse>

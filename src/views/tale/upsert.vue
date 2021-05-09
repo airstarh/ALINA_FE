@@ -62,10 +62,10 @@
               <input type="text" v-model="tale.iframe" placeholder="iframe" class="notranslate form-control">
             </div>
             <div class="mb-3">
-              <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">Not for kids</ui-checkbox>
+              <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}</ui-checkbox>
             </div>
             <div class="mb-3">
-              <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">Advertisement</ui-checkbox>
+              <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
             </div>
 
             <!--##################################################-->
@@ -84,7 +84,7 @@
             <!--##################################################-->
 
             <hr>
-            <div class="display-4">Result:</div>
+            <div class="display-4">{{ $t("Result") }}:</div>
             <div class="ck-content">
               <div v-html="UtilsStr.content(tale.body)"></div>
             </div>
@@ -94,7 +94,7 @@
 
             <div v-if="CU.isAdmin()">
               <hr>
-              <div class="display-4">HTML:</div>
+              <div class="display-4">{{ $t("HTML") }}:</div>
               <textarea v-model="tale.body" placeholder="Body" rows="11" class="form-control"></textarea>
             </div>
           </div>
