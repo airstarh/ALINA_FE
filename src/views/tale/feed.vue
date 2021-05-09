@@ -2,13 +2,13 @@
   <div class="container p-0">
     <div class="row no-gutters">
       <div class="col">
-        <div class="input-group mb-3 btn btn-block btn-info">
+        <div class="input-group mb-3 btn btn-block btn-dark">
           <div class="input-group-append">
-            <button @click="searchClear" class="input-group-text btn btn-danger">clear</button>
+            <button @click="searchClear" class="input-group-text btn btn-danger">{{ $t("TXT_CLEAR") }}</button>
           </div>
-          <input type="text" class="form-control" aria-label="Search" v-model="queryData.txt" placeholder="Search...">
+          <input type="text" class="form-control" aria-label="Search" v-model="queryData.txt" placeholder="">
           <div class="input-group-append">
-            <button @click="search" class="input-group-text btn btn-primary">Search</button>
+            <button @click="search" class="input-group-text btn btn-primary">{{ $t("TXT_SEARCH") }}</button>
           </div>
         </div>
       </div>

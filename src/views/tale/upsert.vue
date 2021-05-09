@@ -11,13 +11,13 @@
         <!--region Buttons-->
         <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
           <!--Delete-->
-          <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">Delete</button>
+          <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">{{ $t("TXT_DELETE") }}</button>
           <!--Edit-->
-          <button @click="onEdit" class="col btn btn-info" v-if="!options.modeEdit">Edit</button>
+          <button @click="onEdit" class="col btn btn-info" v-if="!options.modeEdit">{{ $t("TXT_EDIT") }}</button>
           <!--Cancel-->
-          <button @click="onCancel" class="col btn btn-info" v-if="options.modeEdit">Cancel</button>
+          <button @click="onCancel" class="col btn btn-info" v-if="options.modeEdit">{{ $t("TXT_CANCEL") }}</button>
           <!--Save-->
-          <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">sim-sim</button>
+          <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">{{ $t("TXT_SUBMIT") }}</button>
         </div>
         <!--endregion Buttons-->
         <!--region User Info-->
@@ -72,13 +72,13 @@
             <!--region Buttons-->
             <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
               <!--Delete-->
-              <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">Delete</button>
+              <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">{{ $t("TXT_DELETE") }}</button>
               <!--Edit-->
-              <button @click="onEdit" class="col btn btn-info" v-if="!options.modeEdit">Edit</button>
+              <button @click="onEdit" class="col btn btn-info" v-if="!options.modeEdit">{{ $t("TXT_EDIT") }}</button>
               <!--Cancel-->
-              <button @click="onCancel" class="col btn btn-info" v-if="options.modeEdit">Cancel</button>
+              <button @click="onCancel" class="col btn btn-info" v-if="options.modeEdit">{{ $t("TXT_CANCEL") }}</button>
               <!--Save-->
-              <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">sim-sim</button>
+              <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">{{ $t("TXT_SUBMIT") }}</button>
             </div>
             <!--endregion Buttons-->
             <!--##################################################-->

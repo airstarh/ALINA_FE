@@ -3,9 +3,9 @@
         <div class="row align-items-center vh-100">
             <div class="col-md-6 mx-auto">
                 <div class="alina-form">
-                    <h1>Change Password</h1>
-                    <input type="password" v-model="post.password" placeholder="Password" class="form-control">
-                    <input type="password" v-model="post.confirm_password" placeholder="CInfirm Password" class="form-control">
+                    <h1>{{$t("TXT_CHANGE_PASS")}}</h1>
+                    <input type="password" v-model="post.password" :placeholder="$t('TXT_PASSWORD')" class="form-control">
+                    <input type="password" v-model="post.confirm_password" :placeholder="$t('TXT_REPEAT')" class="form-control">
                     <input type="hidden" v-model="post.form_id" class="form-control">
                     <StandardButtons :onGo="runAJax"></StandardButtons>
                 </div>

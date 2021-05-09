@@ -2,7 +2,6 @@
   <div class="mb-1" id="alina-main-menu">
     <b-navbar toggleable="lg" type="dark" class="alina-navigator">
       <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
-
       <b-navbar-nav class="flex-row">
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="mr-3">
           <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
@@ -15,37 +14,38 @@
               style="font-size: .8rem; line-height: 1.2rem; height:1.2rem; vertical-align: middle; left:-.3rem"
           >&nbsp;{{ CU.attributes.count_notifications }}&nbsp;</sup>
         </b-nav-item>
-
-        <b-nav-item to="/auth/login" v-if="!CU.isLoggedIn()" class="mr-3">
+        <b-nav-item to="/auth/login" v-if="!CU.isLoggedIn()" class="mr-1">
           <button class="btn-sm btn-dark">
             <b-icon-check-square-fill></b-icon-check-square-fill>
-            Log-In
+            {{ $t("TXT_LOGIN") }}
           </button>
         </b-nav-item>
-        <b-nav-item to="/auth/register" v-if="!CU.isLoggedIn()" class="mr-3">
+        <b-nav-item to="/auth/register" v-if="!CU.isLoggedIn()" class="mr-1">
           <button class="btn-sm btn-dark">
             <b-icon-person-check></b-icon-person-check>
-            Register
+            {{ $t("TXT_REGISTER") }}
           </button>
+        </b-nav-item>
+        <b-nav-item>
+          <b-form-select
+              size="sm"
+              v-model="languageSelected"
+              :options="languageList">
+          </b-form-select>
         </b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-
-          <!--<b-nav-item to="/auth/profile" v-if="CU.isLoggedIn()" class="mr-3">-->
-          <!--    <b-icon-person-fill></b-icon-person-fill>-->
-          <!--</b-nav-item>-->
-
-          <b-nav-item-dropdown text="Tools" left>
+          <b-nav-item-dropdown :text="$t('TXT_TOOLS')" left>
             <b-dropdown-item :href="`${ConfigApi.url_base}/tools/SerializedDataEditor`">PHP-Serialized Data Editor online</b-dropdown-item>
             <b-dropdown-item :href="`${ConfigApi.url_base}/tools/JsonSearchReplaceBeautify`">JSON Search-Replace-Beautify online</b-dropdown-item>
             <b-dropdown-item to="/UrlParser">URL Parser + URL un-Parser (2 in 1)</b-dropdown-item>
             <b-dropdown-item to="/CliParser">CLI Parser</b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item-dropdown text="Admin Tools" left v-if="CU.isAdmin()">
+          <b-nav-item-dropdown :text="$t('TXT_TOOLS_ADMIN')" left v-if="CU.isAdmin()">
             <b-dropdown-item to="/RestCall">HTTP calls with browser</b-dropdown-item>
             <b-dropdown-item :href="`${ConfigApi.url_base}/SendRestApiQueries/BaseCurlCalls`">HTTP calls with server</b-dropdown-item>
             <b-dropdown-item :href="`${ConfigApi.url_base}/AdminDbManager/DbTablesColumnsInfo`">DB Manger</b-dropdown-item>
@@ -55,25 +55,6 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <!--<b-nav-form>-->
-          <!--    <b-form-input-->
-          <!--            size="sm"-->
-          <!--            class="mr-sm-2"-->
-          <!--            placeholder="Search"-->
-          <!--    ></b-form-input>-->
-          <!--    <b-button size="sm" class="my-2 my-sm-0" type="submit"-->
-          <!--    >Search-->
-          <!--    </b-button-->
-          <!--    >-->
-          <!--</b-nav-form>-->
-
-          <!--<b-nav-item-dropdown text="Lang" right>-->
-          <!--    <b-dropdown-item href="#">EN</b-dropdown-item>-->
-          <!--    <b-dropdown-item href="#">ES</b-dropdown-item>-->
-          <!--    <b-dropdown-item href="#">RU</b-dropdown-item>-->
-          <!--    <b-dropdown-item href="#">FA</b-dropdown-item>-->
-          <!--</b-nav-item-dropdown>-->
-
           <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template slot="button-content">
@@ -82,15 +63,15 @@
               <img v-if="!CU.isLoggedIn() || !CU.attributes.emblem" src="@/assets/anarki.png" height="40px">
               <span class="mr-1 ml-1">{{ CU.attributes.firstname || CU.attributes.mail || '¯\_(ツ)_/¯' }}</span>
             </template>
-            <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">LogIn</b-dropdown-item>
-            <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">Register</b-dropdown-item>
-            <b-dropdown-item to="/auth/reset_password_request" v-if="!CU.isLoggedIn()">Reset password request</b-dropdown-item>
-            <b-dropdown-item to="/auth/reset_password_with_code" v-if="!CU.isLoggedIn()">Reset password with code</b-dropdown-item>
+            <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">{{ $t("TXT_LOGIN") }}</b-dropdown-item>
+            <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">{{ $t("TXT_REGISTER") }}</b-dropdown-item>
+            <b-dropdown-item to="/auth/reset_password_request" v-if="!CU.isLoggedIn()">{{ $t("TXT_RESET_PASS_REQUEST") }}</b-dropdown-item>
+            <b-dropdown-item to="/auth/reset_password_with_code" v-if="!CU.isLoggedIn()">{{ $t("TXT_RESET_PASS_CODE") }}</b-dropdown-item>
             <!---->
-            <b-dropdown-item to="/tale/upsert" v-if="CU.isLoggedIn()">Add tale</b-dropdown-item>
-            <b-dropdown-item to="/auth/profile" v-if="CU.isLoggedIn()">Profile</b-dropdown-item>
-            <b-dropdown-item to="/auth/change_password" v-if="CU.isLoggedIn()">Change password</b-dropdown-item>
-            <b-dropdown-item to="/auth/logout" v-if="CU.isLoggedIn()">LogOut</b-dropdown-item>
+            <b-dropdown-item to="/tale/upsert" v-if="CU.isLoggedIn()">{{ $t("TXT_ADD_TALE") }}</b-dropdown-item>
+            <b-dropdown-item to="/auth/profile" v-if="CU.isLoggedIn()">{{ $t("TXT_PROFILE") }}</b-dropdown-item>
+            <b-dropdown-item to="/auth/change_password" v-if="CU.isLoggedIn()">{{ $t("TXT_CHANGE_PASS") }}</b-dropdown-item>
+            <b-dropdown-item to="/auth/logout" v-if="CU.isLoggedIn()">{{ $t("TXT_LOGOUT") }}</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -106,15 +87,20 @@ export default {
   data() {
     return {
       ConfigApi,
-      CU: CurrentUser.obj(),
+      CU:               CurrentUser.obj(),
+      languageList:     [
+        {text: "EN", value: "en"},
+        {text: "RU", value: "ru"},
+      ],
+      languageSelected: "ru",
     }
   },
-  watch: {
+  methods: {},
+  watch:   {
     "CU": function (v) {
-      // console.log(">>>____________________________");
-      // console.log("v");
-      // console.log(v);
-      // console.log("<<<____________________________");
+    },
+    languageSelected(newVal) {
+      this.$root.$i18n.locale = newVal;
     }
   }
 };

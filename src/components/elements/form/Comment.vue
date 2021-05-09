@@ -6,7 +6,7 @@
                       'btn-md':level==1,
                       'btn-sm':level>1,
                       }"
-      >Comments: {{ commentsTotal }}
+      >{{ $tc('COUNTER_COMMENTS', commentsTotal) }}
       </b-button>
     </div>
     <b-collapse :id="`comment-collapse-${answer_to_tale_id}`"
@@ -67,10 +67,10 @@
           <div class="row no-gutters m-buttons-1">
             <div class="col text-right" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
                             <span class="row no-gutters">
-                                <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">Delete</button>
-                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Edit</button>
-                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">Cancel</button>
-                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">sim-sim</button>
+                                <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">{{ $t("TXT_DELETE") }}</button>
+                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">{{ $t("TXT_EDIT") }}</button>
+                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">{{ $t("TXT_CANCEL") }}</button>
+                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">{{ $t("TXT_SUBMIT") }}</button>
                             </span>
             </div>
             <div class="col">
@@ -110,8 +110,8 @@
             <div class="col"></div>
             <div class="col">
               <div class="row no-gutters">
-                <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{ resetTxt }}</button>
-                <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{ submitTxt }}</button>
+                <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{ $t("TXT_CLEAR") }}</button>
+                <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{ $t("TXT_SUBMIT") }}</button>
               </div>
             </div>
           </div>
@@ -210,9 +210,6 @@ export default {
       type:    Number,
       default: 0,
     },
-    //
-    submitTxt: {default: "sim-sim", type: String},
-    resetTxt:  {default: "Clear", type: String},
   },
   mounted() {
     this.processQuery();

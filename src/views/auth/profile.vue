@@ -1,8 +1,8 @@
 <template>
   <div class="container p-0">
     <div class="row no-gutters m-buttons-1" v-if="CU.ownsOrAdminOrModerator(post.id)">
-      <button @click="ajaDeleteUser(post)" class="col btn btn-danger">Suicide</button>
-      <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{ options.modeEdit ? 'Cancel' : 'Edit' }}</button>
+      <button @click="ajaDeleteUser(post)" class="col btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
+      <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
     </div>
     <div class="row no-gutters">
       <div class="col">
@@ -22,7 +22,7 @@
                   :multiple="false"
                   :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
                   @change="onChangeFileField"
-              >Select an image
+              >{{ $t("Select an image") }}
               </ui-fileupload>
               <a :href="post.emblem">
                 <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
@@ -43,7 +43,7 @@
 
               <div class="row no-gutters mt-4 justify-content-center align-items-center">
                 <div class="col">
-                  <label for="firstname">First name</label>
+                  <label for="firstname">{{ $t("First name") }}</label>
                   <input v-model="post.firstname" type="text" id="firstname" class="form-control">
                 </div>
               </div>
@@ -52,7 +52,7 @@
 
               <div class="row no-gutters mt-4 justify-content-center align-items-center">
                 <div class="col">
-                  <label for="lastname">Last name</label>
+                  <label for="lastname">{{ $t("Last name") }}</label>
                   <input v-model="post.lastname" type="text" id="lastname" class="form-control">
                 </div>
               </div>
