@@ -109,7 +109,7 @@ export class MyUploadAdapter {
         // the CSRF token generated earlier by your application.
         //this.xhr.setRequestHeader('','');
         const CU = CurrentUser.obj();
-        this.xhr.setRequestHeader('x-requested-with', 'AlinaFetchApi');
+        this.xhr.setRequestHeader('x-requested-with', ConfigApi.AjaxAlina.options.headers["x-requested-with"]);
         this.xhr.setRequestHeader('uid', CU.attributes.id);
         this.xhr.setRequestHeader('token', CU.attributes.token);
         this.xhr.setRequestHeader('fgp', ConfigApi.AjaxAlina.options.headers.fgp);

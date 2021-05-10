@@ -2,11 +2,8 @@ const path                  = require('path');
 const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
 const {styles}              = require('@ckeditor/ckeditor5-dev-utils');
 module.exports              = {
-    // Deprecated since Vue CLI 3.3, please use publicPath instead
-    //baseUrl: '.',
-    //publicPath:            '.',
-    publicPath:            '/apps/vue/',
-    devServer:             {
+    publicPath: '/apps/vue/',
+    devServer:  {
         public:           'https://localhost:8082',
         https:            true,
         clientLogLevel:   'error',
@@ -25,11 +22,11 @@ module.exports              = {
             /*
              * The directory containing your SVG files.
              */
-            dir:           'src/assets/svg',
+            dir: 'src/assets/svg',
             /*
              * The regex that will be used for the Webpack rule.
              */
-            test:          /\.(svg)(\?.*)?$/,
+            test: /\.(svg)(\?.*)?$/,
             /*
              * @see https://github.com/kisenka/svg-sprite-loader#configuration
              */
@@ -37,7 +34,7 @@ module.exports              = {
                 extract:         true,
                 filenameHashing: false,
                 //spriteFilename:  'img/icons.[hash:8].svg' // or 'img/icons.svg' if filenameHashing == false
-                spriteFilename:  'alina-sprite.svg',
+                spriteFilename: 'alina-sprite.svg',
             },
             /*
              * @see https://github.com/kisenka/svg-sprite-loader#configuration
@@ -50,7 +47,7 @@ module.exports              = {
         // ##################################################
     },
     // #####
-    configureWebpack:      {
+    configureWebpack: {
         plugins: [
             // ##################################################// ##################################################
             //region CkEditor Plugin
@@ -78,7 +75,7 @@ module.exports              = {
             // ##################################################// ##################################################
         ]
     },
-    chainWebpack:          config => {
+    chainWebpack:     config => {
         // ##################################################// ##################################################
         //region CkEditor
         // Vue CLI would normally use its own loader to load .svg and .css files, however:

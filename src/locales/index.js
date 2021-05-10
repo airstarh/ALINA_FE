@@ -44,6 +44,8 @@ const Translations = {
         "IMP_REGISTER":         "Register",
         "or":                   "or",
         "to post comments":     "to post comments",
+        "You are liked!":       "You are liked!",
+        "You are commented!!":  "You are commented!!",
     },
     ru: {
         TXT_LOGIN:              "Вход",
@@ -69,7 +71,7 @@ const Translations = {
         TXT_PASSWORD:           "Пароль",
         TXT_CODE:               "Код",
         TXT_REPEAT:             "Повторите ввод",
-        COUNTER_COMMENTS:       'нет комментариев | {n} комментарий | {n} комментария | {n} комменнтариевч',
+        COUNTER_COMMENTS:       'нет комментариев | {n} комментарий | {n} комментария | {n} комменнтариев',
         "Select an image":      "Выбрать изображение",
         "First name":           "Имя",
         "Last name":            "Фамилия",
@@ -90,6 +92,8 @@ const Translations = {
         "IMP_REGISTER":         "Зарегистрируйтесь",
         "or":                   "или",
         "to post comments":     ", чтобы писать комментарии",
+        "You are liked!":       "Вас лайкнули!",
+        "You are commented!":   "Вас прокомментировали!",
     },
 };
 export default Translations;
