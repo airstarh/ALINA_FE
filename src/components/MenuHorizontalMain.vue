@@ -10,7 +10,7 @@
           <b-icon-info-circle-fill></b-icon-info-circle-fill>
           <sup
               v-if="CU.attributes.count_notifications"
-              class="btn btn-small btn-warning rounded-circle p-0 m-0"
+              class="btn btn-small btn-warning rounded-circle p-0 m-0 pr-1 pl-1"
               style="font-size: .8rem; line-height: 1.2rem; height:1.2rem; vertical-align: middle; left:-.3rem"
           >&nbsp;{{ CU.attributes.count_notifications }}&nbsp;</sup>
         </b-nav-item>
