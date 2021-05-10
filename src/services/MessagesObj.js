@@ -13,9 +13,17 @@ const MessagesObj = {
         'alert alert-danger',
     ],
     set(item, status = null) {
-        const res = Object.assign({}, this.item);
+        let res = {
+            text:           '',
+            templateString: '',
+            params:         [],
+            status:         0,
+            isShown:        0,
+        };
+        res     = Object.assign(res, this.item);
         if (UtilsData.isString(item)) {
-            res.text = item;
+            res.text           = item;
+            res.templateString = item;
         } else if (UtilsData.isObject(item)) {
             Object.assign(res, item)
         }
