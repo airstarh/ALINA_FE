@@ -20,9 +20,11 @@ npm install
 @ckeditor/ckeditor5-vue2@latest
 @ckeditor/ckeditor5-dev-webpack-plugin@latest
 @ckeditor/ckeditor5-utils@latest
-postcss-loader@3
-raw-loader@0.5.1
+
 @ckeditor/ckeditor5-editor-classic@latest
 @ckeditor/ckeditor5-essentials@latest
 @ckeditor/ckeditor5-cloud-services@latest
 @ckeditor/ckeditor5-typing@latest
+## postcss-loader@3
+## raw-loader@0.5.1
+## @ckeditor/ckeditor5-dev-utils@24.4.2
