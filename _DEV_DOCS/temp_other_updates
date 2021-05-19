@@ -7,17 +7,20 @@ vuex@^3
 vue-cli-plugin-svg-sprite@^1
 
 npm install
-core-js@^3
+raw-loader@latest
 npm-check-updates@latest
-svgo-loader@^2
-whatwg-fetch@^3
+svgo@latest
+svgo-loader@latest
+lodash@latest
+sass@latest
 
 npm install
 bootstrap@^4
 bootstrap-vue@^2
 date-fns@^2
-lodash@latest
-
-npm install
-sass@latest
+core-js@^3
+whatwg-fetch@^3
 sass-loader@10.1.0
+
+
+

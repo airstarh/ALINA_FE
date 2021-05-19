@@ -1,6 +1,4 @@
-@ckeditor/ckeditor5-dev-utils
-bootstrap
-postcss-loader
-raw-loader
-svgo
+bootstrap@4
 sass-loader@10.1.0
+postcss-loader@3.0.0
+
