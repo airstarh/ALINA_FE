@@ -27,11 +27,14 @@
           </button>
         </b-nav-item>
         <b-nav-item>
-          <b-form-select
-              size="sm"
-              v-model="languageSelected"
-              :options="languageList">
-          </b-form-select>
+          <form autocomplete="off">
+            <b-form-select
+                size="sm"
+                v-model="languageSelected"
+                :options="languageList"
+            >
+            </b-form-select>
+          </form>
         </b-nav-item>
       </b-navbar-nav>
 
@@ -80,27 +83,33 @@
 </template>
 
 <script>
-import CurrentUser from "@/services/CurrentUser";
-import ConfigApi   from "@/configs/ConfigApi";
+import CurrentUser    from "@/services/CurrentUser";
+import ConfigApi      from "@/configs/ConfigApi";
+import CurrentLocale  from "@/services/CurrentLocale";
+import ConfigCkEditor from "@/configs/ConfigCkEditor";
 export default {
   name: "MenuHorizontalMain",
   data() {
     return {
       ConfigApi,
       CU:               CurrentUser.obj(),
-      languageList:     [
-        {text: "EN", value: "en"},
-        {text: "RU", value: "ru"},
-      ],
-      languageSelected: "ru",
+      languageList:     CurrentLocale.variants,
+      languageSelected: CurrentLocale.language,
     }
   },
-  methods: {},
+  methods: {
+    setLocale(newVal) {
+      this.languageSelected   = newVal;
+      CurrentLocale.language  = newVal;
+      ConfigCkEditor.language = newVal;
+      this.$root.$i18n.locale = newVal;
+    }
+  },
   watch:   {
     "CU": function (v) {
     },
     languageSelected(newVal) {
-      this.$root.$i18n.locale = newVal;
+      this.setLocale(newVal);
     }
   }
 };

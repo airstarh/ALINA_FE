@@ -2,6 +2,7 @@ const path                  = require('path');
 const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
 const {styles}              = require('@ckeditor/ckeditor5-dev-utils');
 module.exports              = {
+    parallel:   false,
     publicPath: '/apps/vue/',
     devServer:  {
         public:           'https://localhost:8082',
@@ -54,22 +55,10 @@ module.exports              = {
             // CKEditor needs its own plugin to be built using webpack.
             new CKEditorWebpackPlugin({
                 // See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
-                //language: 'en',
-                // Additional languages that will be emitted to the `outputDirectory`.
-                // This option can be set to an array of language codes or `'all'` to build all found languages.
-                // The bundle is optimized for one language when this option is omitted.
-                //additionalLanguages:                    ['ru'],
-                // Optional directory for emitted translations. Relative to the webpack's output.
-                // Defaults to `'translations'`.
-                //outputDirectory:                        'translations',
-                // Whether the build process should fail if an error occurs.
-                // Defaults to `false`.
-                //strict:                                 false,
-                // Whether to log all warnings to the console.
-                // Defaults to `false`.
-                //verbose:                                true,
-                //addMainLanguageTranslationsToAllAssets: true,
-                //buildAllTranslationsToSeparateFiles:    true,
+                language:                               'en',
+                additionalLanguages:                    ['ru'],
+                addMainLanguageTranslationsToAllAssets: true,
+                buildAllTranslationsToSeparateFiles:    true,
             })
             //endregion CkEditor Plugin
             // ##################################################// ##################################################

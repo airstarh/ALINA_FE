@@ -14,12 +14,13 @@ import VueDateFns          from "vue-date-fns";
 import UtilsDate           from "@/Utils/UtilsDate";
 import VueI18n             from 'vue-i18n'
 import Translations        from '@/locales/index'
+import CurrentLocale       from "@/services/CurrentLocale";
 //#####
 Vue.config.productionTip = false;
 //#####
 Vue.use(VueI18n);
 const i18n = new VueI18n({
-    locale:   "ru",
+    locale:   CurrentLocale.language,
     messages: Translations,
     // Key - language to use the rule for, `'ru'`, in this case
     // Value - function to choose right plural form

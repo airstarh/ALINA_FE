@@ -1,3 +1,5 @@
+import '@ckeditor/ckeditor5-build-classic/build/translations/ru';
+import '@ckeditor/ckeditor5-build-classic/build/translations/en-gb';
 import TextTransformation            from '@ckeditor/ckeditor5-typing/src/texttransformation';
 import EssentialsPlugin              from '@ckeditor/ckeditor5-essentials/src/essentials';
 import BoldPlugin                    from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -31,9 +33,10 @@ import TodoList                      from '@ckeditor/ckeditor5-list/src/todolist
 import RemoveFormat                  from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 import Indent                        from '@ckeditor/ckeditor5-indent/src/indent';
 import IndentBlock                   from '@ckeditor/ckeditor5-indent/src/indentblock';
+import CurrentLocale                 from "@/services/CurrentLocale";
 const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
-    language:     'en',
+    language:     CurrentLocale.language,
     plugins:      [
         TextTransformation,
         MediaEmbed,
