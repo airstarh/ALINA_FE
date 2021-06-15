@@ -109,7 +109,7 @@ export default class Ajax {
         // ##################################################
         // ##################################################
         //Go
-        if (_t.hasOwnProperty('hookBeforeAjaxStarted') && typeof _t['hookBeforeAjaxStarted'] === 'function') {
+        if (typeof _t['hookBeforeAjaxStarted'] === 'function') {
             _t.hookBeforeAjaxStarted();
         }
         const u         = this.urlBuild();
@@ -125,7 +125,7 @@ export default class Ajax {
             //#####
             //region Response not OK
             if (!resp.ok) {
-                if (_t.hasOwnProperty('hookResponseNotOk') && typeof _t['hookResponseNotOk'] === 'function') {
+                if (typeof _t['hookResponseNotOk'] === 'function') {
                     _t.hookResponseNotOk(resp);
                 } else {
                     alert(`Server answered with status ${resp.status}`);
@@ -138,7 +138,7 @@ export default class Ajax {
         .then(data => {
             _t.respBody = data;
             //region hookProcessResponse
-            if (_t.hasOwnProperty('hookProcessResponse') && typeof _t['hookProcessResponse'] === 'function') {
+            if (typeof _t['hookProcessResponse'] === 'function') {
                 _t.hookProcessResponse();
             }
             //endregion hookProcessResponse
@@ -149,7 +149,7 @@ export default class Ajax {
         })
         //##################################################
         .catch(error => {
-            if (_t.hasOwnProperty('hookNetworkError') && typeof _t['hookNetworkError'] === 'function') {
+            if (typeof _t['hookNetworkError'] === 'function') {
                 _t.hookNetworkError(error);
             } else {
                 alert('Network error. Check internet connection.');
