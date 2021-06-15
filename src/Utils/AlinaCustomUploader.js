@@ -2,6 +2,7 @@ import ConfigApi   from "@/configs/ConfigApi";
 import CurrentUser from "@/services/CurrentUser";
 import MessagesObj from "@/services/MessagesObj";
 import SpinnerObj  from "@/services/SpinnerObj";
+import UtilsSys    from "@/Utils/UtilsSys";
 
 /**
  * https://ckeditor.com/docs/ckeditor5/latest/framework/guides/deep-dive/upload-adapter.html#implementing-a-custom-upload-adapter
@@ -57,13 +58,7 @@ export class MyUploadAdapter {
             //region ALINA
             SpinnerObj.isOn = false;
             if (response) {
-                if (response.messages) {
-                    let msgs = [];
-                    msgs     = msgs.concat(response.messages);
-                    msgs.forEach((item) => {
-                        MessagesObj.add(item);
-                    });
-                }
+                UtilsSys.processMessages(response);
             }
             //endregion ALINA
             // #####

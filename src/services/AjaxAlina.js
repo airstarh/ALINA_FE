@@ -5,6 +5,7 @@ import UtilsObject from "@/Utils/UtilsObject";
 import ConfigApi   from "@/configs/ConfigApi";
 import SpinnerObj  from "@/services/SpinnerObj";
 import Router      from '@/router';
+import UtilsSys    from "@/Utils/UtilsSys";
 export default class AjaxAlina extends Ajax {
     //##################################################
     setOptions(options = {}) {
@@ -35,6 +36,11 @@ export default class AjaxAlina extends Ajax {
     //##################################################
     hookProcessResponse() {
         if (this.respType === 'json') {
+            // ##################################################
+            //region Messages
+            UtilsSys.processMessages(this.respBody);
+            //endregion Messages
+            // ##################################################
             if (this.resp.redirected) {
                 if (this.respBody["data"] && this.respBody["data"]["form_id"]) {
                     const formId       = this.respBody["data"]["form_id"];
@@ -46,19 +52,6 @@ export default class AjaxAlina extends Ajax {
                     }
                 }
             }
-            //##########
-            //region Messages
-            let msgs = [];
-            if (this.respBody["messages"]) {
-                msgs = msgs.concat(this.respBody["messages"])
-            }
-            if (this.respBody["messages_admin"]) {
-                msgs = msgs.concat(this.respBody["messages_admin"])
-            }
-            msgs.forEach((item) => {
-                MessagesObj.add(item);
-            });
-            //endregion Messages
             //##########
             //region CurrentUser
             if (this.respBody["CurrentUser"]) {
