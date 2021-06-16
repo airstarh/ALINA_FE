@@ -93,7 +93,7 @@
           <div class="col-md-4">
             <a :href="post.emblem">
               <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
-              <img v-if="!post.emblem" src="../../assets/anarki.png" width="100%">
+              <img v-if="!post.emblem" src="@/assets/anarki.png" width="100%">
             </a>
           </div>
           <div class="col pl-2">

@@ -1,6 +1,20 @@
 <template>
   <div class="container border border-primary">
-    <img alt="Vue logo" src="../assets/logo.png" height="10px"/>
+    <img alt="Vue logo" src="@/assets/logo.png" height="50"/>
+    <div></div>
+    <div class="col-md-4">
+      <a :href="CurrentUser.emblem">
+        <img v-if="CurrentUser.emblem" :src="CurrentUser.emblem" width="100%" class="rounded">
+        <img v-if="!CurrentUser.emblem" src="@/assets/anarki.png" width="100%">
+      </a>
+    </div>
+    <div></div>
+    <ckeditor
+        class="notranslate"
+        v-model="ckEditorRelated.aModel"
+        :editor="ckEditorRelated.editor"
+        :config="ckEditorRelated.editorConfig"
+    ></ckeditor>
     <div></div>
     <span style="color:#76ff03; background-color: #ffb74d">
             <svg width="55" class="icon--inline" color="currentColor">
@@ -33,9 +47,7 @@
                 <use :xlink:href="`${iconIn.url}`"></use>
             </svg>
         </span>
-    <div>
-
-    </div>
+    <div></div>
     <div>
       <div><h1>{{ sProp }} : mapped from Store</h1></div>
       <div><h1>{{ $store.state.egStoreModule.sProp }} : direct from Store</h1></div>
@@ -205,18 +217,23 @@ import AlinaDatePicker                    from "@/components/elements/form/Alina
 import AjaxAlina                          from "@/services/AjaxAlina";
 import ConfigApi                          from "@/configs/ConfigApi";
 import MessagesObj                        from "@/services/MessagesObj";
-import SpinnerObj                         from "@/services/SpinnerObj";
-import iconVk                             from "@/assets/svg/socialnets/vk.svg";
-import iconFb                             from "@/assets/svg/socialnets/fb.svg";
-import iconWp                             from "@/assets/svg/socialnets/whatsapp.svg";
-import iconTg                             from "@/assets/svg/socialnets/telgram.svg";
-import iconIn                             from "@/assets/svg/socialnets/linkedin.svg";
-import iconSk                             from "@/assets/svg/socialnets/skype.svg";
-import iconVi                             from "@/assets/svg/socialnets/viber.svg";
+import SpinnerObj     from "@/services/SpinnerObj";
+import iconVk         from "@/assets/svg/socialnets/vk.svg";
+import iconFb         from "@/assets/svg/socialnets/fb.svg";
+import iconWp         from "@/assets/svg/socialnets/whatsapp.svg";
+import iconTg         from "@/assets/svg/socialnets/telgram.svg";
+import iconIn         from "@/assets/svg/socialnets/linkedin.svg";
+import iconSk         from "@/assets/svg/socialnets/skype.svg";
+import iconVi         from "@/assets/svg/socialnets/viber.svg";
+import CKEditor       from '@ckeditor/ckeditor5-vue2';
+import ClassicEditor  from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import ConfigCkEditor from "@/configs/ConfigCkEditor";
+import CurrentUser    from "@/services/CurrentUser";
 export default {
   name:       "About",
   components: {
-    AlinaDatePicker
+    AlinaDatePicker,
+    ckeditor: CKEditor.component,
   },
   data() {
     const twoWeeksFromNow = new Date();
@@ -230,11 +247,17 @@ export default {
       iconSk,
       iconIn,
       ConfigApi,
-      lodashExample: [1, 2, 3, 4],
-      picker8:       null,
-      AnObject:      AnObject,
-      dateExample:   'DEFAULT VALUE',
-      uts:           1,
+      lodashExample:   [1, 2, 3, 4],
+      picker8:         null,
+      AnObject:        AnObject,
+      dateExample:     'DEFAULT VALUE',
+      uts:             1,
+      ckEditorRelated: {
+        aModel:       'Ra-ta-ta-ta',
+        editorConfig: ConfigCkEditor,
+        editor:       ClassicEditor,
+      },
+      CurrentUser: CurrentUser.obj().attributes
     };
   },
   created() {
