@@ -180,8 +180,6 @@ import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
 import CKEditor        from '@ckeditor/ckeditor5-vue2';
 import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import ConfigCkEditor  from "@/configs/ConfigCkEditor";
-import UtilsObject     from "@/Utils/UtilsObject";
-import UtilsDate       from "@/Utils/UtilsDate";
 import UtilsStr        from "@/Utils/UtilsStr";
 import Share           from "@/components/elements/form/Share";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
@@ -235,26 +233,35 @@ export default {
     Like,
     AlinaDatePicker
   },
-  mounted() {
+  created() {
     const vm = this;
     const id = vm.getRouteParam('id');
     vm.ajaxGetTale(id);
   },
   updated() {
+    const vm = this;
+    const id = vm.getRouteParam('id');
+    vm.ajaxGetTale(id);
   },
   //##################################################
   //region Router Hooks
   // beforeRouteEnter(to, from, next) {
   //     next((vm) => {
   //         const id = vm.getRouteParam('id', to);
+  //         console.log(">>>>>>>>>>>>>>>>>>>>");
+  //         console.log("beforeRouteEnter");
+  //         console.log(id);
   //         vm.ajaxGetTale(id);
   //     })
   // },
   // beforeRouteUpdate(to, from, next) {
-  //     const vm = this;
-  //     const id = vm.getRouteParam('id', to);
-  //     vm.ajaxGetTale(id);
-  //     next();
+  //   const vm = this;
+  //   const id = vm.getRouteParam('id', to);
+  //   console.log(">>>>>>>>>>>>>>>>>>>>");
+  //   console.log("beforeRouteUpdate");
+  //   console.log(id);
+  //   vm.ajaxGetTale(id);
+  //   next();
   // },
   //endregion Router Hooks
   //##################################################
@@ -264,7 +271,12 @@ export default {
     }
   },
   watch:    {
-    tale: {
+    "tale.id": function (valNew, valOld) {
+      if (this.tale.is_submitted === 1) {
+        this.options.modeEdit = false;
+      }
+    },
+    tale:      {
       handler(newVal, oldVal) {
         if (this.options.modeEdit) {
           this.taleLastTouchedRemember(newVal);
