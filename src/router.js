@@ -34,7 +34,7 @@ export default new Router({
         },
         {
             path:      "/about/:someParam",
-            name:      "about",
+            name:      "aboutSomeData",
             component: About
         },
         {
