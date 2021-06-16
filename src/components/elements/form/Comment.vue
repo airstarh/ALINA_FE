@@ -104,7 +104,7 @@
       ></Paginator>
       <div class="row no-gutters">
         <div class="col"
-             v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`comment-collapse-${answer_to_tale_id}`)">
+             v-if="CU.isLoggedIn()">
           <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
           <div class="row no-gutters">
             <div class="col"></div>
