@@ -44,9 +44,7 @@
               </a>
 
               <br>
-              <!--<router-link :to="'/tale/upsert/'+tale.id">-->
               {{ tale.publish_at | unix_to_date_time }}
-              <!--</router-link>-->
             </div>
           </div>
           <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
