@@ -2,12 +2,15 @@
   <div class="container border border-primary">
     <img alt="Vue logo" src="@/assets/logo.png" height="50"/>
     <div></div>
-    <div class="col-md-4">
-      <a :href="CurrentUser.emblem">
-        <img v-if="CurrentUser.emblem" :src="CurrentUser.emblem" width="100%" class="rounded">
-        <img v-if="!CurrentUser.emblem" src="@/assets/anarki.png" width="100%">
-      </a>
-    </div>
+    <span class="btn-secondary text-left text-nowrap badge-pill p-2">
+      <router-link :to="'/auth/profile/'+CurrentUser.id" class="fixed-height-150px">
+        <img v-if="CurrentUser.emblem" :src="CurrentUser.emblem" width="100px" class="rounded-circle">
+        <img v-if="!CurrentUser.emblem" src="@/assets/anarki.png" width="100px" class="rounded-circle">
+      </router-link>
+      <router-link :to="'/auth/profile/'+CurrentUser.id" class="text-light">
+        {{ UtilsStr.fullName(CurrentUser.firstname, CurrentUser.lastname, CurrentUser.id) }}
+      </router-link>
+    </span>
     <div></div>
     <ckeditor
         class="notranslate"
@@ -15,6 +18,26 @@
         :editor="ckEditorRelated.editor"
         :config="ckEditorRelated.editorConfig"
     ></ckeditor>
+    <div></div>
+    <div>
+      <router-link to="/about">About</router-link>
+      |||
+      <router-link to="/about/001">About 001</router-link>
+      |||
+      <router-link to="/about/002">About 002</router-link>
+      |||
+      <router-link to="/about/003">About 003</router-link>
+    </div>
+    <div></div>
+    <div>
+      <a href="#/about">a# About</a>
+      |||
+      <a href="#/about/001">a# About 001</a>
+      |||
+      <a href="#/about/002">a# About 002</a>
+      |||
+      <a href="#/about/003">a# About 003</a>
+    </div>
     <div></div>
     <span style="color:#76ff03; background-color: #ffb74d">
             <svg width="55" class="icon--inline" color="currentColor">
@@ -217,18 +240,19 @@ import AlinaDatePicker                    from "@/components/elements/form/Alina
 import AjaxAlina                          from "@/services/AjaxAlina";
 import ConfigApi                          from "@/configs/ConfigApi";
 import MessagesObj                        from "@/services/MessagesObj";
-import SpinnerObj     from "@/services/SpinnerObj";
-import iconVk         from "@/assets/svg/socialnets/vk.svg";
-import iconFb         from "@/assets/svg/socialnets/fb.svg";
-import iconWp         from "@/assets/svg/socialnets/whatsapp.svg";
-import iconTg         from "@/assets/svg/socialnets/telgram.svg";
-import iconIn         from "@/assets/svg/socialnets/linkedin.svg";
-import iconSk         from "@/assets/svg/socialnets/skype.svg";
-import iconVi         from "@/assets/svg/socialnets/viber.svg";
-import CKEditor       from '@ckeditor/ckeditor5-vue2';
-import ClassicEditor  from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import ConfigCkEditor from "@/configs/ConfigCkEditor";
-import CurrentUser    from "@/services/CurrentUser";
+import SpinnerObj                         from "@/services/SpinnerObj";
+import iconVk                             from "@/assets/svg/socialnets/vk.svg";
+import iconFb                             from "@/assets/svg/socialnets/fb.svg";
+import iconWp                             from "@/assets/svg/socialnets/whatsapp.svg";
+import iconTg                             from "@/assets/svg/socialnets/telgram.svg";
+import iconIn                             from "@/assets/svg/socialnets/linkedin.svg";
+import iconSk                             from "@/assets/svg/socialnets/skype.svg";
+import iconVi                             from "@/assets/svg/socialnets/viber.svg";
+import CKEditor                           from '@ckeditor/ckeditor5-vue2';
+import ClassicEditor                      from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import ConfigCkEditor                     from "@/configs/ConfigCkEditor";
+import CurrentUser                        from "@/services/CurrentUser";
+import UtilsStr                           from "@/Utils/UtilsStr";
 export default {
   name:       "About",
   components: {
@@ -247,6 +271,7 @@ export default {
       iconSk,
       iconIn,
       ConfigApi,
+      UtilsStr,
       lodashExample:   [1, 2, 3, 4],
       picker8:         null,
       AnObject:        AnObject,
@@ -257,14 +282,22 @@ export default {
         editorConfig: ConfigCkEditor,
         editor:       ClassicEditor,
       },
-      CurrentUser: CurrentUser.obj().attributes
+      CurrentUser:     CurrentUser.obj().attributes
     };
   },
+  mounted() {
+    console.log(">>>>>>>>>>>>>>>>>>>>");
+    console.log("mounted");
+    this.svg001();
+  },
   created() {
+    console.log(">>>>>>>>>>>>>>>>>>>>");
+    console.log("created");
     this.dateplayer();
   },
-  mounted() {
-    this.svg001();
+  updated() {
+    console.log(">>>>>>>>>>>>>>>>>>>>");
+    console.log("updated");
   },
   computed: {
     ...mapState("egStoreModule", ["sProp"]),

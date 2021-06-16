@@ -33,6 +33,11 @@ export default new Router({
             //===                import(/* webpackChunkName: "about" */ "@/views/About.vue")
         },
         {
+            path:      "/about/:someParam",
+            name:      "about",
+            component: About
+        },
+        {
             path:      "/RestCall",
             name:      "RestCall",
             component: RestCall
