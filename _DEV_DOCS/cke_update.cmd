@@ -36,4 +36,3 @@ npm install
 ########################################
 #
 ## postcss-loader@3
-## raw-loader@0.5.1
