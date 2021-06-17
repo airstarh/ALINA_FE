@@ -18,8 +18,11 @@ svgo-loader@latest
 lodash@latest
 sass@latest
 vue-social-sharing@latest
-raw-loader@latest
 bootstrap@^4
+
+##################################################
+# https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v2.html
+~~~ raw-loader@latest
 NEVER UPDATE !!!sass-loader@10.1.0
 NEVER UPDATE !!!postcss-loader@3.0.0
 

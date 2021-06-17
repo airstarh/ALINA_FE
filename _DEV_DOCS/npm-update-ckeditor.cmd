@@ -1,6 +1,3 @@
-########################################
-#
-
 npm install
 @ckeditor/ckeditor5-alignment@27.1.0
 @ckeditor/ckeditor5-basic-styles@27.1.0
@@ -15,7 +12,6 @@ npm install
 @ckeditor/ckeditor5-image@27.1.0
 @ckeditor/ckeditor5-indent@27.1.0
 @ckeditor/ckeditor5-link@27.1.0
-@ckeditor/ckeditor5-list@27.1.0
 @ckeditor/ckeditor5-list@27.1.0
 @ckeditor/ckeditor5-paragraph@27.1.0
 @ckeditor/ckeditor5-paste-from-office@27.1.0
@@ -34,5 +30,7 @@ npm install
 @ckeditor/ckeditor5-dev-webpack-plugin@latest
 
 ########################################
-#
-## postcss-loader@3
+# OFFICIALLY
+# https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v2.html
+postcss-loader@3
+raw-loader@0.5.1
