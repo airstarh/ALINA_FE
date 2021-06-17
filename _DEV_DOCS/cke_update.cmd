@@ -2,29 +2,30 @@
 #
 
 npm install
-@ckeditor/ckeditor5-alignment@latest
-@ckeditor/ckeditor5-basic-styles@latest
-@ckeditor/ckeditor5-build-classic@latest
-@ckeditor/ckeditor5-ckfinder@latest
-@ckeditor/ckeditor5-cloud-services@latest
-@ckeditor/ckeditor5-code-block@latest
-@ckeditor/ckeditor5-easy-image@latest
-@ckeditor/ckeditor5-editor-classic@latest
-@ckeditor/ckeditor5-essentials@latest
-@ckeditor/ckeditor5-font@latest
-@ckeditor/ckeditor5-image@latest
-@ckeditor/ckeditor5-indent@latest
-@ckeditor/ckeditor5-link@latest
-@ckeditor/ckeditor5-list@latest
-@ckeditor/ckeditor5-list@latest
-@ckeditor/ckeditor5-paragraph@latest
-@ckeditor/ckeditor5-paste-from-office@latest
-@ckeditor/ckeditor5-remove-format@latest
-@ckeditor/ckeditor5-table@latest
-@ckeditor/ckeditor5-theme-lark@latest
-@ckeditor/ckeditor5-typing@latest
-@ckeditor/ckeditor5-upload@latest
-@ckeditor/ckeditor5-utils@latest
+@ckeditor/ckeditor5-alignment@27.1.0
+@ckeditor/ckeditor5-basic-styles@27.1.0
+@ckeditor/ckeditor5-build-classic@27.1.0
+@ckeditor/ckeditor5-ckfinder@27.1.0
+@ckeditor/ckeditor5-cloud-services@27.1.0
+@ckeditor/ckeditor5-code-block@27.1.0
+@ckeditor/ckeditor5-easy-image@27.1.0
+@ckeditor/ckeditor5-editor-classic@27.1.0
+@ckeditor/ckeditor5-essentials@27.1.0
+@ckeditor/ckeditor5-font@27.1.0
+@ckeditor/ckeditor5-image@27.1.0
+@ckeditor/ckeditor5-indent@27.1.0
+@ckeditor/ckeditor5-link@27.1.0
+@ckeditor/ckeditor5-list@27.1.0
+@ckeditor/ckeditor5-list@27.1.0
+@ckeditor/ckeditor5-paragraph@27.1.0
+@ckeditor/ckeditor5-paste-from-office@27.1.0
+@ckeditor/ckeditor5-remove-format@27.1.0
+@ckeditor/ckeditor5-table@27.1.0
+@ckeditor/ckeditor5-theme-lark@27.1.0
+@ckeditor/ckeditor5-typing@27.1.0
+@ckeditor/ckeditor5-upload@27.1.0
+@ckeditor/ckeditor5-utils@27.1.0
+@ckeditor/ckeditor5-media-embed@27.1.0
 
 ########################################
 # NO PROBLEM
