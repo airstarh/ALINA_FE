@@ -19,6 +19,17 @@
         :config="ckEditorRelated.editorConfig"
     ></ckeditor>
     <div></div>
+    <h3>HTML</h3>
+    <div></div>
+    <textarea v-model="ckEditorRelated.aModel" rows="5" style="width: 100%">
+    </textarea>
+    <div></div>
+    <h3>Result</h3>
+    <div></div>
+    <div v-html="ckEditorRelated.aModel"></div>
+    <div></div>
+    <div><br></div>
+    <div><br></div>
     <div>
       <router-link to="/about">About</router-link>
       |||
