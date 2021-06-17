@@ -177,7 +177,6 @@ import CurrentUser     from "@/services/CurrentUser";
 import Comment         from "@/components/elements/form/Comment";
 import Like            from "@/components/elements/form/Like";
 import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
-import CKEditor        from '@ckeditor/ckeditor5-vue2';
 import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import ConfigCkEditor  from "@/configs/ConfigCkEditor";
 import UtilsStr        from "@/Utils/UtilsStr";
@@ -228,7 +227,6 @@ export default {
   components: {
     Share,
     StandardButtons,
-    ckeditor: CKEditor.component,
     Comment,
     Like,
     AlinaDatePicker

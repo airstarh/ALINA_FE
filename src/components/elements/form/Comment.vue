@@ -140,7 +140,6 @@ import UtilsArray     from "@/Utils/UtilsArray";
 import Comment        from "@/components/elements/form/Comment";
 import Like           from "@/components/elements/form/Like";
 import Paginator      from "@/components/elements/form/Paginator";
-import CKEditor       from '@ckeditor/ckeditor5-vue2';
 import ClassicEditor  from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import ConfigCkEditor from "@/configs/ConfigCkEditor";
 import CurrentUser    from "@/services/CurrentUser";
@@ -153,7 +152,6 @@ export default {
     Paginator,
     Like,
     Comment,
-    ckeditor: CKEditor.component
   },
   data() {
     return {

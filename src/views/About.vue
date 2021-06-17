@@ -248,7 +248,6 @@ import iconTg                             from "@/assets/svg/socialnets/telgram.
 import iconIn                             from "@/assets/svg/socialnets/linkedin.svg";
 import iconSk                             from "@/assets/svg/socialnets/skype.svg";
 import iconVi                             from "@/assets/svg/socialnets/viber.svg";
-import CKEditor                           from '@ckeditor/ckeditor5-vue2';
 import ClassicEditor                      from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import ConfigCkEditor                     from "@/configs/ConfigCkEditor";
 import CurrentUser                        from "@/services/CurrentUser";
@@ -257,7 +256,6 @@ export default {
   name:       "About",
   components: {
     AlinaDatePicker,
-    ckeditor: CKEditor.component,
   },
   data() {
     const twoWeeksFromNow = new Date();

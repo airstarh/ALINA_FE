@@ -151,7 +151,6 @@ import UtilsData       from "@/Utils/UtilsData";
 import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
 import tale_feed       from "@/views/tale/feed";
 //#####
-import CKEditor        from '@ckeditor/ckeditor5-vue2';
 import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import ConfigCkEditor  from "@/configs/ConfigCkEditor";
 import UtilsObject     from "@/Utils/UtilsObject";
@@ -187,7 +186,6 @@ export default {
   },
   components: {
     StandardButtons,
-    ckeditor: CKEditor.component,
     AlinaDatePicker,
     tale_feed
   },
