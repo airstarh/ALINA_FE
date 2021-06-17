@@ -1,6 +1,6 @@
 <template>
   <div class="container p-0">
-    <div class="row no-gutters">
+    <div class="row no-gutters" id="alina-feed-search">
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
           <div class="input-group-append">
@@ -231,7 +231,9 @@ export default {
       .go();
     },
     pageChange(pageSize, pageCurrentNumber) {
-      window.scrollTo(0, 0);
+      //window.scrollTo(0, 0);
+      this.$router.push({hash:""});
+      this.$router.push({hash:"alina-feed-search"});
       this.feedPagination.pageSize          = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.ajaGetFeed();

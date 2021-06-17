@@ -1,5 +1,12 @@
 <template>
   <div class="container border border-primary">
+    <div>
+      <a href="#middle">a - Middle</a>
+      |||
+      <router-link :to="{hash:'middle'}">rl - Middle</router-link>
+      |||
+      <button @click="gotoMiddle">btn - Middle</button>
+    </div>
     <img alt="Vue logo" src="@/assets/logo.png" height="50"/>
     <div></div>
     <span class="btn-secondary text-left text-nowrap badge-pill p-2">
@@ -11,6 +18,8 @@
         {{ UtilsStr.fullName(CurrentUser.firstname, CurrentUser.lastname, CurrentUser.id) }}
       </router-link>
     </span>
+    <div></div>
+    <h1>Test CKeditor 5</h1>
     <div></div>
     <ckeditor
         class="notranslate"
@@ -28,9 +37,11 @@
     <div></div>
     <div v-html="ckEditorRelated.aModel"></div>
     <div></div>
-    <div><br></div>
-    <div><br></div>
+    <h1>Test Linking </h1>
+    <div></div>
     <div>
+      ROUTER-LINKS:::
+
       <router-link to="/about">About</router-link>
       |||
       <router-link to="/about/001">About 001</router-link>
@@ -41,6 +52,7 @@
     </div>
     <div></div>
     <div>
+      A-TAGS:::
       <a href="#/about">a# About</a>
       |||
       <a href="#/about/001">a# About 001</a>
@@ -49,6 +61,8 @@
       |||
       <a href="#/about/003">a# About 003</a>
     </div>
+    <div></div>
+    <h1>Test SVH Icons</h1>
     <div></div>
     <span style="color:#76ff03; background-color: #ffb74d">
             <svg width="55" class="icon--inline" color="currentColor">
@@ -81,6 +95,8 @@
                 <use :xlink:href="`${iconIn.url}`"></use>
             </svg>
         </span>
+    <div></div>
+    <h1 id="middle">#Middle</h1>
     <div></div>
     <div>
       <div><h1>{{ sProp }} : mapped from Store</h1></div>
@@ -133,6 +149,7 @@
       {{ dateExample }}
     </div>
     <br>
+    <div></div>
     <div>
       <!--##########-->
       <h1>Lodash</h1>
@@ -151,9 +168,8 @@
       <!-- The modal -->
       <b-modal id="my-modal">Hello From My Modal!</b-modal>
     </div>
-
+    <h1>Bootstrap</h1>
     <div>
-      <h1>Bootstrap</h1>
       <div>
         <p>
           <button type="button" class="btn btn-lg btn-default">Default</button>
@@ -365,6 +381,9 @@ export default {
     },
     onTestSpinner() {
       SpinnerObj.isOn = true;
+    },
+    gotoMiddle() {
+      this.$router.push({hash: "middle"})
     },
     log() {
       console.log("log ++++++++++");
