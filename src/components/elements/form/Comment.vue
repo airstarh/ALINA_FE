@@ -36,13 +36,10 @@
                   <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" :width="level==1?'70px':'40px'" class="rounded-circle">
                 </a>
               </div>
-
               <a :href="`/#/auth/profile/${tale.owner_id}`"
                  class="notranslate"
-
               >{{ tale.owner_firstname || 'Anonymous' }} {{ tale.owner_lastname }}
               </a>
-
               <br>
               {{ tale.publish_at | unix_to_date_time }}
             </div>
@@ -102,7 +99,7 @@
       ></Paginator>
       <div class="row no-gutters">
         <div class="col"
-             v-if="CU.isLoggedIn()">
+             v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`comment-collapse-${answer_to_tale_id}`)">
           <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
           <div class="row no-gutters">
             <div class="col"></div>
@@ -115,7 +112,7 @@
           </div>
           <div>&nbsp;</div>
         </div>
-        <div v-else class="col">
+        <div v-if="!CU.isLoggedIn()" class="col">
           <router-link to="/auth/login"
                        class="btn btn-sm btn-primary"
           >{{ $t("IMP_LOGIN") }}
@@ -214,9 +211,6 @@ export default {
   updated() {
     this.processQuery();
     this.pageRecalcIframeHeight();
-  },
-  destroyed() {
-    this.AlinaStorage.Comment.expanded = [];
   },
   methods: {
     ajaGetComments(more = false) {
@@ -318,7 +312,6 @@ export default {
     },
     ajaDeleteComment(comment, feedIndex) {
       if (!confirm("Are you sure?")) {return;}
-      const _t        = this;
       comment.form_id = 'actionDelete';
       AjaxAlina.newInst({
         method:     'POST',
@@ -338,10 +331,9 @@ export default {
       this.ajaGetComments();
     },
     processQuery() {
-      const pathCurrent = this.$router.currentRoute.path;
-      const q           = this.$route.query;
-      let idRoot        = null;
-      let idAnsw        = null;
+      const q    = this.$route.query;
+      let idRoot = null;
+      let idAnsw = null;
       if (q.expand) {
         idRoot = `comment-collapse-${this.root_tale_id}`;
         if (!this.AlinaStorage.Comment.expanded.includes(idRoot)) {
@@ -370,7 +362,7 @@ export default {
         this.feedPagination.pageCurrentNumber = 'last';
       }
       this.ajaGetComments();
-    }
+    },
   },
   // #####
   computed: {

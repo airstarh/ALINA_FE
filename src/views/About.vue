@@ -19,7 +19,7 @@
       </router-link>
     </span>
     <div></div>
-    <h1>Test CKeditor 5</h1>
+    <h1>CKeditor 5</h1>
     <div></div>
     <ckeditor
         class="notranslate"
@@ -37,7 +37,7 @@
     <div></div>
     <div v-html="ckEditorRelated.aModel"></div>
     <div></div>
-    <h1>Test Linking </h1>
+    <h1>Linking </h1>
     <div></div>
     <div>
       ROUTER-LINKS:::
@@ -62,7 +62,7 @@
       <a href="#/about/003">a# About 003</a>
     </div>
     <div></div>
-    <h1>Test SVH Icons</h1>
+    <h1>SVH Icons</h1>
     <div></div>
     <span style="color:#76ff03; background-color: #ffb74d">
             <svg width="55" class="icon--inline" color="currentColor">
@@ -129,16 +129,20 @@
       <br>
       <br>
     </div>
+    <div></div>
+    <h1>AlinaDatePicker</h1>
+    <div></div>
     <div>
-      <h1>AlinaDatePicker</h1>
       <AlinaDatePicker
           v-model="uts"
           class="notranslate"
       ></AlinaDatePicker>
       <div>{{ uts }} ||| {{ uts | unix_to_date_time }}</div>
     </div>
+    <div></div>
+    <h1>Date FNS</h1>
+    <div></div>
     <div>
-      <h1>Date FNS</h1>
       <!--<div>Now: {{ now }}</div>-->
       <div>Now: {{ new Date() | date }}</div>
       <div>Now: {{ $date(new Date()) }}</div>
@@ -150,9 +154,10 @@
     </div>
     <br>
     <div></div>
+    <h1>Lodash</h1>
+    <div></div>
     <div>
       <!--##########-->
-      <h1>Lodash</h1>
       <div>{{ lodashExample | json_str }}</div>
       <div>{{ lodashExample2 | json_str }}</div>
       <!--##########-->
@@ -168,7 +173,9 @@
       <!-- The modal -->
       <b-modal id="my-modal">Hello From My Modal!</b-modal>
     </div>
+    <div></div>
     <h1>Bootstrap</h1>
+    <div></div>
     <div>
       <div>
         <p>
@@ -200,7 +207,9 @@
         </p>
       </div>
     </div>
-
+    <div></div>
+    <h1>XXX</h1>
+    <div></div>
     <b-container class="bv-example-row">
       <b-row class="justify-content-md-center">
         <b-col cols="12" md="5">
@@ -256,6 +265,9 @@
         <b-col col lg="2">3 of 3</b-col>
       </b-row>
     </b-container>
+    <div></div>
+    <h1>The emd</h1>
+    <div></div>
   </div>
 </template>
 

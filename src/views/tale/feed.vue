@@ -204,7 +204,7 @@ export default {
     this.helperDefineQueryDataTxt();
     this.ajaGetFeed();
   },
-  methods:  {
+  methods: {
     queryFunction(q = {}) {
       const res   = Obj.eraseEmpty({
         ...{},
@@ -232,8 +232,8 @@ export default {
     },
     pageChange(pageSize, pageCurrentNumber) {
       //window.scrollTo(0, 0);
-      this.$router.push({hash:""});
-      this.$router.push({hash:"alina-feed-search"});
+      this.$router.push({hash: ""});
+      this.$router.push({hash: "alina-feed-search"});
       this.feedPagination.pageSize          = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.ajaGetFeed();
@@ -253,13 +253,17 @@ export default {
       }
     }
   },
-  watch:    {
+  watch:   {
     $route(to, from) {
+      if (
+          to.hash === "#alina-feed-search"
+      ) {
+        return this;
+      }
       this.helperDefineQueryDataTxt();
       this.ajaGetFeed();
     }
   },
-  computed: {}
 };
 </script>
 <style scoped lang="scss">
