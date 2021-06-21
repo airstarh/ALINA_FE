@@ -100,20 +100,15 @@ export default {
 
 <style scoped lang="scss">
 .alina-widget-clock {
-  background: #0f3854;
-  background: radial-gradient(ellipse at center, #0a2e38 0%, #000000 70%);
-  background-size: 100%;
+  box-shadow: 0 0 100px 10px #000;
+  background-color: #000;
 }
 
 .clock {
   font-family: 'Share Tech Mono', monospace;
   color: #fff;
   text-align: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
+  text-shadow: #0AAFE6 0 0 5px;
 }
 
 .time-wrapper {
@@ -126,6 +121,7 @@ export default {
   font-size: 10vw;
   left: 0;
   top: 0;
+  width: 100%;
   letter-spacing: 0.05em;
 }
 
