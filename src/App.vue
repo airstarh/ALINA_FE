@@ -59,7 +59,7 @@ export default {
         if (event.key == 'f') {
           _this.toggleFullScreen();
         }
-        _this.log(event);
+        //_this.log(event);
       }
     });
   },

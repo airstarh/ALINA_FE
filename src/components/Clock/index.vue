@@ -5,7 +5,7 @@
 
         <!--  -->
         <div class="alina-widget-clock">
-          <div class="clock">
+          <div class="clock" @click="PageSettings.showMainMenu = !PageSettings.showMainMenu">
             <div class="m-0 p-0 date">
               {{ date }}
             </div>
@@ -13,7 +13,7 @@
               {{ UtilsDate.doExtractDayOfWeekName(dateObj) }}
             </div>
             <div class="m-0 p-0 time">{{ time }}</div>
-            <div class="text {">
+            <div class="text">
               <div class="row">
                 <div class="col text-right">
                   Quarter
@@ -48,8 +48,9 @@
   </div>
 </template>
 <script>
-import UtilsStr  from "@/Utils/UtilsStr";
-import UtilsDate from "@/Utils/UtilsDate";
+import UtilsStr     from "@/Utils/UtilsStr";
+import UtilsDate    from "@/Utils/UtilsDate";
+import PageSettings from "@/services/PageSettings";
 export default {
   name: "Clock",
   data() {
@@ -61,7 +62,8 @@ export default {
       decade:    '',
       dayOfYear: '',
       week:      ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
-      UtilsDate
+      UtilsDate,
+      PageSettings
     }
   },
   created() {
