@@ -5,12 +5,14 @@
          }"
        class="bg-dark text-white"
   >
-    <MenuHorizontalMain v-if="!pageIsInIframe"></MenuHorizontalMain>
+    <MenuHorizontalMain v-if="!fullScreen"></MenuHorizontalMain>
     <router-view></router-view>
     <Messages></Messages>
     <Spinner></Spinner>
-    <div class="mt-5 mb-5">&nbsp;</div>
-    <div></div>
+    <div v-if="!fullScreen">
+      <div class="mt-5 mb-5">&nbsp;</div>
+      <!--Footer-->
+    </div>
   </div>
 </template>
 <script>
@@ -19,7 +21,7 @@ import Messages           from "@/components/global/Messages";
 import Spinner            from "@/components/global/Spinner";
 import AlinaStorage       from "@/services/AlinaStorage";
 import UtilsArray         from "@/Utils/UtilsArray";
-import SpinnerObj         from "@/services/SpinnerObj";
+import PageSettings       from "@/services/PageSettings";
 import ConfigApi          from "@/configs/ConfigApi";
 export default {
   name:       "App",
@@ -30,6 +32,7 @@ export default {
   },
   data() {
     return {
+      PageSettings,
       AlinaStorage,
       ConfigApi
     }
@@ -45,10 +48,34 @@ export default {
       }
     });
   },
+  created() {
+    let _this = this;
+    document.addEventListener('keyup', function (event) {
+      if (
+          event.ctrlKey
+          &&
+          event.altKey
+      ) {
+        if (event.key == 'f') {
+          _this.toggleFullScreen();
+        }
+        _this.log(event);
+      }
+    });
+  },
   computed: {
     pageIsInIframe() {
       return this.ConfigApi.pageIsInIframe();
-    }
+    },
+    fullScreen() {
+      if (this.pageIsInIframe) {
+        return true;
+      }
+      if (PageSettings.showMainMenu === false) {
+        return true;
+      }
+      return false;
+    },
   },
   watch:    {
     $route(to, from) {
@@ -58,6 +85,16 @@ export default {
       // console.log("to");
       // console.log(to);
       // console.log("<<<  ROUTER  ____________________________");
+    }
+  },
+  methods:  {
+    toggleFullScreen() {
+      PageSettings.showMainMenu = !PageSettings.showMainMenu;
+    },
+    log(){
+      console.log(">>>>>>>>>>>>>>>>>>>>");
+      console.log("log arguments");
+      console.log(arguments);
     }
   }
 };
