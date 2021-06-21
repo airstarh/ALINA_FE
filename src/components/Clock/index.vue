@@ -12,7 +12,17 @@
             <div class="text">
               {{ UtilsDate.doExtractDayOfWeekName(dateObj) }}
             </div>
-            <div class="m-0 p-0 time">{{ time }}</div>
+            <div class="time-wrapper">
+              <div>&nbsp;</div>
+              <transition name="slide-fade">
+                <div
+                    class="m-0 p-0 time"
+                    :key="time"
+                >
+                  {{ time }}
+                </div>
+              </transition>
+            </div>
             <div class="text">
               <div class="row">
                 <div class="col text-right">
@@ -88,7 +98,7 @@ export default {
 </script>
 
 
-<style>
+<style scoped lang="scss">
 .alina-widget-clock {
   background: #0f3854;
   background: radial-gradient(ellipse at center, #0a2e38 0%, #000000 70%);
@@ -106,11 +116,17 @@ export default {
   text-shadow: 0 0 20px rgba(10, 175, 230, 1), 0 0 20px rgba(10, 175, 230, 0);
 }
 
-.time {
-  letter-spacing: 0.05em;
+.time-wrapper {
+  position: relative;
   font-size: 10vw;
-  padding: 0;
-  margin: 0;
+}
+
+.time {
+  position: absolute;
+  font-size: 10vw;
+  left: 0;
+  top: 0;
+  letter-spacing: 0.05em;
 }
 
 .date {
@@ -123,5 +139,25 @@ export default {
   font-size: 2.5vw;
   padding: 20px 0 0;
 }
+
+/* ################################################## */
+/* region Animation*/
+
+.slide-fade-enter-active {
+  transition: all .8s ease;
+}
+
+.slide-fade-leave-active {
+  transition: all .8s ease;
+}
+
+.slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active for <2.1.8 */
+{
+  opacity: 0;
+}
+
+/* region Animation*/
+/* ################################################## */
 
 </style>
