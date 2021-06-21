@@ -23,6 +23,21 @@ export default class UtilsDate {
         return v;
     }
 
+    static doExtractWeekNumber(dateObj) {
+        return UtilsDate.dateObjFormat(dateObj, 'w');
+    }
+
+    static doExtractQuarterNumber(dateObj) {
+        return UtilsDate.dateObjFormat(dateObj, 'Q');
+    }
+
+    static doExtractDayOfWeekName(dateObj) {
+        return UtilsDate.dateObjFormat(dateObj, 'EEEE');
+    }
+
+    static doExtractDayOfYearNumber(dateObj) {
+        return UtilsDate.dateObjFormat(dateObj, 'DDD');
+    }
     //endregion Date Obj
     //##################################################
     //region Unix Time Stamp
@@ -43,7 +58,6 @@ export default class UtilsDate {
     static fromUnixToDateTime(tmstmp, format = UtilsDate.FORMAT_DB_DATE_TIME) {
         return UtilsDate.UnixSecsToFormat(tmstmp, format);
     }
-
     //endregion Unix Time Stamp
     //##################################################
 }

@@ -7,7 +7,10 @@
 <script>
 export default {
   name: "Generic",
-  props: {}
+  data() {
+    return {}
+  },
+  methods: {}
 };
 </script>
 

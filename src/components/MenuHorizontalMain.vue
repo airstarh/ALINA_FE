@@ -46,6 +46,7 @@
             <b-dropdown-item :href="`${ConfigApi.url_base}/tools/JsonSearchReplaceBeautify`">JSON Search-Replace-Beautify online</b-dropdown-item>
             <b-dropdown-item to="/UrlParser">URL Parser + URL un-Parser (2 in 1)</b-dropdown-item>
             <b-dropdown-item to="/CliParser">CLI Parser</b-dropdown-item>
+            <b-dropdown-item to="/Informer">Informer</b-dropdown-item>
           </b-nav-item-dropdown>
 
           <b-nav-item-dropdown :text="$t('TXT_TOOLS_ADMIN')" left v-if="CU.isAdmin()">
