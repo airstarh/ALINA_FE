@@ -1,8 +1,6 @@
 <template>
-  <div class="container">
-    <div class="row align-items-center vh-almost-100">
-      <clock></clock>
-    </div>
+  <div class="d-flex align-items-center justify-content-center" style="height: 100vh">
+    <clock></clock>
   </div>
 </template>
 <script>

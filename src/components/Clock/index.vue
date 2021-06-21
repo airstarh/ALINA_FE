@@ -1,57 +1,47 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col">
-
-        <!--  -->
-        <div class="alina-widget-clock">
-          <div class="clock" @click="PageSettings.showMainMenu = !PageSettings.showMainMenu">
-            <div class="m-0 p-0 date">
-              {{ date }}
-            </div>
-            <div class="text">
-              {{ UtilsDate.doExtractDayOfWeekName(dateObj) }}
-            </div>
-            <div class="time-wrapper">
-              <div>&nbsp;</div>
-              <transition name="slide-fade">
-                <div
-                    class="m-0 p-0 time"
-                    :key="time"
-                >
-                  {{ time }}
-                </div>
-              </transition>
-            </div>
-            <div class="text">
-              <div class="row">
-                <div class="col text-right">
-                  Quarter
-                </div>
-                <div class="col text-left">
-                  {{ UtilsDate.doExtractQuarterNumber(dateObj) }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col text-right">
-                  Week
-                </div>
-                <div class="col text-left">
-                  {{ UtilsDate.doExtractWeekNumber(dateObj) }}
-                </div>
-              </div>
-              <div class="row">
-                <div class="col text-right">
-                  Day of year
-                </div>
-                <div class="col text-left">
-                  {{ UtilsDate.doExtractDayOfYearNumber(dateObj) }}
-                </div>
-              </div>
-            </div>
+  <div class="alina-widget-clock">
+    <div class="clock" @click="PageSettings.showMainMenu = !PageSettings.showMainMenu">
+      <div class="m-0 p-0 date">
+        {{ date }}
+      </div>
+      <div class="text">
+        {{ UtilsDate.doExtractDayOfWeekName(dateObj) }}
+      </div>
+      <div class="time-wrapper">
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+        <transition name="slide-fade">
+          <div
+              class="m-0 p-0 time"
+              :key="time"
+          >
+            {{ time }}
           </div>
-          <!--  -->
-
+        </transition>
+      </div>
+      <div class="text">
+        <div class="row">
+          <div class="col text-right">
+            Quarter
+          </div>
+          <div class="col text-left">
+            {{ UtilsDate.doExtractQuarterNumber(dateObj) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-right">
+            Week
+          </div>
+          <div class="col text-left">
+            {{ UtilsDate.doExtractWeekNumber(dateObj) }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-right">
+            Day of year
+          </div>
+          <div class="col text-left">
+            {{ UtilsDate.doExtractDayOfYearNumber(dateObj) }}
+          </div>
         </div>
       </div>
     </div>
@@ -100,7 +90,7 @@ export default {
 
 <style scoped lang="scss">
 .alina-widget-clock {
-  box-shadow: 0 0 100px 10px #000;
+  box-shadow: 0 0 50px 50px #000;
   background-color: #000;
 }
 
@@ -108,7 +98,7 @@ export default {
   font-family: 'Share Tech Mono', monospace;
   color: #fff;
   text-align: center;
-  text-shadow: #0AAFE6 0 0 5px;
+  text-shadow: #0AAFE6 0 0 25px;
 }
 
 .time-wrapper {
@@ -133,7 +123,6 @@ export default {
 .text {
   letter-spacing: 0.1em;
   font-size: 2.5vw;
-  padding: 20px 0 0;
 }
 
 /* ################################################## */
