@@ -22,7 +22,10 @@
         <!--endregion Buttons-->
         <!--region User Info-->
         <div class="row no-gutters mt-4 " v-if="!pageIsInIframe">
-          <div class="col-auto">
+          <div
+              v-if="ConfigApi.modeSocialNetwork"
+              class="col-auto"
+          >
                         <span class="btn-secondary text-left text-nowrap badge-pill p-2">
                             <router-link :to="'/auth/profile/'+tale.owner_id" class="fixed-height-150px">
                                 <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100px" class="rounded-circle">
@@ -148,6 +151,7 @@
           <div class="col-auto">
             <div class="text-right">
               <Like
+                  v-if="ConfigApi.modeSocialNetwork"
                   :pAmountLikes="tale.count_like"
                   :pCurrentUserLiked="tale.current_user_liked"
                   ref_table="tale"
@@ -157,7 +161,7 @@
           </div>
         </div>
         <!--endregion Share & Likes-->
-        <Comment v-if="tale.level < 2"
+        <Comment v-if="ConfigApi.modeSocialNetwork && tale.level < 2"
                  :level="tale.level+1"
                  type="COMMENT"
                  :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"

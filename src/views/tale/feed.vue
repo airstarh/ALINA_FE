@@ -75,7 +75,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="row no-gutters align-items-center">
+                <div
+                    v-if="ConfigApi.modeSocialNetwork"
+                    class="row no-gutters align-items-center"
+                >
                   <div class="col " v-if="doShowAuthorInfo">
                     <div style="width: 100px; max-height: 150px" class="m-auto">
                       <router-link :to="'/auth/profile/'+tale.owner_id" class="center">
@@ -109,6 +112,7 @@
                   <div class="col-auto">
                     <div class="text-right">
                       <Like
+                          v-if="ConfigApi.modeSocialNetwork"
                           :pAmountLikes="tale.count_like"
                           :pCurrentUserLiked="tale.current_user_liked"
                           ref_table="tale"
@@ -120,6 +124,7 @@
                 <div class="row no-gutters">
                   <div class="col">
                     <Comment
+                        v-if="ConfigApi.modeSocialNetwork"
                         :level="1"
                         type="COMMENT"
                         :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"

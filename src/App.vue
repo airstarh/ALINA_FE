@@ -10,8 +10,15 @@
     <Messages></Messages>
     <Spinner></Spinner>
     <div v-if="!fullScreen">
-      <div class="mt-5 mb-5">&nbsp;</div>
       <!--Footer-->
+      <div class="mt-5 alina-form p-5">
+        Мемориальный комплекс "Осетровский плацдарм"
+        <a href="https://oixm.ru/" target="_blank">
+          Острогожского историко-художественного музея им. И.Н. Крамского
+        </a>
+        <br>
+        Воронежская область, Верхнемамонский район, 720 км федеральной автомобильной дороги М4 «Дон».
+      </div>
     </div>
   </div>
 </template>
