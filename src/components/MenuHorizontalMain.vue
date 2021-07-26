@@ -124,6 +124,6 @@ export default {
 #alina-main-menu .alina-navigator a {
   color: #000;
   font-weight: bold;
-  font-size: 1.5vw
+  font-size: 1.7em;
 }
 </style>
