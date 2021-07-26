@@ -68,7 +68,7 @@
               <span class="mr-1 ml-1">{{ CU.attributes.firstname || CU.attributes.mail || 'V' }}</span>
             </template>
             <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">{{ $t("TXT_LOGIN") }}</b-dropdown-item>
-            <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">{{ $t("TXT_REGISTER") }}</b-dropdown-item>
+            <b-dropdown-item to="/auth/register" v-if="ConfigApi.modeSocialNetwork && !CU.isLoggedIn()">{{ $t("TXT_REGISTER") }}</b-dropdown-item>
             <b-dropdown-item to="/auth/reset_password_request" v-if="!CU.isLoggedIn()">{{ $t("TXT_RESET_PASS_REQUEST") }}</b-dropdown-item>
             <b-dropdown-item to="/auth/reset_password_with_code" v-if="!CU.isLoggedIn()">{{ $t("TXT_RESET_PASS_CODE") }}</b-dropdown-item>
             <!---->
@@ -124,6 +124,6 @@ export default {
 #alina-main-menu .alina-navigator a {
   color: #000;
   font-weight: bold;
-  font-size: 1.7em;
+  font-size: 1.5em;
 }
 </style>
