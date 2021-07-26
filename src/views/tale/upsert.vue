@@ -221,7 +221,7 @@ export default {
       },
       storage:   {
         keyTaleLastTouched: 'keyTaleLastTouched',
-      }
+      },
     }
   },
   components: {
@@ -232,66 +232,49 @@ export default {
     AlinaDatePicker
   },
   created() {
-    const vm = this;
-    const id = vm.getRouteParam('id');
-    vm.ajaxGetTale(id);
+    const id = this.routerTaleId;
+    this.ajaxGetTale(id);
   },
-  updated() {
-    const vm = this;
-    const id = vm.getRouteParam('id');
-    vm.ajaxGetTale(id);
-  },
-  //##################################################
-  //region Router Hooks
-  // beforeRouteEnter(to, from, next) {
-  //     next((vm) => {
-  //         const id = vm.getRouteParam('id', to);
-  //         console.log(">>>>>>>>>>>>>>>>>>>>");
-  //         console.log("beforeRouteEnter");
-  //         console.log(id);
-  //         vm.ajaxGetTale(id);
-  //     })
-  // },
-  // beforeRouteUpdate(to, from, next) {
-  //   const vm = this;
-  //   const id = vm.getRouteParam('id', to);
-  //   console.log(">>>>>>>>>>>>>>>>>>>>");
-  //   console.log("beforeRouteUpdate");
-  //   console.log(id);
-  //   vm.ajaxGetTale(id);
-  //   next();
-  // },
-  //endregion Router Hooks
-  //##################################################
   computed: {
     pageIsInIframe() {
       return this.ConfigApi.pageIsInIframe();
+    },
+    routerTaleId() {
+      let res     = null;
+      const route = this.$route;
+      if (route && route.params && route.params.id) {
+        res = route.params.id;
+      }
+      return res;
+    },
+    currentTaleId() {
+      let res    = null;
+      const tale = this.tale;
+      if (tale && tale.hasOwnProperty('id')) {
+        res = tale.id;
+      }
+      return res;
     }
   },
   watch:    {
-    "tale.id": function (valNew, valOld) {
+    "tale.id":    function (valNew, valOld) {
       if (this.tale.is_submitted === 1) {
         this.options.modeEdit = false;
       }
     },
-    tale:      {
+    tale:         {
       handler(newVal, oldVal) {
         if (this.options.modeEdit) {
           this.taleLastTouchedRemember(newVal);
         }
       },
       deep: true
+    },
+    routerTaleId: function (valNew) {
+      this.ajaxGetTale(valNew);
     }
   },
   methods:  {
-    getRouteParam(paramName, to) {
-      if (UtilsData.empty(to)) {to = this.$route;}
-      let res = null;
-      if (to && to.params && to.params[paramName]) {
-        res = to.params[paramName];
-      }
-      return res;
-    },
     // ##################################################
     // region Functional Actions
     taleLastTouchedRemember(tale) {
@@ -366,17 +349,23 @@ export default {
         ,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
+            if (!UtilsData.empty(_t.routerTaleId)) {
+              if (aja.respBody.data.id != _t.routerTaleId) {
+                _t.$router.replace({path: `/tale/upsert/${aja.respBody.data.id}`});
+                return null;
+              }
+            }
             Object.assign(_t.tale, aja.respBody.data)
             if (_t.tale.is_submitted == 0) {
-              _t.options.modeEdit = true;
-              this.taleLastTouchedRecall();
+              if (this.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
+                _t.options.modeEdit = true;
+                this.taleLastTouchedRecall();
+              }
             }
             //###############
-            //region Fix Double get
             if (UtilsData.empty(id) && !UtilsData.empty(_t.tale.id)) {
               _t.$router.replace({path: `/tale/upsert/${_t.tale.id}`});
             }
-            //endregion Fix Double get
             //###############
           }
         }
