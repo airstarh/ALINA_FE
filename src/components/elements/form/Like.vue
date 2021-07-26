@@ -33,9 +33,9 @@
                   </router-link>
                 </div>
                 <div class="col pl-2">
-                    <a :href="`/#/auth/profile/${item.user_id}`" class="btn btn-primary">
-                    {{ item.from_firstname }} {{ item.from_lastname }}
-                    </a>
+                    <router-link :to="`/auth/profile/${item.user_id}`" class="btn btn-primary">
+                      {{ item.from_firstname }} {{ item.from_lastname }}
+                    </router-link>
                 </div>
             </div>
             <Paginator
