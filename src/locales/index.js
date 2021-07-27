@@ -131,7 +131,11 @@ const Translations = {
         "Upload failed":                                                  "НЕ УДАЛОСЬ! Загрузка обломалась.",
         "File upload limit exceeded. Already uploaded %s files":          "Превышен лимит на файлы. Уже загружено: %s файлов",
         "Forbidden":                                                      "НИЗЗЯ",
-        "%s is not uploaded":                                             "%s - недопустимый формат файла",
+        /***/
+        "Hide header":     "Скрыть заголовок",
+        "Comments denied": "Отключить комментарии",
+        "Draft":           "Черновик",
+        "Sticked":         "Закрепить",
     },
 };
 export default Translations;

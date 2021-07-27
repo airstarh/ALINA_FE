@@ -61,13 +61,36 @@
             <div class="mb-3">
               <input type="text" v-model="tale.iframe" placeholder="iframe" class="notranslate form-control">
             </div>
-            <div class="mb-3">
-              <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}</ui-checkbox>
+            <div class="row no-gutters">
+              <div class="col">
+                <div class="mb-3">
+                  <!-- is_header_hidden -->
+                  <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0" :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
+                  <!-- is_comment_denied -->
+                  <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0" :checked="tale.is_comment_denied==1">{{ $t("Comments denied") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
+                  <!-- is_draft -->
+                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">{{ $t("Draft") }}</ui-checkbox>
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-3">
+                  <!-- is_sticked -->
+                  <ui-checkbox v-model="tale.is_sticked" :trueValue="1" :false-value="0" :checked="tale.is_sticked==1">{{ $t("Sticked") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
+                  <!-- is_adult_denied -->
+                  <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
+                  <!-- is_adv -->
+                  <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
+                </div>
+              </div>
             </div>
-            <div class="mb-3">
-              <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
-            </div>
-
             <!--##################################################-->
             <!--region Buttons-->
             <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
@@ -218,6 +241,10 @@ export default {
           url:   null,
           alias: null,
         },
+        is_draft:           0,
+        is_comment_denied:  0,
+        is_sticked:         0,
+        is_header_hidden:   0,
       },
       storage:   {
         keyTaleLastTouched: 'keyTaleLastTouched',
