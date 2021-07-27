@@ -47,7 +47,7 @@
                 </div>
               </div>
               <div v-else :key="`${tale.id}_2`">
-                <div class="row no-gutters">
+                <div class="row no-gutters" v-if="tale.is_header_hidden != 1">
                   <div class="col" style="position: relative">
                     <h2 :lang="tale.lang"
                         class="notranslate btn btn-block text-left display-3 m-0"
@@ -57,7 +57,7 @@
                                             }"
                     >
                       <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
-                         title="View SEO-friendly tale page"
+                         :title="$t('View SEO-friendly page')"
                          class="text-light"
                          style="display:inline-block; width: 100%"
                       >
@@ -66,7 +66,7 @@
                     </h2>
                     <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5em; z-index: 10">
                       <router-link
-                          title="Edit"
+                          :title="$t('View on separate page')"
                           :to="'/tale/upsert/'+tale.id"
                           class="btn btn-sm btn-light text-left mb-1"
                       >
@@ -75,10 +75,7 @@
                     </div>
                   </div>
                 </div>
-                <div
-                    v-if="ConfigApi.modeSocialNetwork"
-                    class="row no-gutters align-items-center"
-                >
+                <div class="row no-gutters align-items-center" v-if="tale.is_avatar_hidden != 1">
                   <div class="col " v-if="doShowAuthorInfo">
                     <div style="width: 100px; max-height: 150px" class="m-auto">
                       <router-link :to="'/auth/profile/'+tale.owner_id" class="center">
@@ -90,6 +87,20 @@
                       <router-link v-if="doShowAuthorInfo" :to="'/auth/profile/'+tale.owner_id" class="btn btn-sm btn-secondary text-break mb-1">{{ UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id) }}</router-link>
                     </div>
                   </div>
+                </div>
+                <div v-if="tale.is_header_hidden == 1">
+                  <router-link
+                      :title="$t('View on separate page')"
+                      :to="'/tale/upsert/'+tale.id"
+                      class=""
+                  >
+                    .
+                  </router-link>
+                  <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                     :title="$t('View SEO-friendly page')"
+                  >
+                    .
+                  </a>
                 </div>
                 <div class="mt-3"></div>
                 <div class="row no-gutters">
@@ -104,15 +115,14 @@
                 </div>
                 <div class="mt-3"></div>
                 <div class="row no-gutters mb-2">
-                  <div class="col">
+                  <div class="col" v-if="tale.is_social_sharing_hidden != 1">
                     <div class="text-left m-buttons-1">
                       <Share :tale="tale"></Share>
                     </div>
                   </div>
-                  <div class="col-auto">
+                  <div class="col-auto" v-if="tale.is_comment_denied != 1">
                     <div class="text-right">
                       <Like
-                          v-if="ConfigApi.modeSocialNetwork"
                           :pAmountLikes="tale.count_like"
                           :pCurrentUserLiked="tale.current_user_liked"
                           ref_table="tale"
@@ -121,10 +131,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="row no-gutters">
+                <div class="row no-gutters" v-if="tale.is_comment_denied != 1">
                   <div class="col">
                     <Comment
-                        v-if="ConfigApi.modeSocialNetwork"
                         :level="1"
                         type="COMMENT"
                         :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"

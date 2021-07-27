@@ -64,7 +64,7 @@ const Translations = {
         TXT_LOGOUT:                                                       "Выход",
         TXT_CLEAR:                                                        "Очистить",
         TXT_SEARCH:                                                       "Искать",
-        TXT_SUBMIT:                                                       "Сохранить",
+        TXT_SUBMIT:                                                       "СимСалабим",
         TXT_RESET:                                                        "Сброс",
         TXT_CANCEL:                                                       "Отмена",
         TXT_DELETE:                                                       "Удалить",
@@ -131,7 +131,16 @@ const Translations = {
         "Upload failed":                                                  "НЕ УДАЛОСЬ! Загрузка обломалась.",
         "File upload limit exceeded. Already uploaded %s files":          "Превышен лимит на файлы. Уже загружено: %s файлов",
         "Forbidden":                                                      "НИЗЗЯ",
-        "%s is not uploaded":                                             "%s - недопустимый формат файла",
+        /***/
+        "Hide header":            "Скрыть заголовок",
+        "Comments denied":        "Отключить комментарии",
+        "Draft":                  "Черновик",
+        "Sticked":                "Закрепить",
+        "Direct link":            "Прямая ссылка",
+        "View SEO-friendly page": "Посмотреть SEO оптимизированную страницу",
+        "View on separate page":  "Посмотреть на отдельной странице",
+        "Hide avatar":            "Скрыть аватар",
+        "Hide social sharing":    "Скрыть репостинг",
     },
 };
 export default Translations;
