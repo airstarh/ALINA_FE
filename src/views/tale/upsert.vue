@@ -68,12 +68,16 @@
                   <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0" :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}</ui-checkbox>
                 </div>
                 <div class="mb-3">
-                  <!-- is_comment_denied -->
-                  <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0" :checked="tale.is_comment_denied==1">{{ $t("Comments denied") }}</ui-checkbox>
+                  <!-- is_avatar_hidden -->
+                  <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0" :checked="tale.is_avatar_hidden==1">{{ $t("Hide avatar") }}</ui-checkbox>
                 </div>
                 <div class="mb-3">
-                  <!-- is_draft -->
-                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">{{ $t("Draft") }}</ui-checkbox>
+                  <!-- is_social_sharing_hidden -->
+                  <ui-checkbox v-model="tale.is_social_sharing_hidden" :trueValue="1" :false-value="0" :checked="tale.is_social_sharing_hidden==1">{{ $t("Hide social sharing") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
+                  <!-- is_comment_denied -->
+                  <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0" :checked="tale.is_comment_denied==1">{{ $t("Comments denied") }}</ui-checkbox>
                 </div>
               </div>
               <div class="col">
@@ -88,6 +92,10 @@
                 <div class="mb-3">
                   <!-- is_adv -->
                   <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
+                  <!-- is_draft -->
+                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">{{ $t("Draft") }}</ui-checkbox>
                 </div>
               </div>
             </div>
@@ -126,7 +134,7 @@
           <div v-else>
             <div class="mt-3"></div>
             <div class="row no-gutters mt-2 mb-2">
-              <div class="col" style="position: relative">
+              <div class="col" style="position: relative" v-if="tale.is_header_hidden != 1">
                 <h1 class="notranslate m-0" :lang="tale.lang">
                   <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
                      class="btn btn-block text-left"
@@ -221,30 +229,32 @@ export default {
         modeEdit:     false
       },
       tale:      {
-        id:                 null,
-        header:             '',
-        body:               '',
-        publish_at:         '',
-        is_submitted:       0,
-        type:               'POST',
-        form_id:            'actionUpsert',
-        is_adult_denied:    0,
-        is_adv:             0,
-        owner_emblem:       '',
-        owner_firstname:    '',
-        owner_lastname:     '',
-        owner_id:           '',
-        count_like:         '',
-        current_user_liked: '',
-        router_alias:       {
+        id:                       null,
+        header:                   '',
+        body:                     '',
+        publish_at:               '',
+        is_submitted:             0,
+        type:                     'POST',
+        form_id:                  'actionUpsert',
+        is_adult_denied:          0,
+        is_adv:                   0,
+        owner_emblem:             '',
+        owner_firstname:          '',
+        owner_lastname:           '',
+        owner_id:                 '',
+        count_like:               '',
+        current_user_liked:       '',
+        router_alias:             {
           id:    null,
           url:   null,
           alias: null,
         },
-        is_draft:           0,
-        is_comment_denied:  0,
-        is_sticked:         0,
-        is_header_hidden:   0,
+        is_draft:                 0,
+        is_comment_denied:        0,
+        is_sticked:               0,
+        is_header_hidden:         0,
+        is_avatar_hidden:         0,
+        is_social_sharing_hidden: 0,
       },
       storage:   {
         keyTaleLastTouched: 'keyTaleLastTouched',

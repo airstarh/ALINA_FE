@@ -132,10 +132,15 @@ const Translations = {
         "File upload limit exceeded. Already uploaded %s files":          "Превышен лимит на файлы. Уже загружено: %s файлов",
         "Forbidden":                                                      "НИЗЗЯ",
         /***/
-        "Hide header":     "Скрыть заголовок",
-        "Comments denied": "Отключить комментарии",
-        "Draft":           "Черновик",
-        "Sticked":         "Закрепить",
+        "Hide header":            "Скрыть заголовок",
+        "Comments denied":        "Отключить комментарии",
+        "Draft":                  "Черновик",
+        "Sticked":                "Закрепить",
+        "Direct link":            "Прямая ссылка",
+        "View SEO-friendly page": "Посмотреть SEO оптимизированную страницу",
+        "View on separate page":  "Посмотреть на отдельной странице",
+        "Hide avatar":            "Скрыть аватар",
+        "Hide social sharing":    "Скрыть репостинг",
     },
 };
 export default Translations;
