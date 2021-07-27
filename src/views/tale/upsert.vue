@@ -21,7 +21,7 @@
         </div>
         <!--endregion Buttons-->
         <!--region User Info-->
-        <div class="row no-gutters mt-4 " v-if="!pageIsInIframe">
+        <div class="row no-gutters mt-4 " v-if="!pageIsInIframe && tale.is_avatar_hidden != 1">
           <div class="col-auto">
                         <span class="btn-secondary text-left text-nowrap badge-pill p-2">
                             <router-link :to="'/auth/profile/'+tale.owner_id" class="fixed-height-150px">
@@ -153,8 +153,7 @@
                 </div>
               </div>
             </div>
-            <div class="mt-5">&nbsp;</div>
-            <div class="row no-gutters">
+            <div class="row no-gutters mt-5">
               <div class="col">
                 <div class="ck-content" :lang="tale.lang">
                   <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
@@ -170,7 +169,7 @@
         </div>
         <!--endregion Tale-->
         <!--region Share & Likes-->
-        <div class="row no-gutters mb-2">
+        <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
             <div class="text-left m-buttons-1">
               <Share :tale="tale"></Share>
@@ -179,6 +178,7 @@
           <div class="col-auto">
             <div class="text-right">
               <Like
+                  v-if="tale.is_comment_denied != 1"
                   :pAmountLikes="tale.count_like"
                   :pCurrentUserLiked="tale.current_user_liked"
                   ref_table="tale"
@@ -188,13 +188,15 @@
           </div>
         </div>
         <!--endregion Share & Likes-->
-        <Comment v-if="tale.level < 2"
-                 :level="tale.level+1"
-                 type="COMMENT"
-                 :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
-                 :answer_to_tale_id="tale.id"
-                 :count_by_answer_to_tale_id="tale.count_root_tale_id"
-        ></Comment>
+        <div v-if="tale.is_comment_denied != 1">
+          <Comment v-if="tale.level < 2"
+                   :level="tale.level+1"
+                   type="COMMENT"
+                   :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+                   :answer_to_tale_id="tale.id"
+                   :count_by_answer_to_tale_id="tale.count_root_tale_id"
+          ></Comment>
+        </div>
       </div>
     </div>
   </div>

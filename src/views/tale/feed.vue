@@ -75,7 +75,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row no-gutters align-items-center">
+                <div class="row no-gutters align-items-center" v-if="tale.is_avatar_hidden != 1">
                   <div class="col " v-if="doShowAuthorInfo">
                     <div style="width: 100px; max-height: 150px" class="m-auto">
                       <router-link :to="'/auth/profile/'+tale.owner_id" class="center">
@@ -115,12 +115,12 @@
                 </div>
                 <div class="mt-3"></div>
                 <div class="row no-gutters mb-2">
-                  <div class="col">
+                  <div class="col" v-if="tale.is_social_sharing_hidden != 1">
                     <div class="text-left m-buttons-1">
                       <Share :tale="tale"></Share>
                     </div>
                   </div>
-                  <div class="col-auto">
+                  <div class="col-auto" v-if="tale.is_comment_denied != 1">
                     <div class="text-right">
                       <Like
                           :pAmountLikes="tale.count_like"
@@ -131,7 +131,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row no-gutters">
+                <div class="row no-gutters" v-if="tale.is_comment_denied != 1">
                   <div class="col">
                     <Comment
                         :level="1"
