@@ -20,6 +20,7 @@
           <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">{{ $t("TXT_SUBMIT") }}</button>
         </div>
         <!--endregion Buttons-->
+        <!--##################################################-->
         <!--region User Info-->
         <div class="row no-gutters mt-4 " v-if="!pageIsInIframe && tale.is_avatar_hidden != 1">
           <div class="col-auto">
@@ -35,8 +36,10 @@
           </div>
         </div>
         <!--endregion User Info-->
+        <!--##################################################-->
         <!--region Tale-->
         <div v-if="!pageIsInIframe">
+          <!--##################################################-->
           <!--region Tale. mode Edit-->
           <div class="" v-if="options.modeEdit">
             <div>Tale #{{ tale.id }}</div>
@@ -58,8 +61,38 @@
                   class="notranslate"
               ></AlinaDatePicker>
             </div>
+
+            <div class="input-group input-group mb-3">
+              <!-- router_alias -->
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-dark text-light">Page Alias</span>
+              </div>
+              <input type="text" class="form-control" placeholder="Page Alias" v-model="tale.router_alias">
+            </div>
+
+            <div class="input-group input-group mb-3">
+              <!-- iframe -->
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-dark text-light">iframe</span>
+              </div>
+              <input type="text" class="form-control" placeholder="iframe" v-model="tale.iframe">
+            </div>
+
+            <div class="row no-gutters">
+              <div class="col">
+                <div class="mb-3">
+                  <!-- is_header_hidden -->
+                  <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0" :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
+                  <!-- is_avatar_hidden -->
+                  <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0" :checked="tale.is_avatar_hidden==1">{{ $t("Hide avatar") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
+                  <!-- is_social_sharing_hidden -->
+                  <ui-checkbox v-model="tale.is_social_sharing_hidden" :trueValue="1" :false-value="0" :checked="tale.is_social_sharing_hidden==1">{{ $t("Hide social sharing") }}</ui-checkbox>
+                </div>
             <div class="mb-3">
-              <input type="text" v-model="tale.iframe" placeholder="iframe" class="notranslate form-control">
             </div>
             <div class="row no-gutters">
               <div class="col">
@@ -84,18 +117,18 @@
                 <div class="mb-3">
                   <!-- is_sticked -->
                   <ui-checkbox v-model="tale.is_sticked" :trueValue="1" :false-value="0" :checked="tale.is_sticked==1">{{ $t("Sticked") }}</ui-checkbox>
-                </div>
-                <div class="mb-3">
+            </div>
+            <div class="mb-3">
                   <!-- is_adult_denied -->
-                  <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}</ui-checkbox>
-                </div>
-                <div class="mb-3">
+              <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}</ui-checkbox>
+            </div>
+            <div class="mb-3">
                   <!-- is_adv -->
-                  <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
-                </div>
+              <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
+            </div>
                 <div class="mb-3">
                   <!-- is_draft -->
-                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">{{ $t("Draft") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">{{ $t("Hide on feed") }}</ui-checkbox>
                 </div>
               </div>
             </div>
@@ -130,13 +163,14 @@
             </div>
           </div>
           <!--endregion Tale. mode Edit-->
+          <!--##################################################-->
           <!--region Tale. mode Read-->
           <div v-else>
             <div class="mt-3"></div>
             <div class="row no-gutters mt-2 mb-2">
               <div class="col" style="position: relative" v-if="tale.is_header_hidden != 1">
                 <h1 class="notranslate m-0" :lang="tale.lang">
-                  <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                  <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
                      class="btn btn-block text-left"
                      :class="{
                           'btn-secondary':tale.is_adult_denied==0,
@@ -166,8 +200,10 @@
             <div class="mt-3"></div>
           </div>
           <!--endregion Tale. mode Read-->
+          <!--##################################################-->
         </div>
         <!--endregion Tale-->
+        <!--##################################################-->
         <!--region Share & Likes-->
         <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
@@ -188,17 +224,18 @@
           </div>
         </div>
         <!--endregion Share & Likes-->
+        <!--##################################################-->
         <div v-if="tale.is_comment_denied != 1">
-          <Comment v-if="tale.level < 2"
-                   :level="tale.level+1"
-                   type="COMMENT"
-                   :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
-                   :answer_to_tale_id="tale.id"
-                   :count_by_answer_to_tale_id="tale.count_root_tale_id"
-          ></Comment>
-        </div>
+        <Comment v-if="tale.level < 2"
+                 :level="tale.level+1"
+                 type="COMMENT"
+                 :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+                 :answer_to_tale_id="tale.id"
+                 :count_by_answer_to_tale_id="tale.count_root_tale_id"
+        ></Comment>
       </div>
     </div>
+  </div>
   </div>
 </template>
 <script>
@@ -214,12 +251,14 @@ import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classicedito
 import ConfigCkEditor  from "@/configs/ConfigCkEditor";
 import UtilsStr        from "@/Utils/UtilsStr";
 import Share           from "@/components/elements/form/Share";
+import UtilsSys        from "@/Utils/UtilsSys";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
 export default {
   name: "tale_upsert",
   data() {
     return {
+      UtilsSys,
       UtilsStr,
       CU:        CurrentUser.obj(),
       ConfigApi: ConfigApi,
@@ -231,26 +270,23 @@ export default {
         modeEdit:     false
       },
       tale:      {
-        id:                       null,
-        header:                   '',
-        body:                     '',
-        publish_at:               '',
-        is_submitted:             0,
-        type:                     'POST',
-        form_id:                  'actionUpsert',
-        is_adult_denied:          0,
-        is_adv:                   0,
-        owner_emblem:             '',
-        owner_firstname:          '',
-        owner_lastname:           '',
-        owner_id:                 '',
-        count_like:               '',
-        current_user_liked:       '',
-        router_alias:             {
-          id:    null,
-          url:   null,
-          alias: null,
-        },
+        id:                 null,
+        header:             '',
+        body:               '',
+        publish_at:         '',
+        is_submitted:       0,
+        type:               'POST',
+        form_id:            'actionUpsert',
+        is_adult_denied:    0,
+        is_adv:             0,
+        owner_emblem:       '',
+        owner_firstname:    '',
+        owner_lastname:     '',
+        owner_id:           '',
+        count_like:         '',
+        current_user_liked: '',
+        router_alias:             '',
+        router_alias_id:          null,
         is_draft:                 0,
         is_comment_denied:        0,
         is_sticked:               0,
@@ -293,7 +329,7 @@ export default {
         res = tale.id;
       }
       return res;
-    }
+    },
   },
   watch:    {
     "tale.id":    function (valNew, valOld) {

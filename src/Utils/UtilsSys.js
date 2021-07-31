@@ -1,5 +1,7 @@
 //import VueCookies          from 'vue-cookies';
 import MessagesObj from "@/services/MessagesObj";
+import ConfigApi   from "@/configs/ConfigApi";
+import UtilsData   from "@/Utils/UtilsData";
 export default class UtilsSys {
     static fgp() {
         //return window.$cookies.get('fgp');
@@ -19,4 +21,12 @@ export default class UtilsSys {
         });
     }
 
+    static hrefToBackend(o, defaultTailPart = 'tale/upsert') {
+        const url = ConfigApi.url_base;
+        let tail  = `${defaultTailPart}/${o.id}`;
+        if (!UtilsData.empty(o.router_alias)) {
+            tail = o.router_alias;
+        }
+        return `${url}/${tail}`;
+    }
 }

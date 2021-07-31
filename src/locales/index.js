@@ -141,6 +141,10 @@ const Translations = {
         "View on separate page":  "Посмотреть на отдельной странице",
         "Hide avatar":            "Скрыть аватар",
         "Hide social sharing":    "Скрыть репостинг",
+        "Hide on feed":           "Не показывать на общей ленте",
+        "Only in my profile":     "Только в моём профиле",
+        /**/
+        "ROUTER_ALIAS with such ALIAS already exists": "Таккой алиас уже есть"
     },
 };
 export default Translations;
