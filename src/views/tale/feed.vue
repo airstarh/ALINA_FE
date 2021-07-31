@@ -46,7 +46,7 @@
                   </div>
                 </div>
               </div>
-              <div v-else :key="`${tale.id}_2`">
+              <div v-else :key="`${tale.id}_2`" :class="{is_draft:tale.is_draft, is_sticked:tale.is_sticked}">
                 <div class="row no-gutters" v-if="tale.is_header_hidden != 1">
                   <div class="col" style="position: relative">
                     <h2 :lang="tale.lang"
@@ -56,7 +56,7 @@
                                                'btn-danger':tale.is_adult_denied==1
                                             }"
                     >
-                      <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                      <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
                          :title="$t('View SEO-friendly page')"
                          class="text-light"
                          style="display:inline-block; width: 100%"
@@ -96,7 +96,7 @@
                   >
                     .
                   </router-link>
-                  <a :href="`${ConfigApi.url_base}/tale/upsert/${tale.id}`"
+                  <a :href="`UtilsSys.hrefToBackend(tale, 'tale/upsert')`"
                      :title="$t('View SEO-friendly page')"
                   >
                     .
@@ -173,6 +173,7 @@ import Share           from "@/components/elements/form/Share";
 import Paginator       from "@/components/elements/form/Paginator";
 import Obj             from "@/Utils/UtilsObject";
 import UtilsStr        from "@/Utils/UtilsStr";
+import UtilsSys        from "@/Utils/UtilsSys";
 export default {
   name:       "tale_feed",
   components: {
@@ -196,6 +197,7 @@ export default {
   },
   data() {
     return {
+      UtilsSys,
       UtilsStr,
       ConfigApi:      ConfigApi,
       options:        {
