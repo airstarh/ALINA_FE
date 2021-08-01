@@ -92,22 +92,6 @@
                   <!-- is_social_sharing_hidden -->
                   <ui-checkbox v-model="tale.is_social_sharing_hidden" :trueValue="1" :false-value="0" :checked="tale.is_social_sharing_hidden==1">{{ $t("Hide social sharing") }}</ui-checkbox>
                 </div>
-            <div class="mb-3">
-            </div>
-            <div class="row no-gutters">
-              <div class="col">
-                <div class="mb-3">
-                  <!-- is_header_hidden -->
-                  <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0" :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}</ui-checkbox>
-                </div>
-                <div class="mb-3">
-                  <!-- is_avatar_hidden -->
-                  <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0" :checked="tale.is_avatar_hidden==1">{{ $t("Hide avatar") }}</ui-checkbox>
-                </div>
-                <div class="mb-3">
-                  <!-- is_social_sharing_hidden -->
-                  <ui-checkbox v-model="tale.is_social_sharing_hidden" :trueValue="1" :false-value="0" :checked="tale.is_social_sharing_hidden==1">{{ $t("Hide social sharing") }}</ui-checkbox>
-                </div>
                 <div class="mb-3">
                   <!-- is_comment_denied -->
                   <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0" :checked="tale.is_comment_denied==1">{{ $t("Comments denied") }}</ui-checkbox>
@@ -117,15 +101,15 @@
                 <div class="mb-3">
                   <!-- is_sticked -->
                   <ui-checkbox v-model="tale.is_sticked" :trueValue="1" :false-value="0" :checked="tale.is_sticked==1">{{ $t("Sticked") }}</ui-checkbox>
-            </div>
-            <div class="mb-3">
+                </div>
+                <div class="mb-3">
                   <!-- is_adult_denied -->
-              <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}</ui-checkbox>
-            </div>
-            <div class="mb-3">
+                  <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
                   <!-- is_adv -->
-              <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
-            </div>
+                  <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
+                </div>
                 <div class="mb-3">
                   <!-- is_draft -->
                   <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">{{ $t("Hide on feed") }}</ui-checkbox>
@@ -226,16 +210,16 @@
         <!--endregion Share & Likes-->
         <!--##################################################-->
         <div v-if="tale.is_comment_denied != 1">
-        <Comment v-if="tale.level < 2"
-                 :level="tale.level+1"
-                 type="COMMENT"
-                 :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
-                 :answer_to_tale_id="tale.id"
-                 :count_by_answer_to_tale_id="tale.count_root_tale_id"
-        ></Comment>
+          <Comment v-if="tale.level < 2"
+                   :level="tale.level+1"
+                   type="COMMENT"
+                   :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+                   :answer_to_tale_id="tale.id"
+                   :count_by_answer_to_tale_id="tale.count_root_tale_id"
+          ></Comment>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 <script>
@@ -270,21 +254,21 @@ export default {
         modeEdit:     false
       },
       tale:      {
-        id:                 null,
-        header:             '',
-        body:               '',
-        publish_at:         '',
-        is_submitted:       0,
-        type:               'POST',
-        form_id:            'actionUpsert',
-        is_adult_denied:    0,
-        is_adv:             0,
-        owner_emblem:       '',
-        owner_firstname:    '',
-        owner_lastname:     '',
-        owner_id:           '',
-        count_like:         '',
-        current_user_liked: '',
+        id:                       null,
+        header:                   '',
+        body:                     '',
+        publish_at:               '',
+        is_submitted:             0,
+        type:                     'POST',
+        form_id:                  'actionUpsert',
+        is_adult_denied:          0,
+        is_adv:                   0,
+        owner_emblem:             '',
+        owner_firstname:          '',
+        owner_lastname:           '',
+        owner_id:                 '',
+        count_like:               '',
+        current_user_liked:       '',
         router_alias:             '',
         router_alias_id:          null,
         is_draft:                 0,
