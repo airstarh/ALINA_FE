@@ -1,12 +1,13 @@
 <template>
   <div class="container p-0">
-    <div class="row no-gutters" id="alina-feed-search">
+    <div class="alina-feed-search"></div>
+    <div class="row no-gutters">
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
           <div class="input-group-append">
             <button @click="searchClear" class="input-group-text btn btn-danger">{{ $t("TXT_CLEAR") }}</button>
           </div>
-          <input type="text" class="form-control" aria-label="Search" v-model="queryData.txt" placeholder="">
+          <input type="text" class="form-control" aria-label="Search" v-model="dataGetParams.txt" placeholder="">
           <div class="input-group-append">
             <button @click="search" class="input-group-text btn btn-primary">{{ $t("TXT_SEARCH") }}</button>
           </div>
@@ -203,7 +204,7 @@ export default {
       options:        {
         urlFeed: `${ConfigApi.url_base}/tale/feed`,
       },
-      queryData:      {
+      dataGetParams:  {
         txt: '',
       },
       feed:           [],
@@ -222,34 +223,40 @@ export default {
   },
   methods: {
     queryFunction(q = {}) {
-      const res   = Obj.eraseEmpty({
+      const res                             = Obj.eraseEmpty({
         ...{},
-        ...this.queryData,
+        ...this.dataGetParams,
         ...q
       });
-      const path1 = this.$router.currentRoute.path;
-      this.$router.push({path: path1, query: res});
+      this.feedPagination.pageCurrentNumber = 1;
+      const path1                           = this.$router.currentRoute.path;
+      this.$router.replace({path: path1, query: res}).catch(() => {});
+      this.ajaGetFeed();
     },
     ajaGetFeed() {
       AjaxAlina.newInst({
         method:    'GET',
         url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
-        getParams: {...{}, ...this.queryProps, ...this.$route.query},
+        getParams: {...{}, ...this.queryProps, ...this.$route.query, ...this.dataGetParams},
         onDone:    (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
             this.feed           = aja.respBody.data.tale;
             this.feedPagination = aja.respBody.meta.tale;
             //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
+            // #####
+            // alina-feed-search
+            const el = this.$el.getElementsByClassName('alina-feed-search')[0];
+            if (el) {
+              el.scrollIntoView({behavior: 'smooth'});
+            }
+            // #####
           }
         }
       })
       .go();
     },
     pageChange(pageSize, pageCurrentNumber) {
-      //window.scrollTo(0, 0);
-      this.$router.push({hash: ""});
-      this.$router.push({hash: "alina-feed-search"});
       this.feedPagination.pageSize          = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.ajaGetFeed();
@@ -258,24 +265,19 @@ export default {
       this.queryFunction();
     },
     searchClear() {
-      this.queryData.txt = '';
+      this.dataGetParams.txt = '';
       this.queryFunction();
     },
     helperDefineQueryDataTxt() {
       if (this.$route.query.txt) {
-        this.queryData.txt = this.$route.query.txt;
+        this.dataGetParams.txt = this.$route.query.txt;
       } else {
-        this.queryData.txt = '';
+        this.dataGetParams.txt = '';
       }
     }
   },
   watch:   {
     $route(to, from) {
-      if (
-          to.hash === "#alina-feed-search"
-      ) {
-        return this;
-      }
       this.helperDefineQueryDataTxt();
       this.ajaGetFeed();
     }
