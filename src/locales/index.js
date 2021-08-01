@@ -64,7 +64,7 @@ const Translations = {
         TXT_LOGOUT:                                                       "Выход",
         TXT_CLEAR:                                                        "Очистить",
         TXT_SEARCH:                                                       "Искать",
-        TXT_SUBMIT:                                                       "СимСалабим",
+        TXT_SUBMIT:                                                       "Сохранить",
         TXT_RESET:                                                        "Сброс",
         TXT_CANCEL:                                                       "Отмена",
         TXT_DELETE:                                                       "Удалить",
