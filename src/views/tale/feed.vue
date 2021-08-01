@@ -218,26 +218,22 @@ export default {
     }
   },
   created() {
-    this.helperDefineQueryDataTxt();
+    this.dataGetParams.txt = this.$route.query.txt;
     this.ajaGetFeed();
   },
   methods: {
     queryFunction(q = {}) {
-      const res                             = Obj.eraseEmpty({
-        ...{},
-        ...this.dataGetParams,
-        ...q
-      });
       this.feedPagination.pageCurrentNumber = 1;
-      const path1                           = this.$router.currentRoute.path;
-      this.$router.replace({path: path1, query: res}).catch(() => {});
-      this.ajaGetFeed();
+      const path                            = this.$router.currentRoute.path;
+      const getParams                       = {...this.$route.query, ...{txt: this.dataGetParams.txt}};
+      this.$router.push({path: path, query: getParams}).catch(() => {});
+      //this.ajaGetFeed();
     },
     ajaGetFeed() {
       AjaxAlina.newInst({
         method:    'GET',
         url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
-        getParams: {...{}, ...this.queryProps, ...this.$route.query, ...this.dataGetParams},
+        getParams: {...{}, ...this.queryProps, ...this.$route.query},
         onDone:    (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
@@ -268,17 +264,10 @@ export default {
       this.dataGetParams.txt = '';
       this.queryFunction();
     },
-    helperDefineQueryDataTxt() {
-      if (this.$route.query.txt) {
-        this.dataGetParams.txt = this.$route.query.txt;
-      } else {
-        this.dataGetParams.txt = '';
-      }
-    }
   },
   watch:   {
     $route(to, from) {
-      this.helperDefineQueryDataTxt();
+      this.dataGetParams.txt = this.$route.query.txt;
       this.ajaGetFeed();
     }
   },
