@@ -10,20 +10,14 @@
     <Messages></Messages>
     <Spinner></Spinner>
     <div v-if="!fullScreen">
-      <!--Footer-->
-      <div class="mt-5 alina-form p-5">
-        Мемориальный комплекс "Осетровский плацдарм"
-        <a href="https://oixm.ru/" target="_blank">
-          Острогожского историко-художественного музея им. И.Н. Крамского
-        </a>
-        <br>
-        Воронежская область, Верхнемамонский район, 720 км федеральной автомобильной дороги М4 «Дон».
-      </div>
+      <Footer></Footer>
+
     </div>
   </div>
 </template>
 <script>
 import MenuHorizontalMain from "@/components/MenuHorizontalMain";
+import Footer             from "@/components/Footer";
 import Messages           from "@/components/global/Messages";
 import Spinner            from "@/components/global/Spinner";
 import AlinaStorage       from "@/services/AlinaStorage";
@@ -36,6 +30,7 @@ export default {
     MenuHorizontalMain,
     Messages,
     Spinner,
+    Footer,
   },
   data() {
     return {
@@ -98,7 +93,7 @@ export default {
     toggleFullScreen() {
       PageSettings.showMainMenu = !PageSettings.showMainMenu;
     },
-    log(){
+    log() {
       console.log(">>>>>>>>>>>>>>>>>>>>");
       console.log("log arguments");
       console.log(arguments);
