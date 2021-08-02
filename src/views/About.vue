@@ -34,9 +34,11 @@
     </textarea>
     <div></div>
     <h3>Result</h3>
-    <div></div>
-    <div v-html="ckEditorRelated.aModel"></div>
-    <div></div>
+    <div class="clear"></div>
+    <div class="ck-content">
+      <div v-html="ckEditorRelated.aModel"></div>
+    </div>
+    <div class="clear"></div>
     <h1>Linking </h1>
     <div></div>
     <div>
