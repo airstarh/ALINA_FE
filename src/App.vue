@@ -1,7 +1,7 @@
 <template>
   <div id="alina-body-wrapper"
        :style="{
-            'overflow': pageIsInIframe ? 'hidden':'auto'
+            'overflow': pageIsInIframe ? 'hidden':'visible'
          }"
        class="bg-dark text-white"
   >
@@ -11,7 +11,6 @@
     <Spinner></Spinner>
     <div v-if="!fullScreen">
       <Footer></Footer>
-
     </div>
   </div>
 </template>
