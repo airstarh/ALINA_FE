@@ -1,13 +1,13 @@
 import UtilsSys from "@/Utils/UtilsSys";
 const ConfigApi = {
-    "url_base":              "https://saysimsim.ru",
+    //"url_base":              "https://saysimsim.ru",
     //"url_base":              "https://borg-001.private",
     //"url_base": "https://alinazero",
     //"url_base":              "https://host.home",
     //"url_base":              "https://192.168.1.110",
     //"url_base":              "https://vov",
     //"url_base":               "http://ospl1942.ru",
-    //"url_base":              "https://ospl1942.ru",
+    "url_base":              "https://ospl1942.ru",
     "ALINA_FILE_UPLOAD_KEY": "userfile[]",
     "modeSocialNetwork":     false,
     "vocRedirects":          {

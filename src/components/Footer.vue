@@ -1,27 +1,11 @@
 <template>
-  <div class="row mt-5 alina-form p-5">
-    <div class="col">
-      <br>
-      Здесь люди просто тусят
-      <br>
-      Коллектив индивидуалистов
-      <br>
-      Славные ублюдки
-      <br>
-      Идейная синь
-      <br>
-      ОчУмелые ручки
-      <br>
-      Лесная аристократия
-      <br>
-    </div>
-    <div class="col">
-      <br>
-      Ведущий проекта: <a href="https://vk.com/vsevolod.azovsky">Всеволод Азовский</a>
-      <br>
-      Муза куража: <a href="https://www.facebook.com/sllimrut">Slimrut</a>
-      <br>
-    </div>
+  <div class="mt-5 alina-form p-5">
+    Мемориальный комплекс "Осетровский плацдарм"
+    <a href="https://oixm.ru/" target="_blank">
+      Острогожского историко-художественного музея им. И.Н. Крамского
+    </a>
+    <br>
+    Воронежская область, Верхнемамонский район, 720 км федеральной автомобильной дороги М4 «Дон».
   </div>
 </template>
 

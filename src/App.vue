@@ -11,6 +11,7 @@
     <Spinner></Spinner>
     <div v-if="!fullScreen">
       <Footer></Footer>
+
     </div>
   </div>
 </template>
