@@ -152,7 +152,7 @@ const Translations = {
         "Map type":                     "Тип карты",
         "Zoom":                         "Зум",
         "Pick a point on Yandex Maps.": "Выбрать точку на Яндекс Картах",
-        "Show map":                     "Показать картУ",
+        "Show map":                     "Показать карту",
     },
 };
 export default Translations;

@@ -3,10 +3,12 @@
     <div v-if="modeEdit">
       <div class="row">
         <div class="col">
-          {{$tc('Show map')}}
+          <span class="text-lg-left">
+          <ui-checkbox v-model="item.geo_is_map_shown" :trueValue="1" :false-value="0" :checked="item.geo_is_map_shown==1">{{ $t("Show map") }}</ui-checkbox>
+            </span>
         </div>
       </div>
-      <div class="row">
+      <div class="row" v-if="item.geo_is_map_shown">
         <div class="col">
           <a href="https://yandex.ru/maps/" target="_blank">
             {{ $tc('Pick a point on Yandex Maps.') }}
@@ -14,7 +16,7 @@
         </div>
 
       </div>
-      <div class="row">
+      <div class="row" v-if="item.geo_is_map_shown">
         <div class="col">
           <div>
             <div class="input-group input-group mb-3">
