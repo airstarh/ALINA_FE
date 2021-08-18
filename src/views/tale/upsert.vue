@@ -62,12 +62,15 @@
               ></AlinaDatePicker>
             </div>
 
+            <div>
+              {{taleUrl}}
+            </div>
             <div class="input-group input-group mb-3">
               <!-- router_alias -->
               <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">Page Alias</span>
+                <span class="input-group-text bg-dark text-light">{{ $tc('Page Alias') }}</span>
               </div>
-              <input type="text" class="form-control" placeholder="Page Alias" v-model="tale.router_alias">
+              <input type="text" class="form-control" :placeholder="$tc('Page Alias')" v-model="tale.router_alias">
             </div>
 
             <div class="input-group input-group mb-3">
@@ -188,6 +191,16 @@
         </div>
         <!--endregion Tale-->
         <!--##################################################-->
+        <!--region Yandex Map-->
+        <div class="row no-gutters">
+          <div class="col">
+            <AlinaYandexMap
+                :item="tale"
+            ></AlinaYandexMap>
+          </div>
+        </div>
+        <!--endregion Yandex Map-->
+        <!--##################################################-->
         <!--region Share & Likes-->
         <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
@@ -235,6 +248,7 @@ import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classicedito
 import ConfigCkEditor  from "@/configs/ConfigCkEditor";
 import UtilsStr        from "@/Utils/UtilsStr";
 import Share           from "@/components/elements/form/Share";
+import AlinaYandexMap  from "@/components/elements/form/AlinaYandexMap";
 import UtilsSys        from "@/Utils/UtilsSys";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
@@ -277,6 +291,9 @@ export default {
         is_header_hidden:         0,
         is_avatar_hidden:         0,
         is_social_sharing_hidden: 0,
+        is_sticked_on_home:       0,
+        geo_latitude:             0,
+        geo_longitude:            0,
       },
       storage:   {
         keyTaleLastTouched: 'keyTaleLastTouched',
@@ -285,6 +302,7 @@ export default {
   },
   components: {
     Share,
+    AlinaYandexMap,
     StandardButtons,
     Comment,
     Like,
@@ -295,6 +313,15 @@ export default {
     this.ajaxGetTale(id);
   },
   computed: {
+    taleUrl() {
+      let res = ConfigApi.url_base;
+      if (this.tale.router_alias) {
+        res += `/${this.tale.router_alias}`;
+      } else {
+        res += `/tale/upsert/${this.tale.id}`;
+      }
+      return res;
+    },
     pageIsInIframe() {
       return this.ConfigApi.pageIsInIframe();
     },
