@@ -67,7 +67,7 @@
     </div>
     <div></div>
     <div>
-      <AlinaYandexMap></AlinaYandexMap>
+      <AlinaYandexMap :item="protoTale"></AlinaYandexMap>
     </div>
     <div></div>
     <h1>SVH Icons</h1>
@@ -310,6 +310,15 @@ export default {
     const twoWeeksFromNow = new Date();
     twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
     return {
+      protoTale:       {
+        header:        'This is Tale prototype',
+        body:          '',
+        body_txt:      '',
+        geo_latitude:  66,
+        geo_longitude: 66,
+        geo_map_type:  'hybrid',
+        geo_zoom:     14,
+      },
       iconFb,
       iconVk,
       iconWp,

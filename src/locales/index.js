@@ -146,11 +146,13 @@ const Translations = {
         /**/
         "ROUTER_ALIAS with such ALIAS already exists": "Таккой алиас уже есть",
         /**/
-        "Page Alias": "Псевдоним",
-        "Latitude":   "Широта",
-        "Longitude":  "Долгота",
-        "Map type":   "Тип карты",
-        "Zoom":       "Зум",
+        "Page Alias":                   "Псевдоним",
+        "Latitude":                     "Широта",
+        "Longitude":                    "Долгота",
+        "Map type":                     "Тип карты",
+        "Zoom":                         "Зум",
+        "Pick a point on Yandex Maps.": "Выбрать точку на Яндекс Картах",
+        "Show map":                     "Показать картУ",
     },
 };
 export default Translations;

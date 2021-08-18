@@ -63,7 +63,7 @@
             </div>
 
             <div>
-              {{taleUrl}}
+              {{ taleUrl }}
             </div>
             <div class="input-group input-group mb-3">
               <!-- router_alias -->
@@ -196,6 +196,7 @@
           <div class="col">
             <AlinaYandexMap
                 :item="tale"
+                :mode-edit="options.modeEdit"
             ></AlinaYandexMap>
           </div>
         </div>
@@ -294,6 +295,9 @@ export default {
         is_sticked_on_home:       0,
         geo_latitude:             0,
         geo_longitude:            0,
+        geo_map_type:             'map',
+        geo_zoom:                 '11',
+        geo_is_map_shown:         '0',
       },
       storage:   {
         keyTaleLastTouched: 'keyTaleLastTouched',
