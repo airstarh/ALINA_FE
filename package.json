@@ -55,6 +55,7 @@
     "vue-social-sharing": "^3.0.8",
     "vue-svg-loader": "^0.16.0",
     "vue-translation-manager": "^1.2.0",
+    "vue-yandex-maps": "^0.10.12",
     "vuex": "^3.6.2",
     "whatwg-fetch": "^3.6.2"
   },

@@ -35,15 +35,16 @@
     <div></div>
     <h3>Result</h3>
     <div class="clear"></div>
-    <div class="ck-content">
-      <div v-html="ckEditorRelated.aModel"></div>
+    <div>
+      <div class="ck-content">
+        <div v-html="ckEditorRelated.aModel"></div>
+      </div>
     </div>
     <div class="clear"></div>
     <h1>Linking </h1>
     <div></div>
     <div>
       ROUTER-LINKS:::
-
       <router-link to="/about">About</router-link>
       |||
       <router-link to="/about/001">About 001</router-link>
@@ -52,6 +53,7 @@
       |||
       <router-link to="/about/003">About 003</router-link>
     </div>
+    <div></div>
     <div></div>
     <div>
       A-TAGS:::
@@ -62,6 +64,10 @@
       <a href="#/about/002">a# About 002</a>
       |||
       <a href="#/about/003">a# About 003</a>
+    </div>
+    <div></div>
+    <div>
+      <AlinaYandexMap :item="protoTale"></AlinaYandexMap>
     </div>
     <div></div>
     <h1>SVH Icons</h1>
@@ -278,6 +284,7 @@ import {mapActions, mapGetters, mapState} from "vuex";
 import AnObject                           from "../services/AnObject";
 import UtilsDate                          from "@/Utils/UtilsDate";
 import AlinaDatePicker                    from "@/components/elements/form/AlinaDatePicker";
+import AlinaYandexMap                     from "@/components/elements/form/AlinaYandexMap";
 import AjaxAlina                          from "@/services/AjaxAlina";
 import ConfigApi                          from "@/configs/ConfigApi";
 import MessagesObj                        from "@/services/MessagesObj";
@@ -297,11 +304,21 @@ export default {
   name:       "About",
   components: {
     AlinaDatePicker,
+    AlinaYandexMap,
   },
   data() {
     const twoWeeksFromNow = new Date();
     twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
     return {
+      protoTale:       {
+        header:        'This is Tale prototype',
+        body:          '',
+        body_txt:      '',
+        geo_latitude:  66,
+        geo_longitude: 66,
+        geo_map_type:  'hybrid',
+        geo_zoom:     14,
+      },
       iconFb,
       iconVk,
       iconWp,
@@ -399,9 +416,9 @@ export default {
     gotoMiddle() {
       this.$router.push({hash: "middle"})
     },
-    log() {
+    log(data = null) {
       console.log("log ++++++++++");
-      console.log(this.sProp);
+      console.log(data);
     }
   },
 };
