@@ -75,7 +75,7 @@
         :coords="[item.geo_latitude, item.geo_longitude]"
         :zoom="item.geo_zoom"
         :scroll-zoom="false"
-        style="width: 100%; height: 600px;"
+        style="width: 95%; height: 500px;"
         :behaviors="['default']"
         :map-type="item.geo_map_type"
         :cluster-options="{
