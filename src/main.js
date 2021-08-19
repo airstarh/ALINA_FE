@@ -2,6 +2,7 @@ import Vue                 from "vue";
 import App                 from "@/App.vue";
 import router              from "@/router";
 import store               from "@/store/store";
+import ConfigApi           from "@/configs/ConfigApi";
 import 'whatwg-fetch'
 import VueCookies          from 'vue-cookies';
 import BootstrapVue        from "bootstrap-vue";
@@ -16,10 +17,13 @@ import VueI18n             from 'vue-i18n'
 import Translations        from '@/locales/index'
 import CurrentLocale       from "@/services/CurrentLocale";
 import CKEditor            from '@ckeditor/ckeditor5-vue2';
+import YmapPlugin          from 'vue-yandex-maps'
 //#####
 Vue.config.productionTip = false;
 //#####
-Vue.use( CKEditor );
+Vue.use(YmapPlugin, ConfigApi.YandexMaps)
+//#####
+Vue.use(CKEditor);
 //#####
 Vue.use(VueI18n);
 const i18n = new VueI18n({
