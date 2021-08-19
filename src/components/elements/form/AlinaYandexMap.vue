@@ -17,7 +17,7 @@
 
       </div>
       <div class="row" v-if="item.geo_is_map_shown == 1">
-        <div class="col">
+        <div class="col-lg">
           <div>
             <div class="input-group input-group mb-3">
               <!-- item.geo_latitude -->
@@ -28,7 +28,7 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <div class="col-lg">
           <div>
             <div class="input-group input-group mb-3">
               <!-- item.geo_longitude -->
@@ -39,7 +39,7 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <div class="col-lg">
           <div>
             <div class="input-group input-group mb-3">
               <!-- item.geo_zoom -->
@@ -50,7 +50,7 @@
             </div>
           </div>
         </div>
-        <div class="col">
+        <div class="col-lg">
           <div>
             <div class="input-group input-group mb-3">
               <!-- item.geo_map_type -->
