@@ -115,6 +115,11 @@
                   </div>
                 </div>
                 <div class="mt-3"></div>
+                <AlinaYandexMap
+                    :item="tale"
+                    :mode-edit="false"
+                ></AlinaYandexMap>
+                <div class="mt-3"></div>
                 <div class="row no-gutters mb-2">
                   <div class="col" v-if="tale.is_social_sharing_hidden != 1">
                     <div class="text-left m-buttons-1">
@@ -168,6 +173,7 @@
 import StandardButtons from "@/components/elements/form/StandardButtons";
 import ConfigApi       from "@/configs/ConfigApi";
 import AjaxAlina       from "@/services/AjaxAlina";
+import AlinaYandexMap  from "@/components/elements/form/AlinaYandexMap";
 import Comment         from "@/components/elements/form/Comment";
 import Like            from "@/components/elements/form/Like";
 import Share           from "@/components/elements/form/Share";
@@ -175,9 +181,11 @@ import Paginator       from "@/components/elements/form/Paginator";
 import Obj             from "@/Utils/UtilsObject";
 import UtilsStr        from "@/Utils/UtilsStr";
 import UtilsSys        from "@/Utils/UtilsSys";
+
 export default {
   name:       "tale_feed",
   components: {
+    AlinaYandexMap,
     Share,
     StandardButtons,
     Comment,
@@ -250,7 +258,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     pageChange(pageSize, pageCurrentNumber) {
       this.feedPagination.pageSize          = pageSize;
