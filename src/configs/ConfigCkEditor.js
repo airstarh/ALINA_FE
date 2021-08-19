@@ -13,7 +13,6 @@ import TableToolbar                  from '@ckeditor/ckeditor5-table/src/tableto
 import PasteFromOffice               from "@ckeditor/ckeditor5-paste-from-office/src/pastefromoffice";
 import EasyImage                     from '@ckeditor/ckeditor5-easy-image/src/easyimage';
 import CloudServices                 from '@ckeditor/ckeditor5-cloud-services/src/cloudservices';
-import ImageUpload                   from '@ckeditor/ckeditor5-image/src/imageupload';
 import Image                         from '@ckeditor/ckeditor5-image/src/image';
 import ImageToolbar                  from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageCaption                  from '@ckeditor/ckeditor5-image/src/imagecaption';
@@ -23,17 +22,18 @@ import {MyCustomUploadAdapterPlugin} from "@/Utils/AlinaCustomUploader";
 import Font                          from '@ckeditor/ckeditor5-font/src/font';
 import Underline                     from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Strikethrough                 from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
-import Code                          from '@ckeditor/ckeditor5-basic-styles/src/code';
-import CodeBlock                     from '@ckeditor/ckeditor5-code-block/src/codeblock';
-import Subscript                     from '@ckeditor/ckeditor5-basic-styles/src/subscript';
-import Superscript                   from '@ckeditor/ckeditor5-basic-styles/src/superscript';
-import MediaEmbed                    from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
-import List                          from '@ckeditor/ckeditor5-list/src/list';
-import TodoList                      from '@ckeditor/ckeditor5-list/src/todolist';
-import RemoveFormat                  from '@ckeditor/ckeditor5-remove-format/src/removeformat';
-import Indent                        from '@ckeditor/ckeditor5-indent/src/indent';
-import IndentBlock                   from '@ckeditor/ckeditor5-indent/src/indentblock';
-import CurrentLocale                 from "@/services/CurrentLocale";
+import Code          from '@ckeditor/ckeditor5-basic-styles/src/code';
+import CodeBlock     from '@ckeditor/ckeditor5-code-block/src/codeblock';
+import Subscript     from '@ckeditor/ckeditor5-basic-styles/src/subscript';
+import Superscript   from '@ckeditor/ckeditor5-basic-styles/src/superscript';
+import MediaEmbed    from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
+import List          from '@ckeditor/ckeditor5-list/src/list';
+import TodoList      from '@ckeditor/ckeditor5-list/src/todolist';
+import RemoveFormat  from '@ckeditor/ckeditor5-remove-format/src/removeformat';
+import Indent        from '@ckeditor/ckeditor5-indent/src/indent';
+import IndentBlock   from '@ckeditor/ckeditor5-indent/src/indentblock';
+import CurrentLocale from "@/services/CurrentLocale";
+import {ImageInsert} from "@ckeditor/ckeditor5-image";
 const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
     language:     CurrentLocale.language,
@@ -49,7 +49,7 @@ const ConfigCkEditor = {
         Font,
         EasyImage,
         CloudServices,
-        ImageUpload,
+        ImageInsert,
         EssentialsPlugin,
         BoldPlugin,
         ItalicPlugin,
@@ -73,7 +73,7 @@ const ConfigCkEditor = {
     ],
     toolbar:      {
         items: [
-            'imageUpload',
+            'imageInsert',
             'link',
             'mediaEmbed',
             '|',
@@ -85,6 +85,7 @@ const ConfigCkEditor = {
             'italic',
             'underline',
             'strikethrough',
+            'fontSize',
             '|',
             'bulletedList',
             'numberedList',
@@ -112,11 +113,22 @@ const ConfigCkEditor = {
         unit:   '%'
     },
     image:        {
-        toolbar: ['linkImage', 'imageTextAlternative', '|', 'imageStyle:alignLeft', 'imageStyle:full', 'imageStyle:alignRight'],
-        styles:  [
-            'full',
-            'alignLeft',
-            'alignRight',
+        toolbar: [
+            'toggleImageCaption',
+            'linkImage',
+            'imageTextAlternative',
+            '|',
+            'imageStyle:block',
+            'imageStyle:inline',
+            '|',
+            'imageStyle:alignLeft',
+            'imageStyle:alignCenter',
+            'imageStyle:alignRight',
+            // '|',
+            // 'imageStyle:alignBlockLeft',
+            // 'imageStyle:alignBlockRight',
+            // '|',
+            // 'imageStyle:side',
         ],
         upload:  {
             panel: {

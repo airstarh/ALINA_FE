@@ -19,6 +19,7 @@ lodash@latest
 sass@latest
 vue-social-sharing@latest
 bootstrap@^4
+vue-i18n@latest
 
 ##################################################
 # https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v2.html

@@ -60,7 +60,7 @@ const Translations = {
         TXT_ADD_TALE:                                                     "Создать историю",
         TXT_EDIT:                                                         "Редактировать",
         TXT_DELETE_PROFILE:                                               "Суициднуться",
-        TXT_CHANGE_PASS:                                                  "Сиенить пароль",
+        TXT_CHANGE_PASS:                                                  "Сменить пароль",
         TXT_LOGOUT:                                                       "Выход",
         TXT_CLEAR:                                                        "Очистить",
         TXT_SEARCH:                                                       "Искать",
@@ -144,7 +144,15 @@ const Translations = {
         "Hide on feed":           "Не показывать на общей ленте",
         "Only in my profile":     "Только в моём профиле",
         /**/
-        "ROUTER_ALIAS with such ALIAS already exists": "Таккой алиас уже есть"
+        "ROUTER_ALIAS with such ALIAS already exists": "Таккой алиас уже есть",
+        /**/
+        "Page Alias":                   "Псевдоним",
+        "Latitude":                     "Широта",
+        "Longitude":                    "Долгота",
+        "Map type":                     "Тип карты",
+        "Zoom":                         "Зум",
+        "Pick a point on Yandex Maps.": "Выбрать точку на Яндекс Картах",
+        "Show map":                     "Показать карту",
     },
 };
 export default Translations;
