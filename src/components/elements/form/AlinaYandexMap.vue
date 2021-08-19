@@ -8,15 +8,15 @@
             </span>
         </div>
       </div>
-      <div class="row" v-if="item.geo_is_map_shown">
+      <div class="row" v-if="item.geo_is_map_shown == 1">
         <div class="col">
-          <a href="https://yandex.ru/maps/" target="_blank">
+          <a href="https://yandex.ru/maps/" target="_blank" class="btn btn-small btn-primary mt-2 mb-2">
             {{ $tc('Pick a point on Yandex Maps.') }}
           </a>
         </div>
 
       </div>
-      <div class="row" v-if="item.geo_is_map_shown">
+      <div class="row" v-if="item.geo_is_map_shown == 1">
         <div class="col">
           <div>
             <div class="input-group input-group mb-3">
@@ -98,6 +98,7 @@
 <script>
 import UtilsData from "@/Utils/UtilsData";
 import ConfigApi from "@/configs/ConfigApi";
+
 export default {
   name:  "AlinaYandexMap",
   props: {
@@ -138,18 +139,30 @@ export default {
     computedMarkerHeader() {
       let res = this.item.header;
       if (!UtilsData.empty(this.markerUrl)) {
-        res = `<a href="${this.markerUrl}">${this.item.header}</a> `;
+        res = `<a href="${this.computedMarkerUrl}">${this.item.header}</a> `;
+      }
+      return res;
+    },
+    computedMarkerUrl() {
+      let res = '/';
+      if (this.markerUrl) {
+        res = this.markerUrl;
+      }
+      if (this.item.id) {
+        if (this.item.router_alias) {
+          res = `${ConfigApi.url_base}/${this.item.router_alias}`;
+        } else {
+          res = `${ConfigApi.url_base}/tale/upsert/${this.item.id}`;
+        }
       }
       return res;
     }
   },
   methods:  {
     onTypeChange(newValue) {
-      this.$set(this.item, 'geo_map_type', newValue);
+      this.item.geo_is_map_shown = 0;
+      this.item.geo_is_map_shown = 1;
       this.$forceUpdate();
-      console.log(">>>>>>>>>>>>>>>>>>>>");
-      console.log("onTypeChange");
-      console.log(arguments);
     }
   }
 };
