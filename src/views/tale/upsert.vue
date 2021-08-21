@@ -9,16 +9,15 @@
     <div class="row no-gutters" v-if="tale.id">
       <div class="col">
         <!--region Buttons-->
-        <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
-          <!--Delete-->
-          <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">{{ $t("TXT_DELETE") }}</button>
-          <!--Edit-->
-          <button @click="onEdit" class="col btn btn-info" v-if="!options.modeEdit">{{ $t("TXT_EDIT") }}</button>
-          <!--Cancel-->
-          <button @click="onCancel" class="col btn btn-info" v-if="options.modeEdit">{{ $t("TXT_CANCEL") }}</button>
-          <!--Save-->
-          <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">{{ $t("TXT_SUBMIT") }}</button>
-        </div>
+        <btnEditSaveCancelDelete
+            :owner_id="tale.owner_id"
+            :modeEdit="options.modeEdit"
+            :subject="tale"
+            @onSave="ajaPostTale"
+            @onEdit="onEdit"
+            @onCancel="onCancel"
+            @onDelete="ajaDeleteTale"
+        ></btnEditSaveCancelDelete>
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region User Info-->
@@ -80,6 +79,9 @@
               </div>
               <input type="text" class="form-control" placeholder="iframe" v-model="tale.iframe">
             </div>
+            <div v-if="tale.iframe" class="mt-3">
+              <iframe :src="tale.iframe" frameborder="1" width="100%" height="250px"></iframe>
+            </div>
 
             <div class="row no-gutters">
               <div class="col">
@@ -120,34 +122,6 @@
               </div>
             </div>
             <!--##################################################-->
-            <!--region Buttons-->
-            <div v-if="CU.ownsOrAdminOrModerator(tale.owner_id) && !pageIsInIframe" class="row no-gutters mb-1 m-buttons-1">
-              <!--Delete-->
-              <button @click="ajaDeleteTale(tale)" class="col btn btn-danger">{{ $t("TXT_DELETE") }}</button>
-              <!--Edit-->
-              <button @click="onEdit" class="col btn btn-info" v-if="!options.modeEdit">{{ $t("TXT_EDIT") }}</button>
-              <!--Cancel-->
-              <button @click="onCancel" class="col btn btn-info" v-if="options.modeEdit">{{ $t("TXT_CANCEL") }}</button>
-              <!--Save-->
-              <button @click="ajaPostTale" class="col btn btn-primary" v-if="options.modeEdit">{{ $t("TXT_SUBMIT") }}</button>
-            </div>
-            <!--endregion Buttons-->
-            <!--##################################################-->
-
-            <hr>
-            <div class="display-4">{{ $t("Result") }}:</div>
-            <div class="ck-content">
-              <div v-html="UtilsStr.content(tale.body)"></div>
-            </div>
-            <div v-if="tale.iframe" class="mt-3">
-              <iframe :src="tale.iframe" frameborder="1" width="100%" height="250px"></iframe>
-            </div>
-
-            <div v-if="CU.isAdmin()">
-              <hr>
-              <div class="display-4">{{ $t("HTML") }}:</div>
-              <textarea v-model="tale.body" placeholder="Body" rows="11" class="form-control"></textarea>
-            </div>
           </div>
           <!--endregion Tale. mode Edit-->
           <!--##################################################-->
@@ -202,6 +176,18 @@
         </div>
         <!--endregion Yandex Map-->
         <!--##################################################-->
+        <!--region Buttons-->
+        <btnEditSaveCancelDelete
+            :owner_id="tale.owner_id"
+            :modeEdit="options.modeEdit"
+            :subject="tale"
+            @onSave="ajaPostTale"
+            @onEdit="onEdit"
+            @onCancel="onCancel"
+            @onDelete="ajaDeleteTale"
+        ></btnEditSaveCancelDelete>
+        <!--endregion Buttons-->
+        <!--##################################################-->
         <!--region Share & Likes-->
         <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
@@ -237,20 +223,21 @@
   </div>
 </template>
 <script>
-import UtilsData       from "@/Utils/UtilsData";
-import StandardButtons from "@/components/elements/form/StandardButtons";
-import ConfigApi       from "@/configs/ConfigApi";
-import AjaxAlina       from "@/services/AjaxAlina";
-import CurrentUser     from "@/services/CurrentUser";
-import Comment         from "@/components/elements/form/Comment";
-import Like            from "@/components/elements/form/Like";
-import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
-import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import ConfigCkEditor  from "@/configs/ConfigCkEditor";
-import UtilsStr        from "@/Utils/UtilsStr";
-import Share           from "@/components/elements/form/Share";
-import AlinaYandexMap  from "@/components/elements/form/AlinaYandexMap";
-import UtilsSys        from "@/Utils/UtilsSys";
+import UtilsData               from "@/Utils/UtilsData";
+import StandardButtons         from "@/components/elements/form/StandardButtons";
+import ConfigApi               from "@/configs/ConfigApi";
+import AjaxAlina               from "@/services/AjaxAlina";
+import CurrentUser             from "@/services/CurrentUser";
+import Comment                 from "@/components/elements/form/Comment";
+import Like                    from "@/components/elements/form/Like";
+import AlinaDatePicker         from "@/components/elements/form/AlinaDatePicker";
+import ClassicEditor           from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import ConfigCkEditor          from "@/configs/ConfigCkEditor";
+import UtilsStr                from "@/Utils/UtilsStr";
+import Share                   from "@/components/elements/form/Share";
+import AlinaYandexMap          from "@/components/elements/form/AlinaYandexMap";
+import UtilsSys                from "@/Utils/UtilsSys";
+import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
 export default {
@@ -286,6 +273,7 @@ export default {
         current_user_liked:       '',
         router_alias:             '',
         router_alias_id:          null,
+        iframe:                   null,
         is_draft:                 0,
         is_comment_denied:        0,
         is_sticked:               0,
@@ -305,6 +293,7 @@ export default {
     }
   },
   components: {
+    btnEditSaveCancelDelete,
     Share,
     AlinaYandexMap,
     StandardButtons,
@@ -418,7 +407,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     ajaxGetTale(id, forceGet = false) {
       const _t = this;
@@ -460,7 +449,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     ajaDeleteTale(tale) {
       if (!confirm("Are you sure?")) {return;}
@@ -476,7 +465,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     // endregion CRUD
     // ##################################################

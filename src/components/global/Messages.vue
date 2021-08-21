@@ -13,7 +13,7 @@
         :key="i"
         v-bind:class="MessagesObj.statusClasses[item.status]"
     >
-      <pre v-html="vsprintf($t(item.templateString), item.params.map(v=>$t(v)))"></pre>
+      <pre v-html="itemText(item)"></pre>
     </div>
   </b-modal>
 </template>
@@ -21,6 +21,7 @@
 <script>
 import MessagesObj from "@/services/MessagesObj";
 import UtilsArray  from "@/Utils/UtilsArray";
+
 export default {
   name:  "Messages",
   props: {},
@@ -34,6 +35,15 @@ export default {
     ehDeleteAllMessages() {
       MessagesObj.deleteAll();
     },
+    itemText(item) {
+      let res = '';
+      try {
+        res = vsprintf(this.$t(item.templateString), item.params.map(v => this.$t(v)))
+      } catch (e) {
+        res = item.templateString;
+      }
+      return res;
+    }
   },
   computed: {
     flagMessagesShown: {
