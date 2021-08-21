@@ -185,7 +185,7 @@
             @onEdit="onEdit"
             @onCancel="onCancel"
             @onDelete="ajaDeleteTale"
-        ></btnEditSaveCancelDelete>x
+        ></btnEditSaveCancelDelete>
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region Share & Likes-->
