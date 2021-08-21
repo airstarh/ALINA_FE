@@ -204,7 +204,19 @@ export default {
     // ##################################################
     // # region Lat Lon Smart
     mMapLatLonToCSV() {
-      this.dtLatLongCSV = `${this.item.geo_latitude}, ${this.item.geo_longitude}`;
+      let geo_latitude  = this.item.geo_latitude;
+      let geo_longitude = this.item.geo_longitude;
+      if (!UtilsData.isNumber(geo_latitude)) {
+        geo_latitude = 0;
+      }
+      if (!UtilsData.isNumber(geo_longitude)) {
+        geo_longitude = 0;
+      }
+      if (geo_latitude + geo_longitude === 0) {
+        this.dtLatLongCSV = '';
+      } else {
+        this.dtLatLongCSV = `${geo_latitude}, ${geo_longitude}`;
+      }
     },
     // # endregion Lat Lon Smart
     // ##################################################
