@@ -20,6 +20,19 @@
         <div class="col-lg">
           <div>
             <div class="input-group input-group mb-3">
+              <!--dtLatLongCSV-->
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-dark text-light">{{ $tc('dtLatLongCSV') }}</span>
+              </div>
+              <input type="text" class="form-control" :placeholder="$tc('dtLatLongCSV')" v-model="dtLatLongCSV">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" v-if="item.geo_is_map_shown == 1">
+        <div class="col-lg">
+          <div>
+            <div class="input-group input-group mb-3">
               <!-- item.geo_latitude -->
               <div class="input-group-prepend">
                 <span class="input-group-text bg-dark text-light">{{ $tc('Latitude') }}</span>
@@ -88,7 +101,7 @@
           :coords="[item.geo_latitude, item.geo_longitude]"
           :hint-content="item.header"
           :balloon="{header: computedMarkerHeader, body: '', footer: ''}"
-          :icon="{color: 'red', glyph: 'cinema'}"
+          :icon="{color: 'violet', glyph: 'dot'}"
           cluster-name="1"
       ></ymap-marker>
     </yandex-map>
@@ -100,7 +113,10 @@ import UtilsData from "@/Utils/UtilsData";
 import ConfigApi from "@/configs/ConfigApi";
 
 export default {
-  name:  "AlinaYandexMap",
+  name: "AlinaYandexMap",
+  created() {
+    this.mMapLatLonToCSV();
+  },
   props: {
     item:      {
       type:    Object,
@@ -129,6 +145,7 @@ export default {
   },
   data() {
     return {
+      dtLatLongCSV: '',
       ConfigApi,
       tagYandexMap: {
         controls: ['smallMapDefaultSet']
@@ -158,7 +175,39 @@ export default {
       return res;
     }
   },
+  watch:    {
+    // ##################################################
+    // # region Lat Lon Smart
+    "item.geo_latitude":  function () {
+      this.mMapLatLonToCSV();
+    },
+    "item.geo_longitude": function () {
+      this.mMapLatLonToCSV();
+    },
+    "dtLatLongCSV":       function (newVal) {
+      let arr = newVal.split(',');
+      if (arr[0]) {
+        this.item.geo_latitude = arr[0].trim();
+      } else {
+        this.item.geo_latitude = '';
+      }
+      if (typeof arr[1] !== 'undefined') {
+        this.item.geo_longitude = arr[1].trim();
+      } else {
+        this.item.geo_longitude = '';
+      }
+    },
+    // # endregion Lat Lon Smart
+    // ##################################################
+  },
   methods:  {
+    // ##################################################
+    // # region Lat Lon Smart
+    mMapLatLonToCSV() {
+      this.dtLatLongCSV = `${this.item.geo_latitude}, ${this.item.geo_longitude}`;
+    },
+    // # endregion Lat Lon Smart
+    // ##################################################
     onTypeChange(newValue) {
       this.item.geo_is_map_shown = 0;
       this.item.geo_is_map_shown = 1;
