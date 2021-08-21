@@ -101,7 +101,7 @@
           :coords="[item.geo_latitude, item.geo_longitude]"
           :hint-content="item.header"
           :balloon="{header: computedMarkerHeader, body: '', footer: ''}"
-          :icon="{color: 'red', glyph: 'cinema'}"
+          :icon="{color: 'violet', glyph: 'dot'}"
           cluster-name="1"
       ></ymap-marker>
     </yandex-map>
