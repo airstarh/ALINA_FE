@@ -146,11 +146,8 @@ import StandardButtons from "@/components/elements/form/StandardButtons";
 import ConfigApi       from "@/configs/ConfigApi";
 import AjaxAlina       from "@/services/AjaxAlina";
 import CurrentUser     from "@/services/CurrentUser";
-import UtilsDate       from "@/Utils/UtilsDate";
-import UtilsData       from "@/Utils/UtilsData";
 import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
 import tale_feed       from "@/views/tale/feed";
-//#####
 import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
 import ConfigCkEditor  from "@/configs/ConfigCkEditor";
 import UtilsObject     from "@/Utils/UtilsObject";
@@ -272,6 +269,11 @@ export default {
         id = CurrentUser.obj().attributes.id;
       }
       return id;
+    }
+  },
+  watch: {
+    curId: function(newVal) {
+      this.fetchProfile(newVal);
     }
   }
 };
