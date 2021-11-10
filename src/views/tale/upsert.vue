@@ -8,6 +8,7 @@
     <div v-if="!tale.id">...</div>
     <div class="row no-gutters" v-if="tale.id">
       <div class="col">
+        <!--##################################################-->
         <!--region Buttons-->
         <btnEditSaveCancelDelete
             :owner_id="tale.owner_id"
@@ -129,7 +130,7 @@
           <div v-else>
             <div class="mt-3"></div>
             <div class="row no-gutters mt-2 mb-2">
-              <div class="col" style="position: relative" v-if="tale.is_header_hidden != 1">
+              <div class="col" style="position: relative;" v-if="tale.is_header_hidden != 1">
                 <h1 class="notranslate m-0" :lang="tale.lang">
                   <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
                      class="btn btn-block text-left"
@@ -274,6 +275,7 @@ export default {
         router_alias:             '',
         router_alias_id:          null,
         iframe:                   null,
+        count_root_tale_id:       0,
         is_draft:                 0,
         is_comment_denied:        0,
         is_sticked:               0,
