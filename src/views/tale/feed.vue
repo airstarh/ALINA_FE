@@ -50,17 +50,19 @@
               <div v-else :key="`${tale.id}_2`" :class="{is_draft:tale.is_draft, is_sticked:tale.is_sticked}">
                 <div class="row no-gutters" v-if="tale.is_header_hidden != 1">
                   <div class="col" style="position: relative">
-                    <h2 :lang="tale.lang"
+                    <h2
+                        :lang="tale.lang"
                         class="notranslate btn btn-block text-left display-3 m-0"
                         :class="{
                                                'btn-secondary':tale.is_adult_denied==0,
                                                'btn-danger':tale.is_adult_denied==1
                                             }"
                     >
-                      <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                         :title="$t('View SEO-friendly page')"
-                         class="text-light"
-                         style="display:inline-block; width: 100%"
+                      <a
+                          :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
+                          :title="$t('View SEO-friendly page')"
+                          class="text-light"
+                          style="display:inline-block; width: 100%"
                       >
                         {{ tale.header || '¯\_(ツ)_/¯' }}
                       </a>
@@ -97,8 +99,9 @@
                   >
                     .
                   </router-link>
-                  <a :href="`UtilsSys.hrefToBackend(tale, 'tale/upsert')`"
-                     :title="$t('View SEO-friendly page')"
+                  <a
+                      :href="`UtilsSys.hrefToBackend(tale, 'tale/upsert')`"
+                      :title="$t('View SEO-friendly page')"
                   >
                     .
                   </a>
@@ -258,7 +261,7 @@ export default {
           }
         }
       })
-          .go();
+      .go();
     },
     pageChange(pageSize, pageCurrentNumber) {
       this.feedPagination.pageSize          = pageSize;
