@@ -11,7 +11,7 @@
                      class="btn btn-sm btn-primary"
         >{{ $t("TXT_REGISTER") }}
         </router-link>
-        <div class="alina-form">
+        <div class="alina-form" @keyup.enter="runAJax">
           <h1>{{ $t("TXT_LOGIN") }}</h1>
           <input type="text" v-model="post.mail" :placeholder="$t('TXT_MAIL')" class="form-control">
           <input type="password" v-model="post.password" :placeholder="$t('TXT_PASSWORD')" class="form-control">
