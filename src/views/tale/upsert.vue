@@ -1,6 +1,7 @@
 <template>
-  <div class="p-0"
-       :class="{
+  <div
+      class="p-0"
+      :class="{
             'container':!pageIsInIframe,
             'container-fluid':pageIsInIframe
          }"
@@ -60,6 +61,19 @@
                   idq="publish_at"
                   class="notranslate"
               ></AlinaDatePicker>
+            </div>
+
+            <div v-if="CU.isAdmin()">
+              <div class="input-group input-group mb-3" >
+                <!-- body_free -->
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-dark text-light">{{ $tc('body_free') }}</span>
+                </div>
+                <textarea class="form-control" :placeholder="$tc('body_free')" v-model="tale.body_free" rows="20"></textarea>
+              </div>
+              <div class="mt-3 mb-3">
+                <div v-html="tale.body_free"></div>
+              </div>
             </div>
 
             <div>
@@ -132,9 +146,10 @@
             <div class="row no-gutters mt-2 mb-2">
               <div class="col" style="position: relative;" v-if="tale.is_header_hidden != 1">
                 <h1 class="notranslate m-0" :lang="tale.lang">
-                  <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                     class="btn btn-block text-left"
-                     :class="{
+                  <a
+                      :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
+                      class="btn btn-block text-left"
+                      :class="{
                           'btn-secondary':tale.is_adult_denied==0,
                           'btn-danger':tale.is_adult_denied==1
                      }"
@@ -142,8 +157,10 @@
                   </a>
                 </h1>
                 <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;">
-                  <router-link :to="'/tale/upsert/'+tale.id"
-                               class="btn btn-sm btn-info text-left mb-1">
+                  <router-link
+                      :to="'/tale/upsert/'+tale.id"
+                      class="btn btn-sm btn-info text-left mb-1"
+                  >
                     {{ tale.publish_at | unix_to_date_time }}
                   </router-link>
                 </div>
@@ -155,6 +172,9 @@
                   <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
                 </div>
               </div>
+            </div>
+            <div v-if="tale.body_free" class="mt-3">
+              <div v-html="tale.body_free"></div>
             </div>
             <div v-if="tale.iframe" class="mt-3">
               <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
@@ -211,12 +231,13 @@
         <!--endregion Share & Likes-->
         <!--##################################################-->
         <div v-if="tale.is_comment_denied != 1">
-          <Comment v-if="tale.level < 2"
-                   :level="tale.level+1"
-                   type="COMMENT"
-                   :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
-                   :answer_to_tale_id="tale.id"
-                   :count_by_answer_to_tale_id="tale.count_root_tale_id"
+          <Comment
+              v-if="tale.level < 2"
+              :level="tale.level+1"
+              type="COMMENT"
+              :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+              :answer_to_tale_id="tale.id"
+              :count_by_answer_to_tale_id="tale.count_root_tale_id"
           ></Comment>
         </div>
       </div>
@@ -242,24 +263,15 @@ import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCance
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
 export default {
-  name: "tale_upsert",
-  data() {
+  name:          "tale_upsert", data() {
     return {
-      UtilsSys,
-      UtilsStr,
-      CU:        CurrentUser.obj(),
-      ConfigApi: ConfigApi,
-      options:   {
-        url:          `${ConfigApi.url_base}/tale/upsert`,
-        urlDelete:    `${ConfigApi.url_base}/tale/delete`,
-        editorConfig: ConfigCkEditor,
-        editor:       ClassicEditor,
-        modeEdit:     false
-      },
-      tale:      {
+      UtilsSys, UtilsStr, CU: CurrentUser.obj(), ConfigApi: ConfigApi, options: {
+        url: `${ConfigApi.url_base}/tale/upsert`, urlDelete: `${ConfigApi.url_base}/tale/delete`, editorConfig: ConfigCkEditor, editor: ClassicEditor, modeEdit: false
+      }, tale:                {
         id:                       null,
         header:                   '',
         body:                     '',
+        body_free:                '',
         publish_at:               '',
         is_submitted:             0,
         type:                     'POST',
@@ -288,26 +300,16 @@ export default {
         geo_map_type:             'map',
         geo_zoom:                 '11',
         geo_is_map_shown:         '0',
-      },
-      storage:   {
+      }, storage:             {
         keyTaleLastTouched: 'keyTaleLastTouched',
       },
     }
-  },
-  components: {
-    btnEditSaveCancelDelete,
-    Share,
-    AlinaYandexMap,
-    StandardButtons,
-    Comment,
-    Like,
-    AlinaDatePicker
-  },
-  created() {
+  }, components: {
+    btnEditSaveCancelDelete, Share, AlinaYandexMap, StandardButtons, Comment, Like, AlinaDatePicker
+  }, created() {
     const id = this.routerTaleId;
     this.ajaxGetTale(id);
-  },
-  computed: {
+  }, computed:   {
     taleUrl() {
       let res = ConfigApi.url_base;
       if (this.tale.router_alias) {
@@ -316,19 +318,16 @@ export default {
         res += `/tale/upsert/${this.tale.id}`;
       }
       return res;
-    },
-    pageIsInIframe() {
+    }, pageIsInIframe() {
       return this.ConfigApi.pageIsInIframe();
-    },
-    routerTaleId() {
+    }, routerTaleId() {
       let res     = null;
       const route = this.$route;
       if (route && route.params && route.params.id) {
         res = route.params.id;
       }
       return res;
-    },
-    currentTaleId() {
+    }, currentTaleId() {
       let res    = null;
       const tale = this.tale;
       if (tale && tale.hasOwnProperty('id')) {
@@ -336,54 +335,44 @@ export default {
       }
       return res;
     },
-  },
-  watch:    {
-    "tale.id":    function (valNew, valOld) {
+  }, watch:      {
+    "tale.id":       function (valNew, valOld) {
       if (this.tale.is_submitted === 1) {
         this.options.modeEdit = false;
       }
-    },
-    tale:         {
+    }, tale:         {
       handler(newVal, oldVal) {
         if (this.options.modeEdit) {
           this.taleLastTouchedRemember(newVal);
         }
-      },
-      deep: true
-    },
-    routerTaleId: function (valNew) {
+      }, deep: true
+    }, routerTaleId: function (valNew) {
       this.ajaxGetTale(valNew);
     }
-  },
-  methods:  {
+  }, methods:    {
     // ##################################################
     // region Functional Actions
     taleLastTouchedRemember(tale) {
       localStorage.setItem(this.storage.keyTaleLastTouched, JSON.stringify(tale));
-    },
-    taleLastTouchedRecall() {
+    }, taleLastTouchedRecall() {
       const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched)
       if (taleLastTouchedString) {
         const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
         if (taleLastTouchedObj && taleLastTouchedObj.id) {
           if (taleLastTouchedObj.body.length > 10) {
-            if (
-                taleLastTouchedObj.id == this.tale.id
-            ) {
+            if (taleLastTouchedObj.id == this.tale.id) {
               Object.assign(this.tale, taleLastTouchedObj);
             }
           }
         }
       }
-    },
-    // endregion Functional Actions
+    }, // endregion Functional Actions
     // ##################################################
     // region Event Handlers
     onEdit() {
       this.options.modeEdit = true;
       this.taleLastTouchedRecall();
-    },
-    onCancel() {
+    }, onCancel() {
       this.options.modeEdit = false
       this.taleLastTouchedRemember({});
       if (this.tale.is_submitted == 0) {
@@ -392,16 +381,12 @@ export default {
         this.ajaxGetTale(this.tale.id, true);
       }
       return null;
-    },
-    // endregion Event Handlers
+    }, // endregion Event Handlers
     // ##################################################
     // region CRUD
     ajaPostTale() {
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        this.options.url,
-        postParams: this.tale,
-        onDone:     (aja) => {
+        method: 'POST', url: this.options.url, postParams: this.tale, onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             Object.assign(this.tale, aja.respBody.data)
             this.options.modeEdit = false;
@@ -409,9 +394,8 @@ export default {
           }
         }
       })
-          .go();
-    },
-    ajaxGetTale(id, forceGet = false) {
+      .go();
+    }, ajaxGetTale(id, forceGet = false) {
       const _t = this;
       //###############
       //region Fix Double get
@@ -423,12 +407,7 @@ export default {
       //endregion Fix Double get
       //###############
       AjaxAlina.newInst({
-        method: 'GET',
-        url:    id
-                ? `${_t.options.url}/${id}`
-                : `${_t.options.url}`
-        ,
-        onDone: (aja) => {
+        method: 'GET', url: id ? `${_t.options.url}/${id}` : `${_t.options.url}`, onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             if (!UtilsData.empty(_t.routerTaleId)) {
               if (aja.respBody.data.id != _t.routerTaleId) {
@@ -436,7 +415,7 @@ export default {
                 return null;
               }
             }
-            Object.assign(_t.tale, aja.respBody.data)
+            Object.assign(_t.tale, aja.respBody.data);
             if (_t.tale.is_submitted == 0) {
               if (this.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
                 _t.options.modeEdit = true;
@@ -451,25 +430,20 @@ export default {
           }
         }
       })
-          .go();
-    },
-    ajaDeleteTale(tale) {
+      .go();
+    }, ajaDeleteTale(tale) {
       if (!confirm("Are you sure?")) {return;}
       const _t     = this;
       tale.form_id = 'actionDelete';
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        `${this.options.urlDelete}/${tale.id}`,
-        postParams: tale,
-        onDone:     (aja) => {
+        method: 'POST', url: `${this.options.urlDelete}/${tale.id}`, postParams: tale, onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             _t.$router.replace({path: `/tale/feed`});
           }
         }
       })
-          .go();
-    },
-    // endregion CRUD
+      .go();
+    }, // endregion CRUD
     // ##################################################
   }
 };
