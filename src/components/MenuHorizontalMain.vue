@@ -53,7 +53,8 @@
             <b-dropdown-item to="/RestCall">HTTP calls with browser</b-dropdown-item>
             <b-dropdown-item :href="`${ConfigApi.url_base}/SendRestApiQueries/BaseCurlCalls`">HTTP calls with server</b-dropdown-item>
             <b-dropdown-item :href="`${ConfigApi.url_base}/AdminDbManager/DbTablesColumnsInfo`">DB Manger</b-dropdown-item>
-            <b-dropdown-item to="/about">about</b-dropdown-item>
+            <b-dropdown-item :href="`${ConfigApi.url_base}/admin/users`">User Management</b-dropdown-item>
+            <b-dropdown-item to="/about">UI tests</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
