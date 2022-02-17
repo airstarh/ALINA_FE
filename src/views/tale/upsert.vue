@@ -1,6 +1,7 @@
 <template>
-  <div class="p-0"
-       :class="{
+  <div
+      class="p-0"
+      :class="{
             'container':!pageIsInIframe,
             'container-fluid':pageIsInIframe
          }"
@@ -11,6 +12,7 @@
         <!--##################################################-->
         <!--region Buttons-->
         <btnEditSaveCancelDelete
+            v-if="!pFlagInFeed"
             :owner_id="tale.owner_id"
             :modeEdit="options.modeEdit"
             :subject="tale"
@@ -60,6 +62,19 @@
                   idq="publish_at"
                   class="notranslate"
               ></AlinaDatePicker>
+            </div>
+
+            <div v-if="CU.isAdmin()">
+              <div class="input-group input-group mb-3">
+                <!-- body_free -->
+                <div class="input-group-prepend">
+                  <span class="input-group-text bg-dark text-light">{{ $tc('body_free') }}</span>
+                </div>
+                <textarea class="form-control" :placeholder="$tc('body_free')" v-model="tale.body_free" rows="20"></textarea>
+              </div>
+              <div class="mt-3 mb-3">
+                <div v-html="tale.body_free"></div>
+              </div>
             </div>
 
             <div>
@@ -132,9 +147,10 @@
             <div class="row no-gutters mt-2 mb-2">
               <div class="col" style="position: relative;" v-if="tale.is_header_hidden != 1">
                 <h1 class="notranslate m-0" :lang="tale.lang">
-                  <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                     class="btn btn-block text-left"
-                     :class="{
+                  <a
+                      :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
+                      class="btn btn-block text-left"
+                      :class="{
                           'btn-secondary':tale.is_adult_denied==0,
                           'btn-danger':tale.is_adult_denied==1
                      }"
@@ -142,8 +158,10 @@
                   </a>
                 </h1>
                 <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;">
-                  <router-link :to="'/tale/upsert/'+tale.id"
-                               class="btn btn-sm btn-info text-left mb-1">
+                  <router-link
+                      :to="'/tale/upsert/'+tale.id"
+                      class="btn btn-sm btn-light text-left mb-1"
+                  >
                     {{ tale.publish_at | unix_to_date_time }}
                   </router-link>
                 </div>
@@ -155,6 +173,9 @@
                   <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
                 </div>
               </div>
+            </div>
+            <div v-if="tale.body_free" class="mt-3">
+              <div v-html="tale.body_free"></div>
             </div>
             <div v-if="tale.iframe" class="mt-3">
               <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
@@ -179,6 +200,7 @@
         <!--##################################################-->
         <!--region Buttons-->
         <btnEditSaveCancelDelete
+            v-if="!pFlagInFeed"
             :owner_id="tale.owner_id"
             :modeEdit="options.modeEdit"
             :subject="tale"
@@ -211,12 +233,13 @@
         <!--endregion Share & Likes-->
         <!--##################################################-->
         <div v-if="tale.is_comment_denied != 1">
-          <Comment v-if="tale.level < 2"
-                   :level="tale.level+1"
-                   type="COMMENT"
-                   :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
-                   :answer_to_tale_id="tale.id"
-                   :count_by_answer_to_tale_id="tale.count_root_tale_id"
+          <Comment
+              v-if="tale.level < 2"
+              :level="tale.level+1"
+              type="COMMENT"
+              :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+              :answer_to_tale_id="tale.id"
+              :count_by_answer_to_tale_id="tale.count_root_tale_id"
           ></Comment>
         </div>
       </div>
@@ -242,7 +265,11 @@ import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCance
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
 export default {
-  name: "tale_upsert",
+  name:  "tale_upsert",
+  props: {
+    pTale:       null,
+    pFlagInFeed: false,
+  },
   data() {
     return {
       UtilsSys,
@@ -260,6 +287,7 @@ export default {
         id:                       null,
         header:                   '',
         body:                     '',
+        body_free:                '',
         publish_at:               '',
         is_submitted:             0,
         type:                     'POST',
@@ -367,16 +395,13 @@ export default {
         const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
         if (taleLastTouchedObj && taleLastTouchedObj.id) {
           if (taleLastTouchedObj.body.length > 10) {
-            if (
-                taleLastTouchedObj.id == this.tale.id
-            ) {
+            if (taleLastTouchedObj.id == this.tale.id) {
               Object.assign(this.tale, taleLastTouchedObj);
             }
           }
         }
       }
-    },
-    // endregion Functional Actions
+    }, // endregion Functional Actions
     // ##################################################
     // region Event Handlers
     onEdit() {
@@ -392,8 +417,7 @@ export default {
         this.ajaxGetTale(this.tale.id, true);
       }
       return null;
-    },
-    // endregion Event Handlers
+    }, // endregion Event Handlers
     // ##################################################
     // region CRUD
     ajaPostTale() {
@@ -409,10 +433,17 @@ export default {
           }
         }
       })
-          .go();
+      .go();
     },
     ajaxGetTale(id, forceGet = false) {
       const _t = this;
+      //###############
+      if (this.pFlagInFeed) {
+        if (this.pTale) {
+          Object.assign(_t.tale, this.pTale);
+          return null;
+        }
+      }
       //###############
       //region Fix Double get
       if (!UtilsData.empty(id) && id == _t.tale.id) {
@@ -424,10 +455,7 @@ export default {
       //###############
       AjaxAlina.newInst({
         method: 'GET',
-        url:    id
-                ? `${_t.options.url}/${id}`
-                : `${_t.options.url}`
-        ,
+        url:    id ? `${_t.options.url}/${id}` : `${_t.options.url}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             if (!UtilsData.empty(_t.routerTaleId)) {
@@ -436,7 +464,7 @@ export default {
                 return null;
               }
             }
-            Object.assign(_t.tale, aja.respBody.data)
+            Object.assign(_t.tale, aja.respBody.data);
             if (_t.tale.is_submitted == 0) {
               if (this.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
                 _t.options.modeEdit = true;
@@ -451,7 +479,7 @@ export default {
           }
         }
       })
-          .go();
+      .go();
     },
     ajaDeleteTale(tale) {
       if (!confirm("Are you sure?")) {return;}
@@ -467,9 +495,8 @@ export default {
           }
         }
       })
-          .go();
-    },
-    // endregion CRUD
+      .go();
+    }, // endregion CRUD
     // ##################################################
   }
 };

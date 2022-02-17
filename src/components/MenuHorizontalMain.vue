@@ -1,6 +1,6 @@
 <template>
   <div class="mb-1" id="alina-main-menu">
-    <b-navbar toggleable="lg" type="dark" class="alina-navigator">
+    <b-navbar toggleable="lg" type="dark" class="corporate-bg-and-text">
       <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
       <b-navbar-nav class="flex-row">
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="mr-3">
@@ -116,8 +116,3 @@ export default {
   }
 };
 </script>
-<style>
-#alina-main-menu .alina-navigator {
-  background-color: #8F2DA8;
-}
-</style>

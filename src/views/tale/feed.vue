@@ -47,107 +47,11 @@
                   </div>
                 </div>
               </div>
-              <div v-else :key="`${tale.id}_2`" :class="{is_draft:tale.is_draft, is_sticked:tale.is_sticked}">
-                <div class="row no-gutters" v-if="tale.is_header_hidden != 1">
-                  <div class="col" style="position: relative">
-                    <h2 :lang="tale.lang"
-                        class="notranslate btn btn-block text-left display-3 m-0"
-                        :class="{
-                                               'btn-secondary':tale.is_adult_denied==0,
-                                               'btn-danger':tale.is_adult_denied==1
-                                            }"
-                    >
-                      <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                         :title="$t('View SEO-friendly page')"
-                         class="text-light"
-                         style="display:inline-block; width: 100%"
-                      >
-                        {{ tale.header || '¯\_(ツ)_/¯' }}
-                      </a>
-                    </h2>
-                    <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5em; z-index: 10">
-                      <router-link
-                          :title="$t('View on separate page')"
-                          :to="'/tale/upsert/'+tale.id"
-                          class="btn btn-sm btn-light text-left mb-1"
-                      >
-                        {{ tale.publish_at | unix_to_date_time }}
-                      </router-link>
-                    </div>
-                  </div>
-                </div>
-                <div class="row no-gutters align-items-center" v-if="tale.is_avatar_hidden != 1">
-                  <div class="col " v-if="doShowAuthorInfo">
-                    <div style="width: 100px; max-height: 150px" class="m-auto">
-                      <router-link :to="'/auth/profile/'+tale.owner_id" class="center">
-                        <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100%" class="rounded-circle">
-                        <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" width="100%" class="rounded-circle">
-                      </router-link>
-                    </div>
-                    <div class="text-center">
-                      <router-link v-if="doShowAuthorInfo" :to="'/auth/profile/'+tale.owner_id" class="btn btn-sm btn-secondary text-break mb-1">{{ UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id) }}</router-link>
-                    </div>
-                  </div>
-                </div>
-                <div v-if="tale.is_header_hidden == 1">
-                  <router-link
-                      :title="$t('View on separate page')"
-                      :to="'/tale/upsert/'+tale.id"
-                      class=""
-                  >
-                    .
-                  </router-link>
-                  <a :href="`UtilsSys.hrefToBackend(tale, 'tale/upsert')`"
-                     :title="$t('View SEO-friendly page')"
-                  >
-                    .
-                  </a>
-                </div>
-                <div class="mt-3"></div>
-                <div class="row no-gutters">
-                  <div class="col">
-                    <div class="ck-content" :lang="tale.lang">
-                      <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
-                    </div>
-                    <div v-if="tale.iframe" class="mt-3">
-                      <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
-                    </div>
-                  </div>
-                </div>
-                <div class="mt-3"></div>
-                <AlinaYandexMap
-                    :item="tale"
-                    :mode-edit="false"
-                ></AlinaYandexMap>
-                <div class="mt-3"></div>
-                <div class="row no-gutters mb-2">
-                  <div class="col" v-if="tale.is_social_sharing_hidden != 1">
-                    <div class="text-left m-buttons-1">
-                      <Share :tale="tale"></Share>
-                    </div>
-                  </div>
-                  <div class="col-auto" v-if="tale.is_comment_denied != 1">
-                    <div class="text-right">
-                      <Like
-                          :pAmountLikes="tale.count_like"
-                          :pCurrentUserLiked="tale.current_user_liked"
-                          ref_table="tale"
-                          :ref_id="tale.id"
-                      ></Like>
-                    </div>
-                  </div>
-                </div>
-                <div class="row no-gutters" v-if="tale.is_comment_denied != 1">
-                  <div class="col">
-                    <Comment
-                        :level="1"
-                        type="COMMENT"
-                        :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
-                        :answer_to_tale_id="tale.id"
-                        :count_by_answer_to_tale_id="tale.count_root_tale_id"
-                    ></Comment>
-                  </div>
-                </div>
+              <div v-else :key="`${tale.id}_2`" :class="{is_draft:tale.is_draft, is_sticked:tale.is_sticked}" class="corporate-border-color">
+                <tale_upsert
+                    :p-flag-in-feed="true"
+                    :p-tale="tale"
+                ></tale_upsert>
               </div>
             </transition>
             <div class="mt-5"></div>
@@ -178,7 +82,7 @@ import Comment         from "@/components/elements/form/Comment";
 import Like            from "@/components/elements/form/Like";
 import Share           from "@/components/elements/form/Share";
 import Paginator       from "@/components/elements/form/Paginator";
-import Obj             from "@/Utils/UtilsObject";
+import tale_upsert             from "@/views/tale/upsert";
 import UtilsStr        from "@/Utils/UtilsStr";
 import UtilsSys        from "@/Utils/UtilsSys";
 
@@ -190,7 +94,8 @@ export default {
     StandardButtons,
     Comment,
     Like,
-    Paginator
+    Paginator,
+    tale_upsert
   },
   props:      {
     // #####
@@ -258,7 +163,7 @@ export default {
           }
         }
       })
-          .go();
+      .go();
     },
     pageChange(pageSize, pageCurrentNumber) {
       this.feedPagination.pageSize          = pageSize;
