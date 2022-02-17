@@ -133,7 +133,7 @@
             return {
                 /////////////////////////////////
                 //region Request
-                url:               "https://USER:PASS@saysimsim.ru:8080/root/index2?p=val&lala[]=1&lala[]=Русские буквы#haha[]=1&haha[]=Слово",
+                url:               "https://USER:PASS@somehost.ru:8080/root/index2?p=val&lala[]=1&lala[]=Русские буквы#haha[]=1&haha[]=Слово",
                 urlClean:          "",
                 protocol:          "",
                 username:          "",

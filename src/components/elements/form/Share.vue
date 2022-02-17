@@ -7,7 +7,7 @@
     :description="UtilsStr.truncate(tale.body_txt, 100)"
 >
     <button class="btn p-1" title="vkontakte">
-        <svg height="1.8rem" width="1.8rem">
+        <svg height="1.8rem" width="1.8rem" class="corporate-svg-fill">
             <use :xlink:href="`${iconVk.url}`"></use>
         </svg>
     </button>
@@ -19,7 +19,7 @@
     :description="UtilsStr.truncate(tale.body_txt, 100)"
 >
     <button class="btn p-1" title="facebook">
-        <svg height="1.8rem" width="1.8rem">
+        <svg height="1.8rem" width="1.8rem" class="corporate-svg-fill">
             <use :xlink:href="`${iconFb.url}`"></use>
         </svg>
     </button>
@@ -31,7 +31,7 @@
     :description="UtilsStr.truncate(tale.body_txt, 100)"
 >
     <button class="btn p-1" title="Telegram">
-        <svg height="1.8rem" width="1.8rem">
+        <svg height="1.8rem" width="1.8rem" class="corporate-svg-fill">
             <use :xlink:href="`${iconTg.url}`"></use>
         </svg>
 
@@ -44,7 +44,7 @@
     :description="UtilsStr.truncate(tale.body_txt, 100)"
 >
     <button class="btn p-1" title="WhatsApp">
-        <svg height="1.8rem" width="1.8rem">
+        <svg height="1.8rem" width="1.8rem" class="corporate-svg-fill">
             <use :xlink:href="`${iconWp.url}`"></use>
         </svg>
     </button>
@@ -56,7 +56,7 @@
     :description="UtilsStr.truncate(tale.body_txt, 100)"
 >
 <button class="btn p-1" title="Skype">
-    <svg height="1.8rem" width="1.8rem">
+    <svg height="1.8rem" width="1.8rem" class="corporate-svg-fill">
         <use :xlink:href="`${iconSk.url}`"></use>
     </svg>
 </button>
@@ -68,7 +68,7 @@
     :description="UtilsStr.truncate(tale.body_txt, 100)"
 >
 <button class="btn p-1" title="Viber">
-<svg height="1.8rem" width="1.8rem">
+<svg height="1.8rem" width="1.8rem" class="corporate-svg-fill">
     <use :xlink:href="`${iconVb.url}`"></use>
 </svg>
 </button>
@@ -80,7 +80,7 @@
     :description="UtilsStr.truncate(tale.body_txt, 100)"
 >
 <button class="btn p-1" title="LinkedIn">
-<svg height="1.8rem" width="1.8rem">
+<svg height="1.8rem" width="1.8rem" class="corporate-svg-fill">
 <use :xlink:href="`${iconIn.url}`"></use>
 </svg>
 </button>
@@ -134,7 +134,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-svg {
-  fill: #c845ea;
-}
 </style>
