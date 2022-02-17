@@ -1,7 +1,7 @@
 <template>
   <div class="mb-1" id="alina-main-menu">
-    <b-navbar toggleable="lg" type="dark" class="alina-navigator">
-      <b-navbar-brand to="/">Осетровский плацдарм</b-navbar-brand>
+    <b-navbar toggleable="lg" type="dark" class="corporate-bg-and-text">
+      <b-navbar-brand to="/"><b>Осетровский плацдарм</b></b-navbar-brand>
       <b-navbar-nav class="flex-row">
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="mr-3">
           <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
@@ -115,15 +115,3 @@ export default {
   }
 };
 </script>
-<style>
-#alina-main-menu .alina-navigator {
-  background-color: #f5660b;
-  color: #000;
-}
-
-#alina-main-menu .alina-navigator a {
-  color: #000;
-  font-weight: bold;
-  font-size: 1.5em;
-}
-</style>
