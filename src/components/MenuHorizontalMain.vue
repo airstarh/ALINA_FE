@@ -26,7 +26,11 @@
             {{ $t("TXT_REGISTER") }}
           </button>
         </b-nav-item>
-        <b-nav-item>
+      </b-navbar-nav>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
           <form autocomplete="off">
             <b-form-select
                 size="sm"
@@ -35,12 +39,7 @@
             >
             </b-form-select>
           </form>
-        </b-nav-item>
-      </b-navbar-nav>
 
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
           <b-nav-item-dropdown :text="$t('TXT_TOOLS')" left>
             <b-dropdown-item :href="`${ConfigApi.url_base}/tools/SerializedDataEditor`">PHP-Serialized Data Editor online</b-dropdown-item>
             <b-dropdown-item :href="`${ConfigApi.url_base}/tools/JsonSearchReplaceBeautify`">JSON Search-Replace-Beautify online</b-dropdown-item>
@@ -53,7 +52,8 @@
             <b-dropdown-item to="/RestCall">HTTP calls with browser</b-dropdown-item>
             <b-dropdown-item :href="`${ConfigApi.url_base}/SendRestApiQueries/BaseCurlCalls`">HTTP calls with server</b-dropdown-item>
             <b-dropdown-item :href="`${ConfigApi.url_base}/AdminDbManager/DbTablesColumnsInfo`">DB Manger</b-dropdown-item>
-            <b-dropdown-item to="/about">about</b-dropdown-item>
+            <b-dropdown-item :href="`${ConfigApi.url_base}/admin/users`">User Management</b-dropdown-item>
+            <b-dropdown-item to="/about">UI tests</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
 
