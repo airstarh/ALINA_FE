@@ -1,6 +1,6 @@
 <template>
   <div class="mb-1" id="alina-main-menu">
-    <b-navbar toggleable="lg" type="dark" class="corporate-bg-and-text">
+    <b-navbar toggleable="lg" class="corporate-bg-and-text">
       <b-navbar-brand to="/"><b>Осетровский плацдарм</b></b-navbar-brand>
       <b-navbar-nav class="flex-row">
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="mr-3">
