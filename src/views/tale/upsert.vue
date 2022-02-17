@@ -24,7 +24,7 @@
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region User Info-->
-        <div class="row no-gutters mt-4 " v-if="!pageIsInIframe && tale.is_avatar_hidden != 1">
+        <div class="row no-gutters mb-2 " v-if="!pageIsInIframe && tale.is_avatar_hidden != 1">
           <div class="col-auto">
                         <span class="btn-secondary text-left text-nowrap badge-pill p-2">
                             <router-link :to="'/auth/profile/'+tale.owner_id" class="fixed-height-150px">
@@ -143,8 +143,7 @@
           <!--##################################################-->
           <!--region Tale. mode Read-->
           <div v-else>
-            <div class="mt-3"></div>
-            <div class="row no-gutters mt-2 mb-2">
+            <div class="row no-gutters">
               <div class="col" style="position: relative;" v-if="tale.is_header_hidden != 1">
                 <h1 class="notranslate m-0" :lang="tale.lang">
                   <a

@@ -3,7 +3,7 @@
     <button
         @click="event => {return this.onGo(event);}"
         type="button"
-        class="btn btn-lg btn-primary"
+        class="btn btn-lg btn-primary m-2"
     >{{ $t(submitTxt) }}
       <slot name="submitSuffix"></slot>
     </button>
