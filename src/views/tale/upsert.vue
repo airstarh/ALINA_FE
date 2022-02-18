@@ -135,6 +135,10 @@
                   <!-- is_draft -->
                   <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">{{ $t("Hide on feed") }}</ui-checkbox>
                 </div>
+                <div class="mb-3">
+                  <!-- is_for_registered -->
+                  <ui-checkbox v-model="tale.is_for_registered" :trueValue="1" :false-value="0" :checked="tale.is_for_registered==1">{{ $t("Only for registered users") }}</ui-checkbox>
+                </div>
               </div>
             </div>
             <!--##################################################-->
@@ -306,10 +310,11 @@ export default {
         is_draft:                 0,
         is_comment_denied:        0,
         is_sticked:               0,
+        is_sticked_on_home:       0, //ToDo: Seems not in use
         is_header_hidden:         0,
         is_avatar_hidden:         0,
         is_social_sharing_hidden: 0,
-        is_sticked_on_home:       0,
+        is_for_registered:        0,
         geo_latitude:             0,
         geo_longitude:            0,
         geo_map_type:             'map',
