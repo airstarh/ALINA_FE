@@ -1,7 +1,7 @@
 <template>
   <div id="alina-body-wrapper"
        :style="{
-            'overflow': pageIsInIframe ? 'hidden':'visible'
+            'overflow': pageIsInIframe ? 'hidden':''
          }"
        class="bg-dark text-white"
   >
@@ -101,7 +101,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-
-</style>
