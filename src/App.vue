@@ -1,9 +1,10 @@
 <template>
-  <div id="alina-body-wrapper"
-       :style="{
+  <div
+      id="alina-body-wrapper"
+      :style="{
             'overflow': pageIsInIframe ? 'hidden':''
          }"
-       class="bg-dark text-white"
+      class="bg-dark text-white"
   >
     <MenuHorizontalMain v-if="!fullScreen"></MenuHorizontalMain>
     <router-view></router-view>
@@ -23,6 +24,7 @@ import AlinaStorage       from "@/services/AlinaStorage";
 import UtilsArray         from "@/Utils/UtilsArray";
 import PageSettings       from "@/services/PageSettings";
 import ConfigApi          from "@/configs/ConfigApi";
+
 export default {
   name:       "App",
   components: {
@@ -52,11 +54,7 @@ export default {
   created() {
     let _this = this;
     document.addEventListener('keyup', function (event) {
-      if (
-          event.ctrlKey
-          &&
-          event.altKey
-      ) {
+      if (event.ctrlKey && event.altKey) {
         if (event.key == 'f') {
           _this.toggleFullScreen();
         }
@@ -80,12 +78,6 @@ export default {
   },
   watch:    {
     $route(to, from) {
-      // console.log(">>> ROUTER ____________________________");
-      // console.log("from");
-      // console.log(from);
-      // console.log("to");
-      // console.log(to);
-      // console.log("<<<  ROUTER  ____________________________");
     }
   },
   methods:  {
@@ -93,9 +85,6 @@ export default {
       PageSettings.showMainMenu = !PageSettings.showMainMenu;
     },
     log() {
-      console.log(">>>>>>>>>>>>>>>>>>>>");
-      console.log("log arguments");
-      console.log(arguments);
     }
   }
 };

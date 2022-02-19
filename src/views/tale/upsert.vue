@@ -201,6 +201,19 @@
         </div>
         <!--endregion Yandex Map-->
         <!--##################################################-->
+        <!--region Attached Documents-->
+        <div class="row no-gutters" v-if="tale.count_files > 0 || options.modeEdit">
+          <div class="col">
+            <AlinaFileUploader
+                :entity_id="tale.id"
+                entity_table="tale"
+                :modeEdit="options.modeEdit"
+                :ownLength="tale.count_files"
+            ></AlinaFileUploader>
+          </div>
+        </div>
+        <!--endregion Attached Documents-->
+        <!--##################################################-->
         <!--region Buttons-->
         <btnEditSaveCancelDelete
             v-if="!pFlagInFeed"
@@ -265,6 +278,7 @@ import Share                   from "@/components/elements/form/Share";
 import AlinaYandexMap          from "@/components/elements/form/AlinaYandexMap";
 import UtilsSys                from "@/Utils/UtilsSys";
 import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete";
+import AlinaFileUploader       from "@/components/elements/form/AlinaFileUploader";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
 export default {
@@ -320,6 +334,7 @@ export default {
         geo_map_type:             'map',
         geo_zoom:                 '11',
         geo_is_map_shown:         '0',
+        count_files:              0,
       },
       storage:   {
         keyTaleLastTouched: 'keyTaleLastTouched',
@@ -333,7 +348,8 @@ export default {
     StandardButtons,
     Comment,
     Like,
-    AlinaDatePicker
+    AlinaDatePicker,
+    AlinaFileUploader
   },
   created() {
     const id = this.routerTaleId;
