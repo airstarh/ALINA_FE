@@ -1,6 +1,28 @@
 <template>
   <div class="container border border-primary">
     <div>
+      <h2>AlinaFileUploader</h2>
+      <AlinaFileUploader
+          :pArrFiles="[
+              {id: -5, name_human:'TEST'}
+          ]"
+      ></AlinaFileUploader>
+    </div>
+    <div></div>
+    <div>
+      <h2>AlinaTableJson</h2>
+      <AlinaTableJson
+          :pJson="[
+              {one: 1, teo: 2, three: 3, four: 4, five: 5, six:6, seven: 7},
+              {one: 1, teo: 2, three: 3, four: 4, five: 5, six:6, seven: 7},
+              {one: 1, teo: 2, three: 3, four: 4, five: 5, six:6, seven: 7},
+              {one: 1, teo: 2, three: 3, four: 4, five: 5, six:6, seven: 7},
+          ]"
+      ></AlinaTableJson>
+    </div>
+    <div></div>
+    <div>
+      <h2>Test links and buttons</h2>
       <a href="#middle">a - Middle</a>
       |||
       <router-link :to="{hash:'middle'}">rl - Middle</router-link>
@@ -116,7 +138,8 @@
       <br>
       <button
           @click="onClickBadResponse()"
-          class="btn btn-lg btn-primary">TEST Bad Response
+          class="btn btn-lg btn-primary"
+      >TEST Bad Response
       </button>
       &nbsp;
       <a
@@ -126,12 +149,14 @@
       &nbsp;
       <button
           @click="onTestPost()"
-          class="btn btn-lg btn-primary">TEST POST
+          class="btn btn-lg btn-primary"
+      >TEST POST
       </button>
       &nbsp;
       <button
           @click="onTestSpinner()"
-          class="btn btn-lg btn-primary">TEST SPINNER
+          class="btn btn-lg btn-primary"
+      >TEST SPINNER
       </button>
 
       <br>
@@ -300,11 +325,16 @@ import ClassicEditor                      from '@ckeditor/ckeditor5-editor-class
 import ConfigCkEditor                     from "@/configs/ConfigCkEditor";
 import CurrentUser                        from "@/services/CurrentUser";
 import UtilsStr                           from "@/Utils/UtilsStr";
+import AlinaTableJson                     from "@/components/AlinaTableJson";
+import AlinaFileUploader                  from "@/components/elements/form/AlinaFileUploader";
+
 export default {
   name:       "About",
   components: {
     AlinaDatePicker,
     AlinaYandexMap,
+    AlinaTableJson,
+    AlinaFileUploader,
   },
   data() {
     const twoWeeksFromNow = new Date();
@@ -317,7 +347,7 @@ export default {
         geo_latitude:  66,
         geo_longitude: 66,
         geo_map_type:  'hybrid',
-        geo_zoom:     14,
+        geo_zoom:      14,
       },
       iconFb,
       iconVk,
@@ -342,22 +372,13 @@ export default {
     };
   },
   mounted() {
-    console.log(">>>>>>>>>>>>>>>>>>>>");
-    console.log("mounted");
     this.svg001();
   },
   created() {
-    console.log(">>>>>>>>>>>>>>>>>>>>");
-    console.log("created");
     this.dateplayer();
   },
-  updated() {
-    console.log(">>>>>>>>>>>>>>>>>>>>");
-    console.log("updated");
-  },
   computed: {
-    ...mapState("egStoreModule", ["sProp"]),
-    ...mapGetters("egStoreModule", ["gProp"]),
+    ...mapState("egStoreModule", ["sProp"]), ...mapGetters("egStoreModule", ["gProp"]),
     lodashExample2() {
       return this.lodash.partition(this.lodashExample, n => n % 2);
     }
@@ -365,10 +386,6 @@ export default {
   methods:  {
     ...mapActions("egStoreModule", ["aProp"]),
     svg001() {
-      console.log(">>>>>>>>>>>>>>>>>>>>");
-      console.log("iconFb");
-      console.log(iconFb);
-      console.log("<<<<<<<<<<<<<<<<<<<<");
     },
     methChangeProp() {
       const value = this.sProp + 3;

@@ -120,7 +120,7 @@ export default class UtilsData {
                         }
                     }
                 } else {
-                    if (data !== null && typeof data !== 'undefined') {
+                    if (/*data !== null &&*/ typeof data !== 'undefined') {
                         formData.append(root, data);
                     }
                 }
