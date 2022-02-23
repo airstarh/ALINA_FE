@@ -1,7 +1,7 @@
 <template>
   <div class="p-1 mt-3 mb-3" v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0">
     <div>
-      <b-button v-b-toggle="[`f-${entity_id}`]" variant="primary">{{ $t('Attached Documents') }} <span v-if="ownLength>0">{{ownLength}}</span></b-button>
+      <b-button v-b-toggle="[`f-${entity_id}`]" variant="primary">{{ $t('Attached Documents') }} <span v-if="ownLength>0">{{ ownLength }}</span></b-button>
       <b-collapse :id="`f-${entity_id}`" class="mt-3" @show="onShow">
         <ui-fileupload
             v-if="modeEdit"
@@ -14,7 +14,7 @@
 
         <AlinaTableJson
             :pJson="dArrFiles"
-            :showOnly="['url']"
+            :showOnly="['icon','url']"
             :modeManage="modeEdit"
             @onDelete="onDelete"
         ></AlinaTableJson>
@@ -79,6 +79,10 @@ export default {
           const strDw = this.$t('Download');
           model.url   = `<a href="${model.url_path}" target="_blank" class="btn btn-sm btn-block text-left btn-dark">${model.name_human}</a>`;
         }
+        if (model.hasOwnProperty('name_fs')) {
+          model.icon   = `<span class="">🔗</span>`;
+        }
+
       }
     },
     mergePropsAndData() {
@@ -146,7 +150,7 @@ export default {
       })
       .go();
     },
-    onShow(){
+    onShow() {
       this.loadFileList();
     },
   },

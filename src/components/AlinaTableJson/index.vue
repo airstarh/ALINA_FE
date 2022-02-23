@@ -3,7 +3,7 @@
     <table class="table table-dark table-striped table-hover table-sm">
       <thead v-if="!modeHideHeaders">
       <tr>
-        <th v-for="(header, idx) in arrHeaders" v-if="isToShowCell(header)">
+        <th v-for="(header, idx) in arrHeaders">
           {{ $t(header) }}
         </th>
         <th v-if="modeManage">
@@ -13,8 +13,8 @@
       </thead>
       <tbody>
       <tr v-for="(row, index) in pJson">
-        <td v-for="(header, idx) in arrHeaders" v-if="isToShowCell(header)">
-          <span v-if="header === 'url' && row[header]" v-html="row[header]" class=""></span>
+        <td v-for="(header, idx) in arrHeaders">
+          <span v-if="isHeaderAsHtml(header)" v-html="row[header]" class=""></span>
           <span v-else>{{ row[header] }}</span>
         </td>
         <td v-if="modeManage">
@@ -63,7 +63,11 @@ export default {
   },
   methods: {
     defineHeaders() {
-      this.arrHeaders = Object.keys(Array.isArray(this.pJson) && this.pJson.length > 0 ? this.pJson[this.pJson.length - 1] : []);
+      if (this.showOnly.length > 0) {
+        this.arrHeaders = this.showOnly;
+      } else {
+        this.arrHeaders = Object.keys(Array.isArray(this.pJson) && this.pJson.length > 0 ? this.pJson[this.pJson.length - 1] : []);
+      }
     },
     isCurrentUserAllowedEdit(obj) {
       //ToDo: Extend
@@ -71,10 +75,14 @@ export default {
       return isOwner;
       //return isOwner || this.CurrentUser.isAdmin() || this.CurrentUser.isModerator();
     },
-    isToShowCell(header) {
-      if (this.showOnly.length == 0) return true;
-      if (this.showOnly.includes(header)) return true;
-      return false;
+    isHeaderAsHtml(header){
+      const arrHtmlHeaders = [
+          'url',
+          'img',
+          'icon',
+          'link',
+      ];
+      return arrHtmlHeaders.includes(header);
     }
   }
 };
