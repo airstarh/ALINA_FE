@@ -172,6 +172,7 @@ const Translations = {
     "ACCESS DENIED":                                                  "Доступ запрещён",
     "Attached Documents":                                             "Прикреплённые документы",
     "Select your files":                                              "Выберите файлы",
+    "Unexpected error.":                                              "Неразрешимая ошибка.",
   },
 };
 export default Translations;
