@@ -24,8 +24,8 @@
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region User Info-->
-        <div class="row no-gutters mb-2 " v-if="!pageIsInIframe && tale.is_avatar_hidden != 1">
-          <div class="col-auto">
+        <div class="row no-gutters mb-2 " v-if="!pageIsInIframe">
+          <div class="col" v-if="tale.is_avatar_hidden != 1">
                         <span class="btn-secondary text-left text-nowrap badge-pill p-2">
                             <router-link :to="'/auth/profile/'+tale.owner_id" class="fixed-height-150px">
                                 <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100px" class="rounded-circle">
@@ -35,6 +35,15 @@
                                 {{ UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id) }}
                             </router-link>
                         </span>
+          </div>
+          <div
+              v-if="tale.is_header_hidden == 1 && CU.ownsOrAdminOrModerator(tale.owner_id)"
+              class="col"
+          >
+            <router-link
+                :to="'/tale/upsert/'+tale.id"
+            >...
+            </router-link>
           </div>
         </div>
         <!--endregion User Info-->
@@ -148,7 +157,7 @@
           <!--region Tale. mode Read-->
           <div v-else>
             <div class="row no-gutters">
-              <div class="col" style="position: relative;" v-if="tale.is_header_hidden != 1">
+              <div class="col mb-5" style="position: relative;" v-if="tale.is_header_hidden != 1">
                 <h1 class="notranslate m-0" :lang="tale.lang">
                   <a
                       :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
@@ -170,7 +179,7 @@
                 </div>
               </div>
             </div>
-            <div class="row no-gutters mt-5">
+            <div class="row no-gutters mt-1">
               <div class="col">
                 <div class="ck-content" :lang="tale.lang">
                   <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
