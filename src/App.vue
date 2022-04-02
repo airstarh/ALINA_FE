@@ -7,7 +7,7 @@
       class="bg-dark text-white"
   >
     <MenuHorizontalMain v-if="!fullScreen"></MenuHorizontalMain>
-    <router-view></router-view>
+    <router-view style="min-height: 80vh;"></router-view>
     <Messages></Messages>
     <Spinner></Spinner>
     <div v-if="!fullScreen">

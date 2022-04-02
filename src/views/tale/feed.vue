@@ -5,11 +5,11 @@
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
           <div class="input-group-append">
-            <button @click="searchClear" class="input-group-text btn btn-danger">{{ $t("TXT_CLEAR") }}</button>
+            <button @click="search" class="input-group-text btn btn-primary">{{ $t("TXT_SEARCH") }}</button>
           </div>
           <input type="text" class="form-control" aria-label="Search" v-model="dataGetParams.txt" placeholder="">
           <div class="input-group-append">
-            <button @click="search" class="input-group-text btn btn-primary">{{ $t("TXT_SEARCH") }}</button>
+            <button @click="searchClear" class="input-group-text btn btn-danger">{{ $t("TXT_CLEAR") }}</button>
           </div>
         </div>
       </div>
@@ -17,7 +17,7 @@
     <div v-if="feed.length > 0">
       <div class="row no-gutters">
         <div class="col mx-auto">
-          <div class="mb-5 text-center">
+          <div class="text-center">
             <Paginator
                 :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
                 :pageSize="parseInt(feedPagination.pageSize)"
