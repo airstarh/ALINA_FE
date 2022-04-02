@@ -24,7 +24,7 @@
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region User Info-->
-        <div class="row no-gutters mb-2 " v-if="!pageIsInIframe">
+        <div class="row no-gutters " v-if="!pageIsInIframe">
           <div class="col" v-if="tale.is_avatar_hidden != 1">
                         <span class="btn-secondary text-left text-nowrap badge-pill p-2">
                             <router-link :to="'/auth/profile/'+tale.owner_id" class="fixed-height-150px">
@@ -35,15 +35,6 @@
                                 {{ UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id) }}
                             </router-link>
                         </span>
-          </div>
-          <div
-              v-if="tale.is_header_hidden == 1 && CU.ownsOrAdminOrModerator(tale.owner_id)"
-              class="col"
-          >
-            <router-link
-                :to="'/tale/upsert/'+tale.id"
-            >...
-            </router-link>
           </div>
         </div>
         <!--endregion User Info-->
@@ -115,6 +106,10 @@
                   <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0" :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}</ui-checkbox>
                 </div>
                 <div class="mb-3">
+                  <!-- is_date_hidden -->
+                  <ui-checkbox v-model="tale.is_date_hidden" :trueValue="1" :false-value="0" :checked="tale.is_date_hidden==1">{{ $t("Hide date") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
                   <!-- is_avatar_hidden -->
                   <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0" :checked="tale.is_avatar_hidden==1">{{ $t("Hide avatar") }}</ui-checkbox>
                 </div>
@@ -161,7 +156,7 @@
                 <h1 class="notranslate m-0" :lang="tale.lang">
                   <a
                       :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                      class="btn btn-block text-left"
+                      class="btn btn-block text-left m-0"
                       :class="{
                           'btn-secondary':tale.is_adult_denied==0,
                           'btn-danger':tale.is_adult_denied==1
@@ -169,7 +164,7 @@
                   >{{ tale.header || '¯\_(ツ)_/¯' }}
                   </a>
                 </h1>
-                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;">
+                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;" v-if="tale.is_date_hidden != 1">
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
                       class="btn btn-sm btn-light text-left mb-1"
@@ -178,6 +173,14 @@
                   </router-link>
                 </div>
               </div>
+            </div>
+            <div
+                v-if="(tale.is_header_hidden == 1 || tale.is_date_hidden == 1) && CU.ownsOrAdminOrModerator(tale.owner_id)"
+            >
+              <router-link
+                  :to="'/tale/upsert/'+tale.id"
+              >...
+              </router-link>
             </div>
             <div class="row no-gutters mt-1">
               <div class="col">
@@ -222,19 +225,6 @@
           </div>
         </div>
         <!--endregion Attached Documents-->
-        <!--##################################################-->
-        <!--region Buttons-->
-        <btnEditSaveCancelDelete
-            v-if="!pFlagInFeed"
-            :owner_id="tale.owner_id"
-            :modeEdit="options.modeEdit"
-            :subject="tale"
-            @onSave="ajaPostTale"
-            @onEdit="onEdit"
-            @onCancel="onCancel"
-            @onDelete="ajaDeleteTale"
-        ></btnEditSaveCancelDelete>
-        <!--endregion Buttons-->
         <!--##################################################-->
         <!--region Share & Likes-->
         <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
@@ -335,6 +325,7 @@ export default {
         is_sticked:               0,
         is_sticked_on_home:       0, //ToDo: Seems not in use
         is_header_hidden:         0,
+        is_date_hidden:           0,
         is_avatar_hidden:         0,
         is_social_sharing_hidden: 0,
         is_for_registered:        0,
