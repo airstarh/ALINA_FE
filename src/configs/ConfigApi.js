@@ -49,7 +49,7 @@ const ConfigApi = {
         if (iframe) {
             let el = document.getElementById('alina-body-wrapper');
             if (el) {
-                iframe.style.height = el.scrollHeight + 150 + 'px';
+                iframe.style.height = el.scrollHeight + 500 + 'px';
             }
         }
     }
