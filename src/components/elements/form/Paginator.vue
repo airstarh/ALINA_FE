@@ -5,7 +5,7 @@
       class="d-flex justify-content-between mt-3 mb-3"
   >
     <div class="btn" @click="onClickPage(pageSize, 1)" :class="{ 'btn-secondary': 1==pageCurrentNumber}">ᗕ</div>
-    <div class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)">🠔</div>
+    <div class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)">←</div>
     <div
         v-for="(v, i) in pagesArray"
         :key="i"
@@ -14,7 +14,7 @@
         @click="onClickPage(pageSize, v)"
     >{{ v }}
     </div>
-    <div class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)">➝</div>
+    <div class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)">→</div>
     <div class="btn" @click="onClickPage(pageSize, pagesTotal)" :class="{ 'btn-secondary': pagesTotal==pageCurrentNumber}">ᗒ</div>
     <div class="btn">{{ pageCurrentNumber }}/{{ pagesTotal }}</div>
     <div
