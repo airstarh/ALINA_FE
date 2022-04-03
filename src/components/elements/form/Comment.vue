@@ -356,13 +356,13 @@ export default {
   },
   // #####
   watch: {
-    $route(to, from) {
-      const q = this.$route.query;
-      if (UtilsData.empty(q.expand)) {
-        this.feedPagination.pageCurrentNumber = 'last';
-      }
-      this.ajaGetComments();
-    },
+    // $route(to, from) {
+    //   const q = this.$route.query;
+    //   if (UtilsData.empty(q.expand)) {
+    //     this.feedPagination.pageCurrentNumber = 'last';
+    //   }
+    //   this.ajaGetComments();
+    // },
   },
   // #####
   computed: {

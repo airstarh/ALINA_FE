@@ -82,7 +82,7 @@ import Comment         from "@/components/elements/form/Comment";
 import Like            from "@/components/elements/form/Like";
 import Share           from "@/components/elements/form/Share";
 import Paginator       from "@/components/elements/form/Paginator";
-import tale_upsert             from "@/views/tale/upsert";
+import tale_upsert     from "@/views/tale/upsert";
 import UtilsStr        from "@/Utils/UtilsStr";
 import UtilsSys        from "@/Utils/UtilsSys";
 
@@ -102,9 +102,8 @@ export default {
     doShowAuthorInfo: {
       type:    Boolean,
       default: true,
-    },
-    // #####
-    queryProps: {
+    }, // #####
+    queryProps:       {
       type:    Object,
       default: () => ({}),
     },
@@ -131,16 +130,24 @@ export default {
     }
   },
   created() {
-    this.dataGetParams.txt = this.$route.query.txt;
-    this.ajaGetFeed();
+    this.onAddressBarModified();
   },
   methods: {
-    queryFunction(q = {}) {
-      this.feedPagination.pageCurrentNumber = 1;
-      const path                            = this.$router.currentRoute.path;
-      const getParams                       = {...this.$route.query, ...{txt: this.dataGetParams.txt}};
-      this.$router.push({path: path, query: getParams}).catch(() => {});
+    modifyAddressBar(q = {}) {
+      const path  = this.$router.currentRoute.path;
+      const query = {
+        ...this.$route.query, ...q
+      };
+      this.$router.push({
+        path:  path,
+        query: query
+      }).catch(() => {});
       //this.ajaGetFeed();
+    },
+    onAddressBarModified() {
+      this.dataGetParams.txt                = this.$route.query?.txt || '';
+      this.feedPagination.pageCurrentNumber = this.$route.query?.pageCurrentNumber || 1;
+      this.ajaGetFeed();
     },
     ajaGetFeed() {
       AjaxAlina.newInst({
@@ -168,20 +175,32 @@ export default {
     pageChange(pageSize, pageCurrentNumber) {
       this.feedPagination.pageSize          = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
-      this.ajaGetFeed();
+      this.modifyAddressBar({
+        pageSize:          this.feedPagination.pageSize,
+        pageCurrentNumber: this.feedPagination.pageCurrentNumber,
+      });
+      //this.ajaGetFeed();
     },
     search() {
-      this.queryFunction();
+      this.feedPagination.pageCurrentNumber = 1;
+      this.modifyAddressBar({
+        pageCurrentNumber: 1,
+        txt:               this.dataGetParams.txt
+      });
     },
     searchClear() {
-      this.dataGetParams.txt = '';
-      this.queryFunction();
+      this.feedPagination.pageCurrentNumber = 1;
+      this.dataGetParams.txt                = '';
+      this.modifyAddressBar({
+        pageCurrentNumber: 1,
+        txt:               ''
+      });
+      //this.ajaGetFeed();
     },
   },
   watch:   {
     $route(to, from) {
-      this.dataGetParams.txt = this.$route.query.txt;
-      this.ajaGetFeed();
+      this.onAddressBarModified();
     }
   },
 };
