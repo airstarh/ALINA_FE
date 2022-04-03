@@ -409,7 +409,7 @@ export default {
       localStorage.setItem(this.storage.keyTaleLastTouched, JSON.stringify(tale));
     },
     taleLastTouchedRecall() {
-      const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched)
+      const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched);
       if (taleLastTouchedString) {
         const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
         if (taleLastTouchedObj && taleLastTouchedObj.id) {
