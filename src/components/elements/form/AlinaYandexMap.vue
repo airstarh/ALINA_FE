@@ -149,7 +149,13 @@ export default {
       dtLatLongCSV: '',
       ConfigApi,
       tagYandexMap: {
-        controls: ['smallMapDefaultSet']
+        controls: [
+            'fullscreenControl',
+            'geolocationControl',
+            'trafficControl',
+            'zoomControl',
+            'typeSelector',
+        ]
       }
     }
   },
