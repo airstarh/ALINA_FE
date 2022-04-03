@@ -151,6 +151,7 @@ export default {
       .go();
     },
     onShow() {
+      ConfigApi.pageRecalcIframeHeight();
       this.loadFileList();
     },
   },
