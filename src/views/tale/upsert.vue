@@ -1,6 +1,6 @@
 <template>
   <div
-      class="p-0"
+      class="p-0 alina-tale-wrapper"
       :class="{
             'container':!pageIsInIframe,
             'container-fluid':pageIsInIframe
@@ -22,22 +22,6 @@
             @onDelete="ajaDeleteTale"
         ></btnEditSaveCancelDelete>
         <!--endregion Buttons-->
-        <!--##################################################-->
-        <!--region User Info-->
-        <div class="row no-gutters mb-2 " v-if="!pageIsInIframe && tale.is_avatar_hidden != 1">
-          <div class="col-auto">
-                        <span class="btn-secondary text-left text-nowrap badge-pill p-2">
-                            <router-link :to="'/auth/profile/'+tale.owner_id" class="fixed-height-150px">
-                                <img v-if="tale.owner_emblem" :src="tale.owner_emblem" width="100px" class="rounded-circle">
-                                <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" width="100px" class="rounded-circle">
-                            </router-link>
-                            <router-link :to="'/auth/profile/'+tale.owner_id" class="text-light">
-                                {{ UtilsStr.fullName(tale.owner_firstname, tale.owner_lastname, tale.owner_id) }}
-                            </router-link>
-                        </span>
-          </div>
-        </div>
-        <!--endregion User Info-->
         <!--##################################################-->
         <!--region Tale-->
         <div v-if="!pageIsInIframe">
@@ -106,6 +90,10 @@
                   <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0" :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}</ui-checkbox>
                 </div>
                 <div class="mb-3">
+                  <!-- is_date_hidden -->
+                  <ui-checkbox v-model="tale.is_date_hidden" :trueValue="1" :false-value="0" :checked="tale.is_date_hidden==1">{{ $t("Hide date") }}</ui-checkbox>
+                </div>
+                <div class="mb-3">
                   <!-- is_avatar_hidden -->
                   <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0" :checked="tale.is_avatar_hidden==1">{{ $t("Hide avatar") }}</ui-checkbox>
                 </div>
@@ -148,19 +136,22 @@
           <!--region Tale. mode Read-->
           <div v-else>
             <div class="row no-gutters">
-              <div class="col" style="position: relative;" v-if="tale.is_header_hidden != 1">
-                <h1 class="notranslate m-0" :lang="tale.lang">
+              <div class="col mb-3" style="position: relative;" v-if="tale.is_header_hidden != 1">
+                <h1
+                    :class="{
+                          'bg-danger':tale.is_adult_denied==1
+                     }"
+                    class="notranslate m-0 p-3  text-left rounded alina-tale-header"
+                    :lang="tale.lang"
+                >
                   <a
                       :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                      class="btn btn-block text-left"
-                      :class="{
-                          'btn-secondary':tale.is_adult_denied==0,
-                          'btn-danger':tale.is_adult_denied==1
-                     }"
+                      class="m-0"
+
                   >{{ tale.header || '¯\_(ツ)_/¯' }}
                   </a>
                 </h1>
-                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;">
+                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;" v-if="tale.is_date_hidden != 1">
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
                       class="btn btn-sm btn-light text-left mb-1"
@@ -170,7 +161,28 @@
                 </div>
               </div>
             </div>
-            <div class="row no-gutters mt-5">
+            <!--##################################################-->
+            <!--region User Info-->
+            <UserAvatar
+                v-if="tale.is_avatar_hidden==0"
+                :userId="tale.owner_id"
+                :userFirstName="tale.owner_firstname"
+                :userLastName="tale.owner_lastname"
+                :emblemUrl="tale.owner_emblem"
+                emblemWidth="100px"
+                :someDate="null"
+            ></UserAvatar>
+            <!--endregion User Info-->
+            <!--##################################################-->
+            <div
+                v-if="(tale.is_header_hidden == 1 || tale.is_date_hidden == 1) && CU.ownsOrAdminOrModerator(tale.owner_id)"
+            >
+              <router-link
+                  :to="'/tale/upsert/'+tale.id"
+              >...
+              </router-link>
+            </div>
+            <div class="row no-gutters mt-1">
               <div class="col">
                 <div class="ck-content" :lang="tale.lang">
                   <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
@@ -201,18 +213,18 @@
         </div>
         <!--endregion Yandex Map-->
         <!--##################################################-->
-        <!--region Buttons-->
-        <btnEditSaveCancelDelete
-            v-if="!pFlagInFeed"
-            :owner_id="tale.owner_id"
-            :modeEdit="options.modeEdit"
-            :subject="tale"
-            @onSave="ajaPostTale"
-            @onEdit="onEdit"
-            @onCancel="onCancel"
-            @onDelete="ajaDeleteTale"
-        ></btnEditSaveCancelDelete>
-        <!--endregion Buttons-->
+        <!--region Attached Documents-->
+        <div class="row no-gutters" v-if="tale.count_files > 0 || options.modeEdit">
+          <div class="col">
+            <AlinaFileUploader
+                :entity_id="tale.id"
+                entity_table="tale"
+                :modeEdit="options.modeEdit"
+                :ownLength="tale.count_files"
+            ></AlinaFileUploader>
+          </div>
+        </div>
+        <!--endregion Attached Documents-->
         <!--##################################################-->
         <!--region Share & Likes-->
         <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
@@ -265,6 +277,8 @@ import Share                   from "@/components/elements/form/Share";
 import AlinaYandexMap          from "@/components/elements/form/AlinaYandexMap";
 import UtilsSys                from "@/Utils/UtilsSys";
 import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete";
+import AlinaFileUploader       from "@/components/elements/form/AlinaFileUploader";
+import UserAvatar              from "@/components/UserAvatar";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
 export default {
@@ -312,6 +326,7 @@ export default {
         is_sticked:               0,
         is_sticked_on_home:       0, //ToDo: Seems not in use
         is_header_hidden:         0,
+        is_date_hidden:           0,
         is_avatar_hidden:         0,
         is_social_sharing_hidden: 0,
         is_for_registered:        0,
@@ -320,6 +335,7 @@ export default {
         geo_map_type:             'map',
         geo_zoom:                 '11',
         geo_is_map_shown:         '0',
+        count_files:              0,
       },
       storage:   {
         keyTaleLastTouched: 'keyTaleLastTouched',
@@ -327,13 +343,15 @@ export default {
     }
   },
   components: {
+    UserAvatar,
     btnEditSaveCancelDelete,
     Share,
     AlinaYandexMap,
     StandardButtons,
     Comment,
     Like,
-    AlinaDatePicker
+    AlinaDatePicker,
+    AlinaFileUploader
   },
   created() {
     const id = this.routerTaleId;
@@ -394,7 +412,7 @@ export default {
       localStorage.setItem(this.storage.keyTaleLastTouched, JSON.stringify(tale));
     },
     taleLastTouchedRecall() {
-      const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched)
+      const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched);
       if (taleLastTouchedString) {
         const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
         if (taleLastTouchedObj && taleLastTouchedObj.id) {

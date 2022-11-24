@@ -116,6 +116,7 @@ export default {
   name: "AlinaYandexMap",
   created() {
     this.mMapLatLonToCSV();
+    ConfigApi.pageRecalcIframeHeight();
   },
   props: {
     item:      {
@@ -148,7 +149,13 @@ export default {
       dtLatLongCSV: '',
       ConfigApi,
       tagYandexMap: {
-        controls: ['smallMapDefaultSet']
+        controls: [
+            'fullscreenControl',
+            'geolocationControl',
+            'trafficControl',
+            'zoomControl',
+            'typeSelector',
+        ]
       }
     }
   },
@@ -223,6 +230,7 @@ export default {
     onTypeChange(newValue) {
       this.item.geo_is_map_shown = 0;
       this.item.geo_is_map_shown = 1;
+      ConfigApi.pageRecalcIframeHeight();
       this.$forceUpdate();
     }
   }

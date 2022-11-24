@@ -348,8 +348,6 @@ export default {
       this.objsToTxt();
     },
     log() {
-      console.log("onChangeFileField ++++++++++");
-      console.log(this.reqGet);
     }
   }
 };

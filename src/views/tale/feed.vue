@@ -1,23 +1,23 @@
 <template>
   <div class="container p-0">
-    <div class="alina-feed-search"></div>
     <div class="row no-gutters">
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
           <div class="input-group-append">
-            <button @click="searchClear" class="input-group-text btn btn-danger">{{ $t("TXT_CLEAR") }}</button>
+            <button @click="search" class="input-group-text btn btn-primary">{{ $t("TXT_SEARCH") }}</button>
           </div>
           <input type="text" class="form-control" aria-label="Search" v-model="dataGetParams.txt" placeholder="">
           <div class="input-group-append">
-            <button @click="search" class="input-group-text btn btn-primary">{{ $t("TXT_SEARCH") }}</button>
+            <button @click="searchClear" class="input-group-text btn btn-danger">{{ $t("TXT_CLEAR") }}</button>
           </div>
         </div>
       </div>
     </div>
+    <div class="alina-feed-start"></div>
     <div v-if="feed.length > 0">
       <div class="row no-gutters">
         <div class="col mx-auto">
-          <div class="mb-5 text-center">
+          <div class="text-center">
             <Paginator
                 :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
                 :pageSize="parseInt(feedPagination.pageSize)"
@@ -54,8 +54,13 @@
                 ></tale_upsert>
               </div>
             </transition>
-            <div class="mt-5"></div>
-            <div class="mt-5"></div>
+            <div class="mt-5">&nbsp;</div>
+            <div class="mt-5 mb-5 display-5 text-center">
+              <span class="rounded-circle p-3 pr-4 pl-4 cursor-pointer corporate-bg-and-text" @click="scrollTop">&uarr;</span>
+              &nbsp;
+              <span class="rounded-circle p-3 pr-4 pl-4 cursor-pointer corporate-bg-and-text" @click="scrollBottom">&darr;</span>
+            </div>
+            <div class="mb-5">&nbsp;</div>
           </div>
           <!-- endregion Tale -->
           <!--##################################################-->
@@ -71,6 +76,7 @@
         </div>
       </div>
     </div>
+    <div class="alina-feed-end"></div>
   </div>
 </template>
 <script>
@@ -82,7 +88,7 @@ import Comment         from "@/components/elements/form/Comment";
 import Like            from "@/components/elements/form/Like";
 import Share           from "@/components/elements/form/Share";
 import Paginator       from "@/components/elements/form/Paginator";
-import tale_upsert             from "@/views/tale/upsert";
+import tale_upsert     from "@/views/tale/upsert";
 import UtilsStr        from "@/Utils/UtilsStr";
 import UtilsSys        from "@/Utils/UtilsSys";
 
@@ -102,9 +108,8 @@ export default {
     doShowAuthorInfo: {
       type:    Boolean,
       default: true,
-    },
-    // #####
-    queryProps: {
+    }, // #####
+    queryProps:       {
       type:    Object,
       default: () => ({}),
     },
@@ -131,16 +136,24 @@ export default {
     }
   },
   created() {
-    this.dataGetParams.txt = this.$route.query.txt;
-    this.ajaGetFeed();
+    this.onAddressBarModified();
   },
   methods: {
-    queryFunction(q = {}) {
-      this.feedPagination.pageCurrentNumber = 1;
-      const path                            = this.$router.currentRoute.path;
-      const getParams                       = {...this.$route.query, ...{txt: this.dataGetParams.txt}};
-      this.$router.push({path: path, query: getParams}).catch(() => {});
+    modifyAddressBar(q = {}) {
+      const path  = this.$router.currentRoute.path;
+      const query = {
+        ...this.$route.query, ...q
+      };
+      this.$router.push({
+        path:  path,
+        query: query
+      }).catch(() => {});
       //this.ajaGetFeed();
+    },
+    onAddressBarModified() {
+      this.dataGetParams.txt                = this.$route.query?.txt || '';
+      this.feedPagination.pageCurrentNumber = this.$route.query?.pageCurrentNumber || 1;
+      this.ajaGetFeed();
     },
     ajaGetFeed() {
       AjaxAlina.newInst({
@@ -154,12 +167,7 @@ export default {
             this.feedPagination = aja.respBody.meta.tale;
             //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
             // #####
-            // alina-feed-search
-            const el = this.$el.getElementsByClassName('alina-feed-search')[0];
-            if (el) {
-              el.scrollIntoView({behavior: 'smooth'});
-            }
-            // #####
+            this.scrollTop();
           }
         }
       })
@@ -168,20 +176,46 @@ export default {
     pageChange(pageSize, pageCurrentNumber) {
       this.feedPagination.pageSize          = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
-      this.ajaGetFeed();
+      this.modifyAddressBar({
+        pageSize:          this.feedPagination.pageSize,
+        pageCurrentNumber: this.feedPagination.pageCurrentNumber,
+      });
+      //this.ajaGetFeed();
     },
     search() {
-      this.queryFunction();
+      this.feedPagination.pageCurrentNumber = 1;
+      this.modifyAddressBar({
+        pageCurrentNumber: 1,
+        txt:               this.dataGetParams.txt
+      });
     },
     searchClear() {
-      this.dataGetParams.txt = '';
-      this.queryFunction();
+      this.feedPagination.pageCurrentNumber = 1;
+      this.dataGetParams.txt                = '';
+      this.modifyAddressBar({
+        pageCurrentNumber: 1,
+        txt:               ''
+      });
+      //this.ajaGetFeed();
+    },
+    scrollTop() {
+      // alina-feed-start
+      const el = this.$el.getElementsByClassName('alina-feed-start')[0];
+      if (el) {
+        el.scrollIntoView({behavior: 'smooth'});
+      }
+    },
+    scrollBottom() {
+      // alina-feed-end
+      const el = this.$el.getElementsByClassName('alina-feed-end')[0];
+      if (el) {
+        el.scrollIntoView({behavior: 'smooth'});
+      }
     },
   },
   watch:   {
     $route(to, from) {
-      this.dataGetParams.txt = this.$route.query.txt;
-      this.ajaGetFeed();
+      this.onAddressBarModified();
     }
   },
 };

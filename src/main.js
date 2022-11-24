@@ -91,7 +91,7 @@ Vue.filter('unix_to_date', function (value) {
     return UtilsDate.fromUnixToDateNoTime(value);
 });
 Vue.filter('unix_to_date_time', function (value) {
-    if (!value) value = 0;
+    if (!value) return '';
     value = parseInt(value);
     return UtilsDate.fromUnixToDateTime(value);
 });
