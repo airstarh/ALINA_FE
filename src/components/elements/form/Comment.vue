@@ -1,58 +1,59 @@
 <template>
   <div :style="options.style">
     <div class="mb-5">
-      <b-button v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
-                :class="{
+      <b-button
+          v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
+          :class="{
                       'btn-md':level==1,
                       'btn-sm':level>1,
                       }"
       >{{ $tc('COUNTER_COMMENTS', commentsTotal) }}
       </b-button>
     </div>
-    <b-collapse :id="`comment-collapse-${answer_to_tale_id}`"
-                @show="onExpandCommentList(`comment-collapse-${answer_to_tale_id}`)"
-                :visible="level == 3"
-                class="mb-5"
+    <b-collapse
+        :id="`comment-collapse-${answer_to_tale_id}`"
+        @show="onExpandCommentList(`comment-collapse-${answer_to_tale_id}`)"
+        :visible="level == 3"
+        class="mb-5"
     >
-      <div v-for="(tale, feedIndex) in feed"
-           :key="tale.id"
-           class="mt-1"
-           :data-id="tale.id"
-           :data-to="tale.answer_to_tale_id"
-           :data-root="root_tale_id"
-           :data-index="feedIndex"
+      <div
+          v-for="(tale, feedIndex) in feed"
+          :key="tale.id"
+          class="mt-1"
+          :data-id="tale.id"
+          :data-to="tale.answer_to_tale_id"
+          :data-root="root_tale_id"
+          :data-index="feedIndex"
       >
-        <div :class="{
+        <div
+            :class="{
                         highlight: $route.query.highlight == tale.id,
                     }"
         >
-          <div
-              class="row no-gutters"
-              v-if="!state.feedsInEdit.includes(tale.id)">
-            <div class="col">
-              <div class="float-left mr-1 fixed-height-100px">
-                <a :href="tale.owner_emblem">
-                  <img v-if="tale.owner_emblem" :src="tale.owner_emblem" :width="level==1?'70px':'40px'" class="rounded-circle">
-                  <img v-if="!tale.owner_emblem" src="@/assets/anarki.png" :width="level==1?'70px':'40px'" class="rounded-circle">
-                </a>
-              </div>
-              <a :href="`/#/auth/profile/${tale.owner_id}`"
-                 class="notranslate"
-              >{{ tale.owner_firstname || 'Anonymous' }} {{ tale.owner_lastname }}
-              </a>
-              <br>
-              {{ tale.publish_at | unix_to_date_time }}
-            </div>
-          </div>
+          <!--##################################################-->
+          <!--region User Info-->
+          <div class="mt-5">&nbsp;</div>
+          <UserAvatar
+              :userId="tale.owner_id"
+              :userFirstName="tale.owner_firstname"
+              :userLastName="tale.owner_lastname"
+              :emblemUrl="tale.owner_emblem"
+              emblemWidth="50px"
+              :someDate="tale.publish_at"
+          ></UserAvatar>
+          <!--endregion User Info-->
+          <!--##################################################-->
+          <!--region Comment body          -->
           <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
             <div class="col">
-              <div class="mt-3"></div>
               <div class="ck-content">
                 <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
               </div>
               <div class="mt-3"></div>
             </div>
           </div>
+          <!--endregion Comment body          -->
+          <!--##################################################-->
           <div class="row no-gutters" v-else>
             <div class="col">
               <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
@@ -80,12 +81,13 @@
             </div>
           </div>
         </div>
-        <Comment v-if="tale.level < 2"
-                 :level="tale.level+1"
-                 type="COMMENT"
-                 :root_tale_id="tale.root_tale_id"
-                 :answer_to_tale_id="tale.id"
-                 :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
+        <Comment
+            v-if="tale.level < 2"
+            :level="tale.level+1"
+            type="COMMENT"
+            :root_tale_id="tale.root_tale_id"
+            :answer_to_tale_id="tale.id"
+            :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
         ></Comment>
       </div>
       <Paginator
@@ -97,34 +99,62 @@
           :onClickMore="onClickMore"
           :onClickAll="onClickAll"
       ></Paginator>
-      <div class="row no-gutters">
-        <div class="col"
-             v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`comment-collapse-${answer_to_tale_id}`)">
-          <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
-          <div class="row no-gutters">
-            <div class="col"></div>
-            <div class="col">
-              <div class="row no-gutters">
-                <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{ $t("TXT_CLEAR") }}</button>
-                <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{ $t("TXT_SUBMIT") }}</button>
+      <div
+          v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`comment-collapse-${answer_to_tale_id}`)"
+      >
+        <!--##################################################-->
+        <!--region User Info-->
+        <div class="mt-5">&nbsp;</div>
+        <div class="mt-5">&nbsp;</div>
+        <UserAvatar
+            :userId="CU.attributes.id"
+            :userFirstName="CU.attributes.firstname"
+            :userLastName="CU.attributes.lastname"
+            :emblemUrl="CU.attributes.emblem"
+            emblemWidth="50px"
+            :someDate="null"
+        ></UserAvatar>
+        <!--endregion User Info-->
+        <!--##################################################-->
+        <!--region EDITOR-->
+        <div class="row no-gutters">
+          <div
+              class="col"
+          >
+            <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
+            <div class="row no-gutters">
+              <div class="col"></div>
+              <div class="col">
+                <div class="row no-gutters">
+                  <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{ $t("TXT_CLEAR") }}</button>
+                  <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{ $t("TXT_SUBMIT") }}</button>
+                </div>
               </div>
             </div>
+            <div>&nbsp;</div>
           </div>
-          <div>&nbsp;</div>
-        </div>
-        <div v-if="!CU.isLoggedIn()" class="col">
-          <router-link to="/auth/login"
-                       class="btn btn-sm btn-primary"
-          >{{ $t("IMP_LOGIN") }}
-          </router-link>
-          {{ $t("or") }}
-          <router-link to="/auth/register"
-                       class="btn btn-sm btn-primary"
-          >{{ $t("IMP_REGISTER") }}
-          </router-link>
-          {{ $t("to post comments") }}
         </div>
       </div>
+      <!--endregion EDITOR-->
+      <!--##################################################-->
+      <!--region Login or Register-->
+      <div v-if="!CU.isLoggedIn()" class="col">
+        <router-link
+            to="/auth/login"
+            class="btn btn-sm btn-primary"
+        >{{ $t("IMP_LOGIN") }}
+        </router-link>
+        {{ $t("or") }}
+        <router-link
+            to="/auth/register"
+            class="btn btn-sm btn-primary"
+        >{{ $t("IMP_REGISTER") }}
+        </router-link>
+        {{ $t("to post comments") }}
+      </div>
+      <!--endregion Login or Register-->
+      <!--##################################################-->
+
     </b-collapse>
   </div>
 </template>
@@ -143,9 +173,12 @@ import CurrentUser    from "@/services/CurrentUser";
 import AlinaStorage   from "@/services/AlinaStorage";
 import UtilsData      from "@/Utils/UtilsData";
 import lodash         from 'lodash';
+import UserAvatar     from "@/components/UserAvatar";
+
 export default {
   name:       "Comment",
   components: {
+    UserAvatar,
     Paginator,
     Like,
     Comment,
@@ -212,7 +245,7 @@ export default {
     this.processQuery();
     this.pageRecalcIframeHeight();
   },
-  methods: {
+  methods:  {
     ajaGetComments(more = false) {
       // #####
       const q = this.$route.query;
@@ -353,9 +386,8 @@ export default {
     pageRecalcIframeHeight: lodash.debounce(() => {
       ConfigApi.pageRecalcIframeHeight();
     }, 300),
-  },
-  // #####
-  watch: {
+  }, // #####
+  watch:    {
     // $route(to, from) {
     //   const q = this.$route.query;
     //   if (UtilsData.empty(q.expand)) {
@@ -363,8 +395,7 @@ export default {
     //   }
     //   this.ajaGetComments();
     // },
-  },
-  // #####
+  }, // #####
   computed: {
     // a computed getter
     commentsTotal: function () {
