@@ -103,7 +103,7 @@ const Translations = {
     "Unlimited":                                                      "Неограничено",
     "THanks for being with us!":                                      "Спасибо, что были с нами!",
     "Welcome, %s!":                                                   "Добро пожаловать, %s!",
-    "vsevolod.azovsky@gmail.com":                                     "БОЛЬШОЙ БОСС",
+    "vsevolod.azovsky@gmail.com":                                     "Создатель",
     "Profile updated!":                                               "Профиль обновлен",
     "Code was sent earlier":                                          "Код был прислан ранее",
     "Password is changed":                                            "Пароль изменён",
@@ -174,6 +174,7 @@ const Translations = {
     "Select your files":                                              "Выберите файлы",
     "Unexpected error.":                                              "Неразрешимая ошибка.",
     "Hide date":                                                      "Скрыть дату",
+    "Response is not success":                                        "Неожиданный ответ от сервера",
   },
 };
 export default Translations;
