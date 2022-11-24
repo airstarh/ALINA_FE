@@ -1,6 +1,5 @@
 <template>
   <div class="container p-0">
-    <div class="alina-feed-search"></div>
     <div class="row no-gutters">
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
@@ -14,6 +13,7 @@
         </div>
       </div>
     </div>
+    <div class="alina-feed-start"></div>
     <div v-if="feed.length > 0">
       <div class="row no-gutters">
         <div class="col mx-auto">
@@ -54,8 +54,13 @@
                 ></tale_upsert>
               </div>
             </transition>
-            <div class="mt-5"></div>
-            <div class="mt-5"></div>
+            <div class="mt-5">&nbsp;</div>
+            <div class="mt-5 mb-5 display-5 text-center">
+              <span class="rounded-circle p-3 pr-4 pl-4 cursor-pointer corporate-bg-and-text" @click="scrollTop">&uarr;</span>
+              &nbsp;
+              <span class="rounded-circle p-3 pr-4 pl-4 cursor-pointer corporate-bg-and-text" @click="scrollBottom">&darr;</span>
+            </div>
+            <div class="mb-5">&nbsp;</div>
           </div>
           <!-- endregion Tale -->
           <!--##################################################-->
@@ -71,6 +76,7 @@
         </div>
       </div>
     </div>
+    <div class="alina-feed-end"></div>
   </div>
 </template>
 <script>
@@ -161,12 +167,7 @@ export default {
             this.feedPagination = aja.respBody.meta.tale;
             //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
             // #####
-            // alina-feed-search
-            const el = this.$el.getElementsByClassName('alina-feed-search')[0];
-            if (el) {
-              el.scrollIntoView({behavior: 'smooth'});
-            }
-            // #####
+            this.scrollTop();
           }
         }
       })
@@ -196,6 +197,20 @@ export default {
         txt:               ''
       });
       //this.ajaGetFeed();
+    },
+    scrollTop() {
+      // alina-feed-start
+      const el = this.$el.getElementsByClassName('alina-feed-start')[0];
+      if (el) {
+        el.scrollIntoView({behavior: 'smooth'});
+      }
+    },
+    scrollBottom() {
+      // alina-feed-end
+      const el = this.$el.getElementsByClassName('alina-feed-end')[0];
+      if (el) {
+        el.scrollIntoView({behavior: 'smooth'});
+      }
     },
   },
   watch:   {
