@@ -1,5 +1,8 @@
 <template>
-  <div class="container p-0">
+  <div class="container p-0 alina-feed-wrapper">
+    <div class="alina-feed-start"></div>
+    <!--##################################################-->
+    <!--region SEARCH FORM-->
     <div class="row no-gutters">
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
@@ -13,11 +16,15 @@
         </div>
       </div>
     </div>
-    <div class="alina-feed-start"></div>
-    <div v-if="feed.length > 0">
+    <!--endregion SEARCH FORM-->
+    <!--##################################################-->
+    <!--region FEED-PAGINATOR-UP-DOWN-TALE-->
+    <div v-if="feed.length > 0" class="alina-feed-paginator-tale">
       <div class="row no-gutters">
         <div class="col mx-auto">
-          <div class="text-center">
+          <!--##################################################-->
+          <!--region PAGINATOR-->
+          <div class="text-center alina-feed-paginator">
             <Paginator
                 :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
                 :pageSize="parseInt(feedPagination.pageSize)"
@@ -26,9 +33,25 @@
                 :onClickPage="pageChange"
             ></Paginator>
           </div>
+          <!--endregion PAGINATOR-->
           <!--##################################################-->
-          <!-- region Tale -->
-          <div v-for="(tale, index) in feed" v-bind:key="tale.id">
+          <!--region TALE-->
+          <div v-for="(tale, index) in feed" v-bind:key="tale.id" class="mt-5 alina-feed-tale" :class="[`alina-feed-tale-${index}`]">
+            <!--##################################################-->
+            <!--region UP-DOWN-->
+            <div class="sticky-top">
+              <div class="row text-center mt-5 alina-feed-up-down">
+                <div class="col btn btn-dark  cursor-pointer" @click="scrollToClassName('alina-feed-start')">&uarr;&uarr;</div>
+                &nbsp;
+                <div class="col btn btn-dark cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
+                &nbsp;
+                <div class="col btn btn-dark cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${index-1}`)">&uarr;</div>
+                &nbsp;
+                <div class="col btn btn-dark cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${index+1}`)">&darr;</div>
+              </div>
+            </div>
+            <!--endregion UP-DOWN-->
+            <!--##################################################-->
             <transition name="slide-fade">
               <div
                   :key="`${tale.id}_1`"
@@ -54,17 +77,28 @@
                 ></tale_upsert>
               </div>
             </transition>
-            <div class="mt-5">&nbsp;</div>
-            <div class="mt-5 mb-5 display-5 text-center">
-              <span class="rounded-circle p-3 pr-4 pl-4 cursor-pointer corporate-bg-and-text" @click="scrollTop">&uarr;</span>
-              &nbsp;
-              <span class="rounded-circle p-3 pr-4 pl-4 cursor-pointer corporate-bg-and-text" @click="scrollBottom">&darr;</span>
-            </div>
-            <div class="mb-5">&nbsp;</div>
+            <!--##################################################-->
           </div>
-          <!-- endregion Tale -->
+          <!--endregion TALE-->
           <!--##################################################-->
-          <div class="mt-5 text-center">
+          <!--##################################################-->
+          <!--region UP-DOWN-->
+          <div class="sticky-top">
+            <div class="row text-center mb-5 alina-feed-up-down">
+              <div class="col btn btn-dark  cursor-pointer" @click="scrollToClassName('alina-feed-start')">&uarr;&uarr;</div>
+              &nbsp;
+              <div class="col btn btn-dark cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
+              &nbsp;
+              <div class="col btn btn-dark cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${feed.length-1}`)">&uarr;</div>
+              &nbsp;
+              <div class="col btn btn-dark cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${feed.length+1}`)">&darr;</div>
+            </div>
+          </div>
+          <!--endregion UP-DOWN-->
+          <!--##################################################-->
+          <!--##################################################-->
+          <!-- region PAGINATOR -->
+          <div class="mt-5 text-center alina-feed-paginator">
             <Paginator
                 :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
                 :pageSize="parseInt(feedPagination.pageSize)"
@@ -73,9 +107,13 @@
                 :onClickPage="pageChange"
             ></Paginator>
           </div>
+          <!-- endregion PAGINATOR -->
+          <!--##################################################-->
         </div>
       </div>
     </div>
+    <!--endregion FEED-PAGINATOR-UP-DOWN-TALE-->
+    <!--##################################################-->
     <div class="alina-feed-end"></div>
   </div>
 </template>
@@ -167,7 +205,7 @@ export default {
             this.feedPagination = aja.respBody.meta.tale;
             //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
             // #####
-            this.scrollTop();
+            //this.scrollTop();
           }
         }
       })
@@ -198,20 +236,27 @@ export default {
       });
       //this.ajaGetFeed();
     },
-    scrollTop() {
+    scrollTop(className = 'alina-feed-start') {
       // alina-feed-start
-      const el = this.$el.getElementsByClassName('alina-feed-start')[0];
+      const el = this.$el.getElementsByClassName(className)[0];
       if (el) {
         el.scrollIntoView({behavior: 'smooth'});
       }
     },
-    scrollBottom() {
+    scrollBottom(className = 'alina-feed-end') {
       // alina-feed-end
-      const el = this.$el.getElementsByClassName('alina-feed-end')[0];
+      const el = this.$el.getElementsByClassName(className)[0];
       if (el) {
         el.scrollIntoView({behavior: 'smooth'});
       }
     },
+    scrollToClassName(className = 'alina-feed-start') {
+      // alina-feed-start
+      const el = this.$el.getElementsByClassName(className)[0];
+      if (el) {
+        el.scrollIntoView({behavior: 'smooth'});
+      }
+    }
   },
   watch:   {
     $route(to, from) {

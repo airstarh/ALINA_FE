@@ -226,6 +226,20 @@
         </div>
         <!--endregion Attached Documents-->
         <!--##################################################-->
+        <!--##################################################-->
+        <!--region Buttons-->
+        <btnEditSaveCancelDelete
+            v-if="!pFlagInFeed"
+            :owner_id="tale.owner_id"
+            :modeEdit="options.modeEdit"
+            :subject="tale"
+            @onSave="ajaPostTale"
+            @onEdit="onEdit"
+            @onCancel="onCancel"
+            @onDelete="ajaDeleteTale"
+        ></btnEditSaveCancelDelete>
+        <!--endregion Buttons-->
+        <!--##################################################-->
         <!--region Share & Likes-->
         <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
