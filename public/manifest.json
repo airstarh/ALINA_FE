@@ -1,7 +1,7 @@
 {
   "name": "Say Sim-Sim",
   "short_name": "sim-sim",
-  "display": "standalone",
+  "display": "fullscreen",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
