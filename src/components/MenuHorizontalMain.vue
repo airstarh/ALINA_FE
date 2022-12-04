@@ -2,7 +2,7 @@
   <div class="mb-1" id="alina-main-menu">
     <b-navbar toggleable="lg" type="light" class="corporate-bg-and-text">
       <b-navbar-brand to="/">
-        Миронова 45 А
+        Миронова 45А
         <sup>официальный сайт</sup>
       </b-navbar-brand>
       <b-navbar-nav class="flex-row">
