@@ -12,7 +12,7 @@
                 {{ UtilsStr.fullName(this.userFirstName, this.userLastName, this.userId) }}
             </router-link>
         </span>
-        <span style="font-size: min(3vmin, 0.8em)">{{ someDate | unix_to_date_time }}</span>
+        <span style="font-size: min(2vmin, 0.5em)">{{ someDate | unix_to_date_time }}</span>
       </div>
     </div>
   </div>

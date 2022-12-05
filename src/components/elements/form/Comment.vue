@@ -38,7 +38,7 @@
               :userFirstName="tale.owner_firstname"
               :userLastName="tale.owner_lastname"
               :emblemUrl="tale.owner_emblem"
-              emblemWidth="5vmax"
+              emblemWidth="10vmax"
               :someDate="tale.publish_at"
           ></UserAvatar>
           <!--endregion User Info-->
@@ -110,7 +110,7 @@
             :userFirstName="CU.attributes.firstname"
             :userLastName="CU.attributes.lastname"
             :emblemUrl="CU.attributes.emblem"
-            emblemWidth="5vmax"
+            emblemWidth="10vmax"
             :someDate="null"
         ></UserAvatar>
         <!--endregion User Info-->
@@ -194,7 +194,9 @@ export default {
         editor:        ClassicEditor,
         style:         {
           "margin-left":  this.level == 1 ? '0' : 'min(5vw, 100px)',
-          "max-width":    this.level == 1 ? '95vw' : '80vw',
+          "max-width":    this.level == 1 ? '95vw' : '85vw',
+          "padding":      "0",
+          "margin":       "0",
           "padding-left": "0",
           "border-left":  this.level == 1 ? '#A9ABAD solid 5px' : '#A9ABAD solid 1px'
         },
