@@ -38,7 +38,7 @@
               :userFirstName="tale.owner_firstname"
               :userLastName="tale.owner_lastname"
               :emblemUrl="tale.owner_emblem"
-              emblemWidth="10vmax"
+              emblemWidth="min(100px, 10vmax)"
               :someDate="tale.publish_at"
           ></UserAvatar>
           <!--endregion User Info-->
@@ -110,7 +110,7 @@
             :userFirstName="CU.attributes.firstname"
             :userLastName="CU.attributes.lastname"
             :emblemUrl="CU.attributes.emblem"
-            emblemWidth="10vmax"
+            emblemWidth="min(100px, 10vmax)"
             :someDate="null"
         ></UserAvatar>
         <!--endregion User Info-->
