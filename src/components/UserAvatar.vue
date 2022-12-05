@@ -6,14 +6,13 @@
       <div class="col">
         <span class="btn-secondary text-left text-nowrap badge-pill p-2">
             <router-link :to="'/auth/profile/'+userId" class="fixed-height-150px">
-                <img v-if="emblemUrl" :src="emblemUrl" :width="emblemWidth" class="rounded-circle">
-                <img v-if="!emblemUrl" src="@/assets/anarki.png" :width="emblemWidth" class="rounded-circle">
+                <img :src="emblemUrl" class="rounded-circle" :style="{'width': emblemWidth}">
             </router-link>
             <router-link :to="'/auth/profile/'+userId" class="text-light">
                 {{ UtilsStr.fullName(this.userFirstName, this.userLastName, this.userId) }}
             </router-link>
         </span>
-        {{ someDate | unix_to_date_time }}
+        <span style="font-size: min(3vmin, 0.8em)">{{ someDate | unix_to_date_time }}</span>
       </div>
     </div>
   </div>
@@ -43,7 +42,7 @@ export default {
     },
     emblemUrl:      {
       type:    String,
-      default: ''
+      default: '@/assets/anarki.png'
     },
     emblemWidth:    {
       type:    String,
