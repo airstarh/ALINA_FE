@@ -155,6 +155,7 @@
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
                       class="btn btn-sm btn-light text-left mb-1"
+                      style="font-size: 2vmin"
                   >
                     {{ tale.publish_at | unix_to_date_time }}
                   </router-link>
@@ -169,7 +170,7 @@
                 :userFirstName="tale.owner_firstname"
                 :userLastName="tale.owner_lastname"
                 :emblemUrl="tale.owner_emblem"
-                emblemWidth="100px"
+                emblemWidth="7vmax"
                 :someDate="null"
             ></UserAvatar>
             <!--endregion User Info-->
@@ -225,6 +226,20 @@
           </div>
         </div>
         <!--endregion Attached Documents-->
+        <!--##################################################-->
+        <!--##################################################-->
+        <!--region Buttons-->
+        <btnEditSaveCancelDelete
+            v-if="!pFlagInFeed"
+            :owner_id="tale.owner_id"
+            :modeEdit="options.modeEdit"
+            :subject="tale"
+            @onSave="ajaPostTale"
+            @onEdit="onEdit"
+            @onCancel="onCancel"
+            @onDelete="ajaDeleteTale"
+        ></btnEditSaveCancelDelete>
+        <!--endregion Buttons-->
         <!--##################################################-->
         <!--region Share & Likes-->
         <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">

@@ -133,7 +133,7 @@
     <div class="mt-5"></div>
     <tale_feed
         :doShowAuthorInfo="false"
-        :queryProps="{'owner':curId}"
+        :queryProps="{'owner':this.curId}"
     ></tale_feed>
   </div>
 </template>

@@ -4,32 +4,32 @@
       style=""
       class="d-flex justify-content-between mt-3 mb-3"
   >
-    <div class="btn" @click="onClickPage(pageSize, 1)" :class="{ 'btn-secondary': 1==pageCurrentNumber}">ᗕ</div>
-    <div class="btn" @click="onClickPage(pageSize, pageCurrentNumber-1)">←</div>
+    <div class="btn btn-sm" @click="onClickPage(pageSize, 1)" :class="{ 'btn-secondary': 1==pageCurrentNumber}">ᗕ</div>
+    <div class="btn btn-sm" @click="onClickPage(pageSize, pageCurrentNumber-1)">←</div>
     <div
         v-for="(v, i) in pagesArray"
         :key="i"
-        class="btn"
+        class="btn btn-sm"
         :class="{ 'btn-secondary': v==pageCurrentNumber}"
         @click="onClickPage(pageSize, v)"
     >{{ v }}
     </div>
-    <div class="btn" @click="onClickPage(pageSize, pageCurrentNumber+1)">→</div>
-    <div class="btn" @click="onClickPage(pageSize, pagesTotal)" :class="{ 'btn-secondary': pagesTotal==pageCurrentNumber}">ᗒ</div>
-    <div class="btn">{{ pageCurrentNumber }}/{{ pagesTotal }}</div>
+    <div class="btn btn-sm" @click="onClickPage(pageSize, pageCurrentNumber+1)">→</div>
+    <div class="btn btn-sm" @click="onClickPage(pageSize, pagesTotal)" :class="{ 'btn-secondary': pagesTotal==pageCurrentNumber}">ᗒ</div>
+    <div class="btn btn-sm d-none d-lg-inline-block">{{ pageCurrentNumber }}/{{ pagesTotal }}</div>
     <div
         v-if="pageCurrentNumber<pagesTotal && onClickMore"
-        class="btn"
+        class="btn btn-sm"
         @click="onClickMore(pageSize, pageCurrentNumber+1)"
     >
-      <span>More(+{{ pageSize }})</span>
+      <span>{{ $tc('More') }} +{{ pageSize }}</span>
     </div>
     <div
         v-if="rowsTotal > pageSize && onClickAll"
-        class="btn"
+        class="btn btn-sm"
         @click="onClickAll(rowsTotal, 1)"
     >
-      <span>All({{ rowsTotal }})</span>
+      <span>{{ $tc('TXT_FULL_LIST') }} {{ rowsTotal }} </span>
     </div>
   </div>
 </template>
@@ -37,6 +37,7 @@
 <script>
 import AjaxAlina from "@/services/AjaxAlina";
 import ConfigApi from "@/configs/ConfigApi";
+
 export default {
   name: "Paginator",
   data() {
