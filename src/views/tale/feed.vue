@@ -40,14 +40,14 @@
             <!--##################################################-->
             <!--region UP-DOWN-->
             <div class="sticky-top">
-              <div class="row text-center mt-5 alina-feed-up-down">
-                <div class="col btn btn-dark  cursor-pointer" @click="scrollToClassName('alina-feed-start')">&uarr;&uarr;</div>
+              <div class="row no-gutters text-center mt-5 alina-feed-up-down">
+                <div class="col btn btn-secondary  cursor-pointer" @click="scrollToClassName('alina-feed-start')">&uarr;&uarr;</div>
                 &nbsp;
-                <div class="col btn btn-dark cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
+                <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
                 &nbsp;
-                <div class="col btn btn-dark cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${index-1}`)">&uarr;</div>
+                <div class="col btn btn-secondary cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${feed.length-1}`)">&uarr;</div>
                 &nbsp;
-                <div class="col btn btn-dark cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${index+1}`)">&darr;</div>
+                <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${feed.length+1}`)">&darr;</div>
               </div>
             </div>
             <!--endregion UP-DOWN-->
@@ -84,14 +84,14 @@
           <!--##################################################-->
           <!--region UP-DOWN-->
           <div class="sticky-top">
-            <div class="row text-center mb-5 alina-feed-up-down">
-              <div class="col btn btn-dark  cursor-pointer" @click="scrollToClassName('alina-feed-start')">&uarr;&uarr;</div>
+            <div class="row no-gutters text-center mb-5 alina-feed-up-down">
+              <div class="col btn btn-secondary  cursor-pointer" @click="scrollToClassName('alina-feed-start')">&uarr;&uarr;</div>
               &nbsp;
-              <div class="col btn btn-dark cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
+              <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
               &nbsp;
-              <div class="col btn btn-dark cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${feed.length-1}`)">&uarr;</div>
+              <div class="col btn btn-secondary cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${feed.length-1}`)">&uarr;</div>
               &nbsp;
-              <div class="col btn btn-dark cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${feed.length+1}`)">&darr;</div>
+              <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${feed.length+1}`)">&darr;</div>
             </div>
           </div>
           <!--endregion UP-DOWN-->
@@ -191,6 +191,7 @@ export default {
     onAddressBarModified() {
       this.dataGetParams.txt                = this.$route.query?.txt || '';
       this.feedPagination.pageCurrentNumber = this.$route.query?.pageCurrentNumber || 1;
+      this.feedPagination.pageSize          = this.$route.query?.pageSize || 10;
       this.ajaGetFeed();
     },
     ajaGetFeed() {
