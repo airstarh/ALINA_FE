@@ -2,8 +2,11 @@
   <div class="mb-1" id="alina-main-menu">
     <b-navbar toggleable="lg" type="light" class="corporate-bg-and-text">
       <b-navbar-brand to="/">
+        <span style="font-size: min(7vw, 2em)">
         Миронова 45А
-        <sup>официальный сайт</sup>
+        </span>
+        <br>
+        <span style="font-size: min(3vw, 1em)">официальный сайт</span>
       </b-navbar-brand>
       <b-navbar-nav class="flex-row">
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="mr-3">
@@ -31,7 +34,6 @@
               <span class="mr-1 ml-1">{{ CU.attributes.firstname || CU.attributes.mail || '¯\_(ツ)_/¯' }}</span>
             </template>
             <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">{{ $t("TXT_LOGIN") }}</b-dropdown-item>
-            <!---->
             <b-dropdown-item to="/tale/upsert" v-if="CU.isLoggedIn()">{{ $t("TXT_ADD_TALE") }}</b-dropdown-item>
             <b-dropdown-item to="/auth/profile" v-if="CU.isLoggedIn()">{{ $t("TXT_PROFILE") }}</b-dropdown-item>
             <b-dropdown-item to="/auth/change_password" v-if="CU.isLoggedIn()">{{ $t("TXT_CHANGE_PASS") }}</b-dropdown-item>
@@ -48,6 +50,7 @@ import CurrentUser    from "@/services/CurrentUser";
 import ConfigApi      from "@/configs/ConfigApi";
 import CurrentLocale  from "@/services/CurrentLocale";
 import ConfigCkEditor from "@/configs/ConfigCkEditor";
+
 export default {
   name: "MenuHorizontalMain",
   data() {
