@@ -11,8 +11,8 @@
             <router-link :to="'/auth/profile/'+userId" class="text-light">
                 {{ UtilsStr.fullName(this.userFirstName, this.userLastName, this.userId) }}
             </router-link>
+            <span style="font-size: min(2vmin, 0.5em)">{{ someDate | unix_to_date_time }}</span>
         </span>
-        <span style="font-size: min(2vmin, 0.5em)">{{ someDate | unix_to_date_time }}</span>
       </div>
     </div>
   </div>
