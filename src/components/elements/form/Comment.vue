@@ -194,7 +194,7 @@ export default {
         editor:        ClassicEditor,
         style:         {
           "margin-left":  this.level == 1 ? '0' : 'min(5vw, 100px)',
-          "max-width":    this.level == 1 ? '85vw' : '70vw',
+          "max-width":    this.level == 1 ? '95vw' : '80vw',
           "padding-left": "0",
           "border-left":  this.level == 1 ? '#A9ABAD solid 5px' : '#A9ABAD solid 1px'
         },
