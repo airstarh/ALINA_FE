@@ -38,7 +38,7 @@
               :userFirstName="tale.owner_firstname"
               :userLastName="tale.owner_lastname"
               :emblemUrl="tale.owner_emblem"
-              emblemWidth="50px"
+              emblemWidth="min(100px, 10vmax)"
               :someDate="tale.publish_at"
           ></UserAvatar>
           <!--endregion User Info-->
@@ -54,7 +54,7 @@
           </div>
           <!--endregion Comment body          -->
           <!--##################################################-->
-          <div class="row no-gutters" v-else>
+          <div v-else class="row no-gutters">
             <div class="col">
               <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
             </div>
@@ -105,22 +105,19 @@
         <!--##################################################-->
         <!--region User Info-->
         <div class="mt-5">&nbsp;</div>
-        <div class="mt-5">&nbsp;</div>
         <UserAvatar
             :userId="CU.attributes.id"
             :userFirstName="CU.attributes.firstname"
             :userLastName="CU.attributes.lastname"
             :emblemUrl="CU.attributes.emblem"
-            emblemWidth="50px"
+            emblemWidth="min(100px, 10vmax)"
             :someDate="null"
         ></UserAvatar>
         <!--endregion User Info-->
         <!--##################################################-->
         <!--region EDITOR-->
         <div class="row no-gutters">
-          <div
-              class="col"
-          >
+          <div class="col">
             <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
             <div class="row no-gutters">
               <div class="col"></div>
@@ -196,9 +193,12 @@ export default {
         editorConfig:  ConfigCkEditor,
         editor:        ClassicEditor,
         style:         {
-          "margin-left":  this.level == 1 ? '0' : 10 + '%',
-          "padding-left": "1mm",
-          "border-left":  this.level == 1 ? '#A9ABAD solid 7px' : '#A9ABAD solid 2px'
+          "padding":      "0",
+          "margin":       "0",
+          "margin-left":  this.level == 1 ? '0' : 'min(5vw, 100px)',
+          "max-width":    this.level == 1 ? '95vw' : '85vw',
+          "padding-left": "0",
+          "border-left":  this.level == 1 ? '#A9ABAD solid 5px' : '#A9ABAD solid 1px'
         },
         styleComment:  {}
       },
