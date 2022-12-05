@@ -22,14 +22,14 @@
         class="btn btn-sm"
         @click="onClickMore(pageSize, pageCurrentNumber+1)"
     >
-      <span>More(+{{ pageSize }})</span>
+      <span>{{ $tc('More') }} +{{ pageSize }}</span>
     </div>
     <div
         v-if="rowsTotal > pageSize && onClickAll"
         class="btn btn-sm"
         @click="onClickAll(rowsTotal, 1)"
     >
-      <span>All({{ rowsTotal }})</span>
+      <span>{{ $tc('TXT_FULL_LIST') }} {{ rowsTotal }} </span>
     </div>
   </div>
 </template>
@@ -37,6 +37,7 @@
 <script>
 import AjaxAlina from "@/services/AjaxAlina";
 import ConfigApi from "@/configs/ConfigApi";
+
 export default {
   name: "Paginator",
   data() {

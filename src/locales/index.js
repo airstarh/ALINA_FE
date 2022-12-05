@@ -23,6 +23,7 @@ const Translations = {
     TXT_PASSWORD:            "Password",
     TXT_CODE:                "Code",
     TXT_REPEAT:              "Repeat here",
+    TXT_FULL_LIST:           "All",
     COUNTER_COMMENTS:        'no comments | one comment | {count} comments',
     "Select an image":       "Select an image",
     "First Name":            "First Name",
@@ -74,6 +75,7 @@ const Translations = {
     TXT_PASSWORD:                                                     "Пароль",
     TXT_CODE:                                                         "Код",
     TXT_REPEAT:                                                       "Повторите ввод",
+    TXT_FULL_LIST:                                                    "Все",
     COUNTER_COMMENTS:                                                 'нет комментариев | {n} комментарий | {n} комментария | {n} комменнтариев',
     "Select an image":                                                "Выбрать изображение",
     "First name":                                                     "Имя",
@@ -175,6 +177,7 @@ const Translations = {
     "Unexpected error.":                                              "Неразрешимая ошибка.",
     "Hide date":                                                      "Скрыть дату",
     "Response is not success":                                        "Неожиданный ответ от сервера",
+    "More":                                                           "Ещё",
   },
 };
 export default Translations;

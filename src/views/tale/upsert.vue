@@ -169,7 +169,7 @@
                 :userFirstName="tale.owner_firstname"
                 :userLastName="tale.owner_lastname"
                 :emblemUrl="tale.owner_emblem"
-                emblemWidth="100px"
+                emblemWidth="7vmax"
                 :someDate="null"
             ></UserAvatar>
             <!--endregion User Info-->

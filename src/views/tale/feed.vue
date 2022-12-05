@@ -206,7 +206,9 @@ export default {
             this.feedPagination = aja.respBody.meta.tale;
             //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
             // #####
-            //this.scrollTop();
+            if (this.feedPagination.pageCurrentNumber !=1) {
+              this.scrollTop();
+            }
           }
         }
       })
@@ -238,21 +240,12 @@ export default {
       //this.ajaGetFeed();
     },
     scrollTop(className = 'alina-feed-start') {
-      // alina-feed-start
-      const el = this.$el.getElementsByClassName(className)[0];
-      if (el) {
-        el.scrollIntoView({behavior: 'smooth'});
-      }
+      this.scrollToClassName('alina-feed-start')
     },
     scrollBottom(className = 'alina-feed-end') {
-      // alina-feed-end
-      const el = this.$el.getElementsByClassName(className)[0];
-      if (el) {
-        el.scrollIntoView({behavior: 'smooth'});
-      }
+      this.scrollToClassName('alina-feed-end')
     },
     scrollToClassName(className = 'alina-feed-start') {
-      // alina-feed-start
       const el = this.$el.getElementsByClassName(className)[0];
       if (el) {
         el.scrollIntoView({behavior: 'smooth'});
