@@ -45,9 +45,9 @@
                 &nbsp;
                 <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
                 &nbsp;
-                <div class="col btn btn-secondary cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${feed.length-1}`)">&uarr;</div>
+                <div class="col btn btn-secondary cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${index-1}`)">&uarr;</div>
                 &nbsp;
-                <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${feed.length+1}`)">&darr;</div>
+                <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${index+1}`)">&darr;</div>
               </div>
             </div>
             <!--endregion UP-DOWN-->
