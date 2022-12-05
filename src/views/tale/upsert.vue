@@ -155,6 +155,7 @@
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
                       class="btn btn-sm btn-light text-left mb-1"
+                      style="font-size: 2vmin"
                   >
                     {{ tale.publish_at | unix_to_date_time }}
                   </router-link>
@@ -169,7 +170,7 @@
                 :userFirstName="tale.owner_firstname"
                 :userLastName="tale.owner_lastname"
                 :emblemUrl="tale.owner_emblem"
-                emblemWidth="100px"
+                emblemWidth="7vmax"
                 :someDate="null"
             ></UserAvatar>
             <!--endregion User Info-->
