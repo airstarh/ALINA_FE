@@ -7,7 +7,7 @@
       class="bg-dark text-white"
   >
     <MenuHorizontalMain v-if="!fullScreen"></MenuHorizontalMain>
-    <router-view style="min-height: 80vh;"></router-view>
+    <router-view></router-view>
     <Messages></Messages>
     <Spinner></Spinner>
     <div v-if="!fullScreen">
@@ -16,14 +16,15 @@
   </div>
 </template>
 <script>
-import MenuHorizontalMain from "@/components/MenuHorizontalMain";
-import Footer             from "@/components/Footer";
-import Messages           from "@/components/global/Messages";
-import Spinner            from "@/components/global/Spinner";
-import AlinaStorage       from "@/services/AlinaStorage";
-import UtilsArray         from "@/Utils/UtilsArray";
-import PageSettings       from "@/services/PageSettings";
-import ConfigApi          from "@/configs/ConfigApi";
+import MenuHorizontalMain      from "@/components/MenuHorizontalMain";
+import Footer                  from "@/components/Footer";
+import Messages                from "@/components/global/Messages";
+import Spinner                 from "@/components/global/Spinner";
+import AlinaStorage            from "@/services/AlinaStorage";
+import UtilsArray              from "@/Utils/UtilsArray";
+import PageSettings            from "@/services/PageSettings";
+import ConfigApi               from "@/configs/ConfigApi";
+import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name:       "App",
@@ -41,6 +42,10 @@ export default {
     }
   },
   mounted() {
+    /**
+     * Documentation:
+     * https://bootstrap-vue.org/docs/components/collapse
+     */
     this.$root.$on('bv::collapse::state', (collapseId, isJustShown) => {
       if (collapseId.startsWith('comment-collapse-')) {
         if (isJustShown) {
@@ -64,7 +69,7 @@ export default {
   },
   computed: {
     pageIsInIframe() {
-      return this.ConfigApi.pageIsInIframe();
+      return AlinaPageGlobalAnalyzer.pageIsInIframe();
     },
     fullScreen() {
       if (this.pageIsInIframe) {

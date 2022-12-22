@@ -13,9 +13,13 @@
     <b-collapse
         :id="`comment-collapse-${answer_to_tale_id}`"
         @show="onExpandCommentList(`comment-collapse-${answer_to_tale_id}`)"
+        @shown="pageRecalcIframeHeight"
+        @hidden="pageRecalcIframeHeight"
         :visible="level == 3"
         class="mb-5"
     >
+      <!--##################################################-->
+      <!--region SUBMITTED COMMENTS-->
       <div
           v-for="(tale, feedIndex) in feed"
           :key="tale.id"
@@ -52,15 +56,17 @@
               <div class="mt-3"></div>
             </div>
           </div>
-          <!--endregion Comment body          -->
-          <!--##################################################-->
+          <!--################################################## -->
           <div v-else class="row no-gutters">
             <div class="col">
               <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
             </div>
           </div>
-
+          <!--endregion Comment body          -->
+          <!--##################################################-->
+          <!--region Buttons, Likes-->
           <div class="row no-gutters m-buttons-1">
+            <!--region Buttons EDIT CANCEL SUBMIT-->
             <div class="col text-right" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
                             <span class="row no-gutters">
                                 <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">{{ $t("TXT_DELETE") }}</button>
@@ -69,6 +75,8 @@
                                 <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">{{ $t("TXT_SUBMIT") }}</button>
                             </span>
             </div>
+            <!--endregion Buttons EDIT CANCEL SUBMIT-->
+            <!--region Likes-->
             <div class="col">
               <div class="text-right">
                 <Like
@@ -79,7 +87,10 @@
                 ></Like>
               </div>
             </div>
+            <!--endregion Likes-->
           </div>
+          <!--endregion Buttons, Likes-->
+          <!--##################################################-->
         </div>
         <Comment
             v-if="tale.level < 2"
@@ -88,6 +99,7 @@
             :root_tale_id="tale.root_tale_id"
             :answer_to_tale_id="tale.id"
             :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
+            :root_tale_object="root_tale_object"
         ></Comment>
       </div>
       <Paginator
@@ -99,9 +111,10 @@
           :onClickMore="onClickMore"
           :onClickAll="onClickAll"
       ></Paginator>
-      <div
-          v-if="CU.isLoggedIn() && AlinaStorage.Comment.expanded.includes(`comment-collapse-${answer_to_tale_id}`)"
-      >
+      <!--endregion SUBMITTED COMMENTS-->
+      <!--##################################################-->
+      <!--region NEW COMMENT-->
+      <div v-if="flagNewCommentAvailable()">
         <!--##################################################-->
         <!--region User Info-->
         <div class="mt-5">&nbsp;</div>
@@ -123,7 +136,7 @@
               <div class="col"></div>
               <div class="col">
                 <div class="row no-gutters">
-                  <button @click="() => {this.body = '';}" class="col btn btn-sm btn-warning">{{ $t("TXT_CLEAR") }}</button>
+                  <button @click="() => {this.body = '';}" class="col btn btn-sm btn-danger">{{ $t("TXT_CLEAR") }}</button>
                   <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{ $t("TXT_SUBMIT") }}</button>
                 </div>
               </div>
@@ -131,22 +144,27 @@
             <div>&nbsp;</div>
           </div>
         </div>
+        <!--endregion EDITOR-->
       </div>
-      <!--endregion EDITOR-->
+      <!--endregion NEW COMMENT-->
+      <!--##################################################-->
+      <div v-if="!flagNewCommentAvailable()">{{$tc('Comments only for owner')}}</div>
       <!--##################################################-->
       <!--region Login or Register-->
       <div v-if="!CU.isLoggedIn()" class="col">
-        <router-link
-            to="/auth/login"
+        <a
+            href="#/auth/login"
             class="btn btn-sm btn-primary"
+            target="_top"
         >{{ $t("IMP_LOGIN") }}
-        </router-link>
+        </a>
         {{ $t("or") }}
-        <router-link
-            to="/auth/register"
+        <a
+            href="#/auth/register"
             class="btn btn-sm btn-primary"
+            target="_top"
         >{{ $t("IMP_REGISTER") }}
-        </router-link>
+        </a>
         {{ $t("to post comments") }}
       </div>
       <!--endregion Login or Register-->
@@ -157,20 +175,19 @@
 </template>
 
 <script>
-import UtilsStr       from "@/Utils/UtilsStr";
-import AjaxAlina      from "@/services/AjaxAlina";
-import ConfigApi      from "@/configs/ConfigApi";
-import UtilsArray     from "@/Utils/UtilsArray";
-import Comment        from "@/components/elements/form/Comment";
-import Like           from "@/components/elements/form/Like";
-import Paginator      from "@/components/elements/form/Paginator";
-import ClassicEditor  from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import ConfigCkEditor from "@/configs/ConfigCkEditor";
-import CurrentUser    from "@/services/CurrentUser";
-import AlinaStorage   from "@/services/AlinaStorage";
-import UtilsData      from "@/Utils/UtilsData";
-import lodash         from 'lodash';
-import UserAvatar     from "@/components/UserAvatar";
+import UtilsStr                from "@/Utils/UtilsStr";
+import AjaxAlina               from "@/services/AjaxAlina";
+import ConfigApi               from "@/configs/ConfigApi";
+import UtilsArray              from "@/Utils/UtilsArray";
+import Comment                 from "@/components/elements/form/Comment";
+import Like                    from "@/components/elements/form/Like";
+import Paginator               from "@/components/elements/form/Paginator";
+import ClassicEditor           from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+import ConfigCkEditor          from "@/configs/ConfigCkEditor";
+import CurrentUser             from "@/services/CurrentUser";
+import AlinaStorage            from "@/services/AlinaStorage";
+import UserAvatar              from "@/components/UserAvatar";
+import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name:       "Comment",
@@ -216,6 +233,10 @@ export default {
     }
   },
   props: {
+    root_tale_object:           {
+      type:    Object,
+      default: null,
+    },
     level:                      {
       type:    Number,
       default: 1,
@@ -383,10 +404,19 @@ export default {
         });
       }
     },
-    pageRecalcIframeHeight: lodash.debounce(() => {
-      ConfigApi.pageRecalcIframeHeight();
-    }, 300),
-  }, // #####
+    pageRecalcIframeHeight() {
+      const className = `AlinaIframe-tale-${this.root_tale_id}`;
+      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(className);
+    },
+    flagNewCommentAvailable() {
+      if (!this.CU.isLoggedIn()) {return false;}
+      if (!this.AlinaStorage.Comment.expanded.includes(`comment-collapse-${this.answer_to_tale_id}`)) {return false;}
+      if (this.CU.ownsOrAdminOrModerator(this.root_tale_object.owner_id)) {return true;}
+      if (this.root_tale_object?.is_comment_for_owner == 1) {return false;}
+      if (this.root_tale_object?.is_comment_denied == 0) {return true;}
+      return false;
+    }
+  },
   watch:    {
     // $route(to, from) {
     //   const q = this.$route.query;
@@ -395,7 +425,7 @@ export default {
     //   }
     //   this.ajaGetComments();
     // },
-  }, // #####
+  },
   computed: {
     // a computed getter
     commentsTotal: function () {
@@ -407,8 +437,8 @@ export default {
         res = this.count_by_answer_to_tale_id;
       }
       return res;
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -2,7 +2,11 @@
   <div class="p-1 mt-3 mb-3" v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0">
     <div>
       <b-button v-b-toggle="[`f-${entity_id}`]" variant="primary">{{ $t('Attached Documents') }} <span v-if="ownLength>0">{{ ownLength }}</span></b-button>
-      <b-collapse :id="`f-${entity_id}`" class="mt-3" @show="onShow">
+      <b-collapse
+          :id="`f-${entity_id}`" class="mt-3"
+          @show="onShow"
+          @hide="onHide"
+      >
         <ui-fileupload
             v-if="modeEdit"
             accept="*/*"
@@ -24,12 +28,13 @@
 </template>
 
 <script>
-import AlinaTableJson from "@/components/AlinaTableJson";
-import ConfigApi      from "@/configs/ConfigApi";
-import AjaxAlina      from "@/services/AjaxAlina";
-import UtilsArray     from "@/Utils/UtilsArray";
-import CurrentUser    from "@/services/CurrentUser";
-import UtilsData      from "@/Utils/UtilsData";
+import AlinaTableJson          from "@/components/AlinaTableJson";
+import ConfigApi               from "@/configs/ConfigApi";
+import AjaxAlina               from "@/services/AjaxAlina";
+import UtilsArray              from "@/Utils/UtilsArray";
+import CurrentUser             from "@/services/CurrentUser";
+import UtilsData               from "@/Utils/UtilsData";
+import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name:  "AlinaFileUploader",
@@ -72,6 +77,9 @@ export default {
     //this.loadFileList();
     this.loopFiles();
   },
+  updated() {
+    this.pageRecalcIframeHeight();
+  },
   methods:    {
     loopFiles() {
       for (let [i, model] of Object.entries(this.dArrFiles)) {
@@ -80,9 +88,8 @@ export default {
           model.url   = `<a href="${model.url_path}" target="_blank" class="btn btn-sm btn-block text-left btn-dark">${model.name_human}</a>`;
         }
         if (model.hasOwnProperty('name_fs')) {
-          model.icon   = `<span class="">🔗</span>`;
+          model.icon = `<span class="">🔗</span>`;
         }
-
       }
     },
     mergePropsAndData() {
@@ -151,8 +158,14 @@ export default {
       .go();
     },
     onShow() {
-      ConfigApi.pageRecalcIframeHeight();
       this.loadFileList();
+    },
+    onHide() {
+      UtilsArray.clear(this.dArrFiles);
+    },
+    pageRecalcIframeHeight() {
+      const className = `AlinaIframe-tale-${this.entity_id}`;
+      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(className);
     },
   },
   components: {
