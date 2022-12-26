@@ -8,7 +8,7 @@
             <router-link :to="'/auth/profile/'+userId" class="fixed-height-150px">
                 <img :src="emblemUrl" class="rounded-circle" :style="{'width': emblemWidth}">
             </router-link>
-            <router-link :to="'/auth/profile/'+userId" class="text-light">
+            <router-link :to="'/auth/profile/'+userId" class="text-light alina-user-avatar">
                 {{ UtilsStr.fullName(this.userFirstName, this.userLastName, this.userId) }}
             </router-link>
             <span style="font-size: min(2vmin, 0.5em)">{{ someDate | unix_to_date_time }}</span>
@@ -62,4 +62,18 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@media (max-width: 500px) {
+
+}
+
+a.alina-user-avatar {
+  display: inline-block;
+  max-width: 50%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+</style>
