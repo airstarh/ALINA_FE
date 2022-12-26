@@ -1,16 +1,22 @@
 <template>
   <div
-      id="alina-body-wrapper"
+      class="alina-flex-vertical-container"
+      :class="{
+          'alina-vh-100':!pageIsInIframe
+        }"
       :style="{
-            'overflow': pageIsInIframe ? 'hidden':''
-         }"
-      class="bg-dark text-white"
+          'overflow': pageIsInIframe ? 'hidden':''
+        }"
   >
-    <MenuHorizontalMain v-if="!fullScreen"></MenuHorizontalMain>
-    <router-view></router-view>
-    <Messages></Messages>
-    <Spinner></Spinner>
-    <div v-if="!fullScreen">
+    <div class="alina-flex-vertical-header" v-if="!fullScreen">
+      <MenuHorizontalMain></MenuHorizontalMain>
+    </div>
+    <div class="alina-flex-vertical-content">
+      <Messages></Messages>
+      <Spinner></Spinner>
+      <router-view></router-view>
+    </div>
+    <div class="alina-flex-vertical-footer" v-if="!fullScreen">
       <Footer></Footer>
     </div>
   </div>
@@ -94,3 +100,6 @@ export default {
   }
 };
 </script>
+<style scoped>
+
+</style>
