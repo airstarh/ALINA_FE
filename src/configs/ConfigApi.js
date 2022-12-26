@@ -2,7 +2,7 @@ import UtilsSys from "@/Utils/UtilsSys";
 import lodash   from "lodash";
 
 const ConfigApi = {
-  "url_base":              "https://alinazero", //"url_base":              "https://host.home",
+  "url_base":              "https://alinazero",
   "ALINA_FILE_UPLOAD_KEY": "userfile[]",
   "YandexMaps":            {
     apiKey:     '716acc81-eeeb-4db9-a3d6-eb1d1c5f7b55',
