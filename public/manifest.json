@@ -5,9 +5,9 @@
   "icons": [
     {
       "src": "/favicon.svg",
-      "sizes": "any",
+	  "sizes": "any",
       "type": "image/svg-xml",
-      "purpose": "any"
+	  "purpose": "any"
     }
   ],
   "scope": "/",

@@ -142,11 +142,6 @@
       >TEST Bad Response
       </button>
       &nbsp;
-      <a
-          :href="`${ConfigApi.url_base}/Auth/ResetPasswordRequest`"
-          class="btn btn-lg btn-primary"
-      >Test origin</a>
-      &nbsp;
       <button
           @click="onTestPost()"
           class="btn btn-lg btn-primary"
