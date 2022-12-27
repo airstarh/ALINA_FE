@@ -148,7 +148,7 @@
       </div>
       <!--endregion NEW COMMENT-->
       <!--##################################################-->
-      <div v-if="!flagNewCommentAvailable()">{{$tc('Comments only for owner')}}</div>
+      <div v-if="root_tale_object.is_comment_for_owner == 1" class="m-3">{{$tc('Comments only for owner')}}</div>
       <!--##################################################-->
       <!--region Login or Register-->
       <div v-if="!CU.isLoggedIn()" class="col">
