@@ -12,8 +12,9 @@
 </template>
 
 <script>
-import CurrentUser from "@/services/CurrentUser";
-import ConfigApi   from "@/configs/ConfigApi";
+import CurrentUser             from "@/services/CurrentUser";
+import ConfigApi               from "@/configs/ConfigApi";
+import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name:  "btnEditSaveCancelDelete",
@@ -50,12 +51,10 @@ export default {
     },
     onDelete() {
       this.$emit('onDelete', this.subject)
-    },
-    // ##################################################
+    }, // ##################################################
     pageIsInIframe() {
-      return this.ConfigApi.pageIsInIframe();
-    },
-    // ##################################################
+      return AlinaPageGlobalAnalyzer.pageIsInIframe();
+    }, // ##################################################
   }
 };
 </script>
