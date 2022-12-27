@@ -81,7 +81,7 @@
         <!--endregion USER-->
         <!--################################################## -->
       </b-collapse>
-      <!--region SMALL/BIG SCREEN-->
+      <!--endregion SMALL/BIG SCREEN-->
       <!--################################################## -->
     </b-navbar>
   </div>
