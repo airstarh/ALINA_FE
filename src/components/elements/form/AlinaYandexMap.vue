@@ -109,14 +109,15 @@
 </template>
 
 <script>
-import UtilsData from "@/Utils/UtilsData";
-import ConfigApi from "@/configs/ConfigApi";
+import UtilsData               from "@/Utils/UtilsData";
+import ConfigApi               from "@/configs/ConfigApi";
+import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name: "AlinaYandexMap",
   created() {
     this.mMapLatLonToCSV();
-    ConfigApi.pageRecalcIframeHeight();
+    this.pageRecalcIframeHeight();
   },
   props: {
     item:      {
@@ -149,13 +150,7 @@ export default {
       dtLatLongCSV: '',
       ConfigApi,
       tagYandexMap: {
-        controls: [
-            'fullscreenControl',
-            'geolocationControl',
-            'trafficControl',
-            'zoomControl',
-            'typeSelector',
-        ]
+        controls: ['fullscreenControl', 'geolocationControl', 'trafficControl', 'zoomControl', 'typeSelector',]
       }
     }
   },
@@ -203,8 +198,7 @@ export default {
       } else {
         this.item.geo_longitude = '';
       }
-    },
-    // # endregion Lat Lon Smart
+    }, // # endregion Lat Lon Smart
     // ##################################################
   },
   methods:  {
@@ -224,15 +218,18 @@ export default {
       } else {
         this.dtLatLongCSV = `${geo_latitude}, ${geo_longitude}`;
       }
-    },
-    // # endregion Lat Lon Smart
+    }, // # endregion Lat Lon Smart
     // ##################################################
     onTypeChange(newValue) {
       this.item.geo_is_map_shown = 0;
       this.item.geo_is_map_shown = 1;
-      ConfigApi.pageRecalcIframeHeight();
+      this.pageRecalcIframeHeight();
       this.$forceUpdate();
-    }
+    },
+    pageRecalcIframeHeight() {
+      const className = `AlinaIframe-tale-${this.item.id}`;
+      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(className);
+    },
   }
 };
 </script>

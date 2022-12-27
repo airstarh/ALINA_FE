@@ -178,6 +178,8 @@ const Translations = {
     "Hide date":                                                      "Скрыть дату",
     "Response is not success":                                        "Неожиданный ответ от сервера",
     "More":                                                           "Ещё",
+    "Comments only for owner":                                        "Может комментировать только автор",
+    "SEO Index":                                                      "SEO Индекс",
   },
 };
 export default Translations;

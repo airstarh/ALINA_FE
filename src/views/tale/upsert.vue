@@ -105,6 +105,10 @@
                   <!-- is_comment_denied -->
                   <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0" :checked="tale.is_comment_denied==1">{{ $t("Comments denied") }}</ui-checkbox>
                 </div>
+                <div class="mb-3">
+                  <!-- is_comment_for_owner -->
+                  <ui-checkbox v-model="tale.is_comment_for_owner" :trueValue="1" :false-value="0" :checked="tale.is_comment_for_owner==1">{{ $t("Comments only for owner") }}</ui-checkbox>
+                </div>
               </div>
               <div class="col">
                 <div class="mb-3">
@@ -126,6 +130,17 @@
                 <div class="mb-3">
                   <!-- is_for_registered -->
                   <ui-checkbox v-model="tale.is_for_registered" :trueValue="1" :false-value="0" :checked="tale.is_for_registered==1">{{ $t("Only for registered users") }}</ui-checkbox>
+                </div>
+
+                <div class="input-group input-group mb-3">
+                  <!-- seo_index -->
+                  <div class="input-group-prepend">
+                    <span class="input-group-text bg-dark text-light">{{ $tc('SEO Index') }}</span>
+                  </div>
+                  <input type="text" class="form-control" v-model="tale.seo_index">
+                  <div class="input-group-appent">
+                    <span class="input-group-text bg-dark text-light">{{ tale.seo_index }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -269,6 +284,7 @@
               :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
               :answer_to_tale_id="tale.id"
               :count_by_answer_to_tale_id="tale.count_root_tale_id"
+              :root_tale_object="tale"
           ></Comment>
         </div>
       </div>
@@ -293,6 +309,7 @@ import UtilsSys                from "@/Utils/UtilsSys";
 import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete";
 import AlinaFileUploader       from "@/components/elements/form/AlinaFileUploader";
 import UserAvatar              from "@/components/UserAvatar";
+import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
 export default {
@@ -344,6 +361,8 @@ export default {
         is_avatar_hidden:         0,
         is_social_sharing_hidden: 0,
         is_for_registered:        0,
+        is_comment_for_owner:     0,
+        seo_index:                0.1,
         geo_latitude:             0,
         geo_longitude:            0,
         geo_map_type:             'map',
@@ -382,7 +401,7 @@ export default {
       return res;
     },
     pageIsInIframe() {
-      return this.ConfigApi.pageIsInIframe();
+      return AlinaPageGlobalAnalyzer.pageIsInIframe();
     },
     routerTaleId() {
       let res     = null;
