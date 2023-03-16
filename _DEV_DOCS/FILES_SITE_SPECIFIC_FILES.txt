@@ -1,0 +1,8 @@
+public/favicon.ico
+public/favicon.svg
+public/index.html
+public/manifest.json
+src/components/MenuHorizontalMain.vue
+src/components/Footer.vue
+src/configs/ConfigApi.js
+src/assets/*
