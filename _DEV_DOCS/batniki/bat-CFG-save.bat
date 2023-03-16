@@ -5,15 +5,16 @@
 ::
 ::@echo off
 set FROM=C:\_A001\REPOS\OWN\vuesandbox\sandbox
-set TOTO=C:\_A001\REPOS\OWN\vuesandbox\_DEV_DOCS\batniki\_CFG\sss
+::set PROJ = m45a
+::set PROJ = vov
+::set PROJ = sss
+set PROJ = localhost
+set TOTO=C:\_A001\REPOS\OWN\vuesandbox\sandbox\_DEV_DOCS\batniki\_CFG\%PROJ%
 
-xcopy /y %FROM%\public\favicon.ico %TOTO%
-xcopy /y %FROM%\public\favicon.svg %TOTO%
-xcopy /y %FROM%\public\index.html %TOTO%
-xcopy /y %FROM%\public\manifest.json %TOTO%
-xcopy  /y %FROM%\src\components\Footer.vue %TOTO%
-xcopy /y %FROM%\src\components\MenuHorizontalMain.vue %TOTO%
-xcopy /y %FROM%\src\configs\ConfigApi.js %TOTO%
+xcopy /i /e /y %FROM%\public %TOTO%\public
 xcopy /i /e /y %FROM%\src\assets %TOTO%\assets
+xcopy /y %FROM%\src\configs\ConfigApi.js %TOTO%\src\configs\ConfigApi.js
+xcopy /y %FROM%\src\components\MenuHorizontalMain.vue %TOTO%\src\components\MenuHorizontalMain.vue
+xcopy /y %FROM%\src\components\Footer.vue %TOTO%\src\components\Footer.vue
 
 pause
