@@ -38,11 +38,24 @@ keen-ui@^1
 
 
 npm install
-core-js@^3
 date-fns@^2
 vue-date-fns@^2
+core-js@^3
 sass@^1
 svgo@^2
 svgo-loader@^3
 vue-yandex-maps@^0
 npm-check-updates@latest
+
+##################################################
+##################################################
+##################################################
+##################################################
+EXPERIMENTS LOG
+::region NOT WORKING!!!
+npm install
+svgo@^3
+svgo-loader@^4
+
+npm install sass-loader@^13
+::endregion NOT WORKING!!!
