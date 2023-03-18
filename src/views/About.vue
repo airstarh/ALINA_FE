@@ -359,7 +359,7 @@ export default {
       dateExample:     'DEFAULT VALUE',
       uts:             1,
       ckEditorRelated: {
-        aModel:       'Ra-ta-ta-ta',
+        aModel:       'Ra-ta-ta-ta VeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpaces',
         editorConfig: ConfigCkEditor,
         editor:       ClassicEditor,
       },
