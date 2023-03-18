@@ -1,13 +1,13 @@
 <template>
   <div v-if="CU.ownsOrAdminOrModerator(owner_id) && !pageIsInIframe()" class="row no-gutters mb-1 m-buttons-1">
     <!--Delete-->
-    <button @click="onDelete" class="col btn btn-danger">{{ $t("TXT_DELETE") }}</button>
+    <button @click="onDelete" class="col-3 btn btn-danger">{{ $t("TXT_DELETE") }}</button>
     <!--Edit-->
-    <button @click="onEdit" class="col btn btn-info" v-if="!modeEdit">{{ $t("TXT_EDIT") }}</button>
+    <button @click="onEdit" class="col btn btn-secondary" v-if="!modeEdit">{{ $t("TXT_EDIT") }}</button>
     <!--Cancel-->
-    <button @click="onCancel" class="col btn btn-info" v-if="modeEdit">{{ $t("TXT_CANCEL") }}</button>
+    <button @click="onCancel" class="col btn btn-secondary" v-if="modeEdit">{{ $t("TXT_CANCEL") }}</button>
     <!--Save-->
-    <button @click="onSave" class="col btn btn-primary" v-if="modeEdit">{{ $t("TXT_SUBMIT") }}</button>
+    <button @click="onSave" class="col btn btn-secondary" v-if="modeEdit">{{ $t("TXT_SUBMIT") }}</button>
   </div>
 </template>
 

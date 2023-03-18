@@ -170,7 +170,7 @@
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
                       class="btn btn-sm btn-light text-left mb-1"
-                      style="font-size: 2vmin"
+                      style="font-size: 2vmin;"
                   >
                     {{ tale.publish_at | unix_to_date_time }}
                   </router-link>
@@ -231,7 +231,7 @@
         <!--##################################################-->
         <!--region Attached Documents-->
         <div class="row no-gutters" v-if="tale.count_files > 0 || options.modeEdit">
-          <div class="col">
+          <div class="col mb-3">
             <AlinaFileUploader
                 :entity_id="tale.id"
                 entity_table="tale"
@@ -257,7 +257,7 @@
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region Share & Likes-->
-        <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
+        <div class="row no-gutters mb-3" v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
             <div class="text-left m-buttons-1">
               <Share :tale="tale"></Share>
@@ -277,7 +277,7 @@
         </div>
         <!--endregion Share & Likes-->
         <!--##################################################-->
-        <div v-if="tale.is_comment_denied != 1">
+        <div v-if="tale.is_comment_denied != 1" class="mb-5">
           <Comment
               v-if="tale.level < 2"
               :level="tale.level+1"
