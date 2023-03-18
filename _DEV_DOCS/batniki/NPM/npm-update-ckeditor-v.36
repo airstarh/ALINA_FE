@@ -5,24 +5,15 @@ npm install --save
 @ckeditor/ckeditor5-vue2@latest
 
 npm install
-@ckeditor/ckeditor5-vue2
-@ckeditor/ckeditor5-dev-translations
-@ckeditor/ckeditor5-dev-utils
+@ckeditor/ckeditor5-vue2@latest
+@ckeditor/ckeditor5-dev-translations@latest
+@ckeditor/ckeditor5-dev-utils@^28
 postcss-loader@4
 raw-loader@4
 #####
 #####
 #####
-#####
-:: https://ckeditor.com/docs/ckeditor5/latest/installation/frameworks/vuejs-v2.html
-npm install --save
-    @ckeditor/ckeditor5-vue2@latest
-    @ckeditor/ckeditor5-dev-translations@latest
-    @ckeditor/ckeditor5-dev-utils@latest
-    postcss-loader@4
-    raw-loader@4
-
-npm uninstall @ckeditor/ckeditor5-dev-webpack-plugin
+???npm uninstall @ckeditor/ckeditor5-dev-webpack-plugin
 
 npm install
 @ckeditor/ckeditor5-alignment@latest
