@@ -37,40 +37,12 @@ vue-cookies@^1
 keen-ui@^1
 
 
-
-
-
-npm-check-updates@latest
-vue-social-sharing@latest
-keen-ui@latest
-@vue/cli-service@latest
-@vue/cli-plugin-babel@latest
-
-
-vue-yandex-maps@latest
-vue-date-fns@latest
-vue-cookies@latest
-date-fns@latest
-
-
-
-
-
-npm install vue-i18n@8.27.0
-##################################################
-# https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v2.html
-~~~ raw-loader@4
-NEVER UPDATE !!!sass-loader@10.1.0
-NEVER UPDATE !!!postcss-loader@4
-
-
-##################################################
-# NOT SURE
 npm install
-bootstrap-vue@^2
-date-fns@^2
 core-js@^3
-whatwg-fetch@^3
-
-
-
+date-fns@^2
+vue-date-fns@^2
+sass@^1
+svgo@^2
+svgo-loader@^3
+vue-yandex-maps@^0
+npm-check-updates@latest
