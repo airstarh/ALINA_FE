@@ -1,3 +1,9 @@
+npm install --save @ckeditor/vite-plugin-ckeditor5 @ckeditor/ckeditor5-vue2
+
+#####
+#####
+#####
+#####
 :: https://ckeditor.com/docs/ckeditor5/latest/installation/frameworks/vuejs-v2.html
 npm install --save
     @ckeditor/ckeditor5-vue2@latest

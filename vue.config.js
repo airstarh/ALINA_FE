@@ -20,7 +20,8 @@ module.exports              = {
 			/*
 			 * The directory containing your SVG files.
 			 */
-			dir:  'src/assets/svg', /*
+			dir: 'src/assets/svg',
+			/*
              * The regex that will be used for the Webpack rule.
              */
 			test: /\.(svg)(\?.*)?$/,
@@ -40,9 +41,11 @@ module.exports              = {
 		}
 		//endregion vue-cli-plugin-svg-sprite
 		// ##################################################
-	}, // #####
-	configureWebpack:      {
-		plugins: [// ##################################################// ##################################################
+	},
+	// #####
+	configureWebpack: {
+		plugins: [
+			// ##################################################// ##################################################
 			//region CkEditor Plugin
 			// CKEditor needs its own plugin to be built using webpack.
 			new CKEditorWebpackPlugin({
@@ -56,7 +59,7 @@ module.exports              = {
 			// ##################################################// ##################################################
 		]
 	},
-	chainWebpack:          config => {
+	chainWebpack:     config => {
 		// ##################################################// ##################################################
 		//region CkEditor
 		// Vue CLI would normally use its own loader to load .svg and .css files, however:
