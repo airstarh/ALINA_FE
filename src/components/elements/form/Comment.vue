@@ -214,7 +214,7 @@ export default {
           "margin":       "0",
           "margin-left":  this.level == 1 ? '0' : 'min(5%, 100px)',
           //"max-width":    this.level == 1 ? '95vw' : '85vw',
-          "max-width":    '80%',
+          //"max-width":    '80%',
           "padding-left": "0",
           "border-left":  this.level == 1 ? '#A9ABAD solid 5px' : '#A9ABAD solid 1px'
         },
