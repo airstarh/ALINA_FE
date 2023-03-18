@@ -38,7 +38,7 @@
                 :editor="options.editor"
                 :config="options.editorConfig"
             ></ckeditor>
-            <div class="mb-3"></div>
+            <div class="mb-3">&nbsp</div>
             <div class="mt-1 mb-3">
               <AlinaDatePicker
                   v-model="tale.publish_at"
@@ -80,7 +80,7 @@
               <input type="text" class="form-control" placeholder="iframe" v-model="tale.iframe">
             </div>
             <div v-if="tale.iframe" class="mt-3">
-              <iframe :src="tale.iframe" frameborder="1" width="100%" height="250px"></iframe>
+              <iframe :src="tale.iframe" frameborder="1" width="90%" height="250px"></iframe>
             </div>
 
             <div class="row no-gutters">
@@ -209,7 +209,7 @@
               <div v-html="tale.body_free"></div>
             </div>
             <div v-if="tale.iframe" class="mt-3">
-              <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
+              <iframe :src="tale.iframe" frameborder="1" width="90%" height="500px"></iframe>
             </div>
             <div class="mt-3"></div>
           </div>
@@ -219,7 +219,7 @@
         <!--endregion Tale-->
         <!--##################################################-->
         <!--region Yandex Map-->
-        <div class="row no-gutters">
+        <div class="row m-1">
           <div class="col">
             <AlinaYandexMap
                 :item="tale"
