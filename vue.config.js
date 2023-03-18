@@ -1,7 +1,7 @@
-const path                  = require('path');
-const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
-const {styles}              = require('@ckeditor/ckeditor5-dev-utils');
-module.exports              = {
+const path                         = require('path');
+const {CKEditorTranslationsPlugin} = require('@ckeditor/ckeditor5-dev-translations');
+const {styles}                     = require('@ckeditor/ckeditor5-dev-utils');
+module.exports                     = {
 	parallel:   false,
 	publicPath: '/apps/vue/',
 	devServer:  {
@@ -9,10 +9,13 @@ module.exports              = {
 		https:            true,
 		clientLogLevel:   'error',
 		disableHostCheck: true
-	}, // The source of CKEditor is encapsulated in ES6 modules. By default, the code
+	},
+	// The source of CKEditor is encapsulated in ES6 modules. By default, the code
 	// from the node_modules directory is not transpiled, so you must explicitly tell
 	// the CLI tools to transpile JavaScript files in all ckeditor5-* modules.
-	transpileDependencies: [/ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/,],
+	transpileDependencies: [
+		/ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/,
+	],
 	pluginOptions:         {
 		// ##################################################
 		//region vue-cli-plugin-svg-sprite
@@ -41,27 +44,27 @@ module.exports              = {
 		}
 		//endregion vue-cli-plugin-svg-sprite
 		// ##################################################
-	},
+	}, 
 	// #####
-	configureWebpack: {
+	configureWebpack:      {
 		plugins: [
 			// ##################################################// ##################################################
-			//region CkEditor Plugin
+			//region CKEDITOR 1
 			// CKEditor needs its own plugin to be built using webpack.
-			new CKEditorWebpackPlugin({
+			new CKEditorTranslationsPlugin({
 				// See https://ckeditor.com/docs/ckeditor5/latest/features/ui-language.html
-				language:                               'en',
-				additionalLanguages:                    ['ru'],
-				addMainLanguageTranslationsToAllAssets: true,
-				buildAllTranslationsToSeparateFiles:    true,
+				language: 'en',
+
+				// Append translations to the file matching the `app` name.
+				translationsOutputFile: /app/
 			})
-			//endregion CkEditor Plugin
+			//endregion CKEDITOR 1
 			// ##################################################// ##################################################
 		]
 	},
-	chainWebpack:     config => {
+	chainWebpack:          config => {
 		// ##################################################// ##################################################
-		//region CkEditor
+		//region CKEDITOR 2
 		// Vue CLI would normally use its own loader to load .svg and .css files, however:
 		//	1. The icons used by CKEditor must be loaded using raw-loader,
 		//	2. The CSS used by CKEditor must be transpiled using PostCSS to load properly.
@@ -104,7 +107,7 @@ module.exports              = {
 					})
 				};
 			});
-		//endregion CkEditor
+		//endregion CKEDITOR 2
 		// ##################################################// ##################################################
 		//region vue-svg-loader
 		//---svgRule = config.module.rule('svg');
