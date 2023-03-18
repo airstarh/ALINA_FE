@@ -29,6 +29,17 @@ npm install
 bootstrap@^4
 bootstrap-vue@^2
 
+npm install
+@vue/cli-plugin-babel@^5
+@vue/cli-service@^4
+vue-cookies@^7
+vue-cookies@^1
+keen-ui@^1
+
+
+
+
+
 npm-check-updates@latest
 vue-social-sharing@latest
 keen-ui@latest
