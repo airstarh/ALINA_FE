@@ -11,21 +11,37 @@ vue-template-compiler@^2
 ##################################################
 # SURE
 npm install
-raw-loader@latest
-npm-check-updates@latest
-svgo@latest
-svgo-loader@latest
-lodash@latest
-sass@latest
-vue-social-sharing@latest
+vue@2
+vue-router@3
+vuex@3
+vue-i18n@8
 bootstrap@^4
-vue-i18n@latest
+lodash@latest
 
+bootstrap-vue@latest
+npm-check-updates@latest
+vue-social-sharing@latest
+vue-template-compiler@latest
+keen-ui@latest
+@vue/cli-service@latest
+@vue/cli-plugin-babel@latest
+
+
+vue-yandex-maps@latest
+vue-date-fns@latest
+vue-cookies@latest
+date-fns@latest
+
+
+
+
+
+npm install vue-i18n@8.27.0
 ##################################################
 # https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v2.html
-~~~ raw-loader@latest
+~~~ raw-loader@4
 NEVER UPDATE !!!sass-loader@10.1.0
-NEVER UPDATE !!!postcss-loader@3.0.0
+NEVER UPDATE !!!postcss-loader@4
 
 
 ##################################################
