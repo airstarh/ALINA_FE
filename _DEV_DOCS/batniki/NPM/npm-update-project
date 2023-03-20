@@ -1,0 +1,61 @@
+cd C:\_A001\REPOS\OWN\vuesandbox\sandbox
+
+##################################################
+# VUE
+npm install
+@vue/cli-plugin-babel@^4
+@vue/cli-service@^4
+vue-router@^3
+vuex@^3
+vue-cli-plugin-svg-sprite@^1
+vue-template-compiler@^2
+
+##################################################
+# SURE
+node -v
+v16.19.1
+npm -v
+7.7.6
+
+npm install
+vue@^2
+vue-router@^3
+vuex@^3
+vue-i18n@^8
+vue-template-compiler@^2
+lodash@latest
+
+npm install
+bootstrap@^4
+bootstrap-vue@^2
+
+npm install
+@vue/cli-plugin-babel@^5
+@vue/cli-service@^4
+vue-cookies@^7
+vue-cookies@^1
+keen-ui@^1
+
+
+npm install
+date-fns@^2
+vue-date-fns@^2
+core-js@^3
+sass@^1
+svgo@^2
+svgo-loader@^3
+vue-yandex-maps@^0
+npm-check-updates@latest
+
+##################################################
+##################################################
+##################################################
+##################################################
+EXPERIMENTS LOG
+::region NOT WORKING!!!
+npm install
+svgo@^3
+svgo-loader@^4
+
+npm install sass-loader@^13
+::endregion NOT WORKING!!!

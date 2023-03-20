@@ -70,9 +70,9 @@
             <div class="col text-right" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
                             <span class="row no-gutters">
                                 <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">{{ $t("TXT_DELETE") }}</button>
-                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">{{ $t("TXT_EDIT") }}</button>
-                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-info">{{ $t("TXT_CANCEL") }}</button>
-                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-success">{{ $t("TXT_SUBMIT") }}</button>
+                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-secondary">{{ $t("TXT_EDIT") }}</button>
+                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-secondary">{{ $t("TXT_CANCEL") }}</button>
+                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
                             </span>
             </div>
             <!--endregion Buttons EDIT CANCEL SUBMIT-->
@@ -137,7 +137,7 @@
               <div class="col">
                 <div class="row no-gutters">
                   <button @click="() => {this.body = '';}" class="col btn btn-sm btn-danger">{{ $t("TXT_CLEAR") }}</button>
-                  <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-success">{{ $t("TXT_SUBMIT") }}</button>
+                  <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
                 </div>
               </div>
             </div>
@@ -214,7 +214,7 @@ export default {
           "margin":       "0",
           "margin-left":  this.level == 1 ? '0' : 'min(5%, 100px)',
           //"max-width":    this.level == 1 ? '95vw' : '85vw',
-          "max-width":    '80%',
+          //"max-width":    '80%',
           "padding-left": "0",
           "border-left":  this.level == 1 ? '#A9ABAD solid 5px' : '#A9ABAD solid 1px'
         },

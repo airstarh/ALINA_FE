@@ -8,7 +8,7 @@
             <span v-if="!dCurrentUserLiked" class="text-white"><b-icon-heart></b-icon-heart></span>
         </button><button
         @click="ajaGetFeed"
-        class="btn btn-primary btn-lg"
+        class="btn btn-secondary btn-lg"
     >{{ dAmountLikes }}
         </button>
 
