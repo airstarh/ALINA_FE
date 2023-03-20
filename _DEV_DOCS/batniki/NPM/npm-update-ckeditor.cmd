@@ -1,6 +1,6 @@
 npm install
 @ckeditor/ckeditor5-vue2@latest
-@ckeditor/ckeditor5-dev-webpack-plugin@latest
+---@ckeditor/ckeditor5-dev-webpack-plugin@latest
 @ckeditor/ckeditor5-dev-utils@latest
 
 @ckeditor/ckeditor5-alignment@32.0.0

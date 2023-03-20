@@ -38,7 +38,7 @@
                 :editor="options.editor"
                 :config="options.editorConfig"
             ></ckeditor>
-            <div class="mb-3"></div>
+            <div class="mb-3">&nbsp</div>
             <div class="mt-1 mb-3">
               <AlinaDatePicker
                   v-model="tale.publish_at"
@@ -80,7 +80,7 @@
               <input type="text" class="form-control" placeholder="iframe" v-model="tale.iframe">
             </div>
             <div v-if="tale.iframe" class="mt-3">
-              <iframe :src="tale.iframe" frameborder="1" width="100%" height="250px"></iframe>
+              <iframe :src="tale.iframe" frameborder="1" width="90%" height="250px"></iframe>
             </div>
 
             <div class="row no-gutters">
@@ -170,7 +170,7 @@
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
                       class="btn btn-sm btn-light text-left mb-1"
-                      style="font-size: 2vmin"
+                      style="font-size: 2vmin;"
                   >
                     {{ tale.publish_at | unix_to_date_time }}
                   </router-link>
@@ -209,7 +209,7 @@
               <div v-html="tale.body_free"></div>
             </div>
             <div v-if="tale.iframe" class="mt-3">
-              <iframe :src="tale.iframe" frameborder="1" width="100%" height="500px"></iframe>
+              <iframe :src="tale.iframe" frameborder="1" width="90%" height="500px"></iframe>
             </div>
           </div>
           <!--endregion Tale. mode Read-->
@@ -218,7 +218,7 @@
         <!--endregion Tale-->
         <!--##################################################-->
         <!--region Yandex Map-->
-        <div class="row no-gutters">
+        <div class="row m-1">
           <div class="col">
             <AlinaYandexMap
                 :item="tale"
@@ -230,7 +230,7 @@
         <!--##################################################-->
         <!--region Attached Documents-->
         <div class="row no-gutters" v-if="tale.count_files > 0 || options.modeEdit">
-          <div class="col">
+          <div class="col mb-3">
             <AlinaFileUploader
                 :entity_id="tale.id"
                 entity_table="tale"
@@ -256,7 +256,7 @@
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region Share & Likes-->
-        <div class="row no-gutters mb-2" v-if="tale.is_social_sharing_hidden != 1">
+        <div class="row no-gutters mb-3" v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
             <div class="text-left m-buttons-1">
               <Share :tale="tale"></Share>
@@ -276,7 +276,7 @@
         </div>
         <!--endregion Share & Likes-->
         <!--##################################################-->
-        <div v-if="tale.is_comment_denied != 1">
+        <div v-if="tale.is_comment_denied != 1" class="mb-5">
           <Comment
               v-if="tale.level < 2"
               :level="tale.level+1"

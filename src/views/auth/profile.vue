@@ -1,8 +1,8 @@
 <template>
   <div class="container p-0">
     <div class="row no-gutters m-buttons-1" v-if="CU.ownsOrAdminOrModerator(post.id)">
-      <button @click="ajaDeleteUser(post)" class="col btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
-      <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-info">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
+      <button @click="ajaDeleteUser(post)" class="col-3 btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
+      <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-secondary">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
     </div>
     <div class="row no-gutters">
       <div class="col">
@@ -31,7 +31,7 @@
             </div>
           </div>
           <div class="col pl-1 m-0">
-            <div class="alina-form">
+            <div>
               <div class="row no-gutters mt-4 justify-content-center align-items-center">
                 <div class="col-12 text-center">
                   <a :href="'mailto:'+post.mail">

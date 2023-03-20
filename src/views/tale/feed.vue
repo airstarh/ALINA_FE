@@ -314,4 +314,13 @@ export default {
 h1 a:hover, h2 a:hover {
   text-decoration: none
 }
+
+/**experimental*/
+.stick-bottom {
+  position: -webkit-sticky;
+  position: sticky;
+  /*bottom: 100px;*/
+  top: 95vh;
+  z-index: 1020;
+}
 </style>
