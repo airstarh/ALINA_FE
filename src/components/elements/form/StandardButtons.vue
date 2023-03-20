@@ -1,16 +1,18 @@
 <template>
-  <div class="form-group mt-3 text-center m-buttons-1">
+  <div class="row form-group mt-3 text-center">
+
+    <a
+        @click="() => {this.$router.go()}"
+        class="col-3 btn btn-lg btn-danger text-white"
+    >{{ $t(resetTxt) }}</a>
+
     <button
         @click="event => {return this.onGo(event);}"
         type="button"
-        class="btn btn-lg btn-primary m-2"
+        class="col btn btn-lg btn-secondary m-2"
     >{{ $t(submitTxt) }}
       <slot name="submitSuffix"></slot>
     </button>
-    <a
-        @click="() => {this.$router.go()}"
-        class="btn btn-lg btn-danger text-white"
-    >{{ $t(resetTxt) }}</a>
   </div>
 </template>
 
