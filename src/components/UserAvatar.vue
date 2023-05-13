@@ -11,7 +11,7 @@
             <router-link :to="'/auth/profile/'+userId" class="text-light alina-user-avatar">
                 {{ UtilsStr.fullName(this.userFirstName, this.userLastName, this.userId) }}
             </router-link>
-            <span style="font-size: min(2vmin, 0.5em)">{{ someDate | unix_to_date_time }}</span>
+            <span style="font-size: min(2vmin, 0.5em);">{{ UtilsDate.fromUnixToDateTime(someDate) }}</span>
         </span>
       </div>
     </div>
@@ -20,9 +20,15 @@
 
 <script>
 import UtilsStr from "@/Utils/UtilsStr";
+import UtilsDate from "../Utils/UtilsDate";
 
 export default {
   name:  "UserAvatar",
+	computed: {
+		UtilsDate() {
+			return UtilsDate
+		}
+	},
   props: {
     userId:         {
       type:    String | Number,

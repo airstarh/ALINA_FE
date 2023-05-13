@@ -233,6 +233,7 @@ export default {
       },
     }
   },
+	emits: ['bv::toggle::collapse'],
   props: {
     root_tale_object:           {
       type:    Object,

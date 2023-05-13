@@ -1,5 +1,4 @@
 import UtilsSys from "@/Utils/UtilsSys";
-import lodash   from "lodash";
 
 const ConfigApi = {
   "url_base":              "https://alinazero:7002",

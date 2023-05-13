@@ -106,7 +106,8 @@
             <!--##################################################-->
             <div class="row no-gutters mb-1 justify-content-center align-items-center">
               <div class="col">
-                {{ post.birth | unix_to_date }}
+	              {{ UtilsDate.fromUnixToDateNoTime(post.birth) }}
+                {{  }}
               </div>
             </div>
             <!--##################################################-->
@@ -152,6 +153,7 @@ import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classicedito
 import ConfigCkEditor  from "@/configs/ConfigCkEditor";
 import UtilsObject     from "@/Utils/UtilsObject";
 import UtilsStr        from "@/Utils/UtilsStr";
+import UtilsDate       from "../../Utils/UtilsDate";
 //#####
 export default {
   name: "auth_profile",
@@ -261,6 +263,9 @@ export default {
     },
   },
   computed: {
+	  UtilsDate() {
+		  return UtilsDate
+	  },
     curId() {
       let id = null;
       if (this && this.$route && this.$route.params && this.$route.params.id) {
