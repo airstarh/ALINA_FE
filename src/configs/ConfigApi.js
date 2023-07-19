@@ -1,7 +1,7 @@
 import UtilsSys from "@/Utils/UtilsSys";
 
 const ConfigApi = {
-  "url_base":              "https://alinazero:7002",
+  "url_base":              "https://zero.home",
   "ALINA_FILE_UPLOAD_KEY": "userfile[]",
   "YandexMaps":            {
     apiKey:     '716acc81-eeeb-4db9-a3d6-eb1d1c5f7b55',
