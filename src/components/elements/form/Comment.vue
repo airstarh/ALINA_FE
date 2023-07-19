@@ -148,7 +148,7 @@
       </div>
       <!--endregion NEW COMMENT-->
       <!--##################################################-->
-      <div v-if="root_tale_object.is_comment_for_owner == 1" class="m-3">{{$tc('Comments only for owner')}}</div>
+      <div v-if="root_tale_object.is_comment_for_owner == 1" class="m-3">{{ $tc('Comments only for owner') }}</div>
       <!--##################################################-->
       <!--region Login or Register-->
       <div v-if="!CU.isLoggedIn()" class="col">
@@ -213,10 +213,11 @@ export default {
           "padding":      "0",
           "margin":       "0",
           "margin-left":  this.level == 1 ? '0' : 'min(5%, 100px)',
-          //"max-width":    this.level == 1 ? '95vw' : '85vw',
-          //"max-width":    '80%',
           "padding-left": "0",
           "border-left":  this.level == 1 ? '#A9ABAD solid 5px' : '#A9ABAD solid 1px'
+          /**/
+          //"max-width":    this.level == 1 ? '95vw' : '85vw',
+          //"max-width":    '80%',
         },
         styleComment:  {}
       },
@@ -233,7 +234,7 @@ export default {
       },
     }
   },
-	emits: ['bv::toggle::collapse'],
+  emits: ['bv::toggle::collapse'],
   props: {
     root_tale_object:           {
       type:    Object,
