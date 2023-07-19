@@ -53,13 +53,13 @@ export default {
      * https://bootstrap-vue.org/docs/components/collapse
      */
     this.$root.$on('bv::collapse::state', (collapseId, isJustShown) => {
-      if (collapseId.startsWith('comment-collapse-')) {
-        if (isJustShown) {
-          UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId)
-        } else {
-          UtilsArray.elRemoveByValue(this.AlinaStorage.Comment.expanded, collapseId)
-        }
-      }
+      // if (collapseId.startsWith('comment-collapse-')) {
+      //   if (isJustShown) {
+      //     UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId)
+      //   } else {
+      //     UtilsArray.elRemoveByValue(this.AlinaStorage.Comment.expanded, collapseId)
+      //   }
+      // }
     });
   },
   created() {
