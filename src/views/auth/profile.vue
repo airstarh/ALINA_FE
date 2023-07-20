@@ -1,8 +1,9 @@
 <template>
-  <div class="container p-0">
+  <div class="container">
     <div class="row no-gutters m-buttons-1" v-if="CU.ownsOrAdminOrModerator(post.id)">
       <button @click="ajaDeleteUser(post)" class="col-3 btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
       <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-secondary">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
+      <button @click="runAJax" class="col btn btn-secondary" v-if="options.modeEdit">{{$t("TXT_SUBMIT")}}</button>
     </div>
     <div class="row no-gutters">
       <div class="col">
