@@ -13,20 +13,43 @@ export default class UtilsStr {
 		return (useWordBoundary ? subString.substr(0, subString.lastIndexOf(" ")) : subString) + "...";
 	}
 
-	static fullName(fn = null, ln = null, id = null, def = 'ツ') {
+	static fullNameAsArrayFromUserObject(objUser) {
+		return UtilsStr.fullNameAsArray(
+			objUser.firstname,
+			objUser.lastname,
+			objUser.id
+		);
+	}
+
+	static fullNameAsArray(fn = null, ln = null, id = null, def = 'ツ') {
 		let res = [];
-		if (UtilsData.empty(fn) && UtilsData.empty(ln)) {
-			if (UtilsData.empty(id)) {
-				res.push(def);
-			} else {
-				res.push(def);
-				res.push(id);
-			}
-		} else {
-			res.push(fn);
-			res.push(ln);
+		res[0]  = def;
+		res[1]  = '   ';
+
+		if (!UtilsData.empty(fn)) {
+			res[0] = fn
 		}
-		return res.join(' ');
+
+		if (!UtilsData.empty(ln)) {
+			res[1] = ln
+		} else {
+			if (!UtilsData.empty(id) && res[0] === def) {
+				res[1] = id
+			}
+		}
+		return res;
+	}
+
+	static fullName(fn = null, ln = null, id = null, def = 'ツ') {
+		return UtilsStr.fullNameAsArray(fn, ln, id, def).join(' ');
+	}
+
+	static firstName(fn = null, ln = null, id = null, def = 'ツ') {
+		return UtilsStr.fullNameAsArray(fn, ln, id, def)[0];
+	}
+
+	static lastName(fn = null, ln = null, id = null, def = 'ツ') {
+		return UtilsStr.fullNameAsArray(fn, ln, id, def)[1];
 	}
 
 	// #####
