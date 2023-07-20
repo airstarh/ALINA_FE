@@ -3,13 +3,13 @@
 
     <a
         @click="() => {this.$router.go()}"
-        class="col-3 btn btn-lg btn-danger text-white"
+        class="col-auto btn btn-sm btn-danger text-white"
     >{{ $t(resetTxt) }}</a>
 
     <button
         @click="event => {return this.onGo(event);}"
         type="button"
-        class="col btn btn-lg btn-secondary m-2"
+        class="col btn btn-sm btn-secondary m-2"
     >{{ $t(submitTxt) }}
       <slot name="submitSuffix"></slot>
     </button>

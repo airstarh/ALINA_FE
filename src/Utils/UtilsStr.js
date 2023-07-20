@@ -14,7 +14,7 @@ export default class UtilsStr {
 		        : subString) + "...";
 	}
 
-	static fullName(fn = null, ln = null, id = null, def = '¯\\_(ツ)_/¯') {
+	static fullName(fn = null, ln = null, id = null, def = 'ツ') {
 		let res = [];
 		if (UtilsData.empty(fn) && UtilsData.empty(ln)) {
 			if (UtilsData.empty(id)) {
