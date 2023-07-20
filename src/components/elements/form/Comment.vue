@@ -1,12 +1,13 @@
 <template>
-  <div :style="options.style">
-    <div class="mb-5">
+  <div :style="options.style" class="">
+    <div class="mb-2">
       <b-button
           v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
           :class="{
                       'btn-md':level==1,
                       'btn-sm':level>1,
                       }"
+          class="bg-black"
       >{{ $tc('COUNTER_COMMENTS', commentsTotal) }}
       </b-button>
     </div>
@@ -16,20 +17,21 @@
         @shown="pageRecalcIframeHeight"
         @hidden="pageRecalcIframeHeight"
         :visible="level == 3"
-        class="mb-5"
+        class=""
     >
       <!--##################################################-->
       <!--region SUBMITTED COMMENTS-->
       <div
           v-for="(tale, feedIndex) in feed"
           :key="tale.id"
-          class="mt-1"
+          class=""
           :data-id="tale.id"
           :data-to="tale.answer_to_tale_id"
           :data-root="root_tale_id"
           :data-index="feedIndex"
       >
         <div
+            class="single-comment mt-5"
             :class="{
                         highlight: $route.query.highlight == tale.id,
                     }"
@@ -44,17 +46,18 @@
               :emblemUrl="tale.owner_emblem"
               emblemWidth="min(50px, 5vmax)"
               :someDate="tale.publish_at"
+              :isComment="true"
+              class=""
           ></UserAvatar>
           <!--endregion User Info-->
           <!--##################################################-->
           <!--region Comment body          -->
           <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
             <div class="col">
-              <div class="mt-2">&nbsp;</div>
-              <div class="ck-content">
+              <div class="ck-content mt-1 mb-3">
                 <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
               </div>
-              <div class="mt-2">&nbsp;</div>
+
             </div>
           </div>
           <!--################################################## -->
@@ -68,13 +71,13 @@
           <!--region Buttons, Likes-->
           <div class="row no-gutters m-buttons-1">
             <!--region Buttons EDIT CANCEL SUBMIT-->
-            <div class="col" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
-                            <span class="">
-                                <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">{{ $t("TXT_DELETE") }}</button>
-                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_EDIT") }}</button>
-                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_CANCEL") }}</button>
-                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
-                            </span>
+            <div class="col">
+              <span class="" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
+                  <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">{{ $t("TXT_DELETE") }}</button>
+                  <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_EDIT") }}</button>
+                  <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_CANCEL") }}</button>
+                  <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
+              </span>
             </div>
             <!--endregion Buttons EDIT CANCEL SUBMIT-->
             <!--region Likes-->
@@ -204,8 +207,7 @@ export default {
           "padding":      "0",
           "margin":       "0",
           "margin-left":  this.level == 1 ? '0' : 'min(5%, 100px)',
-          "padding-left": "0",
-          "border-left":  this.level == 1 ? '#A9ABAD solid 5px' : '#A9ABAD solid 1px'
+          "border-left":  this.level == 1 ? '#A9ABAD solid 2px' : '#A9ABAD solid 1px'
           /**/
           //"max-width":    this.level == 1 ? '95vw' : '85vw',
           //"max-width":    '80%',
@@ -437,6 +439,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.single-comment {
+
+}
+
 .highlight {
   background-color: #ffb200;
   color: black;
