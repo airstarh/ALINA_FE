@@ -166,10 +166,10 @@
                   >{{ tale.header || '¯\_(ツ)_/¯' }}
                   </a>
                 </h1>
-                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;" v-if="tale.is_date_hidden != 1">
+                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;" v-if="tale.is_date_hidden != 1">
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
-                      class="btn btn-sm btn-light text-left mb-1 corporate-bg-gradient"
+                      class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
                       style="font-size: 2vmin;"
                   >
                     {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
