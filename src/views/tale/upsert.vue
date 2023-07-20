@@ -169,10 +169,10 @@
                 <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem;" v-if="tale.is_date_hidden != 1">
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
-                      class="btn btn-sm btn-light text-left mb-1"
+                      class="btn btn-sm btn-light text-left mb-1 corporate-bg-gradient"
                       style="font-size: 2vmin;"
                   >
-                    {{ tale.publish_at | unix_to_date_time }}
+                    {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
                   </router-link>
                 </div>
               </div>
@@ -311,6 +311,7 @@ import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCance
 import AlinaFileUploader       from "@/components/elements/form/AlinaFileUploader";
 import UserAvatar              from "@/components/UserAvatar";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
+import UtilsDate               from "../../Utils/UtilsDate";
 //import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
 //#####
 export default {
@@ -392,6 +393,9 @@ export default {
     this.ajaxGetTale(id);
   },
   computed: {
+	  UtilsDate() {
+		  return UtilsDate
+	  },
     taleUrl() {
       let res = ConfigApi.url_base;
       if (this.tale.router_alias) {
