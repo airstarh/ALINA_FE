@@ -1,10 +1,12 @@
 <template>
-  <div class="container">
-    <div class="row no-gutters m-buttons-1" v-if="CU.ownsOrAdminOrModerator(post.id)">
-      <button @click="ajaDeleteUser(post)" class="col-3 btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
+  <div class="">
+    <div class="row no-gutters" v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit">
       <button @click="options.modeEdit = !options.modeEdit" class="col btn btn-secondary">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
-      <button @click="runAJax" class="col btn btn-secondary" v-if="options.modeEdit">{{$t("TXT_SUBMIT")}}</button>
     </div>
+    <div class="" v-if="CU.ownsOrAdminOrModerator(post.id) && options.modeEdit">
+      <StandardButtons :onGo="runAJax"></StandardButtons>
+    </div>
+
     <div class="row no-gutters">
       <div class="col">
         <div class="mt-2"></div>
@@ -72,7 +74,6 @@
               </div>
 
               <!--##################################################-->
-              <StandardButtons :onGo="runAJax"></StandardButtons>
             </div>
           </div>
         </div>
@@ -86,6 +87,12 @@
             ></ckeditor>
           </div>
         </div>
+        <div class="m3">&nbsp;</div>
+        <div class="row no-gutters" v-if="CU.ownsOrAdminOrModerator(post.id)">
+          <button @click="ajaDeleteUser(post)" class="col-6 btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
+        </div>
+        <div class="m3">&nbsp;</div>
+        <StandardButtons :onGo="runAJax"></StandardButtons>
       </div>
       <!--endregion Edit Mode-->
       <!--region  Read Mode-->
@@ -107,8 +114,8 @@
             <!--##################################################-->
             <div class="row no-gutters mb-1 justify-content-center align-items-center">
               <div class="col">
-	              {{ UtilsDate.fromUnixToDateNoTime(post.birth) }}
-                {{  }}
+                {{ UtilsDate.fromUnixToDateNoTime(post.birth) }}
+                {{ }}
               </div>
             </div>
             <!--##################################################-->
@@ -209,8 +216,7 @@ export default {
         }
       })
       .go();
-    },
-    //endregion Define User
+    }, //endregion Define User
     //##################################################
     ajaDeleteUser(post) {
       if (!confirm("Are you sure?")) {return;}
@@ -228,8 +234,7 @@ export default {
         }
       })
       .go();
-    },
-    //##################################################
+    }, //##################################################
     runAJax() {
       AjaxAlina.newInst({
         method:     'POST',
@@ -243,8 +248,7 @@ export default {
         }
       })
       .go();
-    },
-    //##################################################
+    }, //##################################################
     onChangeFileField(fileList, event) {
       AjaxAlina.newInst({
         method:     'POST',
@@ -264,9 +268,9 @@ export default {
     },
   },
   computed: {
-	  UtilsDate() {
-		  return UtilsDate
-	  },
+    UtilsDate() {
+      return UtilsDate
+    },
     curId() {
       let id = null;
       if (this && this.$route && this.$route.params && this.$route.params.id) {
@@ -277,8 +281,8 @@ export default {
       return id;
     }
   },
-  watch: {
-    curId: function(newVal) {
+  watch:    {
+    curId: function (newVal) {
       this.fetchProfile(newVal);
     }
   }
