@@ -1,18 +1,20 @@
 <template>
-  <div class="row form-group mt-3 text-center">
+  <div class="container">
+    <div class="row text-center m-buttons-1">
 
-    <a
-        @click="() => {this.$router.go()}"
-        class="col-3 btn btn-lg btn-danger text-white"
-    >{{ $t(resetTxt) }}</a>
+      <a
+          @click="() => {this.$router.go()}"
+          class="col-auto btn btn-sm btn-danger text-white"
+      >{{ $t(resetTxt) }}</a>
 
-    <button
-        @click="event => {return this.onGo(event);}"
-        type="button"
-        class="col btn btn-lg btn-secondary m-2"
-    >{{ $t(submitTxt) }}
-      <slot name="submitSuffix"></slot>
-    </button>
+      <button
+          @click="event => {return this.onGo(event);}"
+          type="button"
+          class="col btn btn-sm btn-secondary"
+      >{{ $t(submitTxt) }}
+        <slot name="submitSuffix"></slot>
+      </button>
+    </div>
   </div>
 </template>
 
