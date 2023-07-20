@@ -187,6 +187,7 @@
                 :emblemUrl="tale.owner_emblem"
                 emblemWidth="7vmax"
                 :someDate="null"
+                class="mt-5 mb-5 text-center"
             ></UserAvatar>
             <!--endregion User Info-->
             <!--##################################################-->

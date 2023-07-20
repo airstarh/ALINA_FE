@@ -18,6 +18,7 @@
       <input type="text" v-model="post.mail" :placeholder="$t('TXT_MAIL')" class="form-control">
       <br>
       <input type="password" v-model="post.password" :placeholder="$t('TXT_PASSWORD')" class="form-control">
+      <div class="m-1">&nbsp;</div>
       <StandardButtons :onGo="runAJax"></StandardButtons>
     </div>
   </div>

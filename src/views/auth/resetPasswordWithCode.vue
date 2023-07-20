@@ -18,6 +18,7 @@
           <input type="password" v-model="post.password" :placeholder="$t('TXT_PASSWORD')" class="form-control">
           <input type="password" v-model="post.confirm_password" :placeholder="$t('TXT_REPEAT')" class="form-control">
           <input type="hidden" v-model="post.form_id" class="form-control">
+          <div class="m-1">&nbsp;</div>
           <StandardButtons :onGo="runAJax"></StandardButtons>
         </form>
       </div>
