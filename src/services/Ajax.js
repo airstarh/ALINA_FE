@@ -163,7 +163,8 @@ export default class Ajax {
 		let _t          = this;
 		let contentType = resp.headers.get("content-type");
 		if (contentType.includes("application/json")) {
-			return resp.json()
+			return resp
+				.json()
 				.then(json => {
 					_t.respType = 'json';
 					return json;
@@ -173,19 +174,22 @@ export default class Ajax {
 			||
 			contentType.includes("text/plain")
 		) {
-			return resp.text()
+			return resp
+				.text()
 				.then(text => {
 					_t.respType = 'text';
 					return text;
 				});
 		} else if (contentType.includes("image")) {
-			return resp.blob()
+			return resp
+				.blob()
 				.then(blob => {
 					_t.respType = 'blob';
 					return blob;
 				});
 		} else {
-			return resp.blob()
+			return resp
+				.blob()
 				.then(blob => {
 					_t.respType = 'blob';
 					return blob;

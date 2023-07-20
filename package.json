@@ -15,8 +15,7 @@
     "@ckeditor/ckeditor5-cloud-services": "^36.0.1",
     "@ckeditor/ckeditor5-code-block": "^36.0.1",
     "@ckeditor/ckeditor5-dev-translations": "^35.0.3",
-    "@ckeditor/ckeditor5-dev-utils": "^28.1.1",
-    "@ckeditor/ckeditor5-dev-webpack-plugin": "^28.0.4",
+    "@ckeditor/ckeditor5-dev-utils": "^35.0.3",
     "@ckeditor/ckeditor5-easy-image": "^36.0.1",
     "@ckeditor/ckeditor5-editor-classic": "^36.0.1",
     "@ckeditor/ckeditor5-essentials": "^36.0.1",
@@ -63,6 +62,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-service": "^4.5.19",
+    "cache-loader": "^4.1.0",
     "postcss-loader": "^4.3.0",
     "sass": "^1.59.3",
     "sass-loader": "10.1.0",

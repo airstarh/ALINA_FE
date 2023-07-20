@@ -165,7 +165,7 @@
           v-model="uts"
           class="notranslate"
       ></AlinaDatePicker>
-      <div>{{ uts }} ||| {{ uts | unix_to_date_time }}</div>
+      <div>{{ uts }} ||| {{ UtilsDate.fromUnixToDateTime(uts) }}</div>
     </div>
     <div></div>
     <h1>Date FNS</h1>
@@ -186,8 +186,8 @@
     <div></div>
     <div>
       <!--##########-->
-      <div>{{ lodashExample | json_str }}</div>
-      <div>{{ lodashExample2 | json_str }}</div>
+      <div>{{ JSON.stringify(lodashExample, null, 6) }}</div>
+      <div>{{ JSON.stringify(lodashExample2, null, 6) }}</div>
       <!--##########-->
     </div>
     <br>
@@ -373,6 +373,9 @@ export default {
     this.dateplayer();
   },
   computed: {
+	  UtilsDate() {
+		  return UtilsDate
+	  },
     ...mapState("egStoreModule", ["sProp"]), ...mapGetters("egStoreModule", ["gProp"]),
     lodashExample2() {
       return this.lodash.partition(this.lodashExample, n => n % 2);

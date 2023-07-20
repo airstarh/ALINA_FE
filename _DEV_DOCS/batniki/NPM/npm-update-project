@@ -51,11 +51,16 @@ npm-check-updates@latest
 ##################################################
 ##################################################
 ##################################################
-EXPERIMENTS LOG
-::region NOT WORKING!!!
-npm install
-svgo@^3
-svgo-loader@^4
-
-npm install sass-loader@^13
-::endregion NOT WORKING!!!
+NEVER UPDATE!!!
+C:\_A001\REPOS\OWN\vuesandbox\sandbox>npm outdated
+Package           Current  Wanted  Latest  Location                       Depended by
+@vue/cli-service   4.5.19  4.5.19   5.0.8  node_modules/@vue/cli-service  sandbox
+bootstrap           4.6.2   4.6.2   5.2.3  node_modules/bootstrap         sandbox
+postcss-loader      4.3.0   4.3.0   7.1.0  node_modules/postcss-loader    sandbox
+sass-loader        10.1.0  10.1.0  13.2.1  node_modules/sass-loader       sandbox
+svgo                2.8.0   2.8.0   3.0.2  node_modules/svgo              sandbox
+svgo-loader         3.0.3   3.0.3   4.0.0  node_modules/svgo-loader       sandbox
+vue                2.7.14  2.7.14  3.2.47  node_modules/vue               sandbox
+vue-i18n           8.28.2  8.28.2   9.2.2  node_modules/vue-i18n          sandbox
+vue-router          3.6.5   3.6.5   4.1.6  node_modules/vue-router        sandbox
+vuex                3.6.2   3.6.2   4.1.0  node_modules/vuex              sandbox

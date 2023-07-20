@@ -106,7 +106,6 @@
       <!--##################################################-->
       <!--##################################################-->
       <div class="col-6 bg-dark">
-        <!--        <img src="http://alinazero:8080/sources/images/orig.png" width="150">-->
         <div class="mt-3">
           <h2>Response</h2>
           <div class="mt-3">
@@ -152,12 +151,7 @@ export default {
     return {
       /////////////////////////////////
       //region Request
-      //reqUri:          "http://alinazero:8080/Пользователь/Логин",
-      // reqUri:          "http://alinazero:8080/FileUpload/Common",
-      //reqUri:          "http://alinazero:8080/AdminTests/TestMessages?lala[]=1&lala[]=2&lala[]=3&foo=bar",
-      //reqUri:                  "http://alinazero:8080/sources/images/orig.png",
-      //reqUri:          "http://alinazero:8080/auth/profile",
-      reqUri: "https://alinazero/root/index2?lala[]=666",
+      reqUri: "https://local.host:7002/eg/php/php-redirect-1.php?lala=qqq",
       /////////////////////////////////
       modes: ["cors", "no-cors", "*same-origin"],
       mode:  "cors",

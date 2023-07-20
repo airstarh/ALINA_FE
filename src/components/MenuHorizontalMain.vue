@@ -65,7 +65,9 @@
               <!--<em>{{this.CU.name()}}</em>-->
               <img :src="CU.attributes.emblem" :alt="CU.attributes.firstname" height="40px" v-if="CU.attributes.emblem">
               <img v-if="!CU.isLoggedIn() || !CU.attributes.emblem" src="@/assets/anarki.png" height="40px">
+
               <span class="mr-1 ml-1">{{ CU.attributes.firstname || CU.attributes.mail || 'V' }}</span>
+
             </template>
             <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">{{ $t("TXT_LOGIN") }}</b-dropdown-item>
             <b-dropdown-item to="/auth/register" v-if="ConfigApi.modeSocialNetwork && !CU.isLoggedIn()">{{ $t("TXT_REGISTER") }}</b-dropdown-item>
