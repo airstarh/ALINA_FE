@@ -16,25 +16,25 @@
         >{{ $t("Select your files") }}
         </ui-fileupload>
 
-        <AlinaTableJson
+        <AlinaHorizontalScrollJson
             :pJson="dArrFiles"
-            :showOnly="['icon','url']"
+            :showOnly="['url']"
             :modeManage="modeEdit"
             @onDelete="onDelete"
-        ></AlinaTableJson>
+        ></AlinaHorizontalScrollJson>
       </b-collapse>
     </div>
   </div>
 </template>
 
 <script>
-import AlinaTableJson          from "@/components/AlinaTableJson";
-import ConfigApi               from "@/configs/ConfigApi";
-import AjaxAlina               from "@/services/AjaxAlina";
-import UtilsArray              from "@/Utils/UtilsArray";
-import CurrentUser             from "@/services/CurrentUser";
-import UtilsData               from "@/Utils/UtilsData";
-import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
+import AlinaHorizontalScrollJson from "@/components/AlinaHorizontalScrollJson";
+import ConfigApi                 from "@/configs/ConfigApi";
+import AjaxAlina                 from "@/services/AjaxAlina";
+import UtilsArray                from "@/Utils/UtilsArray";
+import CurrentUser               from "@/services/CurrentUser";
+import UtilsData                 from "@/Utils/UtilsData";
+import AlinaPageGlobalAnalyzer   from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name:  "AlinaFileUploader",
@@ -83,12 +83,69 @@ export default {
   methods:    {
     loopFiles() {
       for (let [i, model] of Object.entries(this.dArrFiles)) {
+        if (model.hasOwnProperty('name_fs')) {
+          let ext  = model.name_fs.split('.').pop();
+          let icon = '🔗';
+          switch (ext) {
+            case 'png':
+            case 'PNG':
+            case 'jpg':
+            case 'JPG':
+            case 'gif':
+            case 'GIF':
+            case 'bmp':
+            case 'BMP':
+            case 'webp':
+            case 'WEBP':
+              icon = `<img src="${model.url_path}" alt="${model.name_human}" title="${model.name_human}" style="width:100%;">`;
+              break
+            case 'doc':
+            case 'DOC':
+            case 'docx':
+            case 'DOCX':
+              icon = `<span style="font-size:  5vmin;">W</span>`;
+              break;
+            case 'xls':
+            case 'xlsx':
+              icon = `<span style="font-size:  5vmin">${ext}</span>`;
+              break;
+            case 'ppt':
+            case 'pptx':
+              icon = `<span style="font-size:  5vmin">${ext}</span>`;
+              break;
+            case 'txt':
+            case 'json':
+              icon = `<span style="font-size:  5vmin">🗎</span>`;
+              break;
+            case 'mp3':
+              icon = `<span style="font-size:  5vmin">🎜</span>`;
+
+              break;
+            case 'mp4':
+              icon = `<span style="font-size:  5vmin">TV</span>`;
+              break;
+            case 'pdf':
+              icon = `<span style="font-size:  5vmin">${ext}</span>`;
+              break;
+            case 'html':
+            case 'htm':
+              icon = `<span style="font-size:  5vmin">🕸</span>`;
+              break;
+            case 'zip':
+            case 'rar':
+            case 'arj':
+              icon = `<span style="font-size:  5vmin">${ext}</span>`;
+              break;
+            case '':
+            default:
+              icon = `<span style="font-size:  5vmin">${ext}</span>`;
+              break;
+          }
+          model.icon = `<span class="">${icon}</span>`;
+        }
         if (model.hasOwnProperty('url_path')) {
           const strDw = this.$t('Download');
-          model.url   = `<a href="${model.url_path}" target="_blank" class="btn btn-sm btn-block text-left btn-dark">${model.name_human}</a>`;
-        }
-        if (model.hasOwnProperty('name_fs')) {
-          model.icon = `<span class="">🔗</span>`;
+          model.url   = `<a href="${model.url_path}"  download="${model.name_human}" target="_blank" class="">${model.icon}<br>${model.name_human}</a>`;
         }
       }
     },
@@ -138,10 +195,10 @@ export default {
       .go();
     },
     onDelete(obj, index) {
-      console.log(">>>>>>>>>>>>>>>>>>>>");
-      console.log("xxx");
-      console.log(index);
-      console.log(obj);
+      // console.log(">>>>>>>>>>>>>>>>>>>>");
+      // console.log("xxx");
+      // console.log(index);
+      // console.log(obj);
       if (!confirm("Are you sure?")) {return;}
       const _t    = this;
       obj.form_id = 'actionDelete';
@@ -169,7 +226,7 @@ export default {
     },
   },
   components: {
-    AlinaTableJson
+    AlinaHorizontalScrollJson
   },
 };
 </script>
