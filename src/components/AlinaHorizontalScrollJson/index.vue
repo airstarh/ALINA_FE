@@ -6,10 +6,9 @@
           class="scrolling-item"
           v-for="(row, index) in pJson"
       >
-        <div v-for="(header, idx) in arrHeaders">
-          <div v-if="isHeaderAsHtml(header)" v-html="row[header]" class=""></div>
-          <div v-else>{{ row[header] }}</div>
-        </div>
+        <AlinAFile
+            :p-file-json="row"
+        ></AlinAFile>
 
         <div v-if="modeManage">
           <div v-if="isCurrentUserAllowedEdit(row)">
@@ -24,11 +23,15 @@
 
 <script>
 import CurrentUser from "@/services/CurrentUser";
+import AlinAFile   from "@/components/AlinaHorizontalScrollJson/AlinAFile.vue";
 
 export default {
-  name:  "AlinaHorizontalScroll",
-  emits: ['onDelete'],
-  props: {
+  name:       "AlinaHorizontalScroll",
+  emits:      ['onDelete'],
+  components: {
+    AlinAFile
+  },
+  props:      {
     pJson:           {
       default: []
     },
@@ -101,9 +104,11 @@ export default {
   width: 30vmin;
   height: 50vmin;
   padding: 1vw;
-  outline: #555 solid 1px;
+  margin: 5px 1px;
+  border: #777 solid 1px;
+  border-radius: 10px;
   word-wrap: break-word !important;
-  overflow-wrap: anywhere     !important;
+  overflow-wrap: anywhere !important;
   overflow: hidden;
 }
 

@@ -35,6 +35,7 @@ import UtilsArray                from "@/Utils/UtilsArray";
 import CurrentUser               from "@/services/CurrentUser";
 import UtilsData                 from "@/Utils/UtilsData";
 import AlinaPageGlobalAnalyzer   from "@/services/AlinaPageGlobalAnalyzer";
+import UtilsFS                   from "@/Utils/UtilsFS";
 
 export default {
   name:  "AlinaFileUploader",
@@ -81,71 +82,11 @@ export default {
     this.pageRecalcIframeHeight();
   },
   methods:    {
+
     loopFiles() {
       for (let [i, model] of Object.entries(this.dArrFiles)) {
         if (model.hasOwnProperty('name_fs')) {
-          let ext  = model.name_fs.split('.').pop();
-          let icon = '🔗';
-          switch (ext) {
-            case 'png':
-            case 'PNG':
-            case 'jpg':
-            case 'JPG':
-            case 'gif':
-            case 'GIF':
-            case 'bmp':
-            case 'BMP':
-            case 'webp':
-            case 'WEBP':
-              icon = `<img src="${model.url_path}" alt="${model.name_human}" title="${model.name_human}" style="width:100%;">`;
-              break
-            case 'doc':
-            case 'DOC':
-            case 'docx':
-            case 'DOCX':
-              icon = `<span style="font-size:  5vmin;">W</span>`;
-              break;
-            case 'xls':
-            case 'xlsx':
-              icon = `<span style="font-size:  5vmin">${ext}</span>`;
-              break;
-            case 'ppt':
-            case 'pptx':
-              icon = `<span style="font-size:  5vmin">${ext}</span>`;
-              break;
-            case 'txt':
-            case 'json':
-              icon = `<span style="font-size:  5vmin">🗎</span>`;
-              break;
-            case 'mp3':
-              icon = `<span style="font-size:  5vmin">🎜</span>`;
-
-              break;
-            case 'mp4':
-              icon = `<span style="font-size:  5vmin">TV</span>`;
-              break;
-            case 'pdf':
-              icon = `<span style="font-size:  5vmin">${ext}</span>`;
-              break;
-            case 'html':
-            case 'htm':
-              icon = `<span style="font-size:  5vmin">🕸</span>`;
-              break;
-            case 'zip':
-            case 'rar':
-            case 'arj':
-              icon = `<span style="font-size:  5vmin">${ext}</span>`;
-              break;
-            case '':
-            default:
-              icon = `<span style="font-size:  5vmin">${ext}</span>`;
-              break;
-          }
-          model.icon = `<span class="">${icon}</span>`;
-        }
-        if (model.hasOwnProperty('url_path')) {
-          const strDw = this.$t('Download');
-          model.url   = `<a href="${model.url_path}"  download="${model.name_human}" target="_blank" class="">${model.icon}<br>${model.name_human}</a>`;
+          model.fType = UtilsFS.getType(model.name_fs);
         }
       }
     },
