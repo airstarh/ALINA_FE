@@ -16,6 +16,10 @@
         >{{ $t("Select your files") }}
         </ui-fileupload>
 
+        <div>
+          <b-btn block size="sm" variant="success" @click="onChangeBulk(dArrFiles)">{{ $t('TXT_SUBMIT') }}</b-btn>
+        </div>
+
         <AlinaHorizontalScrollJson
             :pJson="dArrFiles"
             :showOnly="['url']"
@@ -66,10 +70,11 @@ export default {
     return {
       CurrentUser: CurrentUser.obj(),
       options:     {
-        urlFileUpload: `${ConfigApi.url_base}/FileUpload`,
-        urlFileDelete: `${ConfigApi.url_base}/FileUpload/delete`,
-        urlFileUpdate: `${ConfigApi.url_base}/AdminDbManager/EditRow`,
-        urlGetFiles:   `${ConfigApi.url_base}/FileUpload/getFiles`,
+        urlFileUpload:     `${ConfigApi.url_base}/FileUpload`,
+        urlFileDelete:     `${ConfigApi.url_base}/FileUpload/delete`,
+        urlFileUpdate:     `${ConfigApi.url_base}/AdminDbManager/EditRow`,
+        urlFileUpdateBulk: `${ConfigApi.url_base}/AdminDbManager/UpdateBulk`,
+        urlGetFiles:       `${ConfigApi.url_base}/FileUpload/getFiles`,
       },
       ConfigApi,
       dArrFiles:   [],
@@ -158,10 +163,10 @@ export default {
       .go();
     },
     onChange(obj, index) {
-      console.log(">>>>>>>>>>>>>>>>>>>>");
-      console.log("onChange");
-      console.log(index);
-      console.log(obj);
+      // console.log(">>>>>>>>>>>>>>>>>>>>");
+      // console.log("onChange");
+      // console.log(index);
+      // console.log(obj);
       //return null;
       //if (!confirm("Are you sure?")) {return;}
       const _t    = this;
@@ -169,6 +174,23 @@ export default {
       AjaxAlina.newInst({
         method:     'POST',
         url:        `${this.options.urlFileUpdate}/file/${obj.id}`,
+        postParams: obj,
+        onDone:     (aja) => {
+          if (aja.respBody.meta.alina_response_success == 1) {
+            _t.loadFileList();
+          }
+        }
+      })
+      .go();
+    },
+    onChangeBulk(dArrFiles) {
+      const _t    = this;
+      const obj   = {};
+      obj.form_id = 'actionUpdateBulk';
+      obj.list    = dArrFiles;
+      AjaxAlina.newInst({
+        method:     'POST',
+        url:        `${this.options.urlFileUpdateBulk}/file`,
         postParams: obj,
         onDone:     (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
