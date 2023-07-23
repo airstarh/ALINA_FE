@@ -16,7 +16,9 @@
         >{{ $t("Select your files") }}
         </ui-fileupload>
 
-        <div>
+        <div
+            v-if="modeEdit"
+        >
           <b-btn block size="sm" variant="success" @click="onChangeBulk(dArrFiles)">{{ $t('TXT_SUBMIT') }}</b-btn>
         </div>
 

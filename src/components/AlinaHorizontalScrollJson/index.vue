@@ -8,8 +8,8 @@
       >
         <div v-if="modeManage" class="text-left">
           <div v-if="isCurrentUserAllowedEdit(row)">
-            <input type="text" v-model="row.name_human" class="form-control form-control-sm">
-            <input type="text" v-model="row.order" class="form-control form-control-sm">
+            <input type="text" v-model="row.name_human" class="form-control form-control-sm" :placeholder="$t('File Name')">
+            <input type="text" v-model="row.order" class="form-control form-control-sm" :placeholder="$t('File Order')">
             <b-btn block  size="sm" variant="success" @click="$emit('onChange', row, index)">{{ $t('TXT_SUBMIT') }}</b-btn>
             <b-btn block  size="sm" variant="danger" @click="$emit('onDelete', row, index)">{{ $t('Delete') }}</b-btn>
           </div>
