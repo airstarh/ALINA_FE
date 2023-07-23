@@ -21,6 +21,7 @@
             :showOnly="['url']"
             :modeManage="modeEdit"
             @onDelete="onDelete"
+            @onChange="onChange"
         ></AlinaHorizontalScrollJson>
       </b-collapse>
     </div>
@@ -67,6 +68,7 @@ export default {
       options:     {
         urlFileUpload: `${ConfigApi.url_base}/FileUpload`,
         urlFileDelete: `${ConfigApi.url_base}/FileUpload/delete`,
+        urlFileUpdate: `${ConfigApi.url_base}/AdminDbManager/EditRow`,
         urlGetFiles:   `${ConfigApi.url_base}/FileUpload/getFiles`,
       },
       ConfigApi,
@@ -150,6 +152,27 @@ export default {
         onDone:     (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.elRemoveByIndex(_t.dArrFiles, index);
+          }
+        }
+      })
+      .go();
+    },
+    onChange(obj, index) {
+      console.log(">>>>>>>>>>>>>>>>>>>>");
+      console.log("onChange");
+      console.log(index);
+      console.log(obj);
+      //return null;
+      //if (!confirm("Are you sure?")) {return;}
+      const _t    = this;
+      obj.form_id = 'actionEditRow';
+      AjaxAlina.newInst({
+        method:     'POST',
+        url:        `${this.options.urlFileUpdate}/file/${obj.id}`,
+        postParams: obj,
+        onDone:     (aja) => {
+          if (aja.respBody.meta.alina_response_success == 1) {
+            _t.loadFileList();
           }
         }
       })

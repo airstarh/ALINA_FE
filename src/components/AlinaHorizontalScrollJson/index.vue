@@ -6,16 +6,18 @@
           class="scrolling-item"
           v-for="(row, index) in pJson"
       >
-        <AlinAFile
-            :p-file-json="row"
-        ></AlinAFile>
-
-        <div v-if="modeManage">
+        <div v-if="modeManage" class="text-left">
           <div v-if="isCurrentUserAllowedEdit(row)">
-            <b-btn variant="danger" @click="$emit('onDelete', row, index)">{{ $t('Delete') }}</b-btn>
+            <input type="text" v-model="row.name_human" class="form-control form-control-sm">
+            <input type="text" v-model="row.order" class="form-control form-control-sm">
+            <b-btn block  size="sm" variant="success" @click="$emit('onChange', row, index)">{{ $t('TXT_SUBMIT') }}</b-btn>
+            <b-btn block  size="sm" variant="danger" @click="$emit('onDelete', row, index)">{{ $t('Delete') }}</b-btn>
           </div>
         </div>
 
+        <AlinAFile
+            :p-file-json="row"
+        ></AlinAFile>
       </div>
     </div>
   </div>
@@ -27,7 +29,7 @@ import AlinAFile   from "@/components/AlinaHorizontalScrollJson/AlinAFile.vue";
 
 export default {
   name:       "AlinaHorizontalScroll",
-  emits:      ['onDelete'],
+  emits:      ['onDelete', 'onChange'],
   components: {
     AlinAFile
   },
