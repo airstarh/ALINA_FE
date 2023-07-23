@@ -183,6 +183,8 @@ const Translations = {
 		"Comments only for owner":                                        "Может комментировать только автор",
 		"SEO Index":                                                      "SEO Индекс",
 		"You are completely banned":                                      "Вы полностью заблокированы",
+		"File Name":                                                      "Имя файла",
+		"File Order":                                                     "Порядок файла",
 	},
 };
 export default Translations;
