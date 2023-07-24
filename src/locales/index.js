@@ -185,6 +185,7 @@ const Translations = {
 		"You are completely banned":                                      "Вы полностью заблокированы",
 		"File Name":                                                      "Имя файла",
 		"File Order":                                                     "Порядок файла",
+		"Bulk File Save":                                                 "Сохранить все файлы",
 	},
 };
 export default Translations;
