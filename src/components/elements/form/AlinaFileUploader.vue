@@ -7,21 +7,24 @@
           @show="onShow"
           @hide="onHide"
       >
-        <ui-fileupload
-            v-if="modeEdit"
-            accept="*/*"
-            :multiple="true"
-            :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-            @change="onChangeFileField"
-        >{{ $t("Select your files") }}
-        </ui-fileupload>
-
-        <div
-            v-if="modeEdit"
-        >
-          <b-btn block size="sm" variant="success" @click="onChangeBulk(dArrFiles)">{{ $t('TXT_SUBMIT') }}</b-btn>
+        <div class="row no-gutters">
+          <div class="col">
+            <ui-fileupload
+                v-if="modeEdit"
+                accept="*/*"
+                :multiple="true"
+                :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+                @change="onChangeFileField"
+            >{{ $t("Select your files") }}
+            </ui-fileupload>
+          </div>
+          <div
+              v-if="modeEdit && dArrFiles.length > 0"
+              class="col"
+          >
+            <b-btn block size="md" variant="success" @click="onChangeBulk(dArrFiles)">{{ $t('Bulk File Save') }}</b-btn>
+          </div>
         </div>
-
         <AlinaHorizontalScrollJson
             :pJson="dArrFiles"
             :showOnly="['url']"

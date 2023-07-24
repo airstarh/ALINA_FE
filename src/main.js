@@ -11,7 +11,6 @@ import KeenUI                  from "keen-ui";
 import lodash                  from "lodash";
 import VueSocialSharing        from 'vue-social-sharing'
 import VueDateFns              from "vue-date-fns";
-import UtilsDate               from "@/Utils/UtilsDate";
 import VueI18n                 from 'vue-i18n'
 import Translations            from '@/locales/index'
 import CurrentLocale           from "@/services/CurrentLocale";
@@ -20,9 +19,7 @@ import YmapPlugin              from 'vue-yandex-maps'
 import AlinaPageGlobalAnalyzer from '@/services/AlinaPageGlobalAnalyzer'
 
 window.AlinaPageGlobalAnalyzer = AlinaPageGlobalAnalyzer;
-//#####
-import "../public/a010.scss";
-//#####
+
 Vue.config.productionTip = false;
 //#####
 Vue.use(YmapPlugin, ConfigApi.YandexMaps)
@@ -81,7 +78,9 @@ Vue.prototype.lodash = lodash;
 Vue.use(VueSocialSharing);
 //#####
 Vue.use(VueDateFns);
-
+//#####
+import "@/assets/css/a010.scss";
+//#####
 export const AppAlina = new Vue({
 	i18n,
 	router,
