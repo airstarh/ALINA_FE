@@ -145,6 +145,7 @@
       <div v-if="root_tale_object.is_comment_for_owner == 1" class="m-3">{{ $tc('Comments only for owner') }}</div>
       <!--##################################################-->
       <!--region Login or Register-->
+      <div class="m-3">&nbsp;</div>
       <div v-if="!CU.isLoggedIn()" class="col">
         <a
             href="#/auth/login"
