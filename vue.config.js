@@ -25,12 +25,12 @@ module.exports                     = {
 			 */
 			dir: 'src/assets/svg',
 			/*
-             * The regex that will be used for the Webpack rule.
-             */
+       * The regex that will be used for the Webpack rule.
+       */
 			test: /\.(svg)(\?.*)?$/,
 			/*
-             * @see https://github.com/kisenka/svg-sprite-loader#configuration
-             */
+       * @see https://github.com/kisenka/svg-sprite-loader#configuration
+       */
 			loaderOptions: {
 				extract:         true,
 				filenameHashing: false, //spriteFilename:  'img/icons.[hash:8].svg' // or 'img/icons.svg' if filenameHashing == false
@@ -44,9 +44,9 @@ module.exports                     = {
 		}
 		//endregion vue-cli-plugin-svg-sprite
 		// ##################################################
-	}, 
+	},
 	// #####
-	configureWebpack:      {
+	configureWebpack: {
 		plugins: [
 			// ##################################################// ##################################################
 			//region CKEDITOR 1
@@ -62,7 +62,7 @@ module.exports                     = {
 			// ##################################################// ##################################################
 		]
 	},
-	chainWebpack:          config => {
+	chainWebpack:     config => {
 		// ##################################################// ##################################################
 		//region CKEDITOR 2
 		// Vue CLI would normally use its own loader to load .svg and .css files, however:
@@ -86,27 +86,27 @@ module.exports                     = {
 		//
 		// * or add a new one:
 		config.module
-			.rule('cke-svg')
-			.test(/ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/)
-			.use('raw-loader')
-			.loader('raw-loader');
+		.rule('cke-svg')
+		.test(/ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/)
+		.use('raw-loader')
+		.loader('raw-loader');
 		// (2.) Transpile the .css files imported by the editor using PostCSS.
 		// Make sure only the CSS belonging to ckeditor5-* packages is processed this way.
 		config.module
-			.rule('cke-css')
-			.test(/ckeditor5-[^/\\]+[/\\].+\.css$/)
-			.use('postcss-loader')
-			.loader('postcss-loader')
-			.tap(() => {
-				return {
-					postcssOptions: styles.getPostCssConfig({
-						themeImporter: {
-							themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
-						},
-						minify:        true
-					})
-				};
-			});
+		.rule('cke-css')
+		.test(/ckeditor5-[^/\\]+[/\\].+\.css$/)
+		.use('postcss-loader')
+		.loader('postcss-loader')
+		.tap(() => {
+			return {
+				postcssOptions: styles.getPostCssConfig({
+					themeImporter: {
+						themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+					},
+					minify:        true
+				})
+			};
+		});
 		//endregion CKEDITOR 2
 		// ##################################################// ##################################################
 		//region vue-svg-loader
@@ -126,9 +126,9 @@ module.exports                     = {
 		// ##################################################// ##################################################
 		//region vue-cli-plugin-svg-sprite
 		config.module
-			.rule('svg-sprite')
-			.use('svgo-loader')
-			.loader('svgo-loader');
+		.rule('svg-sprite')
+		.use('svgo-loader')
+		.loader('svgo-loader');
 		//endregion vue-cli-plugin-svg-sprite
 		// ##################################################// ##################################################
 	}
