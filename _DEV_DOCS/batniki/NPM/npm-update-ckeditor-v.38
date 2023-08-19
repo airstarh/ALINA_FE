@@ -20,6 +20,7 @@ raw-loader@4
 #####
 #####
 ???npm uninstall @ckeditor/ckeditor5-dev-webpack-plugin
+???npm uninstall @ckeditor/vite-plugin-ckeditor5
 
 npm install
 @ckeditor/ckeditor5-alignment@latest
