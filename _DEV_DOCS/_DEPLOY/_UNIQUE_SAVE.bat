@@ -8,6 +8,5 @@ set __DIR__=%~dp0
 
 set FROM=%__DIR__%..\..
 set TOTO=%__DIR__%_STORAGE
-
 call %__DIR__%inc\copy_scenario.bat
 pause
