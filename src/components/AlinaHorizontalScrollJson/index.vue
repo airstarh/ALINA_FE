@@ -68,10 +68,6 @@ export default {
       } else {
         this.arrHeaders = Object.keys(Array.isArray(this.pJson) && this.pJson.length > 0 ? this.pJson[this.pJson.length - 1] : []);
       }
-
-      console.log(">>>>>>>>>>>>>>>>>>>>");
-      console.log("this.pJson");
-      console.log(this.pJson);
     },
     isCurrentUserAllowedEdit(obj) {
       //ToDo: Extend

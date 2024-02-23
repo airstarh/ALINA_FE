@@ -1,19 +1,26 @@
 ##### https://ckeditor.com/docs/ckeditor5/latest/installation/frameworks/vuejs-v2.html
 
-npm install --save
-@ckeditor/vite-plugin-ckeditor5@latest
-@ckeditor/ckeditor5-vue2@latest
+### ### ### ### ###
+### FOR VITE
+### npm install --save
+### @ckeditor/vite-plugin-ckeditor5@latest
+### @ckeditor/ckeditor5-vue2@latest
+### ### ### ### ###
 
+### ### ### ### ###
+### FOR WEBPACK
 npm install
 @ckeditor/ckeditor5-vue2@latest
 @ckeditor/ckeditor5-dev-translations@latest
-@ckeditor/ckeditor5-dev-utils@^28
+@ckeditor/ckeditor5-dev-utils@latest
 postcss-loader@4
 raw-loader@4
+### ### ### ### ###
 #####
 #####
 #####
 ???npm uninstall @ckeditor/ckeditor5-dev-webpack-plugin
+???npm uninstall @ckeditor/vite-plugin-ckeditor5
 
 npm install
 @ckeditor/ckeditor5-alignment@latest

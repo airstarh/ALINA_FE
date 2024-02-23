@@ -59,7 +59,14 @@ export default {
   },
   created() {
     if (this.CurrentUser.obj().isLoggedIn()) {
-      this.$router.replace({path: '/tale/feed'});
+      console.log(">>>>>>>>>>>>>>>>>>>>");
+      console.log("window.history.length");
+      console.log(window.history.length);
+      if (window.history.length >= 4) {
+        history.go(-1);
+      } else {
+        this.$router.replace({path: '/auth/profile'});
+      }
     }
   },
   methods: {
@@ -71,14 +78,10 @@ export default {
         method:     'POST',
         onDone:     (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            if (history) {
+            if (window.history.length >= 4) {
               history.go(-1);
-              return true;
-            }
-            if (_t.referer) {
-              _t.$router.replace({path: _t.referer});
             } else {
-              _t.$router.replace({path: '/tale/feed'});
+              _t.$router.replace({path: '/auth/profile'});
             }
           }
         }
