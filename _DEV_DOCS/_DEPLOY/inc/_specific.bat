@@ -1,1 +1,1 @@
-set PROJ=localhost
+set PROJ=m45a
