@@ -1,6 +1,0 @@
-##################################################
-# MERGE NO COMMIT
-# https://stackoverflow.com/questions/8640887/git-merge-without-auto-commit
-git merge <name-of-branch> --no-commit --no-ff
-rm .git/MERGE_HEAD
-##################################################

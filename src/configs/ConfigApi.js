@@ -22,6 +22,9 @@ const ConfigApi = {
       headers: {
         "x-requested-with": "AlinaFetchApi",
         "fgp":              UtilsSys.fgp(),
+            },
+            getParams: {
+                isAjax: 1
       }
     }
   },
