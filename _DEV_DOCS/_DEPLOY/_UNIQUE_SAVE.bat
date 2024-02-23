@@ -1,29 +1,13 @@
-::
+@echo off
+::##################################################
 :: ALINA_FE
 :: Documentation:
 :: https://learn.microsoft.com/en-US/troubleshoot/windows-client/deployment/switches-with-xcopy-and-xcopy32-command?ranMID=43674&ranEAID=FE4O7wtxe6g&ranSiteID=FE4O7wtxe6g-S.IT_QZ3nGxJeSPxTJCMGQ&epi=FE4O7wtxe6g-S.IT_QZ3nGxJeSPxTJCMGQ&irgwc=1&OCID=AID2200057_aff_7795_1243925&tduid=(ir__o3dn266zwgkfblmvlgudtjkavu2xcgprnll9o3j900)(7795)(1243925)(FE4O7wtxe6g-S.IT_QZ3nGxJeSPxTJCMGQ)()&irclickid=_o3dn266zwgkfblmvlgudtjkavu2xcgprnll9o3j900
-::
-::@echo off
-::set PROJ=m45a
-::set PROJ=vov
-::set PROJ=sss
-set PROJ=localhost
-set FROM=C:\_A001\REPOS\OWN\ALINA_FE
-set TOTO=C:\_A001\REPOS\OWN\ALINA_FE\_DEV_DOCS\batniki\_CFG\%PROJ%
 
-::##################################################
-:: DIRECTORIES
-xcopy /i /e /y %FROM%\src\assets %TOTO%\src\assets
+set __DIR__=%~dp0
 
-::##################################################
-:: FILES
-xcopy /y %FROM%\src\configs\ConfigApi.js %TOTO%\src\configs\
+set FROM=%__DIR__%..\..
+set TOTO=%__DIR__%_STORAGE
 
-xcopy /y %FROM%\src\components\MenuHorizontalMain.vue %TOTO%\src\components\
-xcopy /y %FROM%\src\components\Footer.vue %TOTO%\src\components\
-
-xcopy /y %FROM%\public\favicon.ico %TOTO%\public\
-xcopy /y %FROM%\public\favicon.svg %TOTO%\public\
-xcopy /y %FROM%\public\manifest.json %TOTO%\public\
-xcopy /y %FROM%\public\index.html %TOTO%\public\
+call %__DIR__%inc\copy_scenario.bat
 pause
