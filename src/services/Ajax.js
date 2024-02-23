@@ -116,46 +116,46 @@ export default class Ajax {
 		const u         = this.urlBuild();
 		const myRequest = new Request(u, p);
 		return fetch(myRequest)
-			.then(resp => {
-				this.resp = resp;
-				//region Extract Response Headers
-				resp.headers.forEach((value, name) => {
-					_t.respHeaders[name] = value;
-				});
-				//endregion Extract Response Headers
-				//#####
-				//region Response not OK
-				if (!resp.ok) {
-					if (typeof _t['hookResponseNotOk'] === 'function') {
-						_t.hookResponseNotOk(resp);
-					} else {
-						alert(`Server answered with status ${resp.status}`);
-						//throw new Error('RESPONSE NOT OK');
-					}
-				}
-				//endregion Response not OK
-				return _t.handleResponse(resp);
-			})
-			.then(data => {
-				_t.respBody = data;
-				//region hookProcessResponse
-				if (typeof _t['hookProcessResponse'] === 'function') {
-					_t.hookProcessResponse();
-				}
-				//endregion hookProcessResponse
-				if (opts.onDone) {
-					opts.onDone(_t);
-				}
-				return _t;
-			})
-			//##################################################
-			.catch(error => {
-				if (typeof _t['hookNetworkError'] === 'function') {
-					_t.hookNetworkError(error);
-				} else {
-					alert('Network error. Check internet connection.');
-				}
+		.then(resp => {
+			this.resp = resp;
+			//region Extract Response Headers
+			resp.headers.forEach((value, name) => {
+				_t.respHeaders[name] = value;
 			});
+			//endregion Extract Response Headers
+			//#####
+			//region Response not OK
+			if (!resp.ok) {
+				if (typeof _t['hookResponseNotOk'] === 'function') {
+					_t.hookResponseNotOk(resp);
+				} else {
+					alert(`Server answered with status ${resp.status}`);
+					//throw new Error('RESPONSE NOT OK');
+				}
+			}
+			//endregion Response not OK
+			return _t.handleResponse(resp);
+		})
+		.then(data => {
+			_t.respBody = data;
+			//region hookProcessResponse
+			if (typeof _t['hookProcessResponse'] === 'function') {
+				_t.hookProcessResponse();
+			}
+			//endregion hookProcessResponse
+			if (opts.onDone) {
+				opts.onDone(_t);
+			}
+			return _t;
+		})
+		//##################################################
+		.catch(error => {
+			if (typeof _t['hookNetworkError'] === 'function') {
+				_t.hookNetworkError(error);
+			} else {
+				alert('Network error. Check internet connection.');
+			}
+		});
 	}
 
 	// ##################################################
@@ -164,36 +164,36 @@ export default class Ajax {
 		let contentType = resp.headers.get("content-type");
 		if (contentType.includes("application/json")) {
 			return resp
-				.json()
-				.then(json => {
-					_t.respType = 'json';
-					return json;
-				});
+			.json()
+			.then(json => {
+				_t.respType = 'json';
+				return json;
+			});
 		} else if (
 			contentType.includes("text/html")
 			||
 			contentType.includes("text/plain")
 		) {
 			return resp
-				.text()
-				.then(text => {
-					_t.respType = 'text';
-					return text;
-				});
+			.text()
+			.then(text => {
+				_t.respType = 'text';
+				return text;
+			});
 		} else if (contentType.includes("image")) {
 			return resp
-				.blob()
-				.then(blob => {
-					_t.respType = 'blob';
-					return blob;
-				});
+			.blob()
+			.then(blob => {
+				_t.respType = 'blob';
+				return blob;
+			});
 		} else {
 			return resp
-				.blob()
-				.then(blob => {
-					_t.respType = 'blob';
-					return blob;
-				});
+			.blob()
+			.then(blob => {
+				_t.respType = 'blob';
+				return blob;
+			});
 		}
 	}
 

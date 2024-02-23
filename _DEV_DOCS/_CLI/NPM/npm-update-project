@@ -1,4 +1,10 @@
-cd C:\_A001\REPOS\OWN\vuesandbox\sandbox
+cd C:\_A001\REPOS\OWN\ALINA_FE\
+nvm install 16.19.1
+nvm use 16.19.1
+node -v
+### v16.19.1
+npm -v
+### 7.7.6
 
 ##################################################
 # VUE
@@ -12,6 +18,8 @@ vue-template-compiler@^2
 
 ##################################################
 # SURE
+nvm install 16.19.1
+nvm use 16.19.1
 node -v
 v16.19.1
 npm -v
@@ -46,7 +54,7 @@ svgo@^2
 svgo-loader@^3
 vue-yandex-maps@^0
 npm-check-updates@latest
-
+whatwg-fetch@latest
 ##################################################
 ##################################################
 ##################################################
