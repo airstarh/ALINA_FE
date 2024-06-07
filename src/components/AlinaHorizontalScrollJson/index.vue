@@ -8,10 +8,14 @@
       >
         <div v-if="modeManage" class="text-left">
           <div v-if="isCurrentUserAllowedEdit(row)">
-            <input type="text" v-model="row.name_human" class="form-control form-control-sm" :placeholder="$t('File Name')">
+            <input type="text" v-model="row.name_human" class="form-control form-control-sm"
+                   :placeholder="$t('File Name')">
             <input type="text" v-model="row.order" class="form-control form-control-sm" :placeholder="$t('File Order')">
-            <b-btn block  size="sm" variant="success" @click="$emit('onChange', row, index)">{{ $t('TXT_SUBMIT') }}</b-btn>
-            <b-btn block  size="sm" variant="danger" @click="$emit('onDelete', row, index)">{{ $t('Delete') }}</b-btn>
+            <b-btn block size="sm" variant="success" @click="$emit('onChange', row, index)">{{
+                $t('TXT_SUBMIT')
+              }}
+            </b-btn>
+            <b-btn block size="sm" variant="danger" @click="$emit('onDelete', row, index)">{{ $t('Delete') }}</b-btn>
           </div>
         </div>
 
@@ -38,7 +42,9 @@ export default {
       default: []
     },
     showOnly:        {
-      default() {return []}
+      default() {
+        return []
+      }
     },
     modeManage:      {
       default: false
@@ -89,25 +95,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .scrolling-wrapper {
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto;
 
+  & .scrolling-item {
+    text-align: center;
+    flex: 0 0 auto;
+    width: 40vmin;
+    height: 50vmin;
+    padding: 1vw;
+    margin: 5px 1px;
+    border: #777 solid 1px;
+    border-radius: 10px;
+    word-wrap: break-word !important;
+    overflow-wrap: anywhere !important;
+    overflow: hidden;
+  }
 }
-
-.scrolling-item {
-  text-align: center;
-  flex: 0 0 auto;
-  width: 35vmin;
-  height: 50vmin;
-  padding: 1vw;
-  margin: 5px 1px;
-  border: #777 solid 1px;
-  border-radius: 10px;
-  word-wrap: break-word !important;
-  overflow-wrap: anywhere !important;
-  overflow: hidden;
-}
-
 </style>
