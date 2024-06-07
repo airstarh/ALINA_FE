@@ -454,7 +454,7 @@ export default {
       if (taleLastTouchedString) {
         const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
         if (taleLastTouchedObj && taleLastTouchedObj.id) {
-          if (taleLastTouchedObj.body.length > 10) {
+          if (taleLastTouchedObj?.body?.length > 10) {
             if (taleLastTouchedObj.id == this.tale.id) {
               Object.assign(this.tale, taleLastTouchedObj);
             }
@@ -469,7 +469,7 @@ export default {
       this.taleLastTouchedRecall();
     },
     onCancel() {
-      this.options.modeEdit = false
+      this.options.modeEdit = false;
       this.taleLastTouchedRemember({});
       if (this.tale.is_submitted == 0) {
         this.$router.replace({path: '/'})
@@ -487,7 +487,7 @@ export default {
         postParams: this.tale,
         onDone:     (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            Object.assign(this.tale, aja.respBody.data)
+            Object.assign(this.tale, aja.respBody.data);
             this.options.modeEdit = false;
             this.taleLastTouchedRemember({})
           }
