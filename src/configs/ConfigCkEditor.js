@@ -189,12 +189,12 @@ const ConfigCkEditor = {
                     const type      = vocTypes[match[2]];
                     return (
                         '<figure class="alina-figure-content">' +
-                        '<figurecaption>' +
-                        `${trackName}` +
-                        '</figurecaption>' +
                         '<audio controls style="width: 100%; margin: 0 auto; text-align: center;">' +
                         `<source src="${id}" type="audio/${type}">` +
                         '</audio>' +
+                        '<figurecaption style="text-align: right;">' +
+                        `${trackName}` +
+                        '</figurecaption>' +
                         '</figure>'
                     );
                 }
