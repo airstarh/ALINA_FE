@@ -96,6 +96,7 @@ export default {
 }
 
 .alina-file-name {
+  text-align: left;
   font-size: 3vmin;
 }
 
