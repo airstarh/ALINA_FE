@@ -99,7 +99,7 @@ export default {
 .scrolling-item {
   text-align: center;
   flex: 0 0 auto;
-  width: 30vmin;
+  width: 35vmin;
   height: 50vmin;
   padding: 1vw;
   margin: 5px 1px;

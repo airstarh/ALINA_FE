@@ -1,7 +1,23 @@
 <template>
   <div class="p-1 mt-3 mb-3" v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0">
     <div>
-      <b-button v-b-toggle="[`f-${entity_id}`]" variant="secondary">{{ $t('Attached Documents') }} <span v-if="ownLength>0">{{ ownLength }}</span></b-button>
+      <b-button
+          v-b-toggle="[`f-${entity_id}`]"
+          variant="secondary"
+      >
+          <span
+              style="font-size: 2em;vertical-align: middle;"
+          >
+            <b-icon
+                icon="file-earmark-richtext"
+            ></b-icon>
+          </span>
+        <span>{{ $t('Attached files') }}</span>
+        <span
+            v-if="ownLength>0"
+            style="font-size: 2em;vertical-align: middle;"
+        >&nbsp;{{ ownLength }}</span>
+      </b-button>
       <b-collapse
           :id="`f-${entity_id}`" class="mt-3"
           @show="onShow"
@@ -62,7 +78,9 @@ export default {
     level:        1,
     order:        0,
     pArrFiles:    {
-      default() {return [];}
+      default() {
+        return [];
+      }
     },
     modeEdit:     {
       default: true
@@ -119,7 +137,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     onChangeFileField(fileList, event) {
       AjaxAlina.newInst({
@@ -145,7 +163,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     onDelete(obj, index) {
       // console.log(">>>>>>>>>>>>>>>>>>>>");
@@ -165,7 +183,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     onChange(obj, index) {
       // console.log(">>>>>>>>>>>>>>>>>>>>");
@@ -186,7 +204,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     onChangeBulk(dArrFiles) {
       const _t    = this;
@@ -203,7 +221,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     onShow() {
       this.loadFileList();
