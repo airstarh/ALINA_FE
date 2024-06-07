@@ -174,7 +174,7 @@ const Translations = {
         "Abort":                                                          "Прервать",
         "fuck you":                                                       "Пошёл нахуй",
         "ACCESS DENIED":                                                  "Доступ запрещён",
-        "Attached files":                                                 "Прикреплённые файлы",
+        "Attached files":                                                 "файлы",
         "Select your files":                                              "Выберите файлы",
         "Unexpected error.":                                              "Неразрешимая ошибка.",
         "Hide date":                                                      "Скрыть дату",
