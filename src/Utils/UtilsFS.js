@@ -1,7 +1,7 @@
 export default class UtilsFS {
 
-	static typeGeneric      = 'generic'
-	static typeImage        = 'image'
+	static typeGeneric      = 'generic';
+	static typeImage        = 'image';
 	static typeText         = 'text';
 	static typeTextVector   = 'text_vector';
 	static typeTable        = 'table';

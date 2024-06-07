@@ -1,5 +1,15 @@
 <template>
   <div class="alina-file">
+
+    <div v-if="UtilsFS.typeAudio === pFileJson.fType">
+      <figure>
+        <audio
+            :src="pFileJson.url_path"
+            controls
+        ></audio>
+      </figure>
+    </div>
+
     <a
         :href="pFileJson.url_path"
         target="_blank"
@@ -14,9 +24,9 @@
         <b-icon v-if="UtilsFS.typeEmail === pFileJson.fType" icon="chat-dots-fill"></b-icon>
         <b-icon v-if="UtilsFS.typePdf === pFileJson.fType" icon="file-pdf-fill"></b-icon>
         <b-icon v-if="UtilsFS.typeArchive === pFileJson.fType" icon="folder-fill"></b-icon>
-        <b-icon v-if="UtilsFS.typeAudio === pFileJson.fType" icon="music-note-beamed"></b-icon>
         <b-icon v-if="UtilsFS.typeVideo === pFileJson.fType" icon="play-circle-fill"></b-icon>
         <b-icon v-if="UtilsFS.typeWeb === pFileJson.fType" icon="file-earmark-code"></b-icon>
+        <b-icon v-if="UtilsFS.typeAudio === pFileJson.fType" icon="music-note-beamed"></b-icon>
       </div>
       <div class="alina-file-name">
         {{ pFileJson.name_human }}
@@ -29,7 +39,6 @@
           :title="pFileJson.name_human"
           class="alina-file-image"
       >
-
     </a>
   </div>
 </template>
@@ -71,6 +80,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+
 .alina-file-icon {
   font-size: 10vmin;
 }
@@ -81,5 +91,15 @@ export default {
 
 .alina-file-image {
   width: 100%;
+}
+
+figure {
+
+  & audio {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 99%;
+  }
 }
 </style>
