@@ -1,6 +1,15 @@
 <template>
   <div class="alina-file">
 
+    <div v-if="UtilsFS.typeVideo === pFileJson.fType">
+      <figure>
+        <video
+            :src="pFileJson.url_path"
+            controls
+        ></video>
+      </figure>
+    </div>
+
     <div v-if="UtilsFS.typeAudio === pFileJson.fType">
       <figure>
         <audio
@@ -12,6 +21,7 @@
 
     <a
         :href="pFileJson.url_path"
+        :title="pFileJson.name_human"
         target="_blank"
         :download="flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null"
     >
@@ -24,9 +34,9 @@
         <b-icon v-if="UtilsFS.typeEmail === pFileJson.fType" icon="chat-dots-fill"></b-icon>
         <b-icon v-if="UtilsFS.typePdf === pFileJson.fType" icon="file-pdf-fill"></b-icon>
         <b-icon v-if="UtilsFS.typeArchive === pFileJson.fType" icon="folder-fill"></b-icon>
-        <b-icon v-if="UtilsFS.typeVideo === pFileJson.fType" icon="play-circle-fill"></b-icon>
         <b-icon v-if="UtilsFS.typeWeb === pFileJson.fType" icon="file-earmark-code"></b-icon>
-        <b-icon v-if="UtilsFS.typeAudio === pFileJson.fType" icon="music-note-beamed"></b-icon>
+<!--        <b-icon v-if="UtilsFS.typeVideo === pFileJson.fType" icon="play-circle-fill"></b-icon>-->
+        <!--        <b-icon v-if="UtilsFS.typeAudio === pFileJson.fType" icon="music-note-beamed"></b-icon>-->
       </div>
       <div class="alina-file-name">
         {{ pFileJson.name_human }}
@@ -100,6 +110,14 @@ figure {
     margin: 0;
     padding: 0;
     width: 99%;
+  }
+
+  & video {
+    display: block;
+    margin: 0;
+    padding: 0;
+    width: 99%;
+    max-height: 35vmin;
   }
 }
 </style>
