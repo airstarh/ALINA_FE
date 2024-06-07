@@ -160,11 +160,11 @@ const ConfigCkEditor = {
                     const id       = match[0];
                     const type     = vocTypes[match[2]];
                     return (
-                        '<div class="alina-figure-content">' +
+                        '<figure class="alina-figure-content">' +
                         '<video controls style="width: 100%; margin: 0 auto; text-align: center;">' +
                         `<source src="${id}" type="video/${type}">` +
                         '</video>' +
-                        '</div>'
+                        '</figure>'
                     );
                 }
             },
