@@ -68,7 +68,7 @@ export default {
     this.defineHeaders();
   },
   updated() {
-    AlinaAudioPlayer.addAudioEventHandlers();
+    AlinaPageGlobalAnalyzer.AlinaAudioPlayer.addAudioEventHandlers();
   },
   methods: {
     defineHeaders() {
