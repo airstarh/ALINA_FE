@@ -67,6 +67,9 @@ export default {
   beforeUpdate() {
     this.defineHeaders();
   },
+  updated() {
+    AlinaAudioPlayer.addAudioEventHandlers();
+  },
   methods: {
     defineHeaders() {
       if (this.showOnly.length > 0) {
@@ -89,7 +92,7 @@ export default {
         'link',
       ];
       return arrHtmlHeaders.includes(header);
-    }
+    },
   }
 };
 </script>

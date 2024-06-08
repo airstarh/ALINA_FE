@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="ru" style="background-color: #343a40; color: #fff;">
 <head>
-  <!--##################################################-->
-  <!--region 3rd PART-->
+    <!--##################################################-->
+    <!--region 3rd PART-->
 
-  <!--endregion 3rd PART-->
-  <!--##################################################-->
-  <!--region COMMON-->
-  <meta name="mobile-web-app-capable" content="yes">
-  <link rel="manifest" href="/manifest.json"/>
-  <link rel="icon" href="/favicon.svg">
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <base target="_parent"/>
-  <!--endregion COMMON-->
-  <!--##################################################-->
-  <!--region SPECIFIC-->
-  <title>¯\_(ツ)_/¯</title>
-  <!--endregion SPECIFIC-->
-  <!--##################################################-->
+    <!--endregion 3rd PART-->
+    <!--##################################################-->
+    <!--region COMMON-->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/manifest.json"/>
+    <link rel="icon" href="/favicon.svg">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <base target="_parent"/>
+    <!--endregion COMMON-->
+    <!--##################################################-->
+    <!--region SPECIFIC-->
+    <title>¯\_(ツ)_/¯</title>
+    <!--endregion SPECIFIC-->
+    <!--##################################################-->
 </head>
 <body id="alina-real-body" class="alina-main-bg alina-main-txt">
 <noscript>
-  <strong>¯\_(ツ)_/¯</strong>
+    <strong>¯\_(ツ)_/¯</strong>
 </noscript>
 <div id="app"></div>
 <!-- built files will be auto injected -->
@@ -32,5 +32,60 @@
 <link rel="stylesheet" href="https://zero.home/sources/css/alina-vars.css" itemprop="url">
 <link rel="stylesheet" href="https://zero.home/sources/css/alina.css" itemprop="url">
 <link rel="stylesheet" href="https://zero.home/sources/css/alina-app-specific.css" itemprop="url">
+<script>
+    //##################################################
+    // region AUDIO
+    AlinaAudioPlayer = {
+        log(data) {
+            console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+            console.log(data);
+        },
+        trackList:                [],
+        defineTrackList:          function () {
+            this.trackList = document.getElementsByTagName('audio');
+            this.log(this.trackList);
+            return this.trackList;
+        },
+        eventHandlerOnEnded:      function (e) {
+            var trackList = AlinaAudioPlayer.trackList;
+            if (trackList[this.nextToPlay])
+                trackList[this.nextToPlay].play();
+        },
+        eventHandlerOnPlay:       function (e) {
+            var trackList = AlinaAudioPlayer.trackList;
+
+            for (var i = 0; i < trackList.length; i++) {
+                if (i === this.myCurrentListIndex) {
+                    continue;
+                }
+
+                if (trackList[i].pause) {
+                    trackList[i].pause();
+                    trackList[i].currentTime = 0;
+                }
+            }
+        },
+        removeAudioEventHandlers: function (e) {
+            var trackList = this.trackList;
+            for (var i = 0; i < trackList.length; i++) {
+                trackList[i].removeEventListener('ended', this.eventHandlerOnEnded);
+                trackList[i].removeEventListener('play', this.eventHandlerOnPlay);
+            }
+        },
+        addAudioEventHandlers:    function () {
+            var trackList = this.defineTrackList();
+            this.removeAudioEventHandlers();
+            for (var i = 0; i < trackList.length; i++) {
+                trackList[i].myCurrentListIndex = i;
+                if (trackList[i + 1]) trackList[i].nextToPlay = i + 1;
+
+                trackList[i].addEventListener('ended', this.eventHandlerOnEnded, false);
+                trackList[i].addEventListener('play', this.eventHandlerOnPlay, false);
+            }
+        }
+    };
+    // endregion AUDIO
+    //##################################################
+</script>
 </body>
 </html>
