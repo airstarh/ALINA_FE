@@ -17,6 +17,7 @@
       <h1>{{ $t("TXT_RESET_PASS_REQUEST") }}</h1>
       <input type="text" v-model="post.mail" :placeholder="$t('TXT_MAIL')" class="form-control">
       <input type="hidden" v-model="post.form_id" class="form-control">
+      <div class="m-1">&nbsp;</div>
       <StandardButtons :onGo="runAJax"></StandardButtons>
     </div>
   </div>

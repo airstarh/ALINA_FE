@@ -1,40 +1,67 @@
 <template>
   <div class="p-1 mt-3 mb-3" v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0">
     <div>
-      <b-button v-b-toggle="[`f-${entity_id}`]" variant="secondary">{{ $t('Attached Documents') }} <span v-if="ownLength>0">{{ ownLength }}</span></b-button>
+      <b-button
+          v-b-toggle="[`f-${entity_id}`]"
+          variant="secondary"
+      >
+          <span
+              style="font-size: 2em;vertical-align: middle;"
+          >
+            <b-icon
+                icon="file-earmark-richtext"
+            ></b-icon>
+          </span>
+        <span>{{ $t('Attached files') }}</span>
+        <span
+            v-if="ownLength>0"
+            style="font-size: 2em;vertical-align: middle;"
+        >&nbsp;{{ ownLength }}</span>
+      </b-button>
       <b-collapse
           :id="`f-${entity_id}`" class="mt-3"
           @show="onShow"
           @hide="onHide"
       >
-        <ui-fileupload
-            v-if="modeEdit"
-            accept="*/*"
-            :multiple="true"
-            :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-            @change="onChangeFileField"
-        >{{ $t("Select your files") }}
-        </ui-fileupload>
-
-        <AlinaTableJson
+        <div class="row no-gutters">
+          <div class="col">
+            <ui-fileupload
+                v-if="modeEdit"
+                accept="*/*"
+                :multiple="true"
+                :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+                @change="onChangeFileField"
+            >{{ $t("Select your files") }}
+            </ui-fileupload>
+          </div>
+          <div
+              v-if="modeEdit && dArrFiles.length > 0"
+              class="col"
+          >
+            <b-btn block size="md" variant="success" @click="onChangeBulk(dArrFiles)">{{ $t('Bulk File Save') }}</b-btn>
+          </div>
+        </div>
+        <AlinaHorizontalScrollJson
             :pJson="dArrFiles"
-            :showOnly="['icon','url']"
+            :showOnly="['url']"
             :modeManage="modeEdit"
             @onDelete="onDelete"
-        ></AlinaTableJson>
+            @onChange="onChange"
+        ></AlinaHorizontalScrollJson>
       </b-collapse>
     </div>
   </div>
 </template>
 
 <script>
-import AlinaTableJson          from "@/components/AlinaTableJson";
-import ConfigApi               from "@/configs/ConfigApi";
-import AjaxAlina               from "@/services/AjaxAlina";
-import UtilsArray              from "@/Utils/UtilsArray";
-import CurrentUser             from "@/services/CurrentUser";
-import UtilsData               from "@/Utils/UtilsData";
-import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
+import AlinaHorizontalScrollJson from "@/components/AlinaHorizontalScrollJson";
+import ConfigApi                 from "@/configs/ConfigApi";
+import AjaxAlina                 from "@/services/AjaxAlina";
+import UtilsArray                from "@/Utils/UtilsArray";
+import CurrentUser               from "@/services/CurrentUser";
+import UtilsData                 from "@/Utils/UtilsData";
+import AlinaPageGlobalAnalyzer   from "@/services/AlinaPageGlobalAnalyzer";
+import UtilsFS                   from "@/Utils/UtilsFS";
 
 export default {
   name:  "AlinaFileUploader",
@@ -51,7 +78,9 @@ export default {
     level:        1,
     order:        0,
     pArrFiles:    {
-      default() {return [];}
+      default() {
+        return [];
+      }
     },
     modeEdit:     {
       default: true
@@ -64,9 +93,11 @@ export default {
     return {
       CurrentUser: CurrentUser.obj(),
       options:     {
-        urlFileUpload: `${ConfigApi.url_base}/FileUpload`,
-        urlFileDelete: `${ConfigApi.url_base}/FileUpload/delete`,
-        urlGetFiles:   `${ConfigApi.url_base}/FileUpload/getFiles`,
+        urlFileUpload:     `${ConfigApi.url_base}/FileUpload`,
+        urlFileDelete:     `${ConfigApi.url_base}/FileUpload/delete`,
+        urlFileUpdate:     `${ConfigApi.url_base}/AdminDbManager/EditRow`,
+        urlFileUpdateBulk: `${ConfigApi.url_base}/AdminDbManager/UpdateBulk`,
+        urlGetFiles:       `${ConfigApi.url_base}/FileUpload/getFiles`,
       },
       ConfigApi,
       dArrFiles:   [],
@@ -81,14 +112,11 @@ export default {
     this.pageRecalcIframeHeight();
   },
   methods:    {
+
     loopFiles() {
       for (let [i, model] of Object.entries(this.dArrFiles)) {
-        if (model.hasOwnProperty('url_path')) {
-          const strDw = this.$t('Download');
-          model.url   = `<a href="${model.url_path}" target="_blank" class="btn btn-sm btn-block text-left btn-dark">${model.name_human}</a>`;
-        }
         if (model.hasOwnProperty('name_fs')) {
-          model.icon = `<span class="">🔗</span>`;
+          model.fType = UtilsFS.getType(model.name_fs);
         }
       }
     },
@@ -109,7 +137,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     onChangeFileField(fileList, event) {
       AjaxAlina.newInst({
@@ -135,13 +163,13 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     onDelete(obj, index) {
-      console.log(">>>>>>>>>>>>>>>>>>>>");
-      console.log("xxx");
-      console.log(index);
-      console.log(obj);
+      // console.log(">>>>>>>>>>>>>>>>>>>>");
+      // console.log("xxx");
+      // console.log(index);
+      // console.log(obj);
       if (!confirm("Are you sure?")) {return;}
       const _t    = this;
       obj.form_id = 'actionDelete';
@@ -155,7 +183,45 @@ export default {
           }
         }
       })
-      .go();
+          .go();
+    },
+    onChange(obj, index) {
+      // console.log(">>>>>>>>>>>>>>>>>>>>");
+      // console.log("onChange");
+      // console.log(index);
+      // console.log(obj);
+      //return null;
+      //if (!confirm("Are you sure?")) {return;}
+      const _t    = this;
+      obj.form_id = 'actionEditRow';
+      AjaxAlina.newInst({
+        method:     'POST',
+        url:        `${this.options.urlFileUpdate}/file/${obj.id}`,
+        postParams: obj,
+        onDone:     (aja) => {
+          if (aja.respBody.meta.alina_response_success == 1) {
+            _t.loadFileList();
+          }
+        }
+      })
+          .go();
+    },
+    onChangeBulk(dArrFiles) {
+      const _t    = this;
+      const obj   = {};
+      obj.form_id = 'actionUpdateBulk';
+      obj.list    = dArrFiles;
+      AjaxAlina.newInst({
+        method:     'POST',
+        url:        `${this.options.urlFileUpdateBulk}/file`,
+        postParams: obj,
+        onDone:     (aja) => {
+          if (aja.respBody.meta.alina_response_success == 1) {
+            _t.loadFileList();
+          }
+        }
+      })
+          .go();
     },
     onShow() {
       this.loadFileList();
@@ -169,7 +235,7 @@ export default {
     },
   },
   components: {
-    AlinaTableJson
+    AlinaHorizontalScrollJson
   },
 };
 </script>

@@ -1,12 +1,13 @@
 <template>
-  <div :style="options.style">
-    <div class="mb-5">
+  <div :style="options.style" class="">
+    <div class="mb-2">
       <b-button
           v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
           :class="{
                       'btn-md':level==1,
                       'btn-sm':level>1,
                       }"
+          class="bg-black"
       >{{ $tc('COUNTER_COMMENTS', commentsTotal) }}
       </b-button>
     </div>
@@ -16,44 +17,47 @@
         @shown="pageRecalcIframeHeight"
         @hidden="pageRecalcIframeHeight"
         :visible="level == 3"
-        class="mb-5"
+        class=""
     >
       <!--##################################################-->
       <!--region SUBMITTED COMMENTS-->
       <div
           v-for="(tale, feedIndex) in feed"
           :key="tale.id"
-          class="mt-1"
+          class=""
           :data-id="tale.id"
           :data-to="tale.answer_to_tale_id"
           :data-root="root_tale_id"
           :data-index="feedIndex"
       >
         <div
+            class="single-comment mt-5"
             :class="{
                         highlight: $route.query.highlight == tale.id,
                     }"
         >
           <!--##################################################-->
           <!--region User Info-->
-          <div class="mt-5">&nbsp;</div>
+
           <UserAvatar
               :userId="tale.owner_id"
               :userFirstName="tale.owner_firstname"
               :userLastName="tale.owner_lastname"
               :emblemUrl="tale.owner_emblem"
-              emblemWidth="min(100px, 10vmax)"
+              emblemWidth="min(50px, 5vmax)"
               :someDate="tale.publish_at"
+              :isComment="true"
+              class=""
           ></UserAvatar>
           <!--endregion User Info-->
           <!--##################################################-->
           <!--region Comment body          -->
           <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
             <div class="col">
-              <div class="ck-content">
+              <div class="ck-content mt-1 mb-3">
                 <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
               </div>
-              <div class="mt-3"></div>
+
             </div>
           </div>
           <!--################################################## -->
@@ -67,13 +71,13 @@
           <!--region Buttons, Likes-->
           <div class="row no-gutters m-buttons-1">
             <!--region Buttons EDIT CANCEL SUBMIT-->
-            <div class="col text-right" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
-                            <span class="row no-gutters">
-                                <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="col btn btn-sm btn-danger">{{ $t("TXT_DELETE") }}</button>
-                                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-secondary">{{ $t("TXT_EDIT") }}</button>
-                                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-secondary">{{ $t("TXT_CANCEL") }}</button>
-                                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="col btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
-                            </span>
+            <div class="col">
+              <span class="" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
+                  <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">{{ $t("TXT_DELETE") }}</button>
+                  <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_EDIT") }}</button>
+                  <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_CANCEL") }}</button>
+                  <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
+              </span>
             </div>
             <!--endregion Buttons EDIT CANCEL SUBMIT-->
             <!--region Likes-->
@@ -117,40 +121,31 @@
       <div v-if="flagNewCommentAvailable()">
         <!--##################################################-->
         <!--region User Info-->
-        <div class="mt-5">&nbsp;</div>
-        <UserAvatar
-            :userId="CU.attributes.id"
-            :userFirstName="CU.attributes.firstname"
-            :userLastName="CU.attributes.lastname"
-            :emblemUrl="CU.attributes.emblem"
-            emblemWidth="min(100px, 10vmax)"
-            :someDate="null"
-        ></UserAvatar>
+
         <!--endregion User Info-->
         <!--##################################################-->
         <!--region EDITOR-->
-        <div class="row no-gutters">
+        <div class="row no-gutters mt-5">
           <div class="col">
             <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
             <div class="row no-gutters">
-              <div class="col"></div>
               <div class="col">
-                <div class="row no-gutters">
-                  <button @click="() => {this.body = '';}" class="col btn btn-sm btn-danger">{{ $t("TXT_CLEAR") }}</button>
-                  <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
-                </div>
+                <button @click="() => {this.body = '';}" class="btn btn-sm btn-danger">{{ $t("TXT_CLEAR") }}</button>
+              </div>
+              <div class="col">
+                <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
               </div>
             </div>
-            <div>&nbsp;</div>
           </div>
         </div>
         <!--endregion EDITOR-->
       </div>
       <!--endregion NEW COMMENT-->
       <!--##################################################-->
-      <div v-if="root_tale_object.is_comment_for_owner == 1" class="m-3">{{$tc('Comments only for owner')}}</div>
+      <div v-if="root_tale_object.is_comment_for_owner == 1" class="m-3">{{ $tc('Comments only for owner') }}</div>
       <!--##################################################-->
       <!--region Login or Register-->
+      <div class="m-3">&nbsp;</div>
       <div v-if="!CU.isLoggedIn()" class="col">
         <a
             href="#/auth/login"
@@ -213,10 +208,10 @@ export default {
           "padding":      "0",
           "margin":       "0",
           "margin-left":  this.level == 1 ? '0' : 'min(5%, 100px)',
+          "border-left":  this.level == 1 ? '#A9ABAD solid 2px' : '#A9ABAD solid 1px'
+          /**/
           //"max-width":    this.level == 1 ? '95vw' : '85vw',
           //"max-width":    '80%',
-          "padding-left": "0",
-          "border-left":  this.level == 1 ? '#A9ABAD solid 5px' : '#A9ABAD solid 1px'
         },
         styleComment:  {}
       },
@@ -233,6 +228,7 @@ export default {
       },
     }
   },
+  emits: ['bv::toggle::collapse'],
   props: {
     root_tale_object:           {
       type:    Object,
@@ -444,6 +440,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.single-comment {
+
+}
+
 .highlight {
   background-color: #ffb200;
   color: black;

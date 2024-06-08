@@ -6,12 +6,14 @@
     <div class="row no-gutters">
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
-          <div class="input-group-append">
-            <button @click="search" class="input-group-text btn btn-primary">{{ $t("TXT_SEARCH") }}</button>
+          <div class="input-group-prepend">
+            <button @click="search" class="input-group-text btn btn-primary"
+            ><b-icon icon="search"></b-icon></button>
           </div>
           <input type="text" class="form-control" aria-label="Search" v-model="dataGetParams.txt" placeholder="">
           <div class="input-group-append">
-            <button @click="searchClear" class="input-group-text btn btn-danger">{{ $t("TXT_CLEAR") }}</button>
+            <button @click="searchClear" class="input-group-text btn btn-danger"
+            ><b-icon icon="backspace-fill"></b-icon></button></button>
           </div>
         </div>
       </div>

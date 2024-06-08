@@ -27,7 +27,7 @@
             </div>
             <div class="col-auto text-nowrap p-1">
                             <span>
-                                <i>{{ emittedRes | unix_to_date_time }}</i>
+                                <i>{{ UtilsDate.fromUnixToDateTime(emittedRes) }}</i>
                             </span>&nbsp;
               <span @click="setNow" class="btn btn-sm btn-primary">{{ $t("Set now") }}</span>
             </div>
@@ -40,11 +40,18 @@
 </template>
 
 <script>
+import UtilsDate from "@/Utils/UtilsDate";
 export default {
   name: "AlinaDatePicker",
+	computed: {
+		UtilsDate() {
+			return UtilsDate
+		}
+	},
   created() {
     this.convertValueToDate();
   },
+	emits: ['input'],
   props: {
     value: {
       /**idq - ID qualifier*/

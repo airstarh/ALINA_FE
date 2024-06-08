@@ -15,131 +15,148 @@ import auth_reset_password_with_code from "@/views/auth/resetPasswordWithCode";
 import tale_upsert                   from "@/views/tale/upsert";
 import tale_feed                     from "@/views/tale/feed";
 import notification                  from "@/views/auth/notification";
+import AjaxAlina                     from "@/services/AjaxAlina";
+import ConfigApi                     from "@/configs/ConfigApi";
 
 Vue.use(Router);
 export default new Router({
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition;
-    } else {
-      const position = {};
-      if (to.hash) {
-        position.selector = to.hash;
-        if (to.hash === '#experience') {
-          position.offset = {y: 220}
-        }
-        if (document.querySelector(to.hash)) {
-          return position;
-        }
-        return false;
-      }
-    }
-  },
-  routes: [
-    {
-      path:      "/",
-      name:      "feed",
-      component: tale_feed
-    },
-    {
-      path:      "/about",
-      name:      "about",
-      component: About,
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      //=== component: () =>
-      //===                import(/* webpackChunkName: "about" */ "@/views/About.vue")
-    },
-    {
-      path:      "/about/:someParam",
-      name:      "aboutSomeData",
-      component: About
-    },
-    {
-      path:      "/RestCall",
-      name:      "RestCall",
-      component: RestCall
-    },
-    // UrlParser
-    {
-      path:      "/UrlParser",
-      name:      "UrlParser",
-      component: UrlParser
-    },
-    // CLI lParser
-    {
-      path:      "/CliParser",
-      name:      "CliParser",
-      component: CliParser
-    },
-    {
-      path:      "/Informer",
-      name:      "Informer",
-      component: Informer
-    },
-    //##################################################
-    //##################################################
-    //##################################################
-    {
-      path:      "/tale/upsert",
-      component: tale_upsert
-    },
-    {
-      path:      "/tale/upsert/:id",
-      component: tale_upsert
-    },
-    {
-      path:      "/tale/feed",
-      component: tale_feed
-    },
-    //##################################################
-    //##################################################
-    //##################################################
-    {
-      path:      "/auth/login",
-      name:      "auth_login",
-      component: auth_login
-    },
-    {
-      path:      "/auth/logout",
-      name:      "auth_logout",
-      component: auth_logout
-    },
-    {
-      path:      "/auth/profile",
-      component: auth_profile
-    },
-    {
-      path:      "/auth/profile/:id",
-      component: auth_profile
-    },
-    {
-      path:      "/auth/register",
-      name:      "auth_register",
-      component: auth_register
-    },
-    {
-      path:      "/auth/change_password",
-      name:      "auth_change_password",
-      component: auth_change_password
-    },
-    {
-      path:      "/auth/reset_password_request",
-      name:      "auth_reset_password_request",
-      component: auth_reset_password_request
-    },
-    {
-      path:      "/auth/reset_password_with_code",
-      name:      "auth_reset_password_with_code",
-      component: auth_reset_password_with_code
-    },
-    {
-      path:      "/notification",
-      component: notification
-    },
-    //##################################################
-    //##################################################
-    //##################################################
-  ]
+	scrollBehavior(to, from, savedPosition) {
+		if (savedPosition) {
+			return savedPosition;
+		} else {
+			const position = {};
+			if (to.hash) {
+				position.selector = to.hash;
+				if (to.hash === '#experience') {
+					position.offset = {y: 220}
+				}
+				if (document.querySelector(to.hash)) {
+					return position;
+				}
+				return false;
+			}
+		}
+	},
+	routes: [
+		{
+			path:      "/",
+			name:      "feed",
+			component: tale_feed
+		},
+		{
+			path:      "/about",
+			name:      "about",
+			component: About,
+			// route level code-splitting
+			// this generates a separate chunk (about.[hash].js) for this route
+			// which is lazy-loaded when the route is visited.
+			//=== component: () =>
+			//===                import(/* webpackChunkName: "about" */ "@/views/About.vue")
+		},
+		{
+			path:      "/about/:someParam",
+			name:      "aboutSomeData",
+			component: About
+		},
+		{
+			path:      "/RestCall",
+			name:      "RestCall",
+			component: RestCall
+		},
+		// UrlParser
+		{
+			path:      "/UrlParser",
+			name:      "UrlParser",
+			component: UrlParser
+		},
+		// CLI lParser
+		{
+			path:      "/CliParser",
+			name:      "CliParser",
+			component: CliParser
+		},
+		{
+			path:      "/Informer",
+			name:      "Informer",
+			component: Informer
+		},
+		//##################################################
+		//##################################################
+		//##################################################
+		{
+			path:      "/tale/upsert",
+			component: tale_upsert
+		},
+		{
+			path:      "/tale/upsert/:id",
+			component: tale_upsert
+		},
+		{
+			path:      "/tale/feed",
+			component: tale_feed
+		},
+		//##################################################
+		//##################################################
+		//##################################################
+		{
+			path:      "/auth/login",
+			name:      "auth_login",
+			component: auth_login
+		},
+		{
+			path:      "/auth/logout",
+			name:      "auth_logout",
+			component: auth_logout,
+			beforeEnter(to, from, next) {
+				AjaxAlina.newInst({
+					url:        `${ConfigApi.url_base}/auth/logout`,
+					postParams: {
+						form_id: 'actionLogout',
+					}
+					,
+					method: 'POST',
+					onDone: (aja) => {
+						//this.$router.replace({path: `/tale/feed`});
+						location.reload();
+					}
+				})
+				.go();
+			}
+		},
+		{
+			path:      "/auth/profile",
+			component: auth_profile
+		},
+		{
+			path:      "/auth/profile/:id",
+			component: auth_profile
+		},
+		{
+			path:      "/auth/register",
+			name:      "auth_register",
+			component: auth_register
+		},
+		{
+			path:      "/auth/change_password",
+			name:      "auth_change_password",
+			component: auth_change_password
+		},
+		{
+			path:      "/auth/reset_password_request",
+			name:      "auth_reset_password_request",
+			component: auth_reset_password_request
+		},
+		{
+			path:      "/auth/reset_password_with_code",
+			name:      "auth_reset_password_with_code",
+			component: auth_reset_password_with_code
+		},
+		{
+			path:      "/notification",
+			component: notification
+		},
+		//##################################################
+		//##################################################
+		//##################################################
+	]
 });

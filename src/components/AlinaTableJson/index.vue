@@ -33,6 +33,7 @@ import CurrentUser from "@/services/CurrentUser";
 
 export default {
   name:  "AlinaTableJson",
+	emits: ['onDelete'],
   props: {
     pJson:           {
       default: []

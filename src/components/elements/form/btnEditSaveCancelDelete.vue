@@ -18,6 +18,7 @@ import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name:  "btnEditSaveCancelDelete",
+	emits: ['onSave', 'onEdit', 'onCancel', 'onDelete'],
   props: {
     subject:  {
       type:    Object,

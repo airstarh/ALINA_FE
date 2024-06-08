@@ -47,7 +47,7 @@
                             </a>
                             <br>
                             <span>
-                                <i>{{ item.created_at | unix_to_date_time }}</i>
+                                <i>{{ UtilsDate.fromUnixToDateTime(item.created_at) }}</i>
                             </span>
                         </span>
           <span class="col-auto">
@@ -86,9 +86,15 @@ import CurrentUser from "@/services/CurrentUser";
 import Paginator   from "@/components/elements/form/Paginator";
 import UtilsArray  from "@/Utils/UtilsArray";
 import Obj         from "@/Utils/UtilsObject";
+import UtilsDate   from "../../Utils/UtilsDate";
 //#####
 export default {
   name:       "notification",
+	computed: {
+		UtilsDate() {
+			return UtilsDate
+		}
+	},
   components: {
     Paginator
   },
