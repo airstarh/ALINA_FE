@@ -32,14 +32,9 @@ const AlinaPageGlobalAnalyzer = {
     /**##################################################*/
     // region AUDIO
     AlinaAudioPlayer: {
-        log(data) {
-            console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-            console.log(data);
-        },
         trackList:                [],
         defineTrackList:          function () {
             this.trackList = document.getElementsByTagName('audio');
-            this.log(this.trackList);
             return this.trackList;
         },
         eventHandlerOnEnded:      function (e) {
