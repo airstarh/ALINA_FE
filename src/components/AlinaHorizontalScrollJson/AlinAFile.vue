@@ -25,6 +25,13 @@
         target="_blank"
         :download="flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null"
     >
+      <img
+          v-if="UtilsFS.typeImage === pFileJson.fType"
+          :src="pFileJson.url_path"
+          :alt="pFileJson.name_human"
+          :title="pFileJson.name_human"
+          class="alina-file-image"
+      >
       <div class="alina-file-icon">
         <b-icon v-if="UtilsFS.typeGeneric === pFileJson.fType" icon="file-earmark-richtext"></b-icon>
         <b-icon v-if="UtilsFS.typeText === pFileJson.fType" icon="card-text"></b-icon>
@@ -35,20 +42,12 @@
         <b-icon v-if="UtilsFS.typePdf === pFileJson.fType" icon="file-pdf-fill"></b-icon>
         <b-icon v-if="UtilsFS.typeArchive === pFileJson.fType" icon="folder-fill"></b-icon>
         <b-icon v-if="UtilsFS.typeWeb === pFileJson.fType" icon="file-earmark-code"></b-icon>
-<!--        <b-icon v-if="UtilsFS.typeVideo === pFileJson.fType" icon="play-circle-fill"></b-icon>-->
+        <!--        <b-icon v-if="UtilsFS.typeVideo === pFileJson.fType" icon="play-circle-fill"></b-icon>-->
         <!--        <b-icon v-if="UtilsFS.typeAudio === pFileJson.fType" icon="music-note-beamed"></b-icon>-->
       </div>
       <div class="alina-file-name">
         {{ pFileJson.name_human }}
       </div>
-
-      <img
-          v-if="UtilsFS.typeImage === pFileJson.fType"
-          :src="pFileJson.url_path"
-          :alt="pFileJson.name_human"
-          :title="pFileJson.name_human"
-          class="alina-file-image"
-      >
     </a>
   </div>
 </template>
