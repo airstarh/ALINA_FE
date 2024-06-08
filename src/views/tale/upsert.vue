@@ -54,7 +54,8 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text bg-dark text-light">{{ $tc('body_free') }}</span>
                 </div>
-                <textarea class="form-control" :placeholder="$tc('body_free')" v-model="tale.body_free" rows="20"></textarea>
+                <textarea class="form-control" :placeholder="$tc('body_free')" v-model="tale.body_free"
+                          rows="20"></textarea>
               </div>
               <div class="mt-3 mb-3">
                 <div v-html="tale.body_free"></div>
@@ -87,49 +88,71 @@
               <div class="col">
                 <div class="mb-3">
                   <!-- is_header_hidden -->
-                  <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0" :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0"
+                               :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_date_hidden -->
-                  <ui-checkbox v-model="tale.is_date_hidden" :trueValue="1" :false-value="0" :checked="tale.is_date_hidden==1">{{ $t("Hide date") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_date_hidden" :trueValue="1" :false-value="0"
+                               :checked="tale.is_date_hidden==1">{{ $t("Hide date") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_avatar_hidden -->
-                  <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0" :checked="tale.is_avatar_hidden==1">{{ $t("Hide avatar") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0"
+                               :checked="tale.is_avatar_hidden==1">{{ $t("Hide avatar") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_social_sharing_hidden -->
-                  <ui-checkbox v-model="tale.is_social_sharing_hidden" :trueValue="1" :false-value="0" :checked="tale.is_social_sharing_hidden==1">{{ $t("Hide social sharing") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_social_sharing_hidden" :trueValue="1" :false-value="0"
+                               :checked="tale.is_social_sharing_hidden==1">{{ $t("Hide social sharing") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_denied -->
-                  <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0" :checked="tale.is_comment_denied==1">{{ $t("Comments denied") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0"
+                               :checked="tale.is_comment_denied==1">{{ $t("Comments denied") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_for_owner -->
-                  <ui-checkbox v-model="tale.is_comment_for_owner" :trueValue="1" :false-value="0" :checked="tale.is_comment_for_owner==1">{{ $t("Comments only for owner") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_comment_for_owner" :trueValue="1" :false-value="0"
+                               :checked="tale.is_comment_for_owner==1">{{ $t("Comments only for owner") }}
+                  </ui-checkbox>
                 </div>
               </div>
               <div class="col">
                 <div class="mb-3">
                   <!-- is_sticked -->
-                  <ui-checkbox v-model="tale.is_sticked" :trueValue="1" :false-value="0" :checked="tale.is_sticked==1">{{ $t("Sticked") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_sticked" :trueValue="1" :false-value="0" :checked="tale.is_sticked==1">
+                    {{ $t("Sticked") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_adult_denied -->
-                  <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0" :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0"
+                               :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_adv -->
-                  <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">{{ $t("Advertisement") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">
+                    {{ $t("Advertisement") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_draft -->
-                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">{{ $t("Hide on feed") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">
+                    {{ $t("Hide on feed") }}
+                  </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_for_registered -->
-                  <ui-checkbox v-model="tale.is_for_registered" :trueValue="1" :false-value="0" :checked="tale.is_for_registered==1">{{ $t("Only for registered users") }}</ui-checkbox>
+                  <ui-checkbox v-model="tale.is_for_registered" :trueValue="1" :false-value="0"
+                               :checked="tale.is_for_registered==1">{{ $t("Only for registered users") }}
+                  </ui-checkbox>
                 </div>
 
                 <div class="input-group input-group mb-3">
@@ -166,7 +189,8 @@
                   >{{ tale.header || '¯\_(ツ)_/¯' }}
                   </a>
                 </h1>
-                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;" v-if="tale.is_date_hidden != 1">
+                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;"
+                     v-if="tale.is_date_hidden != 1">
                   <router-link
                       :to="'/tale/upsert/'+tale.id"
                       class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
@@ -393,9 +417,9 @@ export default {
     this.ajaxGetTale(id);
   },
   computed: {
-	  UtilsDate() {
-		  return UtilsDate
-	  },
+    UtilsDate() {
+      return UtilsDate
+    },
     taleUrl() {
       let res = ConfigApi.url_base;
       if (this.tale.router_alias) {
@@ -493,7 +517,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     ajaxGetTale(id, forceGet = false) {
       const _t = this;
@@ -539,7 +563,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     },
     ajaDeleteTale(tale) {
       if (!confirm("Are you sure?")) {return;}
@@ -555,7 +579,7 @@ export default {
           }
         }
       })
-      .go();
+          .go();
     }, // endregion CRUD
     // ##################################################
   }

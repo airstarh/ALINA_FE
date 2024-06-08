@@ -1,32 +1,36 @@
 import UtilsData from "@/Utils/UtilsData";
+
 export default class CurrentUser {
     //##################################################
     /**@type {CurrentUser}*/
     static inst = null;
-    attributes  = {
-        "id":                  null,
-        "mail":                null,
-        "password":            null,
-        "firstname":           null,
-        "lastname":            null,
-        "emblem":              null,
-        "birth":               null,
-        "language":            null,
-        "timezone":            null,
-        "is_verified":         null,
-        "banned_till":         null,
-        "created_at":          null,
-        "is_deleted":          null,
-        "last_time":           null,
-        "last_browser_enc":    null,
-        "last_ip":             null,
-        "fingerprint":         null,
-        "about_myself":        null,
-        "reset_code":          null,
-        "reset_required":      null,
-        "count_notifications": 0,
-        "rbac_user_role":      [],
-    };
+
+    constructor() {
+        this.attributes = {
+            "id":                  null,
+            "mail":                null,
+            "password":            null,
+            "firstname":           null,
+            "lastname":            null,
+            "emblem":              null,
+            "birth":               null,
+            "language":            null,
+            "timezone":            null,
+            "is_verified":         null,
+            "banned_till":         null,
+            "created_at":          null,
+            "is_deleted":          null,
+            "last_time":           null,
+            "last_browser_enc":    null,
+            "last_ip":             null,
+            "fingerprint":         null,
+            "about_myself":        null,
+            "reset_code":          null,
+            "reset_required":      null,
+            "count_notifications": 0,
+            "rbac_user_role":      [],
+        }
+    }
 
     //##################################################
     /**
