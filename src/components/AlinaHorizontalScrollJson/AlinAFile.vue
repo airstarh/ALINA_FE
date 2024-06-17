@@ -25,13 +25,17 @@
         target="_blank"
         :download="flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null"
     >
-      <img
+      <figure
           v-if="UtilsFS.typeImage === pFileJson.fType"
-          :src="pFileJson.url_path"
-          :alt="pFileJson.name_human"
-          :title="pFileJson.name_human"
           class="alina-file-image"
       >
+        <img
+            :src="pFileJson.url_path"
+            :alt="pFileJson.name_human"
+            :title="pFileJson.name_human"
+        >
+      </figure>
+
       <div class="alina-file-icon">
         <b-icon v-if="UtilsFS.typeGeneric === pFileJson.fType" icon="file-earmark-richtext"></b-icon>
         <b-icon v-if="UtilsFS.typeText === pFileJson.fType" icon="card-text"></b-icon>
@@ -90,34 +94,43 @@ export default {
 </script>
 <style scoped lang="scss">
 
-.alina-file-icon {
-  font-size: 10vmin;
-}
+.alina-file {
 
-.alina-file-name {
-  text-align: left;
-  font-size: 3vmin;
-}
-
-.alina-file-image {
-  width: 100%;
-}
-
-figure {
-
-  & audio {
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: 99%;
+  & .alina-file-icon {
+    font-size: 10vmin;
   }
 
-  & video {
-    display: block;
-    margin: 0;
-    padding: 0;
-    width: 99%;
-    max-height: 35vmin;
+  & .alina-file-name {
+    text-align: left;
+    font-size: 3vmin;
+  }
+
+  & figure.alina-file-image {
+    height: 35vmin;
+    width: 100%;
+    overflow: hidden;
+
+    & img {
+      width: 100%;
+    }
+  }
+
+  figure {
+
+    & audio {
+      display: block;
+      margin: 0;
+      padding: 0;
+      width: 99%;
+    }
+
+    & video {
+      display: block;
+      margin: 0;
+      padding: 0;
+      width: 99%;
+      max-height: 35vmin;
+    }
   }
 }
 </style>
