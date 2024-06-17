@@ -1,10 +1,10 @@
 import UtilsSys from "@/Utils/UtilsSys";
 
 const ConfigApi = {
-  "url_base":              "https://saysimsim.ru",
+  "url_base":              process.env.VUE_APP_ALINA_DOMAIN,
   "ALINA_FILE_UPLOAD_KEY": "userfile[]",
   "YandexMaps":            {
-    apiKey:     '716acc81-eeeb-4db9-a3d6-eb1d1c5f7b55',
+    apiKey:     process.env.VUE_APP_ALINA_API_KEY_YANDEX,
     lang:       'ru_RU',
     coordorder: 'latlong',
     version:    '2.1',
