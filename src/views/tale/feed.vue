@@ -13,7 +13,7 @@
           <input type="text" class="form-control" aria-label="Search" v-model="dataGetParams.txt" placeholder="">
           <div class="input-group-append">
             <button @click="searchClear" class="input-group-text btn btn-danger"
-            ><b-icon icon="backspace-fill"></b-icon></button></button>
+            ><b-icon icon="backspace-fill"></b-icon></button>
           </div>
         </div>
       </div>
