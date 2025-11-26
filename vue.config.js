@@ -1,17 +1,17 @@
-const path                         = require('path');
-const {CKEditorTranslationsPlugin} = require('@ckeditor/ckeditor5-dev-translations');
-const {styles}                     = require('@ckeditor/ckeditor5-dev-utils');
+const path = require('path');
+const { CKEditorTranslationsPlugin } = require('@ckeditor/ckeditor5-dev-translations');
+const { styles } = require('@ckeditor/ckeditor5-dev-utils');
 
 process.env.VUE_APP_ALINA_INFO = 'Служебная информация';
 
 module.exports = {
-    outputDir:  path.resolve(process.env.VUE_APP_ALINA_DIST),
-    parallel:   false,
+    outputDir: path.resolve(process.env.VUE_APP_ALINA_DIST),
+    parallel: false,
     publicPath: '/apps/vue/',
-    devServer:  {
-        public:           'https://localhost:8082',
-        https:            true,
-        clientLogLevel:   'error',
+    devServer: {
+        public: 'https://localhost:8082',
+        https: true,
+        clientLogLevel: 'error',
         disableHostCheck: true
     },
     // The source of CKEditor is encapsulated in ES6 modules. By default, the code
@@ -20,7 +20,7 @@ module.exports = {
     transpileDependencies: [
         /ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/,
     ],
-    pluginOptions:         {
+    pluginOptions: {
         // ##################################################
         //region vue-cli-plugin-svg-sprite
         svgSprite: {
@@ -36,9 +36,9 @@ module.exports = {
              * @see https://github.com/kisenka/svg-sprite-loader#configuration
              */
             loaderOptions: {
-                extract:         true,
+                extract: true,
                 filenameHashing: false, //spriteFilename:  'img/icons.[hash:8].svg' // or 'img/icons.svg' if filenameHashing == false
-                spriteFilename:  'alina-sprite.svg',
+                spriteFilename: 'alina-sprite.svg',
             },
             /**
              * @see https://github.com/kisenka/svg-sprite-loader#configuration
@@ -67,7 +67,7 @@ module.exports = {
             // ##################################################// ##################################################
         ]
     },
-    chainWebpack:     config => {
+    chainWebpack: config => {
         // ##################################################// ##################################################
         //region CKEDITOR 2
         // Vue CLI would normally use its own loader to load .svg and .css files, however:
@@ -108,7 +108,7 @@ module.exports = {
                         themeImporter: {
                             themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
                         },
-                        minify:        true
+                        minify: true
                     })
                 };
             });
