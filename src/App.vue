@@ -1,13 +1,9 @@
 <template>
-  <div
-      class="alina-flex-vertical-container"
-      :class="{
-          'alina-vh-100':!pageIsInIframe
-        }"
-      :style="{
-          'overflow': pageIsInIframe ? 'hidden':''
-        }"
-  >
+  <div class="alina-flex-vertical-container" :class="{
+    'alina-vh-100': !pageIsInIframe
+  }" :style="{
+    'overflow': pageIsInIframe ? 'hidden' : ''
+  }">
     <div class="alina-flex-vertical-header" v-if="!fullScreen">
       <MenuHorizontalMain></MenuHorizontalMain>
     </div>
@@ -22,23 +18,24 @@
   </div>
 </template>
 <script>
-import MenuHorizontalMain      from "@/components/MenuHorizontalMain";
-import Footer                  from "@/components/Footer";
-import Messages                from "@/components/global/Messages";
-import Spinner                 from "@/components/global/Spinner";
-import AlinaStorage            from "@/services/AlinaStorage";
-import UtilsArray              from "@/Utils/UtilsArray";
-import PageSettings            from "@/services/PageSettings";
-import ConfigApi               from "@/configs/ConfigApi";
+import MenuHorizontalMain from "@/components/MenuHorizontalMain";
+// import Footer                  from `@/components/Footer`;
+import Messages from "@/components/global/Messages";
+import Spinner from "@/components/global/Spinner";
+import AlinaStorage from "@/services/AlinaStorage";
+import UtilsArray from "@/Utils/UtilsArray";
+import PageSettings from "@/services/PageSettings";
+import ConfigApi from "@/configs/ConfigApi";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
-  name:       "App",
+  name: "App",
   components: {
     MenuHorizontalMain,
     Messages,
     Spinner,
-    Footer,
+    'MenuHorizontalMain': () => import(`@/components/${process.env.VUE_APP_ALINA_FOLDER}MenuHorizontalMain`),
+    'Footer': () => import(`@/components/${process.env.VUE_APP_ALINA_FOLDER}Footer`),
   },
   data() {
     return {
@@ -63,7 +60,10 @@ export default {
     });
   },
   created() {
+
     let _this = this;
+
+    // region KEY PRESS
     document.addEventListener('keyup', function (event) {
       if (event.ctrlKey && event.altKey) {
         if (event.key == 'f') {
@@ -72,6 +72,7 @@ export default {
         //_this.log(event);
       }
     });
+    // endregion KEY PRESS
   },
   computed: {
     pageIsInIframe() {
@@ -87,11 +88,11 @@ export default {
       return false;
     },
   },
-  watch:    {
+  watch: {
     $route(to, from) {
     }
   },
-  methods:  {
+  methods: {
     toggleFullScreen() {
       PageSettings.showMainMenu = !PageSettings.showMainMenu;
     },
@@ -100,6 +101,4 @@ export default {
   }
 };
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>
