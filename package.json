@@ -8,10 +8,15 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve --port 8082 --mode",
-    "sss": "vue-cli-service serve --port 8082 --mode sss",
-    "m45a": "vue-cli-service serve --port 8082 --mode m45a",
-    "vov": "vue-cli-service serve --port 8082 --mode vov",
+    "serve:sss": "vue-cli-service serve --port 8082 --mode sss",
+    "serve:m45a": "vue-cli-service serve --port 8082 --mode m45a",
+    "serve:vov": "vue-cli-service serve --port 8082 --mode vov",
+    "serve:zero": "vue-cli-service serve --port 8082 --mode zero",
     "build": "vue-cli-service build",
+    "build:sss": "vue-cli-service build --mode sss",
+    "build:m45a": "vue-cli-service build --mode m45a",
+    "build:vov": "vue-cli-service build --mode vov",
+    "build:zero": "vue-cli-service build --mode zero",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -70,6 +75,7 @@
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-service": "^4.5.19",
     "cache-loader": "^4.1.0",
+    "cross-env": "^10.1.0",
     "postcss-loader": "^4.3.0",
     "sass": "^1.66.1",
     "sass-loader": "10.1.0",

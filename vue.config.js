@@ -12,7 +12,8 @@ module.exports = {
         public: 'https://localhost:8082',
         https: true,
         clientLogLevel: 'error',
-        disableHostCheck: true
+        disableHostCheck: true,
+        contentBase: path.join(__dirname, process.env.VUE_APP_PUBLIC_FOLDER),
     },
     // The source of CKEditor is encapsulated in ES6 modules. By default, the code
     // from the node_modules directory is not transpiled, so you must explicitly tell
@@ -135,6 +136,30 @@ module.exports = {
             .use('svgo-loader')
             .loader('svgo-loader');
         //endregion vue-cli-plugin-svg-sprite
+        // ##################################################// ##################################################
+        // region PUBLIC
+        // Set public folder based on environment variable
+        const publicFolder = process.env.VUE_APP_PUBLIC_FOLDER || 'public';
+
+        // Remove the default copy plugin
+        config.plugins.delete('copy');
+
+        // Add custom copy plugin
+        config.plugin('copy')
+            .use(require('copy-webpack-plugin'), [[{
+                from: path.resolve(__dirname, publicFolder),
+                to: path.resolve(process.env.VUE_APP_ALINA_DIST),
+                toType: 'dir',
+                // ignore: ['.*']
+            }]]);
+
+        config
+            .plugin('html')
+            .tap(args => {
+                args[0].template = path.resolve(__dirname, publicFolder, 'index.html');
+                return args;
+            });
+        // endregion PUBLIC
         // ##################################################// ##################################################
     }
 };
