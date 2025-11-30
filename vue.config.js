@@ -139,7 +139,6 @@ module.exports = {
         // ##################################################// ##################################################
         // region PUBLIC
         // Set public folder based on environment variable
-        const publicFolder = process.env.VUE_APP_PUBLIC_FOLDER || 'public';
 
         // Remove the default copy plugin
         config.plugins.delete('copy');
@@ -147,7 +146,7 @@ module.exports = {
         // Add custom copy plugin
         config.plugin('copy')
             .use(require('copy-webpack-plugin'), [[{
-                from: path.resolve(__dirname, publicFolder),
+                from: path.resolve(__dirname, process.env.VUE_APP_PUBLIC_FOLDER),
                 to: path.resolve(process.env.VUE_APP_ALINA_DIST),
                 toType: 'dir',
                 // ignore: ['.*']
@@ -156,7 +155,7 @@ module.exports = {
         config
             .plugin('html')
             .tap(args => {
-                args[0].template = path.resolve(__dirname, publicFolder, 'index.html');
+                args[0].template = path.resolve(__dirname, process.env.VUE_APP_PUBLIC_FOLDER, 'index.html');
                 return args;
             });
         // endregion PUBLIC

@@ -17,6 +17,8 @@
     "build:m45a": "vue-cli-service build --mode m45a",
     "build:vov": "vue-cli-service build --mode vov",
     "build:zero": "vue-cli-service build --mode zero",
+    "build:all": "npm run build:sss && npm run build:vov && npm run build:m45a && npm run build:zero",
+    
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
