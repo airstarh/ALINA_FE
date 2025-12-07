@@ -18,7 +18,6 @@ import ImageToolbar                  from '@ckeditor/ckeditor5-image/src/imageto
 import ImageCaption                  from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle                    from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageResize                   from '@ckeditor/ckeditor5-image/src/imageresize';
-import {MyCustomUploadAdapterPlugin} from "@/Utils/AlinaCustomUploader";
 import Font                          from '@ckeditor/ckeditor5-font/src/font';
 import Underline                     from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import Strikethrough                 from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
@@ -32,9 +31,9 @@ import TodoList                      from '@ckeditor/ckeditor5-list/src/todolist
 import RemoveFormat                  from '@ckeditor/ckeditor5-remove-format/src/removeformat';
 import Indent                        from '@ckeditor/ckeditor5-indent/src/indent';
 import IndentBlock                   from '@ckeditor/ckeditor5-indent/src/indentblock';
-import CurrentLocale                 from "@/services/CurrentLocale";
 import {ImageInsert}                 from "@ckeditor/ckeditor5-image";
-
+import CurrentLocale                 from "@/services/CurrentLocale";
+import {MyCustomUploadAdapterPlugin} from "@/Utils/AlinaCustomUploader";
 const ConfigCkEditor = {
     extraPlugins: [MyCustomUploadAdapterPlugin],
     language:     CurrentLocale.language,
