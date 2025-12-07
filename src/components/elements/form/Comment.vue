@@ -1,54 +1,28 @@
 <template>
   <div :style="options.style" class="">
     <div class="mb-2">
-      <b-button
-          v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
-          :class="{
+      <b-button v-b-toggle="`comment-collapse-${answer_to_tale_id}`" :class="{
                       'btn-md':level==1,
                       'btn-sm':level>1,
-                      }"
-          class="bg-black"
-      >{{ $tc('COUNTER_COMMENTS', commentsTotal) }}
+                      }" class="bg-black">{{ $tc('COUNTER_COMMENTS', commentsTotal) }}
       </b-button>
     </div>
-    <b-collapse
-        :id="`comment-collapse-${answer_to_tale_id}`"
-        @show="onExpandCommentList(`comment-collapse-${answer_to_tale_id}`)"
-        @shown="pageRecalcIframeHeight"
-        @hidden="pageRecalcIframeHeight"
-        :visible="level == 3"
-        class=""
-    >
+    <b-collapse :id="`comment-collapse-${answer_to_tale_id}`"
+      @show="onExpandCommentList(`comment-collapse-${answer_to_tale_id}`)" @shown="pageRecalcIframeHeight"
+      @hidden="pageRecalcIframeHeight" :visible="level == 3" class="">
       <!--##################################################-->
       <!--region SUBMITTED COMMENTS-->
-      <div
-          v-for="(tale, feedIndex) in feed"
-          :key="tale.id"
-          class=""
-          :data-id="tale.id"
-          :data-to="tale.answer_to_tale_id"
-          :data-root="root_tale_id"
-          :data-index="feedIndex"
-      >
-        <div
-            class="single-comment mt-5"
-            :class="{
+      <div v-for="(tale, feedIndex) in feed" :key="tale.id" class="" :data-id="tale.id"
+        :data-to="tale.answer_to_tale_id" :data-root="root_tale_id" :data-index="feedIndex">
+        <div class="single-comment mt-5" :class="{
                         highlight: $route.query.highlight == tale.id,
-                    }"
-        >
+                    }">
           <!--##################################################-->
           <!--region User Info-->
 
-          <UserAvatar
-              :userId="tale.owner_id"
-              :userFirstName="tale.owner_firstname"
-              :userLastName="tale.owner_lastname"
-              :emblemUrl="tale.owner_emblem"
-              emblemWidth="min(50px, 5vmax)"
-              :someDate="tale.publish_at"
-              :isComment="true"
-              class=""
-          ></UserAvatar>
+          <UserAvatar :userId="tale.owner_id" :userFirstName="tale.owner_firstname" :userLastName="tale.owner_lastname"
+            :emblemUrl="tale.owner_emblem" emblemWidth="min(50px, 5vmax)" :someDate="tale.publish_at" :isComment="true"
+            class=""></UserAvatar>
           <!--endregion User Info-->
           <!--##################################################-->
           <!--region Comment body          -->
@@ -63,7 +37,7 @@
           <!--################################################## -->
           <div v-else class="row no-gutters">
             <div class="col">
-              <ckeditor class="notranslate" v-model="tale.body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
+              <BorgEditor v-model="tale.body" class="notranslate" @ready="pageRecalcIframeHeight()"/>
             </div>
           </div>
           <!--endregion Comment body          -->
@@ -73,22 +47,24 @@
             <!--region Buttons EDIT CANCEL SUBMIT-->
             <div class="col">
               <span class="" v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
-                  <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">{{ $t("TXT_DELETE") }}</button>
-                  <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)" v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_EDIT") }}</button>
-                  <button @click="commentCancelEdit(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_CANCEL") }}</button>
-                  <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
+                <button @click="ajaDeleteComment(feed[feedIndex], feedIndex)" class="btn btn-sm btn-danger">{{
+                  $t("TXT_DELETE") }}</button>
+                <button @click="toggleCommentEditMode(feed[feedIndex], feedIndex)"
+                  v-if="!state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_EDIT")
+                  }}</button>
+                <button @click="commentCancelEdit(feed[feedIndex], feedIndex)"
+                  v-if="state.feedsInEdit.includes(tale.id)" class="btn btn-sm btn-secondary">{{ $t("TXT_CANCEL")
+                  }}</button>
+                <button @click="ajaCommentSave(feed[feedIndex], feedIndex)" v-if="state.feedsInEdit.includes(tale.id)"
+                  class="btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
               </span>
             </div>
             <!--endregion Buttons EDIT CANCEL SUBMIT-->
             <!--region Likes-->
             <div class="col">
               <div class="text-right">
-                <Like
-                    :pAmountLikes="tale.count_like"
-                    :pCurrentUserLiked="tale.current_user_liked"
-                    ref_table="tale"
-                    :ref_id="tale.id"
-                ></Like>
+                <Like :pAmountLikes="tale.count_like" :pCurrentUserLiked="tale.current_user_liked" ref_table="tale"
+                  :ref_id="tale.id"></Like>
               </div>
             </div>
             <!--endregion Likes-->
@@ -96,25 +72,14 @@
           <!--endregion Buttons, Likes-->
           <!--##################################################-->
         </div>
-        <Comment
-            v-if="tale.level < 2"
-            :level="tale.level+1"
-            type="COMMENT"
-            :root_tale_id="tale.root_tale_id"
-            :answer_to_tale_id="tale.id"
-            :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
-            :root_tale_object="root_tale_object"
-        ></Comment>
+        <Comment v-if="tale.level < 2" :level="tale.level+1" type="COMMENT" :root_tale_id="tale.root_tale_id"
+          :answer_to_tale_id="tale.id" :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
+          :root_tale_object="root_tale_object"></Comment>
       </div>
-      <Paginator
-          :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-          :pageSize="parseInt(feedPagination.pageSize)"
-          :rowsTotal="parseInt(feedPagination.rowsTotal)"
-          :pagesTotal="parseInt(feedPagination.pagesTotal)"
-          :onClickPage="pageChange"
-          :onClickMore="onClickMore"
-          :onClickAll="onClickAll"
-      ></Paginator>
+      <Paginator :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+        :pageSize="parseInt(feedPagination.pageSize)" :rowsTotal="parseInt(feedPagination.rowsTotal)"
+        :pagesTotal="parseInt(feedPagination.pagesTotal)" :onClickPage="pageChange" :onClickMore="onClickMore"
+        :onClickAll="onClickAll"></Paginator>
       <!--endregion SUBMITTED COMMENTS-->
       <!--##################################################-->
       <!--region NEW COMMENT-->
@@ -127,13 +92,14 @@
         <!--region EDITOR-->
         <div class="row no-gutters mt-5">
           <div class="col">
-            <ckeditor class="notranslate" v-model="body" :editor="options.editor" :config="options.editorConfig" @ready="pageRecalcIframeHeight()"></ckeditor>
+              <BorgEditor v-model="body" class="notranslate" @ready="pageRecalcIframeHeight()"/>
             <div class="row no-gutters">
               <div class="col">
                 <button @click="() => {this.body = '';}" class="btn btn-sm btn-danger">{{ $t("TXT_CLEAR") }}</button>
               </div>
               <div class="col">
-                <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT") }}</button>
+                <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT")
+                  }}</button>
               </div>
             </div>
           </div>
@@ -147,18 +113,10 @@
       <!--region Login or Register-->
       <div class="m-3">&nbsp;</div>
       <div v-if="!CU.isLoggedIn()" class="col">
-        <a
-            href="#/auth/login"
-            class="btn btn-sm btn-primary"
-            target="_top"
-        >{{ $t("IMP_LOGIN") }}
+        <a href="#/auth/login" class="btn btn-sm btn-primary" target="_top">{{ $t("IMP_LOGIN") }}
         </a>
         {{ $t("or") }}
-        <a
-            href="#/auth/register"
-            class="btn btn-sm btn-primary"
-            target="_top"
-        >{{ $t("IMP_REGISTER") }}
+        <a href="#/auth/register" class="btn btn-sm btn-primary" target="_top">{{ $t("IMP_REGISTER") }}
         </a>
         {{ $t("to post comments") }}
       </div>
@@ -177,12 +135,11 @@ import UtilsArray              from "@/Utils/UtilsArray";
 import Comment                 from "@/components/elements/form/Comment";
 import Like                    from "@/components/elements/form/Like";
 import Paginator               from "@/components/elements/form/Paginator";
-import ClassicEditor           from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import ConfigCkEditor          from "@/configs/ConfigCkEditor";
 import CurrentUser             from "@/services/CurrentUser";
 import AlinaStorage            from "@/services/AlinaStorage";
 import UserAvatar              from "@/components/UserAvatar";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
+import BorgEditor  from "@/components/BorgEditor";
 
 export default {
   name:       "Comment",
@@ -191,6 +148,7 @@ export default {
     Paginator,
     Like,
     Comment,
+    BorgEditor,
   },
   data() {
     return {
@@ -202,8 +160,6 @@ export default {
         urlFeed:       `${ConfigApi.url_base}/tale/feed`,
         urlTaleUpsert: `${ConfigApi.url_base}/tale/upsert`,
         urlCommentDel: `${ConfigApi.url_base}/tale/delete`,
-        editorConfig:  ConfigCkEditor,
-        editor:        ClassicEditor,
         style:         {
           "padding":      "0",
           "margin":       "0",

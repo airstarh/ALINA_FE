@@ -20,12 +20,8 @@
         <div class="row no-gutters p-0">
           <div class="col-md-4 m-0">
             <div class="alina-form">
-              <ui-fileupload
-                  accept="image/*"
-                  :multiple="false"
-                  :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-                  @change="onChangeFileField"
-              >{{ $t("Select an image") }}
+              <ui-fileupload accept="image/*" :multiple="false" :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+                @change="onChangeFileField">{{ $t("Select an image") }}
               </ui-fileupload>
               <a :href="post.emblem">
                 <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
@@ -64,12 +60,7 @@
 
               <div class="row no-gutters mt-4 justify-content-center align-items-center">
                 <div class="col">
-                  <AlinaDatePicker
-                      v-model="post.birth"
-                      label="Birth"
-                      idq="birth"
-                      class="notranslate"
-                  ></AlinaDatePicker>
+-++                  <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate"></AlinaDatePicker>
                 </div>
               </div>
 
@@ -79,12 +70,10 @@
         </div>
         <div class="row no-gutters mt-4">
           <div class="col">
-            <ckeditor
-                class="notranslate"
-                v-model="post.about_myself"
-                :editor="options.CkEditorObj"
-                :config="options.CkEditorConfig"
-            ></ckeditor>
+            <div style="width:70vw; margin:0 auto;">
+              <BorgEditor v-model="post.about_myself" class="notranslate"/>
+            </div>
+            
           </div>
         </div>
         <div class="m3">&nbsp;</div>
@@ -131,7 +120,7 @@
         </div>
         <div class="row no-gutters mt-4">
           <div class="col">
-            <div class="ck-content">
+            <div class="ck-content" style="width:70vw; margin:0 auto;">
               <div class="notranslate" v-html="UtilsStr.content(post.about_myself)"></div>
             </div>
           </div>
@@ -140,10 +129,7 @@
       <!--endregion  Read Mode-->
     </div>
     <div class="mt-5"></div>
-    <tale_feed
-        :doShowAuthorInfo="false"
-        :queryProps="{'owner':this.curId}"
-    ></tale_feed>
+    <tale_feed :doShowAuthorInfo="false" :queryProps="{'owner':this.curId}"></tale_feed>
   </div>
 </template>
 <!--##################################################-->
@@ -157,11 +143,10 @@ import AjaxAlina       from "@/services/AjaxAlina";
 import CurrentUser     from "@/services/CurrentUser";
 import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
 import tale_feed       from "@/views/tale/feed";
-import ClassicEditor   from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import ConfigCkEditor  from "@/configs/ConfigCkEditor";
 import UtilsObject     from "@/Utils/UtilsObject";
 import UtilsStr        from "@/Utils/UtilsStr";
 import UtilsDate       from "../../Utils/UtilsDate";
+import BorgEditor from "@/components/BorgEditor";
 //#####
 export default {
   name: "auth_profile",
@@ -171,8 +156,6 @@ export default {
       ConfigApi: ConfigApi,
       CU:        CurrentUser.obj(),
       options:   {
-        CkEditorConfig: ConfigCkEditor,
-        CkEditorObj:    ClassicEditor,
         url:            `${ConfigApi.url_base}/auth/profile`,
         urlEmblem:      `${ConfigApi.url_base}/FileUpload/CkEditor`,
         urlDelete:      `${ConfigApi.url_base}/auth/UserDelete`,
@@ -194,7 +177,8 @@ export default {
   components: {
     StandardButtons,
     AlinaDatePicker,
-    tale_feed
+    tale_feed,
+    BorgEditor,
   },
   created() {
     const vm = this;

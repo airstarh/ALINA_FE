@@ -89,7 +89,6 @@
 import CurrentUser    from "@/services/CurrentUser";
 import ConfigApi      from "@/configs/ConfigApi";
 import CurrentLocale  from "@/services/CurrentLocale";
-import ConfigCkEditor from "@/configs/ConfigCkEditor";
 export default {
   name: "MenuHorizontalMain",
   data() {
@@ -104,7 +103,6 @@ export default {
     setLocale(newVal) {
       this.languageSelected   = newVal;
       CurrentLocale.language  = newVal;
-      ConfigCkEditor.language = newVal;
       this.$root.$i18n.locale = newVal;
     }
   },

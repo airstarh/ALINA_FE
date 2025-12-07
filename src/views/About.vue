@@ -2,64 +2,55 @@
   <div class="container border border-primary">
     <div>
       <h2>AlinaFileUploader</h2>
-      <AlinaFileUploader
-          :pArrFiles="[
-              {id: -5, name_human:'TEST'}
-          ]"
-      ></AlinaFileUploader>
+      <AlinaFileUploader :pArrFiles="[
+        { id: -5, name_human: 'TEST' }
+      ]"></AlinaFileUploader>
     </div>
     <div></div>
     <div>
       <h2>AlinaTableJson</h2>
-      <AlinaTableJson
-          :pJson="[
-              {one: 1, teo: 2, three: 3, four: 4, five: 5, six:6, seven: 7},
-              {one: 1, teo: 2, three: 3, four: 4, five: 5, six:6, seven: 7},
-              {one: 1, teo: 2, three: 3, four: 4, five: 5, six:6, seven: 7},
-              {one: 1, teo: 2, three: 3, four: 4, five: 5, six:6, seven: 7},
-          ]"
-      ></AlinaTableJson>
+      <AlinaTableJson :pJson="[
+        { one: 1, teo: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 },
+        { one: 1, teo: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 },
+        { one: 1, teo: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 },
+        { one: 1, teo: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 },
+      ]"></AlinaTableJson>
     </div>
     <div></div>
     <div>
       <h2>Test links and buttons</h2>
       <a href="#middle">a - Middle</a>
       |||
-      <router-link :to="{hash:'middle'}">rl - Middle</router-link>
+      <router-link :to="{ hash: 'middle' }">rl - Middle</router-link>
       |||
       <button @click="gotoMiddle">btn - Middle</button>
     </div>
-    <img alt="Vue logo" src="@/assets/logo.png" height="50"/>
+    <img alt="Vue logo" src="@/assets/logo.png" height="50" />
     <div></div>
     <span class="btn-secondary text-left text-nowrap badge-pill p-2">
-      <router-link :to="'/auth/profile/'+CurrentUser.id" class="fixed-height-150px">
+      <router-link :to="'/auth/profile/' + CurrentUser.id" class="fixed-height-150px">
         <img v-if="CurrentUser.emblem" :src="CurrentUser.emblem" width="100px" class="rounded-circle">
         <img v-if="!CurrentUser.emblem" src="@/assets/anarki.png" width="100px" class="rounded-circle">
       </router-link>
-      <router-link :to="'/auth/profile/'+CurrentUser.id" class="text-light">
+      <router-link :to="'/auth/profile/' + CurrentUser.id" class="text-light">
         {{ UtilsStr.fullName(CurrentUser.firstname, CurrentUser.lastname, CurrentUser.id) }}
       </router-link>
     </span>
     <div></div>
-    <h1>CKeditor 5</h1>
+    <h1>BorgEditor</h1>
     <div></div>
-    <ckeditor
-        class="notranslate"
-        v-model="ckEditorRelated.aModel"
-        :editor="ckEditorRelated.editor"
-        :config="ckEditorRelated.editorConfig"
-    ></ckeditor>
+    <BorgEditor v-model="testEditor.aModel" />
     <div></div>
     <h3>HTML</h3>
     <div></div>
-    <textarea v-model="ckEditorRelated.aModel" rows="5" style="width: 100%">
+    <textarea v-model="testEditor.aModel" rows="5" style="width: 100%">
     </textarea>
     <div></div>
     <h3>Result</h3>
     <div class="clear">&nbsp;</div>
     <div>
       <div class="ck-content">
-        <div v-html="ckEditorRelated.aModel"></div>
+        <div v-html="testEditor.aModel"></div>
       </div>
     </div>
     <div class="clear">&nbsp;</div>
@@ -95,63 +86,58 @@
     <h1>SVH Icons</h1>
     <div></div>
     <span style="color:#76ff03; background-color: #ffb74d">
-            <svg width="55" class="icon--inline" color="currentColor">
-                <use :xlink:href="`${iconFb.url}`"></use>
-            </svg>
-            <svg width="55" class="icon--inline" color="currentColor">
-                <use :xlink:href="`${iconFb.url}`"></use>
-            </svg>
-            <svg width="55" class="icon--inline" color="currentColor">
-                <use :xlink:href="`${iconSk.url}`"></use>
-            </svg>
+      <svg width="55" class="icon--inline" color="currentColor">
+        <use :xlink:href="`${iconFb.url}`"></use>
+      </svg>
+      <svg width="55" class="icon--inline" color="currentColor">
+        <use :xlink:href="`${iconFb.url}`"></use>
+      </svg>
+      <svg width="55" class="icon--inline" color="currentColor">
+        <use :xlink:href="`${iconSk.url}`"></use>
+      </svg>
 
-            <svg width="55">
-                <use :xlink:href="`${iconVk.url}`"></use>
-            </svg>
+      <svg width="55">
+        <use :xlink:href="`${iconVk.url}`"></use>
+      </svg>
 
-            <svg width="55">
-                <use :xlink:href="`${iconWp.url}`"></use>
-            </svg>
+      <svg width="55">
+        <use :xlink:href="`${iconWp.url}`"></use>
+      </svg>
 
-            <svg width="55" class="icon--inline" color="currentColor">
-                <use :xlink:href="`${iconVi.url}`"></use>
-            </svg>
+      <svg width="55" class="icon--inline" color="currentColor">
+        <use :xlink:href="`${iconVi.url}`"></use>
+      </svg>
 
-            <svg width="55">
-                <use :xlink:href="`${iconTg.url}`"></use>
-            </svg>
+      <svg width="55">
+        <use :xlink:href="`${iconTg.url}`"></use>
+      </svg>
 
-            <svg width="55">
-                <use :xlink:href="`${iconIn.url}`"></use>
-            </svg>
-        </span>
+      <svg width="55">
+        <use :xlink:href="`${iconIn.url}`"></use>
+      </svg>
+    </span>
     <div></div>
     <h1 id="middle">#Middle</h1>
     <div></div>
     <div>
-      <div><h1>{{ sProp }} : mapped from Store</h1></div>
-      <div><h1>{{ $store.state.egStoreModule.sProp }} : direct from Store</h1></div>
+      <div>
+        <h1>{{ sProp }} : mapped from Store</h1>
+      </div>
+      <div>
+        <h1>{{ $store.state.egStoreModule.sProp }} : direct from Store</h1>
+      </div>
       <button @click="methChangeProp">Change Prop</button>
       <button @click="log">log</button>
     </div>
     <div class="m-buttons-1">
       <br>
-      <button
-          @click="onClickBadResponse()"
-          class="btn btn-lg btn-primary"
-      >TEST Bad Response
+      <button @click="onClickBadResponse()" class="btn btn-lg btn-primary">TEST Bad Response
       </button>
       &nbsp;
-      <button
-          @click="onTestPost()"
-          class="btn btn-lg btn-primary"
-      >TEST POST
+      <button @click="onTestPost()" class="btn btn-lg btn-primary">TEST POST
       </button>
       &nbsp;
-      <button
-          @click="onTestSpinner()"
-          class="btn btn-lg btn-primary"
-      >TEST SPINNER
+      <button @click="onTestSpinner()" class="btn btn-lg btn-primary">TEST SPINNER
       </button>
 
       <br>
@@ -161,10 +147,7 @@
     <h1>AlinaDatePicker</h1>
     <div></div>
     <div>
-      <AlinaDatePicker
-          v-model="uts"
-          class="notranslate"
-      ></AlinaDatePicker>
+      <AlinaDatePicker v-model="uts" class="notranslate"></AlinaDatePicker>
       <div>{{ uts }} ||| {{ UtilsDate.fromUnixToDateTime(uts) }}</div>
     </div>
     <div></div>
@@ -245,43 +228,28 @@
             <b-badge>Hello World</b-badge>&nbsp;
           </h2>
           <div>
-            <ui-textbox
-                label="AnObject.prop1"
-                v-model="AnObject.prop1"
-                icon="person_pin"
-                type="text"
-                :floatingLabel="true"
-            ></ui-textbox>
+            <ui-textbox label="AnObject.prop1" v-model="AnObject.prop1" icon="person_pin" type="text"
+              :floatingLabel="true"></ui-textbox>
           </div>
           <div>
-            <ui-textbox
-                label="AnObject.prop2"
-                v-model="AnObject.prop2"
-                icon="security"
-                type="text"
-                :floatingLabel="true"
-            ></ui-textbox>
+            <ui-textbox label="AnObject.prop2" v-model="AnObject.prop2" icon="security" type="text"
+              :floatingLabel="true"></ui-textbox>
           </div>
 
           <b-list-group>
             <b-list-group-item variant="dark">{{
-                AnObject.prop1
-                                              }}
+              AnObject.prop1
+            }}
             </b-list-group-item>
             <b-list-group-item variant="dark">{{
-                AnObject.prop2
-                                              }}
+              AnObject.prop2
+            }}
             </b-list-group-item>
           </b-list-group>
 
           <div>
-            <ui-datepicker
-                icon="eventpacks"
-                orientation="landscape"
-                picker-type="modal"
-                placeholder="Select a date"
-                v-model="picker8"
-            >Your Birthday
+            <ui-datepicker icon="eventpacks" orientation="landscape" picker-type="modal" placeholder="Select a date"
+              v-model="picker8">Your Birthday
             </ui-datepicker>
           </div>
         </b-col>
@@ -300,49 +268,49 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapState} from "vuex";
-import AnObject                           from "../services/AnObject";
-import UtilsDate                          from "@/Utils/UtilsDate";
-import AlinaDatePicker                    from "@/components/elements/form/AlinaDatePicker";
-import AlinaYandexMap                     from "@/components/elements/form/AlinaYandexMap";
-import AjaxAlina                          from "@/services/AjaxAlina";
-import ConfigApi                          from "@/configs/ConfigApi";
-import MessagesObj                        from "@/services/MessagesObj";
-import SpinnerObj                         from "@/services/SpinnerObj";
-import iconVk                             from "@/assets/svg/socialnets/vk.svg";
-import iconFb                             from "@/assets/svg/socialnets/fb.svg";
-import iconWp                             from "@/assets/svg/socialnets/whatsapp.svg";
-import iconTg                             from "@/assets/svg/socialnets/telgram.svg";
-import iconIn                             from "@/assets/svg/socialnets/linkedin.svg";
-import iconSk                             from "@/assets/svg/socialnets/skype.svg";
-import iconVi                             from "@/assets/svg/socialnets/viber.svg";
-import ClassicEditor                      from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import ConfigCkEditor                     from "@/configs/ConfigCkEditor";
-import CurrentUser                        from "@/services/CurrentUser";
-import UtilsStr                           from "@/Utils/UtilsStr";
-import AlinaTableJson                     from "@/components/AlinaTableJson";
-import AlinaFileUploader                  from "@/components/elements/form/AlinaFileUploader";
+import { mapActions, mapGetters, mapState } from "vuex";
+import AnObject from "../services/AnObject";
+import UtilsDate from "@/Utils/UtilsDate";
+import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
+import AlinaYandexMap from "@/components/elements/form/AlinaYandexMap";
+import AjaxAlina from "@/services/AjaxAlina";
+import ConfigApi from "@/configs/ConfigApi";
+import MessagesObj from "@/services/MessagesObj";
+import SpinnerObj from "@/services/SpinnerObj";
+import iconVk from "@/assets/svg/socialnets/vk.svg";
+import iconFb from "@/assets/svg/socialnets/fb.svg";
+import iconWp from "@/assets/svg/socialnets/whatsapp.svg";
+import iconTg from "@/assets/svg/socialnets/telgram.svg";
+import iconIn from "@/assets/svg/socialnets/linkedin.svg";
+import iconSk from "@/assets/svg/socialnets/skype.svg";
+import iconVi from "@/assets/svg/socialnets/viber.svg";
+import BorgEditor from "@/components/BorgEditor";
+import CurrentUser from "@/services/CurrentUser";
+import UtilsStr from "@/Utils/UtilsStr";
+import AlinaTableJson from "@/components/AlinaTableJson";
+import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader";
 
 export default {
-  name:       "About",
+  name: "About",
   components: {
     AlinaDatePicker,
     AlinaYandexMap,
     AlinaTableJson,
     AlinaFileUploader,
+    BorgEditor,
   },
   data() {
     const twoWeeksFromNow = new Date();
     twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
     return {
-      protoTale:       {
-        header:        'This is Tale prototype',
-        body:          '',
-        body_txt:      '',
-        geo_latitude:  66,
+      protoTale: {
+        header: 'This is Tale prototype',
+        body: '',
+        body_txt: '',
+        geo_latitude: 66,
         geo_longitude: 66,
-        geo_map_type:  'hybrid',
-        geo_zoom:      14,
+        geo_map_type: 'hybrid',
+        geo_zoom: 14,
       },
       iconFb,
       iconVk,
@@ -353,17 +321,15 @@ export default {
       iconIn,
       ConfigApi,
       UtilsStr,
-      lodashExample:   [1, 2, 3, 4],
-      picker8:         null,
-      AnObject:        AnObject,
-      dateExample:     'DEFAULT VALUE',
-      uts:             1,
-      ckEditorRelated: {
-        aModel:       'Ra-ta-ta-ta VeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpaces',
-        editorConfig: ConfigCkEditor,
-        editor:       ClassicEditor,
+      lodashExample: [1, 2, 3, 4],
+      picker8: null,
+      AnObject: AnObject,
+      dateExample: 'DEFAULT VALUE',
+      uts: 1,
+      testEditor: {
+        aModel: 'Ra-ta-ta-ta VeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpacesVeryLongTextNoSpaces',
       },
-      CurrentUser:     CurrentUser.obj().attributes
+      CurrentUser: CurrentUser.obj().attributes
     };
   },
   mounted() {
@@ -373,15 +339,15 @@ export default {
     this.dateplayer();
   },
   computed: {
-	  UtilsDate() {
-		  return UtilsDate
-	  },
+    UtilsDate() {
+      return UtilsDate
+    },
     ...mapState("egStoreModule", ["sProp"]), ...mapGetters("egStoreModule", ["gProp"]),
     lodashExample2() {
       return this.lodash.partition(this.lodashExample, n => n % 2);
     }
   },
-  methods:  {
+  methods: {
     ...mapActions("egStoreModule", ["aProp"]),
     svg001() {
     },
@@ -392,12 +358,12 @@ export default {
     },
     dateplayer() {
       this.dateExample = UtilsDate.UnixSecsToFormat(1578535140);
-      this.uts         = 477152940;
+      this.uts = 477152940;
     },
     onClickBadResponse() {
       AjaxAlina.newInst({
         method: 'GET',
-        url:    `${ConfigApi.url_base}/admintests/errors`,
+        url: `${ConfigApi.url_base}/admintests/errors`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             MessagesObj.set('SUCCESS');
@@ -406,16 +372,16 @@ export default {
           }
         }
       })
-      .go();
+        .go();
     },
     onTestPost() {
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        `${ConfigApi.url_base}/admintests/TestPost`,
+        method: 'POST',
+        url: `${ConfigApi.url_base}/admintests/TestPost`,
         postParams: {
           form_id: 'lalala'
         },
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             MessagesObj.set('SUCCESS');
           } else {
@@ -423,13 +389,13 @@ export default {
           }
         }
       })
-      .go();
+        .go();
     },
     onTestSpinner() {
       SpinnerObj.isOn = true;
     },
     gotoMiddle() {
-      this.$router.push({hash: "middle"})
+      this.$router.push({ hash: "middle" })
     },
     log(data = null) {
       console.log("log ++++++++++");

@@ -32,12 +32,7 @@
             <h1 class="btn btn-block btn-secondary">
               <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
             </h1>
-            <ckeditor
-                class="notranslate"
-                v-model="tale.body"
-                :editor="options.editor"
-                :config="options.editorConfig"
-            ></ckeditor>
+            <BorgEditor v-model="tale.body" class="notranslate"/>
             <div class="mb-3">&nbsp</div>
             <div class="mt-1 mb-3">
               <AlinaDatePicker
@@ -326,8 +321,6 @@ import CurrentUser             from "@/services/CurrentUser";
 import Comment                 from "@/components/elements/form/Comment";
 import Like                    from "@/components/elements/form/Like";
 import AlinaDatePicker         from "@/components/elements/form/AlinaDatePicker";
-import ClassicEditor           from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-import ConfigCkEditor          from "@/configs/ConfigCkEditor";
 import UtilsStr                from "@/Utils/UtilsStr";
 import Share                   from "@/components/elements/form/Share";
 import AlinaYandexMap          from "@/components/elements/form/AlinaYandexMap";
@@ -337,7 +330,7 @@ import AlinaFileUploader       from "@/components/elements/form/AlinaFileUploade
 import UserAvatar              from "@/components/UserAvatar";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 import UtilsDate               from "../../Utils/UtilsDate";
-//import CKFinder from '@ckeditor/ckeditor5-ckfinder/src/ckfinder';
+import BorgEditor               from "@/components/BorgEditor";
 //#####
 export default {
   name:  "tale_upsert",
@@ -354,8 +347,6 @@ export default {
       options:   {
         url:          `${ConfigApi.url_base}/tale/upsert`,
         urlDelete:    `${ConfigApi.url_base}/tale/delete`,
-        editorConfig: ConfigCkEditor,
-        editor:       ClassicEditor,
         modeEdit:     false
       },
       tale:      {
@@ -411,7 +402,8 @@ export default {
     Comment,
     Like,
     AlinaDatePicker,
-    AlinaFileUploader
+    AlinaFileUploader,
+    BorgEditor,
   },
   created() {
     const id = this.routerTaleId;
