@@ -6,6 +6,7 @@
         <video
             :src="pFileJson.url_path"
             controls
+            preload="none"
         ></video>
       </figure>
     </div>
@@ -15,6 +16,7 @@
         <audio
             :src="pFileJson.url_path"
             controls
+            preload="none"
         ></audio>
       </figure>
     </div>

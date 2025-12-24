@@ -159,7 +159,7 @@ export default class Adjustment {
               const type = vocTypes[match[2]]
               return (
                 '<figure class="alina-figure-content">' +
-                '<video controls style="width: 100%; margin: 0 auto; text-align: center;">' +
+                '<video controls style="width: 100%; margin: 0 auto; text-align: center;" preload="none">' +
                 `<source src="${id}" type="video/${type}">` +
                 '</video>' +
                 '</figure>'
@@ -187,7 +187,7 @@ export default class Adjustment {
               const type = vocTypes[match[2]]
               return (
                 '<figure class="alina-figure-content">' +
-                '<audio controls style="width: 100%; margin: 0 auto; text-align: center;">' +
+                '<audio controls style="width: 100%; margin: 0 auto; text-align: center;" preload="none">' +
                 `<source src="${id}" type="audio/${type}">` +
                 '</audio>' +
                 '<figurecaption style="text-align: right;">' +
