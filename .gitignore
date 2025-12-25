@@ -20,3 +20,12 @@ yarn-error.log*
 *.sln
 *.sw?
 /nbproject/
+dist-stage/alina-sprite.svg
+dist-stage/favicon.ico
+dist-stage/favicon.svg
+dist-stage/index.html
+dist-stage/manifest.json
+dist-stage/img/logo.82b9c7a5.png
+dist-stage/js/0.js
+dist-stage/js/app.js
+dist-stage/js/chunk-vendors.js
