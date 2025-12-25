@@ -2,6 +2,7 @@
 node_modules
 /dist
 /dist-stage
+/_DEV_DOCS
 
 # local env files
 .env.local

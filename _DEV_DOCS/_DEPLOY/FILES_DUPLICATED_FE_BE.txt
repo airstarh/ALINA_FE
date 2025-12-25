@@ -1,3 +1,0 @@
-public/favicon.ico
-public/favicon.svg
-public/manifest.json
