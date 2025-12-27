@@ -7,13 +7,11 @@
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
           <div class="input-group-prepend">
-            <button @click="search" class="input-group-text btn btn-primary"
-            ><b-icon icon="search"></b-icon></button>
+            <button @click="search" class="input-group-text btn btn-primary"><b-icon icon="search"></b-icon></button>
           </div>
           <input type="text" class="form-control" aria-label="Search" v-model="dataGetParams.txt" placeholder="">
           <div class="input-group-append">
-            <button @click="searchClear" class="input-group-text btn btn-danger"
-            ><b-icon icon="backspace-fill"></b-icon></button>
+            <button @click="searchClear" class="input-group-text btn btn-danger"><b-icon icon="backspace-fill"></b-icon></button>
           </div>
         </div>
       </div>
@@ -27,19 +25,13 @@
           <!--##################################################-->
           <!--region PAGINATOR-->
           <div class="text-center alina-feed-paginator">
-            <Paginator
-                :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                :pageSize="parseInt(feedPagination.pageSize)"
-                :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                :onClickPage="pageChange"
-            ></Paginator>
+            <Paginator :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)" :pageSize="parseInt(feedPagination.pageSize)" :rowsTotal="parseInt(feedPagination.rowsTotal)" :pagesTotal="parseInt(feedPagination.pagesTotal)" :onClickPage="pageChange"></Paginator>
           </div>
           <!--endregion PAGINATOR-->
           <!--##################################################-->
           <!--region TALE-->
           <div v-for="(tale, index) in feed" v-bind:key="tale.id" class="mt-5 alina-feed-tale" :class="[`alina-feed-tale-${index}`]">
-            <!--##################################################-->
+
             <!--region UP-DOWN-->
             <div class="sticky-top">
               <div class="row no-gutters text-center mt-5 alina-feed-up-down">
@@ -47,39 +39,30 @@
                 &nbsp;
                 <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
                 &nbsp;
-                <div class="col btn btn-secondary cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${index-1}`)">&uarr;</div>
+                <div class="col btn btn-secondary cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${index - 1}`)">&uarr;</div>
                 &nbsp;
-                <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${index+1}`)">&darr;</div>
+                <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${index + 1}`)">&darr;</div>
               </div>
             </div>
             <!--endregion UP-DOWN-->
             <!--##################################################-->
             <transition name="slide-fade">
-              <div
-                  :key="`${tale.id}_1`"
-                  v-if="tale.is_adult_denied == 1 && !feedForceShow.includes(tale.id)"
-              >
+              <div :key="`${tale.id}_1`" v-if="tale.is_adult_denied == 1 && !feedForceShow.includes(tale.id)">
                 <div class="row no-gutters mb-5">
                   <div class="img-wrapper">
                     <img class="img-responsive" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Parental_Advisory_label.svg/500px-Parental_Advisory_label.svg.png">
                     <div class="img-overlay">
-                      <button
-                          class="btn btn-lg btn-block btn-primary"
-                          @click="feedForceShow.push(tale.id)"
-                      >I am ready to watch dangerous content
+                      <button class="btn btn-lg btn-block btn-primary" @click="feedForceShow.push(tale.id)">I am ready to watch dangerous content
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-else :key="`${tale.id}_2`" :class="{is_draft:tale.is_draft, is_sticked:tale.is_sticked}" class="corporate-border-color">
-                <tale_upsert
-                    :p-flag-in-feed="true"
-                    :p-tale="tale"
-                ></tale_upsert>
+              <div v-else :key="`${tale.id}_2`" :class="{ is_draft: tale.is_draft, is_sticked: tale.is_sticked }" class="corporate-border-color">
+                <tale_upsert :p-flag-in-feed="true" :p-tale="tale"></tale_upsert>
               </div>
             </transition>
-            <!--##################################################-->
+
           </div>
           <!--endregion TALE-->
           <!--##################################################-->
@@ -91,9 +74,9 @@
               &nbsp;
               <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName('alina-feed-end')">&darr;&darr;</div>
               &nbsp;
-              <div class="col btn btn-secondary cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${feed.length-1}`)">&uarr;</div>
+              <div class="col btn btn-secondary cursor-pointer  " @click="scrollToClassName(`alina-feed-tale-${feed.length - 1}`)">&uarr;</div>
               &nbsp;
-              <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${feed.length+1}`)">&darr;</div>
+              <div class="col btn btn-secondary cursor-pointer " @click="scrollToClassName(`alina-feed-tale-${feed.length + 1}`)">&darr;</div>
             </div>
           </div>
           <!--endregion UP-DOWN-->
@@ -101,13 +84,7 @@
           <!--##################################################-->
           <!-- region PAGINATOR -->
           <div class="mt-5 text-center alina-feed-paginator">
-            <Paginator
-                :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-                :pageSize="parseInt(feedPagination.pageSize)"
-                :rowsTotal="parseInt(feedPagination.rowsTotal)"
-                :pagesTotal="parseInt(feedPagination.pagesTotal)"
-                :onClickPage="pageChange"
-            ></Paginator>
+            <Paginator :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)" :pageSize="parseInt(feedPagination.pageSize)" :rowsTotal="parseInt(feedPagination.rowsTotal)" :pagesTotal="parseInt(feedPagination.pagesTotal)" :onClickPage="pageChange"></Paginator>
           </div>
           <!-- endregion PAGINATOR -->
           <!--##################################################-->
@@ -121,19 +98,19 @@
 </template>
 <script>
 import StandardButtons from "@/components/elements/form/StandardButtons";
-import ConfigApi       from "@/configs/ConfigApi";
-import AjaxAlina       from "@/services/AjaxAlina";
-import AlinaYandexMap  from "@/components/elements/form/AlinaYandexMap";
-import Comment         from "@/components/elements/form/Comment";
-import Like            from "@/components/elements/form/Like";
-import Share           from "@/components/elements/form/Share";
-import Paginator       from "@/components/elements/form/Paginator";
-import tale_upsert     from "@/views/tale/upsert";
-import UtilsStr        from "@/Utils/UtilsStr";
-import UtilsSys        from "@/Utils/UtilsSys";
+import ConfigApi from "@/configs/ConfigApi";
+import AjaxAlina from "@/services/AjaxAlina";
+import AlinaYandexMap from "@/components/elements/form/AlinaYandexMap";
+import Comment from "@/components/elements/form/Comment";
+import Like from "@/components/elements/form/Like";
+import Share from "@/components/elements/form/Share";
+import Paginator from "@/components/elements/form/Paginator";
+import tale_upsert from "@/views/tale/upsert";
+import UtilsStr from "@/Utils/UtilsStr";
+import UtilsSys from "@/Utils/UtilsSys";
 
 export default {
-  name:       "tale_feed",
+  name: "tale_feed",
   components: {
     AlinaYandexMap,
     Share,
@@ -143,14 +120,14 @@ export default {
     Paginator,
     tale_upsert
   },
-  props:      {
+  props: {
     // #####
     doShowAuthorInfo: {
-      type:    Boolean,
+      type: Boolean,
       default: true,
     }, // #####
-    queryProps:       {
-      type:    Object,
+    queryProps: {
+      type: Object,
       default: () => ({}),
     },
   },
@@ -158,21 +135,21 @@ export default {
     return {
       UtilsSys,
       UtilsStr,
-      ConfigApi:      ConfigApi,
-      options:        {
+      ConfigApi: ConfigApi,
+      options: {
         urlFeed: `${ConfigApi.url_base}/tale/feed`,
       },
-      dataGetParams:  {
+      dataGetParams: {
         txt: '',
       },
-      feed:           [],
+      feed: [],
       feedPagination: {
         pageCurrentNumber: 1,
-        pageSize:          10,
-        rowsTotal:         0,
-        pagesTotal:        0,
+        pageSize: 10,
+        rowsTotal: 0,
+        pagesTotal: 0,
       },
-      feedForceShow:  [],
+      feedForceShow: [],
     }
   },
   created() {
@@ -180,47 +157,47 @@ export default {
   },
   methods: {
     modifyAddressBar(q = {}) {
-      const path  = this.$router.currentRoute.path;
+      const path = this.$router.currentRoute.path;
       const query = {
         ...this.$route.query, ...q
       };
       this.$router.push({
-        path:  path,
+        path: path,
         query: query
-      }).catch(() => {});
+      }).catch(() => { });
       //this.ajaGetFeed();
     },
     onAddressBarModified() {
-      this.dataGetParams.txt                = this.$route.query?.txt || '';
+      this.dataGetParams.txt = this.$route.query?.txt || '';
       this.feedPagination.pageCurrentNumber = this.$route.query?.pageCurrentNumber || 1;
-      this.feedPagination.pageSize          = this.$route.query?.pageSize || 10;
+      this.feedPagination.pageSize = this.$route.query?.pageSize || 10;
       this.ajaGetFeed();
     },
     ajaGetFeed() {
       AjaxAlina.newInst({
-        method:    'GET',
-        url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
-        getParams: {...{}, ...this.queryProps, ...this.$route.query},
-        onDone:    (aja) => {
+        method: 'GET',
+        url: `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
+        getParams: { ...{}, ...this.queryProps, ...this.$route.query },
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
-            this.feed           = aja.respBody.data.tale;
+            this.feed = aja.respBody.data.tale;
             this.feedPagination = aja.respBody.meta.tale;
             //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
             // #####
-            if (this.feedPagination.pageCurrentNumber !=1) {
+            if (this.feedPagination.pageCurrentNumber != 1) {
               this.scrollTop();
             }
           }
         }
       })
-      .go();
+        .go();
     },
     pageChange(pageSize, pageCurrentNumber) {
-      this.feedPagination.pageSize          = pageSize;
+      this.feedPagination.pageSize = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.modifyAddressBar({
-        pageSize:          this.feedPagination.pageSize,
+        pageSize: this.feedPagination.pageSize,
         pageCurrentNumber: this.feedPagination.pageCurrentNumber,
       });
       //this.ajaGetFeed();
@@ -229,15 +206,15 @@ export default {
       this.feedPagination.pageCurrentNumber = 1;
       this.modifyAddressBar({
         pageCurrentNumber: 1,
-        txt:               this.dataGetParams.txt
+        txt: this.dataGetParams.txt
       });
     },
     searchClear() {
       this.feedPagination.pageCurrentNumber = 1;
-      this.dataGetParams.txt                = '';
+      this.dataGetParams.txt = '';
       this.modifyAddressBar({
         pageCurrentNumber: 1,
-        txt:               ''
+        txt: ''
       });
       //this.ajaGetFeed();
     },
@@ -250,11 +227,11 @@ export default {
     scrollToClassName(className = 'alina-feed-start') {
       const el = this.$el.getElementsByClassName(className)[0];
       if (el) {
-        el.scrollIntoView({behavior: 'smooth'});
+        el.scrollIntoView({ behavior: 'smooth' });
       }
     }
   },
-  watch:   {
+  watch: {
     $route(to, from) {
       this.onAddressBarModified();
     }
@@ -313,7 +290,8 @@ export default {
   opacity: 0;
 }
 
-h1 a:hover, h2 a:hover {
+h1 a:hover,
+h2 a:hover {
   text-decoration: none
 }
 
