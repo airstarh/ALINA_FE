@@ -111,6 +111,7 @@ import UtilsSys from "@/Utils/UtilsSys";
 
 export default {
   name: "tale_feed",
+
   components: {
     AlinaYandexMap,
     Share,
@@ -120,6 +121,7 @@ export default {
     Paginator,
     tale_upsert
   },
+  
   props: {
     // #####
     doShowAuthorInfo: {
@@ -131,6 +133,7 @@ export default {
       default: () => ({}),
     },
   },
+
   data() {
     return {
       UtilsSys,
@@ -152,9 +155,11 @@ export default {
       feedForceShow: [],
     }
   },
+
   created() {
     this.onAddressBarModified();
   },
+
   methods: {
     modifyAddressBar(q = {}) {
       const path = this.$router.currentRoute.path;
@@ -167,12 +172,14 @@ export default {
       }).catch(() => { });
       //this.ajaGetFeed();
     },
+
     onAddressBarModified() {
       this.dataGetParams.txt = this.$route.query?.txt || '';
       this.feedPagination.pageCurrentNumber = this.$route.query?.pageCurrentNumber || 1;
       this.feedPagination.pageSize = this.$route.query?.pageSize || 10;
       this.ajaGetFeed();
     },
+
     ajaGetFeed() {
       AjaxAlina.newInst({
         method: 'GET',
@@ -193,6 +200,7 @@ export default {
       })
         .go();
     },
+
     pageChange(pageSize, pageCurrentNumber) {
       this.feedPagination.pageSize = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
@@ -202,6 +210,7 @@ export default {
       });
       //this.ajaGetFeed();
     },
+
     search() {
       this.feedPagination.pageCurrentNumber = 1;
       this.modifyAddressBar({
@@ -209,6 +218,7 @@ export default {
         txt: this.dataGetParams.txt
       });
     },
+
     searchClear() {
       this.feedPagination.pageCurrentNumber = 1;
       this.dataGetParams.txt = '';
@@ -218,12 +228,15 @@ export default {
       });
       //this.ajaGetFeed();
     },
+
     scrollTop(className = 'alina-feed-start') {
       this.scrollToClassName('alina-feed-start')
     },
+
     scrollBottom(className = 'alina-feed-end') {
       this.scrollToClassName('alina-feed-end')
     },
+
     scrollToClassName(className = 'alina-feed-start') {
       const el = this.$el.getElementsByClassName(className)[0];
       if (el) {
@@ -231,6 +244,7 @@ export default {
       }
     }
   },
+
   watch: {
     $route(to, from) {
       this.onAddressBarModified();
