@@ -196,7 +196,61 @@ export default class Adjustment {
                 '</figure>'
               )
             }
-          }
+          },
+          {
+            name: 'vk',
+            url: [
+              /^https?:\/\/vk\.com\/video_ext\.php\?(?:oid=-?\d+&id=\d+&hash=[a-f0-9]+|hash=[a-f0-9]+)&hd=\d$/i
+            ],
+            html: match => {
+              const url = match[0];
+              return (
+                '<iframe ' +
+                `src="${url}" ` +
+                'width="1280" height="720" ' +
+                'allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" ' +
+                'frameborder="0" allowfullscreen ' +
+                '></iframe>'
+              );
+            }
+          },
+          {
+            name: 'vkVideo',
+            url: [
+              // Matches VK video embed URLs (supports both oid+id and hash-only formats)
+              /^https?:\/\/vkvideo\.ru\/video_ext\.php\?(?:oid=-?\d+&id=\d+&hash=[a-f0-9]+|hash=[a-f0-9]+)&hd=\d$/i
+            ],
+            html: match => {
+              const url = match[0];
+              return (
+                '<iframe ' +
+                `src="${url}" ` +
+                'width="1280" height="720" ' +
+                'allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" ' +
+                'frameborder="0" allowfullscreen ' +
+                '></iframe>'
+              );
+            }
+          },
+          {
+            name: 'rutubeVideo',
+            url: [
+              // Matches Rutube embed URLs (with optional trailing slash)
+              /^https?:\/\/rutube\.ru\/play\/embed\/[a-f0-9]+\/?$/i
+            ],
+            html: match => {
+              const url = match[0].replace(/\/$/, ''); // Remove trailing slash if present
+              return (
+                '<iframe ' +
+                'width="720" height="405" ' +
+                `src="${url}/" ` +
+                'style="border: none;" ' +
+                'allow="clipboard-write; autoplay" ' +
+                'webkitAllowFullScreen mozallowfullscreen allowFullScreen ' +
+                '></iframe>'
+              );
+            }
+          },
         ]
       },
       link: {
