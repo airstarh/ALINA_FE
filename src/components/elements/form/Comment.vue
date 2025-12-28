@@ -358,8 +358,9 @@ export default {
       }
     },
     pageRecalcIframeHeight() {
-      const className = `AlinaIframe-tale-${this.root_tale_id}`;
-      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(className);
+      const iframeClassName = `AlinaIframe-tale-${this.root_tale_id}`;
+      const heightRefClassName = `alina-tale-id-${this.root_tale_id}`;
+      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(iframeClassName, heightRefClassName);
     },
     flagNewCommentAvailable() {
       if (!this.CU.isLoggedIn()) {return false;}

@@ -5,44 +5,78 @@ const AlinaPageGlobalAnalyzer = {
     //region iFrame
     pageIsInIframe() {
         try {
-            return window.self !== window.top;
+            return window !== parent || !!window.frameElement || window.top !== window.self;
         } catch (e) {
+            // Cross-origin access denied → assume we're in iframe
             return true;
         }
     },
-    pageRecalcIframeHeight: lodash.debounce((className) => {
+
+    pageRecalcIframeHeight: lodash.debounce((iframeClassName, heightRefClassName) => {
+
         const inIframe = AlinaPageGlobalAnalyzer.pageIsInIframe();
-        let iframe     = null;
-        if (inIframe) {
-            if (className) {
-                const iframeList = parent.document.getElementsByClassName(className);
-                if (iframeList && iframeList[0]) {
-                    iframe = iframeList[0];
-                }
-            }
-            if (iframe) {
-                let height          = document.body.scrollHeight;
-                height              = height + 100;
-                height              = height + 'px';
-                iframe.style.height = height;
-            }
+        
+        if (!inIframe) {
+            return;
         }
-    }, 300),
+
+        if (!iframeClassName) {
+            return;
+        }
+
+        if (!heightRefClassName) { 
+            return;
+        }
+
+        if (!document) {
+            return;
+        }
+
+        const el = document.getElementsByClassName(heightRefClassName)[0];
+
+        if (!el) {
+            return;
+        }
+
+        let height = Math.max(
+            el.offsetHeight,
+            el.clientHeight,
+            el.scrollHeight,
+            el.getBoundingClientRect().height,
+        );
+
+        const iframeList = parent.document.getElementsByClassName(iframeClassName);
+
+        if (iframeList?.length <= 0) {
+            return;
+        }
+
+        for (const iframe of iframeList) {
+
+            if (!iframe.contentDocument) {
+                continue;
+            }
+
+            height = height + 50;
+            height = height + 'px';
+            iframe.style.height = height;
+        }
+    }, 200),
     //endregion iFrame
     /**##################################################*/
     // region AUDIO
     AlinaAudioPlayer: {
-        trackList:                [],
-        defineTrackList:          function () {
+        trackList: [],
+        defineTrackList: function () {
             this.trackList = document.getElementsByTagName('audio');
             return this.trackList;
         },
-        eventHandlerOnEnded:      function (e) {
+        eventHandlerOnEnded: function (e) {
             var trackList = AlinaPageGlobalAnalyzer.AlinaAudioPlayer.trackList;
             if (trackList[this.nextToPlay])
                 trackList[this.nextToPlay].play();
         },
-        eventHandlerOnPlay:       function (e) {
+        eventHandlerOnPlay: function (e) {
             var trackList = AlinaPageGlobalAnalyzer.AlinaAudioPlayer.trackList;
 
             for (var i = 0; i < trackList.length; i++) {
@@ -63,7 +97,7 @@ const AlinaPageGlobalAnalyzer = {
                 trackList[i].removeEventListener('play', this.eventHandlerOnPlay);
             }
         },
-        addAudioEventHandlers:    function () {
+        addAudioEventHandlers: function () {
             var trackList = this.defineTrackList();
             this.removeAudioEventHandlers();
             for (var i = 0; i < trackList.length; i++) {

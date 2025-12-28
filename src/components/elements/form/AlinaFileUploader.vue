@@ -230,8 +230,9 @@ export default {
       UtilsArray.clear(this.dArrFiles);
     },
     pageRecalcIframeHeight() {
-      const className = `AlinaIframe-tale-${this.entity_id}`;
-      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(className);
+      const iframeClassName = `AlinaIframe-tale-${this.entity_id}`;
+      const heightRefClassName = `alina-tale-id-${this.entity_id}`;
+      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(iframeClassName, heightRefClassName);
     },
   },
   components: {

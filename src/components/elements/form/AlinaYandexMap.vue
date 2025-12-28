@@ -227,8 +227,9 @@ export default {
       this.$forceUpdate();
     },
     pageRecalcIframeHeight() {
-      const className = `AlinaIframe-tale-${this.item.id}`;
-      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(className);
+      const iframeClassName = `AlinaIframe-tale-${this.item.id}`;
+      const heightRefClassName = `alina-tale-id-${this.item.id}`;
+      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(iframeClassName, heightRefClassName);
     },
   }
 };

@@ -7,7 +7,14 @@
          }"
   >
     <div v-if="!tale.id">...</div>
-    <div class="row no-gutters" v-if="tale.id">
+    <div
+      v-if="tale.id"
+      :class="[
+        'row',
+        'no-gutters',
+        `alina-tale-id-${tale.id}`
+      ]"
+    >
       <div class="col">
         <!--##################################################-->
         <!--region Buttons-->
