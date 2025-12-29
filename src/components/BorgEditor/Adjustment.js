@@ -233,7 +233,7 @@ export default class Adjustment {
             }
           },
           {
-            name: 'rutubeVideo',
+            name: 'rutube',
             url: [
               // Matches Rutube embed URLs (with optional trailing slash)
               /^https?:\/\/rutube\.ru\/play\/embed\/[a-f0-9]+\/?$/i
@@ -242,9 +242,8 @@ export default class Adjustment {
               const url = match[0].replace(/\/$/, ''); // Remove trailing slash if present
               return (
                 '<iframe ' +
-                'width="720" height="405" ' +
                 `src="${url}/" ` +
-                'style="border: none;" ' +
+                'style="border: none;width:100%; min-height: 45vh" ' +
                 'allow="clipboard-write; autoplay" ' +
                 'webkitAllowFullScreen mozallowfullscreen allowFullScreen ' +
                 '></iframe>'

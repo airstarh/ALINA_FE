@@ -3,97 +3,79 @@ const path = require('path');
 process.env.VUE_APP_ALINA_INFO = 'Служебная информация';
 
 module.exports = {
-    outputDir: path.resolve(process.env.VUE_APP_ALINA_DIST),
+    outputDir: process.env.VUE_APP_ALINA_DIST
+        ? path.resolve(process.env.VUE_APP_ALINA_DIST)
+        : path.resolve(__dirname, 'dist'),
     parallel: false,
-    publicPath: '/apps/vue/',
+    publicPath: process.env.VUE_APP_PUBLIC_PATH || '/apps/vue/',
+    productionSourceMap: process.env.NODE_ENV === 'development',
+
     devServer: {
-        public: 'https://localhost:8082',
+        host: 'localhost',
+        port: 8082,
         https: true,
         clientLogLevel: 'error',
-        disableHostCheck: true,
-        contentBase: path.join(__dirname, process.env.VUE_APP_PUBLIC_FOLDER),
+        contentBase: path.join(
+            __dirname,
+            process.env.VUE_APP_PUBLIC_FOLDER || 'public'
+        ),
     },
+
     pluginOptions: {
-        // ##################################################
-        //region vue-cli-plugin-svg-sprite
         svgSprite: {
-            /**
-             * The directory containing your SVG files.
-             */
             dir: 'src/assets/svg',
-            /**
-             * The regex that will be used for the Webpack rule.
-             */
             test: /\.(svg)(\?.*)?$/,
-            /**
-             * @see https://github.com/kisenka/svg-sprite-loader#configuration
-             */
             loaderOptions: {
                 extract: true,
-                filenameHashing: false, //spriteFilename:  'img/icons.[hash:8].svg' // or 'img/icons.svg' if filenameHashing == false
-                spriteFilename: 'alina-sprite.svg',
+                filenameHashing: true,
+                spriteFilename: 'alina-sprite.[hash:8].svg',
             },
-            /**
-             * @see https://github.com/kisenka/svg-sprite-loader#configuration
-             */
             pluginOptions: {
-                plainSprite: false
-            }
-        }
-        //endregion vue-cli-plugin-svg-sprite
-        // ##################################################
+                plainSprite: false,
+            },
+        },
     },
-    // #####
+
     configureWebpack: {
-        plugins: []
+        output: {
+            chunkFilename: '[name].[contenthash].js',
+        },
+        optimization: {
+            splitChunks: {
+                chunks: 'all',
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendor',
+                        chunks: 'initial',
+                    },
+                },
+            },
+        },
     },
-    chainWebpack: config => {
-        // ##################################################// ##################################################
-        // region vue-svg-loader
-        //---svgRule = config.module.rule('svg');
-        // очищаем все существующие загрузчики.
-        // если вы этого не сделаете, загрузчик ниже будет добавлен
-        // к уже существующим загрузчикам для этого правила.
-        //--svgRule.uses.clear();
-        // добавляем загрузчик для замены
-        // svgRule
-        // .use('babel-loader')
-        // .loader('babel-loader')
-        // .end()
-        // .use('vue-svg-loader')
-        // .loader('vue-svg-loader');
-        // endregion vue-svg-loader
-        // ##################################################// ##################################################
-        // region vue-cli-plugin-svg-sprite
-        config.module
-            .rule('svg-sprite')
-            .use('svgo-loader')
-            .loader('svgo-loader');
-        // endregion vue-cli-plugin-svg-sprite
-        // ##################################################// ##################################################
-        // region PUBLIC
-        // Set public folder based on environment variable
 
-        // Remove the default copy plugin
-        config.plugins.delete('copy');
+    chainWebpack: (config) => {
+        const publicFolder = process.env.VUE_APP_PUBLIC_FOLDER || 'public';
+        const outputPath = process.env.VUE_APP_ALINA_DIST
+            ? path.resolve(process.env.VUE_APP_ALINA_DIST)
+            : path.resolve(__dirname, 'dist');
 
-        // Add custom copy plugin
-        config.plugin('copy')
-            .use(require('copy-webpack-plugin'), [[{
-                from: path.resolve(__dirname, process.env.VUE_APP_PUBLIC_FOLDER),
-                to: path.resolve(process.env.VUE_APP_ALINA_DIST),
+        // Extend default copy plugin (don't delete it)
+        config.plugin('copy').tap((args) => {
+            args[0].push({
+                from: path.resolve(__dirname, publicFolder),
+                to: outputPath,
                 toType: 'dir',
-                // ignore: ['.*']
-            }]]);
+            });
+            return args;
+        });
 
+        // Update HTML template path
         config
             .plugin('html')
-            .tap(args => {
-                args[0].template = path.resolve(__dirname, process.env.VUE_APP_PUBLIC_FOLDER, 'index.html');
+            .tap((args) => {
+                args[0].template = path.resolve(__dirname, publicFolder, 'index.html');
                 return args;
             });
-        // endregion PUBLIC
-        // ##################################################// ##################################################
-    }
+    },
 };
-//#####
