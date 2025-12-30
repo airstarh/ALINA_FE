@@ -15,6 +15,7 @@
       </div>
     </div>
     <div :key="curId">
+
       <!--region Edit Mode-->
       <div v-if="options.modeEdit" class="text-break">
         <div class="row no-gutters p-0">
@@ -84,6 +85,11 @@
         <StandardButtons :onGo="runAJax"></StandardButtons>
       </div>
       <!--endregion Edit Mode-->
+
+
+
+
+      
       <!--region  Read Mode-->
       <div v-else class="text-break">
         <div class="row no-gutters">
