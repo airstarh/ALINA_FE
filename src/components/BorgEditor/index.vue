@@ -1,12 +1,11 @@
 <template>
-    <span class="BorgEditor" v-if="cfg.editor">
-        <ckeditor :editor="cfg.editor" :config="cfg.tools" @input="borgEmit" :value="value" />
+    <span class="BorgEditor" v-if="Adjustment.editor">
+        <ckeditor :editor="Adjustment.editor" :config="Adjustment.tools" @input="borgEmit" :value="value" />
     </span>
 </template>
 <script>
 
 import Adjustment from "./Adjustment";
-
 
 export default {
     name: "BorgEditor",
@@ -19,7 +18,7 @@ export default {
     data() {
         return {
             valueData: '',
-            cfg: new Adjustment(),
+            Adjustment: new Adjustment(),
         }
     },
     methods: {

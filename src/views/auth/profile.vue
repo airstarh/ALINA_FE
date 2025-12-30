@@ -16,13 +16,16 @@
     </div>
     <div :key="curId">
 
+
+
+
+
       <!--region Edit Mode-->
       <div v-if="options.modeEdit" class="text-break">
         <div class="row no-gutters p-0">
           <div class="col-md-4 m-0">
             <div class="alina-form">
-              <ui-fileupload accept="image/*" :multiple="false" :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-                @change="onChangeFileField">{{ $t("Select an image") }}
+              <ui-fileupload accept="image/*" :multiple="false" :name="ConfigApi.ALINA_FILE_UPLOAD_KEY" @change="onChangeFileField">{{ $t("Select an image") }}
               </ui-fileupload>
               <a :href="post.emblem">
                 <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
@@ -34,7 +37,7 @@
             <div>
               <div class="row no-gutters mt-4 justify-content-center align-items-center">
                 <div class="col-12 text-center">
-                  <a :href="'mailto:'+post.mail">
+                  <a :href="'mailto:' + post.mail">
                     {{ post.mail }}
                   </a>
                 </div>
@@ -72,9 +75,9 @@
         <div class="row no-gutters mt-4">
           <div class="col">
             <div style="width:70vw; margin:0 auto;">
-              <BorgEditor v-model="post.about_myself" class="notranslate"/>
+              <BorgEditor v-model="post.about_myself" class="notranslate" />
             </div>
-            
+
           </div>
         </div>
         <div class="m3">&nbsp;</div>
@@ -89,53 +92,48 @@
 
 
 
-      
+
       <!--region  Read Mode-->
-      <div v-else class="text-break">
-        <div class="row no-gutters">
+      <div v-if="!options.modeEdit" class="text-break">
+
+        <div class="text-center">
+
+          <h1 class="notranslate font-weight-bold">
+            {{ UtilsStr.fullName(post.firstname, post.lastname, post.id) }}
+          </h1>
+
+          <div>
+            {{ UtilsDate.fromUnixToDateNoTime(post.birth) }}
+          </div>
+
+          <div>
+            <a :href="'mailto:' + post.mail">
+              {{ post.mail }}
+            </a>
+          </div>
+        </div>
+
+        <div class="row no-gutters justify-content-center">
+          <!--##################################################-->
           <div class="col-md-4">
             <a :href="post.emblem">
               <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
               <img v-if="!post.emblem" src="@/assets/anarki.png" width="100%">
             </a>
           </div>
-          <div class="col pl-2">
-            <!--##################################################-->
-            <div class="row no-gutters mb-1 justify-content-center align-items-center">
-              <h3 class="notranslate col font-weight-bold">
-                {{ UtilsStr.fullName(post.firstname, post.lastname, post.id) }}
-              </h3>
-            </div>
-            <!--##################################################-->
-            <div class="row no-gutters mb-1 justify-content-center align-items-center">
-              <div class="col">
-                {{ UtilsDate.fromUnixToDateNoTime(post.birth) }}
-                {{ }}
-              </div>
-            </div>
-            <!--##################################################-->
-            <div class="row no-gutters mb-1 justify-content-center align-items-center">
-              <div class="col-12">
-                <a :href="'mailto:'+post.mail">
-                  {{ post.mail }}
-                </a>
-              </div>
-            </div>
-            <!--##################################################-->
-          </div>
-        </div>
-        <div class="row no-gutters mt-4">
-          <div class="col">
-            <div class="ck-content" style="width:70vw; margin:0 auto;">
-              <div class="notranslate" v-html="UtilsStr.content(post.about_myself)"></div>
+
+          <div v-if="post.about_myself" class="col pl-2">
+            <div class="ck-content">
+              <div class="notranslate " v-html="UtilsStr.content(post.about_myself)"></div>
             </div>
           </div>
         </div>
+
       </div>
       <!--endregion  Read Mode-->
     </div>
     <div class="mt-5"></div>
-    <tale_feed :doShowAuthorInfo="false" :queryProps="{'owner':this.curId}"></tale_feed>
+    <tale_feed :doShowAuthorInfo="false" :queryProps="{ 'owner': this.curId }"></tale_feed>
   </div>
 </template>
 <!--##################################################-->
@@ -144,14 +142,15 @@
 <script>
 // @ is an alias to /src
 import StandardButtons from "@/components/elements/form/StandardButtons";
-import ConfigApi       from "@/configs/ConfigApi";
-import AjaxAlina       from "@/services/AjaxAlina";
-import CurrentUser     from "@/services/CurrentUser";
+import AlinaInput from "@/components/elements/form/AlinaInput";
+import ConfigApi from "@/configs/ConfigApi";
+import AjaxAlina from "@/services/AjaxAlina";
+import CurrentUser from "@/services/CurrentUser";
 import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
-import tale_feed       from "@/views/tale/feed";
-import UtilsObject     from "@/Utils/UtilsObject";
-import UtilsStr        from "@/Utils/UtilsStr";
-import UtilsDate       from "../../Utils/UtilsDate";
+import tale_feed from "@/views/tale/feed";
+import UtilsObject from "@/Utils/UtilsObject";
+import UtilsStr from "@/Utils/UtilsStr";
+import UtilsDate from "../../Utils/UtilsDate";
 import BorgEditor from "@/components/BorgEditor";
 //#####
 export default {
@@ -160,28 +159,29 @@ export default {
     return {
       UtilsStr,
       ConfigApi: ConfigApi,
-      CU:        CurrentUser.obj(),
-      options:   {
-        url:            `${ConfigApi.url_base}/auth/profile`,
-        urlEmblem:      `${ConfigApi.url_base}/FileUpload/CkEditor`,
-        urlDelete:      `${ConfigApi.url_base}/auth/UserDelete`,
-        dateFields:     ['birth'],
-        modeEdit:       false,
+      CU: CurrentUser.obj(),
+      options: {
+        url: `${ConfigApi.url_base}/auth/profile`,
+        urlEmblem: `${ConfigApi.url_base}/FileUpload/CkEditor`,
+        urlDelete: `${ConfigApi.url_base}/auth/UserDelete`,
+        dateFields: ['birth'],
+        modeEdit: false,
       },
-      post:      {
-        id:           '',
-        mail:         '',
-        firstname:    '',
-        lastname:     '',
-        birth:        null,
+      post: {
+        id: '',
+        mail: '',
+        firstname: '',
+        lastname: '',
+        birth: null,
         about_myself: '',
-        emblem:       '',
-        form_id:      'profile',
+        emblem: '',
+        form_id: 'profile',
       }
     }
   },
   components: {
     StandardButtons,
+    AlinaInput,
     AlinaDatePicker,
     tale_feed,
     BorgEditor,
@@ -191,70 +191,70 @@ export default {
     const id = this.curId;
     vm.fetchProfile(id);
   },
-  methods:  {
+  methods: {
     //##################################################
     //region Define User
     fetchProfile(id, callback) {
       AjaxAlina.newInst({
-        url:    `${this.options.url}/${id}`,
+        url: `${this.options.url}/${id}`,
         method: 'GET',
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.post             = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
+            this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
             this.options.modeEdit = false;
           }
         }
       })
-      .go();
+        .go();
     }, //endregion Define User
     //##################################################
     ajaDeleteUser(post) {
-      if (!confirm("Are you sure?")) {return;}
-      if (!confirm("Are you REALLY sure???")) {return;}
-      const _t     = this;
+      if (!confirm("Are you sure?")) { return; }
+      if (!confirm("Are you REALLY sure???")) { return; }
+      const _t = this;
       post.form_id = 'actionUserDelete';
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        `${this.options.urlDelete}/${post.id}`,
+        method: 'POST',
+        url: `${this.options.urlDelete}/${post.id}`,
         postParams: post,
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            _t.$router.replace({path: `/tale/feed`});
+            _t.$router.replace({ path: `/tale/feed` });
           }
         }
       })
-      .go();
+        .go();
     }, //##################################################
     runAJax() {
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        this.options.url,
+        method: 'POST',
+        url: this.options.url,
         postParams: this.post,
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.post             = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
+            this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
             this.options.modeEdit = false;
           }
         }
       })
-      .go();
+        .go();
     }, //##################################################
     onChangeFileField(fileList, event) {
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        this.options.urlEmblem,
-        enctype:    'multipart/form-data',
+        method: 'POST',
+        url: this.options.urlEmblem,
+        enctype: 'multipart/form-data',
         postParams: {
-          "form_id":  "actionCommon",
+          "form_id": "actionCommon",
           "userfile": fileList,
         },
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             this.post.emblem = aja.respBody.data.url;
           }
         }
       })
-      .go();
+        .go();
     },
   },
   computed: {
@@ -271,7 +271,7 @@ export default {
       return id;
     }
   },
-  watch:    {
+  watch: {
     curId: function (newVal) {
       this.fetchProfile(newVal);
     }
