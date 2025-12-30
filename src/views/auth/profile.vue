@@ -14,6 +14,7 @@
         <div class="mt-2"></div>
       </div>
     </div>
+
     <div :key="curId">
 
 
@@ -133,11 +134,9 @@
       <!--endregion  Read Mode-->
     </div>
     <div class="mt-5"></div>
-    <tale_feed :doShowAuthorInfo="false" :queryProps="{ 'owner': this.curId }"></tale_feed>
+    <tale_feed :doShowAuthorInfo="false" :queryProps="{ 'owner': this.curId }" v-if="this.curId"></tale_feed>
   </div>
 </template>
-<!--##################################################-->
-<!--##################################################-->
 <!--##################################################-->
 <script>
 // @ is an alias to /src
@@ -263,7 +262,7 @@ export default {
     },
     curId() {
       let id = null;
-      if (this && this.$route && this.$route.params && this.$route.params.id) {
+      if (this?.$route?.params?.id) {
         id = this.$route.params.id;
       } else {
         id = CurrentUser.obj().attributes.id;
