@@ -61,7 +61,7 @@
 
               <div class="row no-gutters mt-4 justify-content-center align-items-center">
                 <div class="col">
--++                  <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate"></AlinaDatePicker>
+                  <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate"></AlinaDatePicker>
                 </div>
               </div>
 
