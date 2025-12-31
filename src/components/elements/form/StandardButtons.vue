@@ -1,20 +1,18 @@
 <template>
-  <div>
-    <div class="row text-center m-buttons-1">
+  <div class="StandardButtons">
 
-      <a
-          @click="() => {this.$router.go()}"
-          class="col-auto btn btn-sm btn-danger text-white"
-      >{{ $t(resetTxt) }}</a>
+    <a
+        @click="() => {this.$router.go()}"
+        class="btn btn-danger text-white ml-1"
+    >{{ $t(resetTxt) }}</a>
 
-      <button
-          @click="event => {return this.onGo(event);}"
-          type="button"
-          class="col btn btn-sm btn-secondary"
-      >{{ $t(submitTxt) }}
-        <slot name="submitSuffix"></slot>
-      </button>
-    </div>
+    <button
+        @click="event => {return this.onGo(event);}"
+        type="button"
+        class="btn btn-secondary ml-1"
+    >{{ $t(submitTxt) }}
+      <slot name="submitSuffix"></slot>
+    </button>
   </div>
 </template>
 
@@ -33,4 +31,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .StandardButtons {
+    display: inline-block;
+  }
+</style>

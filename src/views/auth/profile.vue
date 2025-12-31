@@ -1,29 +1,28 @@
 <template>
   <div>
-    <div class="row no-gutters mt-2">
+    <div class="row no-gutters mt-2 mb-2">
       <div class="col">
         <h5 class="text-break">
           Profile #{{ post.id }}
-          <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
-          <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-secondary">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
         </h5>
       </div>
-    </div>
-
-    <div v-if="CU.ownsOrAdminOrModerator(post.id) && options.modeEdit">
-      <StandardButtons :onGo="runAJax"></StandardButtons>
+      <div class="col-auto text-right">
+        <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
+        <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-secondary">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
+        <StandardButtons v-if="CU.ownsOrAdminOrModerator(post.id) && options.modeEdit" :onGo="runAJax"></StandardButtons>
+      </div>
     </div>
 
     <div :key="curId">
       <div class="text-center">
-        <h1 class="notranslate font-weight-bold">
-          <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" class="text-right"/>
+
+        <h1 class="notranslate font-weight-bold mb-4">
+          <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center" />
           &nbsp;
-          <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" />
-          1
+          <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
         </h1>
 
-        <div>
+        <div class="mb-4">
           <template v-if="options.modeEdit">
             <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate"></AlinaDatePicker>
           </template>
@@ -32,7 +31,7 @@
           </template>
         </div>
 
-        <div>
+        <div class="mb-4">
           <aInput v-model="post.mail" type="email" />
         </div>
 
