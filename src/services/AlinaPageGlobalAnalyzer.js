@@ -5,8 +5,8 @@ const AlinaPageGlobalAnalyzer = {
     // region idNameKey
     idNameKeyCurrent: 0,
     idNameKeyNext: function () {
-        AlinaPageGlobalAnalyzer.idNameKeyCurrent++;
-        return `alina-uniq-key-${AlinaPageGlobalAnalyzer.idNameKeyCurrent}`;
+        this.idNameKeyCurrent++;
+        return `alina-uniq-key-${this.idNameKeyCurrent}`;
     },
     // endregion idNameKey
     /**##################################################*/

@@ -11,9 +11,9 @@
             <div class="col-auto text-nowrap p-1">
               <div class="form-inline">
                 <div class="text-nowrap">
-                  <small>{{ $t("DT_Y") }}:</small><input v-model="year" size="4" type="text" max="9999" class="form-control-sm d-inline-block w-25" :id="`year-${idq}`" placeholder="YEAR">
-                  <small>{{ $t("DT_M") }}::</small><input v-model="month" size="2" type="text" max="12" class="form-control-sm d-inline-block w-25" :id="`month-${idq}`" placeholder="MONTH">
-                  <small>{{ $t("DT_D") }}::</small><input v-model="day" size="2" type="text" max="31" class="form-control-sm d-inline-block w-25" :id="`day-${idq}`" placeholder="DAT">
+                  <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" type="number" :idNameKey="`year-${idq}`"/>
+                  <aInput v-model="month" :label='$t("DT_M")' placeholder="MONTH" :modeEdit="true" :size="2" :max="12" type="number" :idNameKey="`month-${idq}`"/>
+                  <aInput v-model="day" :label='$t("DT_D")' placeholder="DAY" :modeEdit="true" :size="2" :max="31" type="number" :idNameKey="`day-${idq}`"/>
                 </div>
               </div>
             </div>
@@ -41,7 +41,10 @@
 </template>
 
 <script>
+
 import UtilsDate from "@/Utils/UtilsDate";
+import aInput from "@/components/elements/form/aInput";
+
 export default {
   name: "AlinaDatePicker",
   computed: {
@@ -123,6 +126,9 @@ export default {
     hour() { this.calcDt() },
     min() { this.calcDt() },
     sec() { this.calcDt() },
+  },
+  components: {
+    aInput
   }
 };
 </script>

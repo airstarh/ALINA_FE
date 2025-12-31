@@ -1,8 +1,15 @@
 <template>
   <div class="aInput notranslate">
     <template v-if="modeEdit">
-      <label v-if="label" :for="idNameKey">{{ label }}:&nbsp;</label>
-      <input :value="value" @input="alinaEmit($event.target.value)" :id="idNameKey" :name="idNameKey" :placeholder="placeholder" :style="{ textAlign: inputAlign }" :size="size" :max="max" :disabled="disabled" />
+      <div class="row no-gutters align-items-center">
+        <div v-if="label" class="col">
+          <label :for="idNameKey">{{ label }}:&nbsp;</label>
+        </div>
+        <div class="col">
+          <input :value="value" @input="alinaEmit($event.target.value)" :id="idNameKey" :name="idNameKey" :placeholder="placeholder" :style="{ textAlign: inputAlign }" :size="size" :max="max" :disabled="disabled" />
+        </div>
+
+      </div>
     </template>
 
     <template v-if="!modeEdit">
@@ -27,14 +34,12 @@
   </div>
 </template>
 <script>
-import AlinaPageGlobalAnalyzer from '../../../services/AlinaPageGlobalAnalyzer';
-
 
 export default {
   name: "aInput",
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: ''
     },
     modeEdit: {
@@ -63,7 +68,9 @@ export default {
     },
     idNameKey: {
       type: String,
-      default: AlinaPageGlobalAnalyzer.idNameKeyNext()
+      default: function () {
+        return AlinaPageGlobalAnalyzer.idNameKeyNext();
+      }
     },
     inputAlign: {
       type: String,
