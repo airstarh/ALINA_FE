@@ -1,9 +1,19 @@
 <template>
   <div class="aInput notranslate">
     <span v-if="modeEdit">
-      <input :value="value" @input="alinaEmit" />
+      <input :value="value" @input="alinaEmit" :id="idNameKey" :name="idNameKey" />
     </span>
-    <span v-if="!modeEdit">{{ formatter(value) }}</span>
+
+    <template v-if="!modeEdit">
+      <template v-if="type === 'text'">
+        {{ formatter(value) }}
+      </template>
+      <template v-else-if="type === 'mail'">
+        <a :href="`mailto:${value}`">
+          {{ formatter(value) }}
+        </a>
+      </template>
+    </template>
   </div>
 </template>
 <script>
@@ -36,6 +46,10 @@ export default {
     formatter: {
       type: Function,
       default: v => v
+    },
+    templator: {
+      type: String,
+      default: 'text'
     },
     idNameKey: {
       type: String,

@@ -110,9 +110,7 @@
           </div>
 
           <div>
-            <a :href="'mailto:' + post.mail">
-              {{ post.mail }}
-            </a>
+            <aInput :value="post.mail" type="mail"/>
           </div>
         </div>
 
@@ -136,7 +134,7 @@
       <!--endregion  Read Mode-->
     </div>
     <div class="mt-5"></div>
-    <tale_feed :doShowAuthorInfo="false" :queryProps="{ 'owner': this.curId }" v-if="this.curId"></tale_feed>
+    <!-- <tale_feed :doShowAuthorInfo="false" :queryProps="{ 'owner': this.curId }" v-if="this.curId"></tale_feed> -->
   </div>
 </template>
 <!--##################################################-->
