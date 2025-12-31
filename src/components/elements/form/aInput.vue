@@ -2,7 +2,7 @@
   <div class="aInput notranslate">
     <template v-if="modeEdit">
       <label v-if="label" :for="idNameKey">{{ label }}:&nbsp;</label>
-      <input :value="value" @input="alinaEmit($event.target.value)" :id="idNameKey" :name="idNameKey" :placeholder="placeholder" :style="{textAlign: inputAlign }"/>
+      <input :value="value" @input="alinaEmit($event.target.value)" :id="idNameKey" :name="idNameKey" :placeholder="placeholder" :style="{ textAlign: inputAlign }" :size="size" :max="max" :disabled="disabled" />
     </template>
 
     <template v-if="!modeEdit">
@@ -68,6 +68,18 @@ export default {
     inputAlign: {
       type: String,
       default: 'left'
+    },
+    size: {
+      type: Number,
+      default: null
+    },
+    max: {
+      type: Number,
+      default: null
+    },
+    disabled: {
+      type: Boolean,
+      default: null
     }
   },
   data() {
