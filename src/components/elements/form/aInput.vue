@@ -1,8 +1,9 @@
 <template>
   <div class="aInput notranslate">
-    <span v-if="modeEdit">
-      <input :value="value" @input="alinaEmit" :id="idNameKey" :name="idNameKey" />
-    </span>
+    <template v-if="modeEdit">
+      <label v-if="label" :for="idNameKey">{{ label }}:&nbsp;</label>
+      <input :value="value" @input="alinaEmit($event.target.value)" :id="idNameKey" :name="idNameKey" :placeholder="placeholder"/>
+    </template>
 
     <template v-if="!modeEdit">
 
@@ -41,6 +42,10 @@ export default {
       default: false
     },
     label: {
+      type: String,
+      default: ''
+    },
+    placeholder: {
       type: String,
       default: ''
     },

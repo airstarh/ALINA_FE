@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <div class="row text-center m-buttons-1">
 
       <a
