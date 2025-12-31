@@ -4,8 +4,8 @@ const AlinaPageGlobalAnalyzer = {
     /**##################################################*/
     // region idNameKey
     idNameKeyCurrent: 0,
-    idNameKeyNext() { 
-        idNameKeyNext++;
+    idNameKeyNext: function () {
+        AlinaPageGlobalAnalyzer.idNameKeyCurrent++;
         return `alina-uniq-key-${AlinaPageGlobalAnalyzer.idNameKeyCurrent}`;
     },
     // endregion idNameKey
@@ -23,7 +23,7 @@ const AlinaPageGlobalAnalyzer = {
     pageRecalcIframeHeight: lodash.debounce((iframeClassName, heightRefClassName) => {
 
         const inIframe = AlinaPageGlobalAnalyzer.pageIsInIframe();
-        
+
         if (!inIframe) {
             return;
         }
@@ -32,7 +32,7 @@ const AlinaPageGlobalAnalyzer = {
             return;
         }
 
-        if (!heightRefClassName) { 
+        if (!heightRefClassName) {
             return;
         }
 

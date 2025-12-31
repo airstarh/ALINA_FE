@@ -7,6 +7,8 @@
   </div>
 </template>
 <script>
+import AlinaPageGlobalAnalyzer from '../../../services/AlinaPageGlobalAnalyzer';
+
 
 export default {
   name: "aInput",
@@ -35,6 +37,10 @@ export default {
       type: Function,
       default: v => v
     },
+    idNameKey: {
+      type: String,
+      default: AlinaPageGlobalAnalyzer.idNameKeyNext()
+    }
   },
   data() {
     return {
