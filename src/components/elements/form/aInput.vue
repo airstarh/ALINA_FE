@@ -5,14 +5,23 @@
     </span>
 
     <template v-if="!modeEdit">
+
       <template v-if="type === 'text'">
         {{ formatter(value) }}
       </template>
-      <template v-else-if="type === 'mail'">
+
+      <template v-else-if="type === 'email'">
         <a :href="`mailto:${value}`">
           {{ formatter(value) }}
         </a>
       </template>
+
+      <template v-else-if="type === 'tel'">
+        <a :href="`tel:${value}`">
+          {{ formatter(value) }}
+        </a>
+      </template>
+
     </template>
   </div>
 </template>
@@ -46,10 +55,6 @@ export default {
     formatter: {
       type: Function,
       default: v => v
-    },
-    templator: {
-      type: String,
-      default: 'text'
     },
     idNameKey: {
       type: String,

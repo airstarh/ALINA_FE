@@ -110,7 +110,7 @@
           </div>
 
           <div>
-            <aInput :value="post.mail" type="mail"/>
+            <aInput :value="post.mail" type="email"/>
           </div>
         </div>
 
