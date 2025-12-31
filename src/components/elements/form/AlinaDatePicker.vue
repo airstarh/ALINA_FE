@@ -13,7 +13,8 @@
                 <div class="text-nowrap">
                   <small>{{ $t("DT_Y") }}:</small><input v-model="year" size="4" type="text" max="9999" class="form-control-sm d-inline-block w-25" :id="`year-${idq}`" placeholder="YEAR">
                   <small>{{ $t("DT_M") }}::</small><input v-model="month" size="2" type="text" max="12" class="form-control-sm d-inline-block w-25" :id="`month-${idq}`" placeholder="MONTH">
-                  <small>{{ $t("DT_D") }}::</small><input v-model="day" size="2" type="text" max="31" class="form-control-sm d-inline-block w-25" :id="`day-${idq}`" placeholder="DAT"></div>
+                  <small>{{ $t("DT_D") }}::</small><input v-model="day" size="2" type="text" max="31" class="form-control-sm d-inline-block w-25" :id="`day-${idq}`" placeholder="DAT">
+                </div>
               </div>
             </div>
             <div class="col-auto text-nowrap p-1">
@@ -26,9 +27,9 @@
               </div>
             </div>
             <div class="col-auto text-nowrap p-1">
-                            <span>
-                                <i>{{ UtilsDate.fromUnixToDateTime(emittedRes) }}</i>
-                            </span>&nbsp;
+              <span>
+                <i>{{ UtilsDate.fromUnixToDateTime(emittedRes) }}</i>
+              </span>&nbsp;
               <span @click="setNow" class="btn btn-sm btn-primary">{{ $t("Set now") }}</span>
             </div>
 
@@ -43,41 +44,45 @@
 import UtilsDate from "@/Utils/UtilsDate";
 export default {
   name: "AlinaDatePicker",
-	computed: {
-		UtilsDate() {
-			return UtilsDate
-		}
-	},
+  computed: {
+    UtilsDate() {
+      return UtilsDate
+    }
+  },
   created() {
     this.convertValueToDate();
   },
-	emits: ['input'],
+  emits: ['input'],
   props: {
     value: {
       /**idq - ID qualifier*/
-      type:    Number,
+      type: Number,
       default: Math.floor(new Date().getTime() / 1000),
     },
-    idq:   {
+    idq: {
       /**idq - ID qualifier*/
-      type:    String,
+      type: String,
       default: '0',
     },
     label: {
       /**idq - ID qualifier*/
-      type:    String,
+      type: String,
       default: 'Date',
+    },
+    modeEdit: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
-      year:       1970,
-      month:      1,
-      day:        1,
-      hour:       0,
-      min:        0,
-      sec:        0,
-      dateObf:    new Date(),
+      year: 1970,
+      month: 1,
+      day: 1,
+      hour: 0,
+      min: 0,
+      sec: 0,
+      dateObf: new Date(),
       emittedRes: 0,
     }
   },
@@ -98,12 +103,12 @@ export default {
         v = this.value;
       }
       this.dateObj = new Date(v * 1000);
-      this.year    = this.dateObj.getFullYear();
-      this.month   = this.dateObj.getMonth() + 1;
-      this.day     = this.dateObj.getDate();
-      this.hour    = this.dateObj.getHours();
-      this.min     = this.dateObj.getMinutes();
-      this.sec     = this.dateObj.getSeconds();
+      this.year = this.dateObj.getFullYear();
+      this.month = this.dateObj.getMonth() + 1;
+      this.day = this.dateObj.getDate();
+      this.hour = this.dateObj.getHours();
+      this.min = this.dateObj.getMinutes();
+      this.sec = this.dateObj.getSeconds();
     },
     setNow() {
       this.emittedRes = Math.floor((new Date()).getTime() / 1000);
@@ -111,18 +116,19 @@ export default {
       this.$emit('input', this.emittedRes);
     }
   },
-  watch:   {
-    year() {this.calcDt()},
-    month() {this.calcDt()},
-    day() {this.calcDt()},
-    hour() {this.calcDt()},
-    min() {this.calcDt()},
-    sec() {this.calcDt()},
+  watch: {
+    year() { this.calcDt() },
+    month() { this.calcDt() },
+    day() { this.calcDt() },
+    hour() { this.calcDt() },
+    min() { this.calcDt() },
+    sec() { this.calcDt() },
   }
 };
 </script>
 
 <style scoped lang="scss">
 .alina-date-picker {
+  display: inline-block;
 }
 </style>

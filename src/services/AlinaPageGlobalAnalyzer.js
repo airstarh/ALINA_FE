@@ -2,6 +2,14 @@ import lodash from "lodash";
 
 const AlinaPageGlobalAnalyzer = {
     /**##################################################*/
+    // region idNameKey
+    idNameKeyCurrent: 0,
+    idNameKeyNext() { 
+        idNameKeyNext++;
+        return `alina-uniq-key-${AlinaPageGlobalAnalyzer.idNameKeyCurrent}`;
+    },
+    // endregion idNameKey
+    /**##################################################*/
     //region iFrame
     pageIsInIframe() {
         try {

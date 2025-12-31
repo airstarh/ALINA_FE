@@ -100,7 +100,9 @@
         <div class="text-center">
 
           <h1 class="notranslate font-weight-bold">
-            {{ UtilsStr.fullName(post.firstname, post.lastname, post.id) }}
+            <aInput :value="post.firstname" :modeEdit="options.modeEdit"/>
+            &nbsp;
+            <aInput :value="post.lastname" :modeEdit="options.modeEdit" />
           </h1>
 
           <div>
@@ -141,7 +143,7 @@
 <script>
 // @ is an alias to /src
 import StandardButtons from "@/components/elements/form/StandardButtons";
-import AlinaInput from "@/components/elements/form/AlinaInput";
+import aInput from "@/components/elements/form/aInput";
 import ConfigApi from "@/configs/ConfigApi";
 import AjaxAlina from "@/services/AjaxAlina";
 import CurrentUser from "@/services/CurrentUser";
@@ -180,7 +182,7 @@ export default {
   },
   components: {
     StandardButtons,
-    AlinaInput,
+    aInput,
     AlinaDatePicker,
     tale_feed,
     BorgEditor,
