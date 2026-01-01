@@ -12,11 +12,11 @@
               <div class="form-inline">
                 <div class="text-nowrap">
                   &nbsp;
-                  <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" type="number" :idNameKey="`year-${idq}`" />
+                  <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" />
                   &nbsp;
-                  <aInput v-model="month" :label='$t("DT_M")' placeholder="MONTH" :modeEdit="true" :size="2" :max="12" type="number" :idNameKey="`month-${idq}`" />
+                  <aInput v-model="month" :label='$t("DT_M")' placeholder="MONTH" :modeEdit="true" :size="2" :max="12" :min="1" type="number" :idNameKey="`month-${idq}`" />
                   &nbsp;
-                  <aInput v-model="day" :label='$t("DT_D")' placeholder="DAY" :modeEdit="true" :size="2" :max="31" type="number" :idNameKey="`day-${idq}`" />
+                  <aInput v-model="day" :label='$t("DT_D")' placeholder="DAY" :modeEdit="true" :size="2" :max="31" :min="1" type="number" :idNameKey="`day-${idq}`" />
                 </div>
               </div>
             </div>
@@ -24,11 +24,11 @@
               <div class="form-inline">
                 <div class="text-nowrap">
                   &nbsp;
-                  <aInput v-model="hour" type="number" placeholder="HOUR" :label='$t("DT_h")' :size="2" :max="23" :idNameKey="`hour-${idq}`" :modeEdit="true" />
+                  <aInput v-model="hour" type="number" placeholder="HOUR" :label='$t("DT_h")' :size="2" :max="23" :min="0" :idNameKey="`hour-${idq}`" :modeEdit="true" />
                   &nbsp;
-                  <aInput v-model="min" type="number" placeholder="MIN" :label='$t("DT_m")' :size="2" :max="59" :idNameKey="`min-${idq}`" :modeEdit="true" />
+                  <aInput v-model="min" type="number" placeholder="MIN" :label='$t("DT_m")' :size="2" :max="59" :min="0" :idNameKey="`min-${idq}`" :modeEdit="true" />
                   &nbsp;
-                  <aInput v-model="sec" type="number" placeholder="SEC" :label='$t("DT_s")' :size="2" :max="59" :idNameKey="`sec-${idq}`" :modeEdit="true" />
+                  <aInput v-model="sec" type="number" placeholder="SEC" :label='$t("DT_s")' :size="2" :max="59" :min="0" :idNameKey="`sec-${idq}`" :modeEdit="true" />
                 </div>
               </div>
             </div>
