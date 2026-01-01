@@ -6,7 +6,17 @@
           <label :for="idNameKey">{{ label }}:&nbsp;</label>
         </div>
         <div class="col">
-          <input :value="value" @input="alinaEmit($event.target.value)" :id="idNameKey" :name="idNameKey" :placeholder="placeholder" :style="{ textAlign: inputAlign }" :size="size" :max="max" :disabled="disabled" />
+          <input
+            :value="value"
+            @input="alinaEmit($event.target.value)"
+            :id="idNameKey" :name="idNameKey"
+            :placeholder="placeholder"
+            :style="{ textAlign: inputAlign }"
+            :size="size"
+            :max="max"
+            :min="min"
+            :tabindex="tabindex"
+            :disabled="disabled" />
         </div>
 
       </div>
@@ -87,6 +97,12 @@ export default {
     min: {
       type: Number,
       default: null
+    },
+    tabindex: {
+      type: Number,
+      default: function () {
+        return AlinaPageGlobalAnalyzer.tabindexNext();
+      }
     },
     disabled: {
       type: Boolean,

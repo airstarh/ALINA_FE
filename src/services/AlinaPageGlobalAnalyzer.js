@@ -3,6 +3,11 @@ import lodash from "lodash";
 const AlinaPageGlobalAnalyzer = {
     /**##################################################*/
     // region idNameKey
+    tabindex: 0,
+    tabindexNext: function () {
+        this.tabindex++;
+        return this.tabindex;
+    },
     idNameKeyCurrent: 0,
     idNameKeyNext: function () {
         this.idNameKeyCurrent++;

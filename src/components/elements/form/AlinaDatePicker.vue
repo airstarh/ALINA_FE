@@ -142,8 +142,12 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .alina-date-picker {
   display: inline-block;
+
+  & input {
+      width: 5ch;
+    }
 }
 </style>
