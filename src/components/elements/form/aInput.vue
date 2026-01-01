@@ -47,6 +47,7 @@
 
 export default {
   name: "aInput",
+  emits: ['input'],
   props: {
     value: {
       type: [String, Number],

@@ -56,6 +56,9 @@ import aInput from "@/components/elements/form/aInput.vue";
 
 export default {
   name: "AlinaDatePicker",
+  created() {
+    this.valueToDateObj();
+  },
   updated() {
     this.valueToDateObj();
   },
