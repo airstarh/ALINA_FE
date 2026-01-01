@@ -8,7 +8,7 @@
       <div class="col">
         <div class="container">
           <div class="row no-gutters align-items-center justify-content-start">
-            <div class="col-auto text-nowrap p-1">
+            <div class="col-auto text-nowrap p-1" v-if="['date', 'dateTime'].includes(format)">
               <div class="form-inline">
                 <div class="text-nowrap">
                   &nbsp;
@@ -20,7 +20,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-auto text-nowrap p-1">
+            <div class="col-auto text-nowrap p-1" v-if="['time', 'dateTime'].includes(format)">
               <div class="form-inline">
                 <div class="text-nowrap">
                   &nbsp;
