@@ -23,12 +23,7 @@
         </h1>
 
         <div class="mb-4">
-          <template v-if="options.modeEdit">
-            <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate"></AlinaDatePicker>
-          </template>
-          <template v-if="!options.modeEdit">
-            {{ UtilsDate.fromUnixToDateNoTime(post.birth) }}
-          </template>
+          <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate" :modeEdit="options.modeEdit"></AlinaDatePicker>
         </div>
 
         <div class="mb-4">

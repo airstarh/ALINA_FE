@@ -43,6 +43,9 @@
         </div>
       </div>
     </div>
+    <template v-if="!modeEdit">
+      {{ UtilsDate.fromUnixToDateTime(value) }}
+    </template>
   </div>
 </template>
 
@@ -58,7 +61,7 @@ export default {
       return UtilsDate
     }
   },
-  created() {
+  updated() {
     this.convertValueToDate();
   },
   emits: ['input'],
@@ -96,25 +99,10 @@ export default {
     }
   },
   methods: {
-    calcDt() {
-      if (this.month < 1) this.month = 1;
-      if (this.month > 12) this.month = 12;
-
-      this.dateObj = new Date();
-      this.dateObj.setFullYear(this.year);
-      this.dateObj.setMonth(this.month - 1);
-      this.dateObj.setDate(this.day);
-      this.dateObj.setHours(this.hour);
-      this.dateObj.setMinutes(this.min);
-      this.dateObj.setSeconds(this.sec);
-
-      this.emittedRes = Math.floor(this.dateObj.getTime() / 1000);
-      this.$emit('input', this.emittedRes);
-    },
     convertValueToDate(v = null) {
       if (v === null) v = this.value;
-      this.dateObj = new Date(v * 1000);
 
+      this.dateObj = new Date(v * 1000);
       this.year = this.dateObj.getFullYear();
       this.month = this.dateObj.getMonth() + 1;
       this.day = this.dateObj.getDate();
@@ -122,6 +110,27 @@ export default {
       this.min = this.dateObj.getMinutes();
       this.sec = this.dateObj.getSeconds();
     },
+
+    calcEmittedRes() {
+      this.dateObj = new Date();
+      this.dateObj.setFullYear(this.year);
+      this.dateObj.setMonth(this.month - 1);
+      this.dateObj.setDate(this.day);
+      this.dateObj.setHours(this.hour);
+      this.dateObj.setMinutes(this.min);
+      this.dateObj.setSeconds(this.sec);
+      this.emittedRes = Math.floor(this.dateObj.getTime() / 1000);
+      return this.emittedRes;
+    },
+    calcDt() {
+      if (this.month < 1) this.month = 1;
+      if (this.month > 12) this.month = 12;
+
+      this.calcEmittedRes();
+
+      this.$emit('input', this.emittedRes);
+    },
+
     setNow() {
       this.emittedRes = Math.floor((new Date()).getTime() / 1000);
       this.convertValueToDate(this.emittedRes);
@@ -147,7 +156,7 @@ export default {
   display: inline-block;
 
   & input {
-      width: 5ch !important;
-    }
+    width: 5ch !important;
+  }
 }
 </style>
