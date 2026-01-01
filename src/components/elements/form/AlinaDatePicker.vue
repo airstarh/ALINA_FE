@@ -44,7 +44,7 @@
       </div>
     </div>
     <template v-if="!modeEdit">
-      {{ UtilsDate.fromUnixToDateTime(value) }}
+      {{ doFormat(value) }}
     </template>
   </div>
 </template>
@@ -79,6 +79,13 @@ export default {
     modeEdit: {
       type: Boolean,
       default: true
+    },
+    format: {
+      type: String,
+      default: 'dateTime',
+      validator: function (value) {
+        return ['dateTime', 'date', 'time'].indexOf(value) !== -1;
+      }
     }
   },
   data() {
@@ -91,6 +98,7 @@ export default {
       sec: 0,
       dateObj: new Date(),
       valueData: 0,
+      UtilsDate,
     }
   },
   methods: {
@@ -107,7 +115,7 @@ export default {
       this.sec = this.dateObj.getSeconds();
     },
 
-    valueDataCalculate: function() {
+    valueDataCalculate: function () {
       this.dateObj = new Date();
       this.dateObj.setFullYear(this.year);
       this.dateObj.setMonth(this.month - 1);
@@ -132,12 +140,22 @@ export default {
       this.valueData = Math.floor((new Date()).getTime() / 1000);
       this.valueToDateObj(this.valueData);
       this.$emit('input', this.valueData);
+    },
+
+    doFormat(value) {
+      switch (this.format) {
+        case 'time':
+          break;
+        case 'date':
+          return this.UtilsDate.fromUnixToDateNoTime(value);
+        case 'dateTime':
+        default:
+          return this.UtilsDate.fromUnixToDateTime(value);
+      }
     }
   },
   computed: {
-    UtilsDate() {
-      return UtilsDate
-    }
+
   },
   watch: {
     year() { this.onChangeDate() },
