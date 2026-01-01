@@ -34,7 +34,7 @@
             </div>
             <div class="col-auto text-nowrap p-1">
               <span>
-                <strong>{{ UtilsDate.fromUnixToDateTime(emittedRes) }}</strong>
+                <strong>{{ UtilsDate.fromUnixToDateTime(valueData) }}</strong>
               </span>&nbsp;
               <span @click="setNow" class="btn btn-sm btn-primary">{{ $t("Set now") }}</span>
             </div>
@@ -52,7 +52,7 @@
 <script>
 
 import UtilsDate from "@/Utils/UtilsDate";
-import aInput from "@/components/elements/form/aInput";
+import aInput from "@/components/elements/form/aInput.vue";
 
 export default {
   name: "AlinaDatePicker",
@@ -62,7 +62,7 @@ export default {
     }
   },
   updated() {
-    this.convertValueToDate();
+    this.valueToDateObj();
   },
   emits: ['input'],
   props: {
@@ -95,11 +95,12 @@ export default {
       min: 0,
       sec: 0,
       dateObj: new Date(),
-      emittedRes: 0,
+      valueData: 0,
     }
   },
   methods: {
-    convertValueToDate(v = null) {
+
+    valueToDateObj(v = null) {
       if (v === null) v = this.value;
 
       this.dateObj = new Date(v * 1000);
@@ -111,7 +112,7 @@ export default {
       this.sec = this.dateObj.getSeconds();
     },
 
-    calcEmittedRes() {
+    valueDataCalculate: function() {
       this.dateObj = new Date();
       this.dateObj.setFullYear(this.year);
       this.dateObj.setMonth(this.month - 1);
@@ -119,31 +120,32 @@ export default {
       this.dateObj.setHours(this.hour);
       this.dateObj.setMinutes(this.min);
       this.dateObj.setSeconds(this.sec);
-      this.emittedRes = Math.floor(this.dateObj.getTime() / 1000);
-      return this.emittedRes;
+      this.valueData = Math.floor(this.dateObj.getTime() / 1000);
+      return this.valueData;
     },
-    calcDt() {
+
+    onChangeDate() {
       if (this.month < 1) this.month = 1;
       if (this.month > 12) this.month = 12;
 
-      this.calcEmittedRes();
+      this.valueDataCalculate();
 
-      this.$emit('input', this.emittedRes);
+      this.$emit('input', this.valueData);
     },
 
     setNow() {
-      this.emittedRes = Math.floor((new Date()).getTime() / 1000);
-      this.convertValueToDate(this.emittedRes);
-      this.$emit('input', this.emittedRes);
+      this.valueData = Math.floor((new Date()).getTime() / 1000);
+      this.valueToDateObj(this.valueData);
+      this.$emit('input', this.valueData);
     }
   },
   watch: {
-    year() { this.calcDt() },
-    month() { this.calcDt() },
-    day() { this.calcDt() },
-    hour() { this.calcDt() },
-    min() { this.calcDt() },
-    sec() { this.calcDt() },
+    year() { this.onChangeDate() },
+    month() { this.onChangeDate() },
+    day() { this.onChangeDate() },
+    hour() { this.onChangeDate() },
+    min() { this.onChangeDate() },
+    sec() { this.onChangeDate() },
   },
   components: {
     aInput
