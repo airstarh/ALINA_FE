@@ -56,11 +56,6 @@ import aInput from "@/components/elements/form/aInput.vue";
 
 export default {
   name: "AlinaDatePicker",
-  computed: {
-    UtilsDate() {
-      return UtilsDate
-    }
-  },
   updated() {
     this.valueToDateObj();
   },
@@ -137,6 +132,11 @@ export default {
       this.valueData = Math.floor((new Date()).getTime() / 1000);
       this.valueToDateObj(this.valueData);
       this.$emit('input', this.valueData);
+    }
+  },
+  computed: {
+    UtilsDate() {
+      return UtilsDate
     }
   },
   watch: {
