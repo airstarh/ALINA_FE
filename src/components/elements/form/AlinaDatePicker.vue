@@ -11,24 +11,30 @@
             <div class="col-auto text-nowrap p-1">
               <div class="form-inline">
                 <div class="text-nowrap">
-                  <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" type="number" :idNameKey="`year-${idq}`"/>
-                  <aInput v-model="month" :label='$t("DT_M")' placeholder="MONTH" :modeEdit="true" :size="2" :max="12" type="number" :idNameKey="`month-${idq}`"/>
-                  <aInput v-model="day" :label='$t("DT_D")' placeholder="DAY" :modeEdit="true" :size="2" :max="31" type="number" :idNameKey="`day-${idq}`"/>
+                  &nbsp;
+                  <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" type="number" :idNameKey="`year-${idq}`" />
+                  &nbsp;
+                  <aInput v-model="month" :label='$t("DT_M")' placeholder="MONTH" :modeEdit="true" :size="2" :max="12" type="number" :idNameKey="`month-${idq}`" />
+                  &nbsp;
+                  <aInput v-model="day" :label='$t("DT_D")' placeholder="DAY" :modeEdit="true" :size="2" :max="31" type="number" :idNameKey="`day-${idq}`" />
                 </div>
               </div>
             </div>
             <div class="col-auto text-nowrap p-1">
               <div class="form-inline">
                 <div class="text-nowrap">
-                  <small>{{ $t("DT_h") }}::</small><input v-model="hour" size="2" type="text" max="23" class="ch2 form-control-sm d-inline w-25" :id="`hour-${idq}`" placeholder="HOUR">
-                  <small>{{ $t("DT_m") }}::</small><input v-model="min" size="2" type="text" max="59" class="ch2 form-control-sm d-inline w-25" :id="`min-${idq}`" placeholder="MIN">
-                  <small>{{ $t("DT_s") }}::</small><input v-model="sec" size="2" type="text" max="59" class="ch2 form-control-sm d-inline w-25" :id="`sec-${idq}`" placeholder="SEC">
+                  &nbsp;
+                  <aInput v-model="hour" type="number" placeholder="HOUR" :label='$t("DT_h")' :size="2" :max="23" :idNameKey="`hour-${idq}`" :modeEdit="true" />
+                  &nbsp;
+                  <aInput v-model="min" type="number" placeholder="MIN" :label='$t("DT_m")' :size="2" :max="59" :idNameKey="`min-${idq}`" :modeEdit="true" />
+                  &nbsp;
+                  <aInput v-model="sec" type="number" placeholder="SEC" :label='$t("DT_s")' :size="2" :max="59" :idNameKey="`sec-${idq}`" :modeEdit="true" />
                 </div>
               </div>
             </div>
             <div class="col-auto text-nowrap p-1">
               <span>
-                <i>{{ UtilsDate.fromUnixToDateTime(emittedRes) }}</i>
+                <strong>{{ UtilsDate.fromUnixToDateTime(emittedRes) }}</strong>
               </span>&nbsp;
               <span @click="setNow" class="btn btn-sm btn-primary">{{ $t("Set now") }}</span>
             </div>
@@ -85,12 +91,15 @@ export default {
       hour: 0,
       min: 0,
       sec: 0,
-      dateObf: new Date(),
+      dateObj: new Date(),
       emittedRes: 0,
     }
   },
   methods: {
     calcDt() {
+      if (this.month < 1) this.month = 1;
+      if (this.month > 12) this.month = 12;
+
       this.dateObj = new Date();
       this.dateObj.setFullYear(this.year);
       this.dateObj.setMonth(this.month - 1);
@@ -98,14 +107,14 @@ export default {
       this.dateObj.setHours(this.hour);
       this.dateObj.setMinutes(this.min);
       this.dateObj.setSeconds(this.sec);
+
       this.emittedRes = Math.floor(this.dateObj.getTime() / 1000);
       this.$emit('input', this.emittedRes);
     },
     convertValueToDate(v = null) {
-      if (v === null) {
-        v = this.value;
-      }
+      if (v === null) v = this.value;
       this.dateObj = new Date(v * 1000);
+
       this.year = this.dateObj.getFullYear();
       this.month = this.dateObj.getMonth() + 1;
       this.day = this.dateObj.getDate();
