@@ -1,7 +1,7 @@
 <template>
 
   <div class="alina-date-picker p-1 rounded">
-    <div class="row no-gutters align-items-center justify-content-between">
+    <div v-if="modeEdit" class="row no-gutters align-items-center justify-content-between">
       <div class="col-auto p-0 m-0" v-if="label.length">
         <div>{{ $t(label) }}</div>
       </div>
@@ -147,7 +147,7 @@ export default {
   display: inline-block;
 
   & input {
-      width: 5ch;
+      width: 5ch !important;
     }
 }
 </style>

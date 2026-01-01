@@ -11,7 +11,7 @@
             @input="alinaEmit($event.target.value)"
             :id="idNameKey" :name="idNameKey"
             :placeholder="placeholder"
-            :style="{ textAlign: inputAlign }"
+            :style="{ textAlign: inputAlign, width: inputWidth }"
             :size="size"
             :max="max"
             :min="min"
@@ -85,6 +85,10 @@ export default {
     inputAlign: {
       type: String,
       default: 'left'
+    },
+    inputWidth: {
+      type: String,
+      default: 'auto'
     },
     size: {
       type: Number,
