@@ -17,9 +17,9 @@
       <div class="text-center">
 
         <h1 class="notranslate font-weight-bold mb-4">
+          &ensp;
           <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center" />
-          &nbsp;
-          <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
+          &ensp;<aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
         </h1>
 
         <div class="mb-4">
