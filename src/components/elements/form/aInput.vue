@@ -84,6 +84,10 @@ export default {
       type: Number,
       default: null
     },
+    min: {
+      type: Number,
+      default: null
+    },
     disabled: {
       type: Boolean,
       default: null
