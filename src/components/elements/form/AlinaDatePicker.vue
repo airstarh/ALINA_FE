@@ -145,7 +145,7 @@ export default {
     doFormat(value) {
       switch (this.format) {
         case 'time':
-          break;
+        return this.UtilsDate.fromUnixToTimeNoDate(value);
         case 'date':
           return this.UtilsDate.fromUnixToDateNoTime(value);
         case 'dateTime':

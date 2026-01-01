@@ -5,6 +5,7 @@ export default class UtilsDate {
 	//region Date Obj
 	static FORMAT_DB_DATE_TIME    = "yyyy-MM-dd H:m:s";
 	static FORMAT_DB_DATE_NO_TIME = "yyyy-MM-dd";
+	static FORMAT_DB_TIME_NO_DATE = "H:m:s";
 
 	static dateObjFormat(dateObj, format = UtilsDate.FORMAT_DB_DATE_TIME) {
 		return dateFilter(dateObj, format);
@@ -50,6 +51,10 @@ export default class UtilsDate {
 		if (UtilsData.empty(tmstmp)) {return '';}
 		let date = UtilsDate.toDateObj(tmstmp, true);
 		return UtilsDate.dateObjFormat(date, format);
+	}
+
+	static fromUnixToTimeNoDate(tmstmp, format = UtilsDate.FORMAT_DB_TIME_NO_DATE) {
+		return UtilsDate.UnixSecsToFormat(tmstmp, format);
 	}
 
 	static fromUnixToDateNoTime(tmstmp, format = UtilsDate.FORMAT_DB_DATE_NO_TIME) {
