@@ -7,7 +7,7 @@
             :for="idNameKey"
             :style="{ width: labelWidth }">{{ label }}:&nbsp;</label>
         </div>
-        <div class="col">
+        <div class="col ml-1">
           <input
             :value="value"
             @input="alinaEmit($event.target.value)"
@@ -142,8 +142,11 @@ export default {
     line-height: 100%;
   }
 
-  & input {
+  & input 
+  , & label
+  {
     padding: 2px;
+    margin: 0;
     height: auto;
   }
 }

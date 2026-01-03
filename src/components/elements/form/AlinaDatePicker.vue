@@ -7,7 +7,7 @@
       </div>
       <div class="col">
         <div class="row align-items-center justify-content-start">
-          <div class="col-auto text-nowrap" v-if="['date', 'dateTime'].includes(format)">
+          <div class="col-auto text-nowrap mb-1" v-if="['date', 'dateTime'].includes(format)">
             &nbsp;
             <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" inputWidth="5ch" labelWidth="2ch" />
             &nbsp;
@@ -15,7 +15,7 @@
             &nbsp;
             <aInput v-model="day" :label='$t("DT_D")' placeholder="DAY" :modeEdit="true" :size="2" :max="31" :min="1" type="number" :idNameKey="`day-${idq}`" inputWidth="5ch" labelWidth="2ch" />
           </div>
-          <div class="col-auto text-nowrap" v-if="['time', 'dateTime'].includes(format)">
+          <div class="col-auto text-nowrap mb-1" v-if="['time', 'dateTime'].includes(format)">
             &nbsp;
             <aInput v-model="hour" type="number" placeholder="HOUR" :label='$t("DT_h")' :size="2" :max="23" :min="0" :idNameKey="`hour-${idq}`" :modeEdit="true" inputWidth="5ch" labelWidth="2ch" />
             &nbsp;
@@ -23,7 +23,7 @@
             &nbsp;
             <aInput v-model="sec" type="number" placeholder="SEC" :label='$t("DT_s")' :size="2" :max="59" :min="0" :idNameKey="`sec-${idq}`" :modeEdit="true" inputWidth="5ch" labelWidth="2ch" />
           </div>
-          <div class="col-auto text-nowrap">
+          <div class="col-auto text-nowrap mb-1">
             &nbsp;
             <strong>{{ UtilsDate.fromUnixToDateTime(valueData) }}</strong>
             &nbsp;
