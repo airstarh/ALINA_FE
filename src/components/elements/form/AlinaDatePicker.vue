@@ -9,7 +9,7 @@
         <div class="container">
           <div class="row no-gutters align-items-center justify-content-start">
             <div class="col-auto text-nowrap p-1" v-if="['date', 'dateTime'].includes(format)">
-              <div class="form-inline">
+              <div>
                 <div class="text-nowrap">
                   &nbsp;
                   <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" />
@@ -21,7 +21,7 @@
               </div>
             </div>
             <div class="col-auto text-nowrap p-1" v-if="['time', 'dateTime'].includes(format)">
-              <div class="form-inline">
+              <div>
                 <div class="text-nowrap">
                   &nbsp;
                   <aInput v-model="hour" type="number" placeholder="HOUR" :label='$t("DT_h")' :size="2" :max="23" :min="0" :idNameKey="`hour-${idq}`" :modeEdit="true" />
@@ -33,10 +33,11 @@
               </div>
             </div>
             <div class="col-auto text-nowrap p-1">
-              <span>
+              <div class="form-inline">
                 <strong>{{ UtilsDate.fromUnixToDateTime(valueData) }}</strong>
-              </span>&nbsp;
-              <span @click="setNow" class="btn btn-sm btn-primary">{{ $t("Set now") }}</span>
+                &nbsp;
+                <span @click="setNow" class="btn btn-xs btn-primary">{{ $t("Set now") }}</span>
+              </div>
             </div>
 
           </div>
@@ -148,7 +149,7 @@ export default {
     doFormat(value) {
       switch (this.format) {
         case 'time':
-        return this.UtilsDate.fromUnixToTimeNoDate(value);
+          return this.UtilsDate.fromUnixToTimeNoDate(value);
         case 'date':
           return this.UtilsDate.fromUnixToDateNoTime(value);
         case 'dateTime':
