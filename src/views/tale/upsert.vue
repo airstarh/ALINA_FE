@@ -33,8 +33,8 @@
           <!--region Tale. mode Edit-->
           <div class="" v-if="options.modeEdit">
             <div>Tale #{{ tale.id }}</div>
-            <h1 class="btn btn-block btn-secondary">
-              <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
+            <h1>
+              <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" :inputWidth="`100%`" />
             </h1>
             <BorgEditor v-model="tale.body" />
             <div class="mb-3">&nbsp</div>
@@ -181,7 +181,8 @@
                   :lang="tale.lang">
                   <a
                     :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                    class="m-0">{{ tale.header || '¯\_(ツ)_/¯' }}
+                    class="m-0">
+                    <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" :inputWidth="`100%`" />
                   </a>
                 </h1>
                 <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;"
@@ -320,6 +321,7 @@ import UserAvatar from "@/components/UserAvatar";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 import UtilsDate from "../../Utils/UtilsDate";
 import BorgEditor from "@/components/BorgEditor";
+import aInput from "@/components/elements/form/aInput";
 //#####
 export default {
   name: "tale_upsert",
@@ -383,6 +385,7 @@ export default {
     }
   },
   components: {
+    aInput,
     UserAvatar,
     btnEditSaveCancelDelete,
     Share,
