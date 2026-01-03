@@ -42,9 +42,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.BorgEditor {
-    display: inline-block;
-}
-</style>

@@ -1,11 +1,10 @@
 <template>
   <div
-      class="p-0 alina-tale-wrapper"
-      :class="{
-            'container':!pageIsInIframe,
-            'container-fluid':pageIsInIframe
-         }"
-  >
+    class="p-0 alina-tale-wrapper"
+    :class="{
+      'container': !pageIsInIframe,
+      'container-fluid': pageIsInIframe
+    }">
     <div v-if="!tale.id">...</div>
     <div
       v-if="tale.id"
@@ -13,21 +12,19 @@
         'row',
         'no-gutters',
         `alina-tale-id-${tale.id}`
-      ]"
-    >
+      ]">
       <div class="col">
         <!--##################################################-->
         <!--region Buttons-->
         <btnEditSaveCancelDelete
-            v-if="!pFlagInFeed"
-            :owner_id="tale.owner_id"
-            :modeEdit="options.modeEdit"
-            :subject="tale"
-            @onSave="ajaPostTale"
-            @onEdit="onEdit"
-            @onCancel="onCancel"
-            @onDelete="ajaDeleteTale"
-        ></btnEditSaveCancelDelete>
+          v-if="!pFlagInFeed"
+          :owner_id="tale.owner_id"
+          :modeEdit="options.modeEdit"
+          :subject="tale"
+          @onSave="ajaPostTale"
+          @onEdit="onEdit"
+          @onCancel="onCancel"
+          @onDelete="ajaDeleteTale"></btnEditSaveCancelDelete>
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region Tale-->
@@ -39,15 +36,14 @@
             <h1 class="btn btn-block btn-secondary">
               <input type="text" v-model="tale.header" placeholder="Header" class="notranslate form-control">
             </h1>
-            <BorgEditor v-model="tale.body" class="notranslate"/>
+            <BorgEditor v-model="tale.body" />
             <div class="mb-3">&nbsp</div>
             <div class="mt-1 mb-3">
               <AlinaDatePicker
-                  v-model="tale.publish_at"
-                  label="Publish at"
-                  idq="publish_at"
-                  class="notranslate"
-              ></AlinaDatePicker>
+                v-model="tale.publish_at"
+                label="Publish at"
+                idq="publish_at"
+                class="notranslate"></AlinaDatePicker>
             </div>
 
             <div v-if="CU.isAdmin()">
@@ -57,7 +53,7 @@
                   <span class="input-group-text bg-dark text-light">{{ $tc('body_free') }}</span>
                 </div>
                 <textarea class="form-control" :placeholder="$tc('body_free')" v-model="tale.body_free"
-                          rows="20"></textarea>
+                  rows="20"></textarea>
               </div>
               <div class="mt-3 mb-3">
                 <div v-html="tale.body_free"></div>
@@ -91,69 +87,69 @@
                 <div class="mb-3">
                   <!-- is_header_hidden -->
                   <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0"
-                               :checked="tale.is_header_hidden==1">{{ $t("Hide header") }}
+                    :checked="tale.is_header_hidden == 1">{{ $t("Hide header") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_date_hidden -->
                   <ui-checkbox v-model="tale.is_date_hidden" :trueValue="1" :false-value="0"
-                               :checked="tale.is_date_hidden==1">{{ $t("Hide date") }}
+                    :checked="tale.is_date_hidden == 1">{{ $t("Hide date") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_avatar_hidden -->
                   <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0"
-                               :checked="tale.is_avatar_hidden==1">{{ $t("Hide avatar") }}
+                    :checked="tale.is_avatar_hidden == 1">{{ $t("Hide avatar") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_social_sharing_hidden -->
                   <ui-checkbox v-model="tale.is_social_sharing_hidden" :trueValue="1" :false-value="0"
-                               :checked="tale.is_social_sharing_hidden==1">{{ $t("Hide social sharing") }}
+                    :checked="tale.is_social_sharing_hidden == 1">{{ $t("Hide social sharing") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_denied -->
                   <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0"
-                               :checked="tale.is_comment_denied==1">{{ $t("Comments denied") }}
+                    :checked="tale.is_comment_denied == 1">{{ $t("Comments denied") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_for_owner -->
                   <ui-checkbox v-model="tale.is_comment_for_owner" :trueValue="1" :false-value="0"
-                               :checked="tale.is_comment_for_owner==1">{{ $t("Comments only for owner") }}
+                    :checked="tale.is_comment_for_owner == 1">{{ $t("Comments only for owner") }}
                   </ui-checkbox>
                 </div>
               </div>
               <div class="col">
                 <div class="mb-3">
                   <!-- is_sticked -->
-                  <ui-checkbox v-model="tale.is_sticked" :trueValue="1" :false-value="0" :checked="tale.is_sticked==1">
+                  <ui-checkbox v-model="tale.is_sticked" :trueValue="1" :false-value="0" :checked="tale.is_sticked == 1">
                     {{ $t("Sticked") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_adult_denied -->
                   <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0"
-                               :checked="tale.is_adult_denied==1">{{ $t("Not for kids") }}
+                    :checked="tale.is_adult_denied == 1">{{ $t("Not for kids") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_adv -->
-                  <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv==1">
+                  <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv == 1">
                     {{ $t("Advertisement") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_draft -->
-                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft==1">
+                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft == 1">
                     {{ $t("Hide on feed") }}
                   </ui-checkbox>
                 </div>
                 <div class="mb-3">
                   <!-- is_for_registered -->
                   <ui-checkbox v-model="tale.is_for_registered" :trueValue="1" :false-value="0"
-                               :checked="tale.is_for_registered==1">{{ $t("Only for registered users") }}
+                    :checked="tale.is_for_registered == 1">{{ $t("Only for registered users") }}
                   </ui-checkbox>
                 </div>
 
@@ -178,26 +174,22 @@
             <div class="row no-gutters">
               <div class="col mb-3" style="position: relative;" v-if="tale.is_header_hidden != 1">
                 <h1
-                    :class="{
-                          'bg-danger':tale.is_adult_denied==1
-                     }"
-                    class="notranslate m-0 p-3  text-left rounded alina-tale-header"
-                    :lang="tale.lang"
-                >
+                  :class="{
+                    'bg-danger': tale.is_adult_denied == 1
+                  }"
+                  class="notranslate m-0 p-3  text-left rounded alina-tale-header"
+                  :lang="tale.lang">
                   <a
-                      :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                      class="m-0"
-
-                  >{{ tale.header || '¯\_(ツ)_/¯' }}
+                    :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
+                    class="m-0">{{ tale.header || '¯\_(ツ)_/¯' }}
                   </a>
                 </h1>
                 <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;"
-                     v-if="tale.is_date_hidden != 1">
+                  v-if="tale.is_date_hidden != 1">
                   <router-link
-                      :to="'/tale/upsert/'+tale.id"
-                      class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
-                      style="font-size: 2vmin;"
-                  >
+                    :to="'/tale/upsert/' + tale.id"
+                    class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
+                    style="font-size: 2vmin;">
                     {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
                   </router-link>
                 </div>
@@ -206,30 +198,25 @@
             <!--##################################################-->
             <!--region User Info-->
             <UserAvatar
-                v-if="tale.is_avatar_hidden==0"
-                :userId="tale.owner_id"
-                :userFirstName="tale.owner_firstname"
-                :userLastName="tale.owner_lastname"
-                :emblemUrl="tale.owner_emblem"
-                emblemWidth="7vmax"
-                :someDate="null"
-                class="mt-5 mb-5 text-center"
-            ></UserAvatar>
+              v-if="tale.is_avatar_hidden == 0"
+              :userId="tale.owner_id"
+              :userFirstName="tale.owner_firstname"
+              :userLastName="tale.owner_lastname"
+              :emblemUrl="tale.owner_emblem"
+              emblemWidth="7vmax"
+              :someDate="null"
+              class="mt-5 mb-5 text-center"></UserAvatar>
             <!--endregion User Info-->
             <!--##################################################-->
             <div
-                v-if="(tale.is_header_hidden == 1 || tale.is_date_hidden == 1) && CU.ownsOrAdminOrModerator(tale.owner_id)"
-            >
+              v-if="(tale.is_header_hidden == 1 || tale.is_date_hidden == 1) && CU.ownsOrAdminOrModerator(tale.owner_id)">
               <router-link
-                  :to="'/tale/upsert/'+tale.id"
-              >...
+                :to="'/tale/upsert/' + tale.id">...
               </router-link>
             </div>
             <div class="row no-gutters mt-1">
-              <div class="col">
-                <div class="ck-content" :lang="tale.lang">
-                  <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
-                </div>
+              <div class="col" :lang="tale.lang">
+                <BorgEditor :modeEdit="false" v-model="tale.body" />
               </div>
             </div>
             <div v-if="tale.body_free" class="mt-3">
@@ -249,9 +236,8 @@
         <div class="row m-1">
           <div class="col">
             <AlinaYandexMap
-                :item="tale"
-                :mode-edit="options.modeEdit"
-            ></AlinaYandexMap>
+              :item="tale"
+              :mode-edit="options.modeEdit"></AlinaYandexMap>
           </div>
         </div>
         <!--endregion Yandex Map-->
@@ -260,11 +246,10 @@
         <div class="row no-gutters" v-if="tale.count_files > 0 || options.modeEdit">
           <div class="col mb-3">
             <AlinaFileUploader
-                :entity_id="tale.id"
-                entity_table="tale"
-                :modeEdit="options.modeEdit"
-                :ownLength="tale.count_files"
-            ></AlinaFileUploader>
+              :entity_id="tale.id"
+              entity_table="tale"
+              :modeEdit="options.modeEdit"
+              :ownLength="tale.count_files"></AlinaFileUploader>
           </div>
         </div>
         <!--endregion Attached Documents-->
@@ -272,15 +257,14 @@
         <!--##################################################-->
         <!--region Buttons-->
         <btnEditSaveCancelDelete
-            v-if="!pFlagInFeed"
-            :owner_id="tale.owner_id"
-            :modeEdit="options.modeEdit"
-            :subject="tale"
-            @onSave="ajaPostTale"
-            @onEdit="onEdit"
-            @onCancel="onCancel"
-            @onDelete="ajaDeleteTale"
-        ></btnEditSaveCancelDelete>
+          v-if="!pFlagInFeed"
+          :owner_id="tale.owner_id"
+          :modeEdit="options.modeEdit"
+          :subject="tale"
+          @onSave="ajaPostTale"
+          @onEdit="onEdit"
+          @onCancel="onCancel"
+          @onDelete="ajaDeleteTale"></btnEditSaveCancelDelete>
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region Share & Likes-->
@@ -293,12 +277,11 @@
           <div class="col-auto">
             <div class="text-right">
               <Like
-                  v-if="tale.is_comment_denied != 1"
-                  :pAmountLikes="tale.count_like"
-                  :pCurrentUserLiked="tale.current_user_liked"
-                  ref_table="tale"
-                  :ref_id="tale.id"
-              ></Like>
+                v-if="tale.is_comment_denied != 1"
+                :pAmountLikes="tale.count_like"
+                :pCurrentUserLiked="tale.current_user_liked"
+                ref_table="tale"
+                :ref_id="tale.id"></Like>
             </div>
           </div>
         </div>
@@ -306,96 +289,95 @@
         <!--##################################################-->
         <div v-if="tale.is_comment_denied != 1" class="mb-5">
           <Comment
-              v-if="tale.level < 2"
-              :level="tale.level+1"
-              type="COMMENT"
-              :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
-              :answer_to_tale_id="tale.id"
-              :count_by_answer_to_tale_id="tale.count_root_tale_id"
-              :root_tale_object="tale"
-          ></Comment>
+            v-if="tale.level < 2"
+            :level="tale.level + 1"
+            type="COMMENT"
+            :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+            :answer_to_tale_id="tale.id"
+            :count_by_answer_to_tale_id="tale.count_root_tale_id"
+            :root_tale_object="tale"></Comment>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import UtilsData               from "@/Utils/UtilsData";
-import StandardButtons         from "@/components/elements/form/StandardButtons";
-import ConfigApi               from "@/configs/ConfigApi";
-import AjaxAlina               from "@/services/AjaxAlina";
-import CurrentUser             from "@/services/CurrentUser";
-import Comment                 from "@/components/elements/form/Comment";
-import Like                    from "@/components/elements/form/Like";
-import AlinaDatePicker         from "@/components/elements/form/AlinaDatePicker";
-import UtilsStr                from "@/Utils/UtilsStr";
-import Share                   from "@/components/elements/form/Share";
-import AlinaYandexMap          from "@/components/elements/form/AlinaYandexMap";
-import UtilsSys                from "@/Utils/UtilsSys";
+import UtilsData from "@/Utils/UtilsData";
+import StandardButtons from "@/components/elements/form/StandardButtons";
+import ConfigApi from "@/configs/ConfigApi";
+import AjaxAlina from "@/services/AjaxAlina";
+import CurrentUser from "@/services/CurrentUser";
+import Comment from "@/components/elements/form/Comment";
+import Like from "@/components/elements/form/Like";
+import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
+import UtilsStr from "@/Utils/UtilsStr";
+import Share from "@/components/elements/form/Share";
+import AlinaYandexMap from "@/components/elements/form/AlinaYandexMap";
+import UtilsSys from "@/Utils/UtilsSys";
 import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete";
-import AlinaFileUploader       from "@/components/elements/form/AlinaFileUploader";
-import UserAvatar              from "@/components/UserAvatar";
+import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader";
+import UserAvatar from "@/components/UserAvatar";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
-import UtilsDate               from "../../Utils/UtilsDate";
-import BorgEditor               from "@/components/BorgEditor";
+import UtilsDate from "../../Utils/UtilsDate";
+import BorgEditor from "@/components/BorgEditor";
 //#####
 export default {
-  name:  "tale_upsert",
+  name: "tale_upsert",
   props: {
-    pTale:       null,
+    pTale: null,
     pFlagInFeed: false,
   },
   data() {
     return {
       UtilsSys,
       UtilsStr,
-      CU:        CurrentUser.obj(),
+      CU: CurrentUser.obj(),
       ConfigApi: ConfigApi,
-      options:   {
-        url:          `${ConfigApi.url_base}/tale/upsert`,
-        urlDelete:    `${ConfigApi.url_base}/tale/delete`,
-        modeEdit:     false
+      options: {
+        url: `${ConfigApi.url_base}/tale/upsert`,
+        urlDelete: `${ConfigApi.url_base}/tale/delete`,
+        modeEdit: false
       },
-      tale:      {
-        id:                       null,
-        header:                   '',
-        body:                     '',
-        body_free:                '',
-        publish_at:               '',
-        is_submitted:             0,
-        type:                     'POST',
-        form_id:                  'actionUpsert',
-        is_adult_denied:          0,
-        is_adv:                   0,
-        owner_emblem:             '',
-        owner_firstname:          '',
-        owner_lastname:           '',
-        owner_id:                 '',
-        count_like:               '',
-        current_user_liked:       '',
-        router_alias:             '',
-        router_alias_id:          null,
-        iframe:                   null,
-        count_root_tale_id:       0,
-        is_draft:                 0,
-        is_comment_denied:        0,
-        is_sticked:               0,
-        is_sticked_on_home:       0, //ToDo: Seems not in use
-        is_header_hidden:         0,
-        is_date_hidden:           0,
-        is_avatar_hidden:         0,
+      tale: {
+        id: null,
+        header: '',
+        body: '',
+        body_free: '',
+        publish_at: '',
+        is_submitted: 0,
+        type: 'POST',
+        form_id: 'actionUpsert',
+        is_adult_denied: 0,
+        is_adv: 0,
+        owner_emblem: '',
+        owner_firstname: '',
+        owner_lastname: '',
+        owner_id: '',
+        count_like: '',
+        current_user_liked: '',
+        router_alias: '',
+        router_alias_id: null,
+        iframe: null,
+        count_root_tale_id: 0,
+        is_draft: 0,
+        is_comment_denied: 0,
+        is_sticked: 0,
+        is_sticked_on_home: 0, //ToDo: Seems not in use
+        is_header_hidden: 0,
+        is_date_hidden: 0,
+        is_avatar_hidden: 0,
         is_social_sharing_hidden: 0,
-        is_for_registered:        0,
-        is_comment_for_owner:     0,
-        seo_index:                0.1,
-        geo_latitude:             0,
-        geo_longitude:            0,
-        geo_map_type:             'map',
-        geo_zoom:                 '11',
-        geo_is_map_shown:         '0',
-        count_files:              0,
+        is_for_registered: 0,
+        is_comment_for_owner: 0,
+        seo_index: 0.1,
+        geo_latitude: 0,
+        geo_longitude: 0,
+        geo_map_type: 'map',
+        geo_zoom: '11',
+        geo_is_map_shown: '0',
+        count_files: 0,
       },
-      storage:   {
+      storage: {
         keyTaleLastTouched: 'keyTaleLastTouched',
       },
     }
@@ -433,7 +415,7 @@ export default {
       return AlinaPageGlobalAnalyzer.pageIsInIframe();
     },
     routerTaleId() {
-      let res     = null;
+      let res = null;
       const route = this.$route;
       if (route && route.params && route.params.id) {
         res = route.params.id;
@@ -441,7 +423,7 @@ export default {
       return res;
     },
     currentTaleId() {
-      let res    = null;
+      let res = null;
       const tale = this.tale;
       if (tale && tale.hasOwnProperty('id')) {
         res = tale.id;
@@ -449,13 +431,13 @@ export default {
       return res;
     },
   },
-  watch:    {
-    "tale.id":    function (valNew, valOld) {
+  watch: {
+    "tale.id": function (valNew, valOld) {
       if (this.tale.is_submitted === 1) {
         this.options.modeEdit = false;
       }
     },
-    tale:         {
+    tale: {
       handler(newVal, oldVal) {
         if (this.options.modeEdit) {
           this.taleLastTouchedRemember(newVal);
@@ -467,7 +449,7 @@ export default {
       this.ajaxGetTale(valNew);
     }
   },
-  methods:  {
+  methods: {
     // ##################################################
     // region Functional Actions
     taleLastTouchedRemember(tale) {
@@ -496,7 +478,7 @@ export default {
       this.options.modeEdit = false;
       this.taleLastTouchedRemember({});
       if (this.tale.is_submitted == 0) {
-        this.$router.replace({path: '/'})
+        this.$router.replace({ path: '/' })
       } else {
         this.ajaxGetTale(this.tale.id, true);
       }
@@ -506,10 +488,10 @@ export default {
     // region CRUD
     ajaPostTale() {
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        this.options.url,
+        method: 'POST',
+        url: this.options.url,
         postParams: this.tale,
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             Object.assign(this.tale, aja.respBody.data);
             this.options.modeEdit = false;
@@ -517,7 +499,7 @@ export default {
           }
         }
       })
-          .go();
+        .go();
     },
     ajaxGetTale(id, forceGet = false) {
       const _t = this;
@@ -539,12 +521,12 @@ export default {
       //###############
       AjaxAlina.newInst({
         method: 'GET',
-        url:    id ? `${_t.options.url}/${id}` : `${_t.options.url}`,
+        url: id ? `${_t.options.url}/${id}` : `${_t.options.url}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             if (!UtilsData.empty(_t.routerTaleId)) {
               if (aja.respBody.data.id != _t.routerTaleId) {
-                _t.$router.replace({path: `/tale/upsert/${aja.respBody.data.id}`});
+                _t.$router.replace({ path: `/tale/upsert/${aja.respBody.data.id}` });
                 return null;
               }
             }
@@ -557,29 +539,29 @@ export default {
             }
             //###############
             if (UtilsData.empty(id) && !UtilsData.empty(_t.tale.id)) {
-              _t.$router.replace({path: `/tale/upsert/${_t.tale.id}`});
+              _t.$router.replace({ path: `/tale/upsert/${_t.tale.id}` });
             }
             //###############
           }
         }
       })
-          .go();
+        .go();
     },
     ajaDeleteTale(tale) {
-      if (!confirm("Are you sure?")) {return;}
-      const _t     = this;
+      if (!confirm("Are you sure?")) { return; }
+      const _t = this;
       tale.form_id = 'actionDelete';
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        `${this.options.urlDelete}/${tale.id}`,
+        method: 'POST',
+        url: `${this.options.urlDelete}/${tale.id}`,
         postParams: tale,
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            _t.$router.replace({path: `/tale/feed`});
+            _t.$router.replace({ path: `/tale/feed` });
           }
         }
       })
-          .go();
+        .go();
     }, // endregion CRUD
     // ##################################################
   }

@@ -2,9 +2,9 @@
   <div :style="options.style" class="">
     <div class="mb-2">
       <b-button v-b-toggle="`comment-collapse-${answer_to_tale_id}`" :class="{
-                      'btn-md':level==1,
-                      'btn-sm':level>1,
-                      }" class="bg-black">{{ $tc('COUNTER_COMMENTS', commentsTotal) }}
+        'btn-md': level == 1,
+        'btn-sm': level > 1,
+      }" class="bg-black">{{ $tc('COUNTER_COMMENTS', commentsTotal) }}
       </b-button>
     </div>
     <b-collapse :id="`comment-collapse-${answer_to_tale_id}`"
@@ -15,8 +15,8 @@
       <div v-for="(tale, feedIndex) in feed" :key="tale.id" class="" :data-id="tale.id"
         :data-to="tale.answer_to_tale_id" :data-root="root_tale_id" :data-index="feedIndex">
         <div class="single-comment mt-5" :class="{
-                        highlight: $route.query.highlight == tale.id,
-                    }">
+          highlight: $route.query.highlight == tale.id,
+        }">
           <!--##################################################-->
           <!--region User Info-->
 
@@ -28,8 +28,8 @@
           <!--region Comment body          -->
           <div class="row no-gutters" v-if="!state.feedsInEdit.includes(tale.id)">
             <div class="col">
-              <div class="ck-content mt-1 mb-3">
-                <div class="notranslate" v-html="UtilsStr.content(tale.body)"></div>
+              <div class="mt-1 mb-3">
+                <BorgEditor :modeEdit="false" v-model="tale.body" />
               </div>
 
             </div>
@@ -37,7 +37,7 @@
           <!--################################################## -->
           <div v-else class="row no-gutters">
             <div class="col">
-              <BorgEditor v-model="tale.body" class="notranslate" @ready="pageRecalcIframeHeight()"/>
+              <BorgEditor v-model="tale.body" @ready="pageRecalcIframeHeight()" />
             </div>
           </div>
           <!--endregion Comment body          -->
@@ -72,7 +72,7 @@
           <!--endregion Buttons, Likes-->
           <!--##################################################-->
         </div>
-        <Comment v-if="tale.level < 2" :level="tale.level+1" type="COMMENT" :root_tale_id="tale.root_tale_id"
+        <Comment v-if="tale.level < 2" :level="tale.level + 1" type="COMMENT" :root_tale_id="tale.root_tale_id"
           :answer_to_tale_id="tale.id" :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
           :root_tale_object="root_tale_object"></Comment>
       </div>
@@ -92,14 +92,14 @@
         <!--region EDITOR-->
         <div class="row no-gutters mt-5">
           <div class="col">
-              <BorgEditor v-model="body" class="notranslate" @ready="pageRecalcIframeHeight()"/>
+            <BorgEditor v-model="body" @ready="pageRecalcIframeHeight()" />
             <div class="row no-gutters">
               <div class="col">
-                <button @click="() => {this.body = '';}" class="btn btn-sm btn-danger">{{ $t("TXT_CLEAR") }}</button>
+                <button @click="() => { this.body = ''; }" class="btn btn-sm btn-danger">{{ $t("TXT_CLEAR") }}</button>
               </div>
               <div class="col">
                 <button @click="ajaCommentAdd" type="button" class="col btn btn-sm btn-secondary">{{ $t("TXT_SUBMIT")
-                  }}</button>
+                }}</button>
               </div>
             </div>
           </div>
@@ -128,21 +128,21 @@
 </template>
 
 <script>
-import UtilsStr                from "@/Utils/UtilsStr";
-import AjaxAlina               from "@/services/AjaxAlina";
-import ConfigApi               from "@/configs/ConfigApi";
-import UtilsArray              from "@/Utils/UtilsArray";
-import Comment                 from "@/components/elements/form/Comment";
-import Like                    from "@/components/elements/form/Like";
-import Paginator               from "@/components/elements/form/Paginator";
-import CurrentUser             from "@/services/CurrentUser";
-import AlinaStorage            from "@/services/AlinaStorage";
-import UserAvatar              from "@/components/UserAvatar";
+import UtilsStr from "@/Utils/UtilsStr";
+import AjaxAlina from "@/services/AjaxAlina";
+import ConfigApi from "@/configs/ConfigApi";
+import UtilsArray from "@/Utils/UtilsArray";
+import Comment from "@/components/elements/form/Comment";
+import Like from "@/components/elements/form/Like";
+import Paginator from "@/components/elements/form/Paginator";
+import CurrentUser from "@/services/CurrentUser";
+import AlinaStorage from "@/services/AlinaStorage";
+import UserAvatar from "@/components/UserAvatar";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
-import BorgEditor  from "@/components/BorgEditor";
+import BorgEditor from "@/components/BorgEditor";
 
 export default {
-  name:       "Comment",
+  name: "Comment",
   components: {
     UserAvatar,
     Paginator,
@@ -155,59 +155,59 @@ export default {
       UtilsStr,
       AlinaStorage,
       ConfigApi,
-      CU:             CurrentUser.obj(),
-      options:        {
-        urlFeed:       `${ConfigApi.url_base}/tale/feed`,
+      CU: CurrentUser.obj(),
+      options: {
+        urlFeed: `${ConfigApi.url_base}/tale/feed`,
         urlTaleUpsert: `${ConfigApi.url_base}/tale/upsert`,
         urlCommentDel: `${ConfigApi.url_base}/tale/delete`,
-        style:         {
-          "padding":      "0",
-          "margin":       "0",
-          "margin-left":  this.level == 1 ? '0' : 'min(5%, 100px)',
-          "border-left":  this.level == 1 ? '#A9ABAD solid 2px' : '#A9ABAD solid 1px'
+        style: {
+          "padding": "0",
+          "margin": "0",
+          "margin-left": this.level == 1 ? '0' : 'min(5%, 100px)',
+          "border-left": this.level == 1 ? '#A9ABAD solid 2px' : '#A9ABAD solid 1px'
           /**/
           //"max-width":    this.level == 1 ? '95vw' : '85vw',
           //"max-width":    '80%',
         },
-        styleComment:  {}
+        styleComment: {}
       },
-      state:          {
+      state: {
         feedsInEdit: []
       },
-      body:           "",
-      feed:           [],
+      body: "",
+      feed: [],
       feedPagination: {
         pageCurrentNumber: 'last',
-        pageSize:          this.level == 1 ? 10 : 10,
-        rowsTotal:         0,
-        pagesTotal:        0,
+        pageSize: this.level == 1 ? 10 : 10,
+        rowsTotal: 0,
+        pagesTotal: 0,
       },
     }
   },
   emits: ['bv::toggle::collapse'],
   props: {
-    root_tale_object:           {
-      type:    Object,
+    root_tale_object: {
+      type: Object,
       default: null,
     },
-    level:                      {
-      type:    Number,
+    level: {
+      type: Number,
       default: 1,
     },
-    type:                       {
-      type:    String,
+    type: {
+      type: String,
       default: 'COMMENT',
     },
-    root_tale_id:               {
-      type:    Number,
+    root_tale_id: {
+      type: Number,
       default: null,
     },
-    answer_to_tale_id:          {
-      type:    Number,
+    answer_to_tale_id: {
+      type: Number,
       default: null,
     },
     count_by_answer_to_tale_id: {
-      type:    Number,
+      type: Number,
       default: 0,
     },
   },
@@ -219,7 +219,7 @@ export default {
     this.processQuery();
     this.pageRecalcIframeHeight();
   },
-  methods:  {
+  methods: {
     ajaGetComments(more = false) {
       // #####
       const q = this.$route.query;
@@ -231,10 +231,10 @@ export default {
       }
       // #####
       AjaxAlina.newInst({
-        method:    'GET',
+        method: 'GET',
         getParams: GET,
-        url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}/${this.answer_to_tale_id}`,
-        onDone:    (aja) => {
+        url: `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}/${this.answer_to_tale_id}`,
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             if (more) {
               UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
@@ -247,23 +247,23 @@ export default {
           this.pageRecalcIframeHeight();
         }
       })
-      .go();
+        .go();
     },
     ajaCommentAdd(event) {
       const _t = this;
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        this.options.urlTaleUpsert,
-        enctype:    'application/json',
+        method: 'POST',
+        url: this.options.urlTaleUpsert,
+        enctype: 'application/json',
         postParams: {
-          "level":             this.level,
-          "root_tale_id":      this.root_tale_id,
+          "level": this.level,
+          "root_tale_id": this.root_tale_id,
           "answer_to_tale_id": this.answer_to_tale_id,
-          "type":              this.type,
-          "body":              this.body,
-          "form_id":           "actionCommentAdd",
+          "type": this.type,
+          "body": this.body,
+          "form_id": "actionCommentAdd",
         },
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             _t.feed.push(aja.respBody.data);
             ++_t.feedPagination.rowsTotal;
@@ -272,20 +272,20 @@ export default {
           this.pageRecalcIframeHeight();
         }
       })
-      .go();
+        .go();
     },
     pageChange(pageSize, pageCurrentNumber) {
-      this.feedPagination.pageSize          = pageSize;
+      this.feedPagination.pageSize = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.ajaGetComments();
     },
     onClickMore(pageSize, pageCurrentNumber) {
-      this.feedPagination.pageSize          = pageSize;
+      this.feedPagination.pageSize = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.ajaGetComments(true);
     },
     onClickAll(pageSize, pageCurrentNumber) {
-      this.feedPagination.pageSize          = pageSize;
+      this.feedPagination.pageSize = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.ajaGetComments(false);
     },
@@ -298,47 +298,47 @@ export default {
       }
     },
     ajaCommentSave(comment, feedIndex) {
-      const _t        = this;
+      const _t = this;
       comment.form_id = 'actionUpsert';
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        `${this.options.urlTaleUpsert}/${comment.id}`,
+        method: 'POST',
+        url: `${this.options.urlTaleUpsert}/${comment.id}`,
         postParams: comment,
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             this.toggleCommentEditMode(comment, feedIndex);
           }
           this.pageRecalcIframeHeight();
         }
       })
-      .go();
+        .go();
     },
     commentCancelEdit(comment, feedIndex) {
       comment.body = comment.bodyPrevious;
       this.toggleCommentEditMode(comment, feedIndex);
     },
     ajaDeleteComment(comment, feedIndex) {
-      if (!confirm("Are you sure?")) {return;}
+      if (!confirm("Are you sure?")) { return; }
       comment.form_id = 'actionDelete';
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        `${this.options.urlCommentDel}/${comment.id}`,
+        method: 'POST',
+        url: `${this.options.urlCommentDel}/${comment.id}`,
         postParams: comment,
-        onDone:     (aja) => {
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.elRemoveByIndex(this.feed, feedIndex);
           }
           this.pageRecalcIframeHeight();
         }
       })
-      .go();
+        .go();
     },
     onExpandCommentList(collapseId) {
       UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId);
       this.ajaGetComments();
     },
     processQuery() {
-      const q    = this.$route.query;
+      const q = this.$route.query;
       let idRoot = null;
       let idAnsw = null;
       if (q.expand) {
@@ -363,15 +363,15 @@ export default {
       AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(iframeClassName, heightRefClassName);
     },
     flagNewCommentAvailable() {
-      if (!this.CU.isLoggedIn()) {return false;}
-      if (!this.AlinaStorage.Comment.expanded.includes(`comment-collapse-${this.answer_to_tale_id}`)) {return false;}
-      if (this.CU.ownsOrAdminOrModerator(this.root_tale_object.owner_id)) {return true;}
-      if (this.root_tale_object?.is_comment_for_owner == 1) {return false;}
-      if (this.root_tale_object?.is_comment_denied == 0) {return true;}
+      if (!this.CU.isLoggedIn()) { return false; }
+      if (!this.AlinaStorage.Comment.expanded.includes(`comment-collapse-${this.answer_to_tale_id}`)) { return false; }
+      if (this.CU.ownsOrAdminOrModerator(this.root_tale_object.owner_id)) { return true; }
+      if (this.root_tale_object?.is_comment_for_owner == 1) { return false; }
+      if (this.root_tale_object?.is_comment_denied == 0) { return true; }
       return false;
     }
   },
-  watch:    {
+  watch: {
     // $route(to, from) {
     //   const q = this.$route.query;
     //   if (UtilsData.empty(q.expand)) {
@@ -397,9 +397,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.single-comment {
-
-}
+.single-comment {}
 
 .highlight {
   background-color: #ffb200;
