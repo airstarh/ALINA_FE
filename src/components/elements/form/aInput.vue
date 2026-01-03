@@ -1,8 +1,8 @@
 <template>
-  <div class="aInput notranslate">
+  <div class="aInput notranslate" :style="{display: componentDisplay}">
     <template v-if="modeEdit">
       <div class="d-flex no-gutters align-items-center">
-        <div v-if="label" class="col">
+        <div v-if="label" class="col-auto">
           <label
             :for="idNameKey"
             :style="{ width: labelWidth }">{{ label }}:&nbsp;</label>
@@ -85,6 +85,10 @@ export default {
         return AlinaPageGlobalAnalyzer.idNameKeyNext();
       }
     },
+    componentDisplay: {
+      type: String,
+      default: 'inline-block'
+    },
     inputAlign: {
       type: String,
       default: 'left'
@@ -135,8 +139,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .aInput {
-  display: inline-block;
-
   & input,
   & label {
     padding: 2px;

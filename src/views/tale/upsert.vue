@@ -34,7 +34,7 @@
           <div class="" v-if="options.modeEdit">
             <div>Tale #{{ tale.id }}</div>
             <h1>
-              <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" :inputWidth="`100%`" />
+              <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" componentDisplay="block" :inputWidth="`100%`" />
             </h1>
             <BorgEditor v-model="tale.body" />
             <div class="mb-3">&nbsp</div>
@@ -63,21 +63,17 @@
             <div>
               {{ taleUrl }}
             </div>
-            <div class="input-group input-group mb-3">
-              <!-- router_alias -->
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">{{ $tc('Page Alias') }}</span>
-              </div>
-              <input type="text" class="form-control" :placeholder="$tc('Page Alias')" v-model="tale.router_alias">
+
+            <!-- alias -->
+            <div class="mb-3">
+              <aInput v-model="tale.router_alias" :label="$tc('Page Alias')" :placeholder="$tc('Page Alias')" :modeEdit="options.modeEdit" componentDisplay="block" inputWidth="100%" />
             </div>
 
-            <div class="input-group input-group mb-3">
-              <!-- iframe -->
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">iframe</span>
-              </div>
-              <input type="text" class="form-control" placeholder="iframe" v-model="tale.iframe">
+            <!-- iframe -->
+            <div class="mb-3">
+              <aInput v-model="tale.iframe" :label="$tc('iframe')" :placeholder="$tc('iframe')" :modeEdit="options.modeEdit" componentDisplay="block" inputWidth="100%" />
             </div>
+
             <div v-if="tale.iframe" class="mt-3">
               <iframe :src="tale.iframe" frameborder="1" width="90%" height="250px"></iframe>
             </div>
@@ -153,15 +149,9 @@
                   </ui-checkbox>
                 </div>
 
-                <div class="input-group input-group mb-3">
-                  <!-- seo_index -->
-                  <div class="input-group-prepend">
-                    <span class="input-group-text bg-dark text-light">{{ $tc('SEO Index') }}</span>
-                  </div>
-                  <input type="text" class="form-control" v-model="tale.seo_index">
-                  <div class="input-group-appent">
-                    <span class="input-group-text bg-dark text-light">{{ tale.seo_index }}</span>
-                  </div>
+                <!-- seo_index -->
+                <div class="mb-3">
+                  <aInput v-model="tale.seo_index" :label="$tc('SEO Index')" :placeholder="$tc('SEO Index')" :modeEdit="options.modeEdit" />
                 </div>
               </div>
             </div>
