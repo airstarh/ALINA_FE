@@ -1,11 +1,19 @@
 <template>
-    <span class="BorgEditor" v-if="Adjustment.editor">
-        <ckeditor :editor="Adjustment.editor" :config="Adjustment.tools" @input="borgEmit" :value="value" />
-    </span>
+    <div class="BorgEditor notranslate">
+        <template v-if="Adjustment.editor && modeEdit">
+            <ckeditor :editor="Adjustment.editor" :config="Adjustment.tools" @input="borgEmit" :value="value" />
+        </template>
+        <template v-if="!modeEdit">
+            <div class="ck-content">
+                <div v-html="UtilsStr.content(value)"></div>
+            </div>
+        </template>
+    </div>
 </template>
 <script>
 
 import Adjustment from "./Adjustment";
+import UtilsStr from "@/Utils/UtilsStr";
 
 export default {
     name: "BorgEditor",
@@ -14,11 +22,16 @@ export default {
             type: String,
             default: ''
         },
+        modeEdit: {
+            type: Boolean,
+            default: true
+        },
     },
     data() {
         return {
             valueData: '',
             Adjustment: new Adjustment(),
+            UtilsStr,
         }
     },
     methods: {
@@ -29,3 +42,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.BorgEditor {
+    display: inline-block;
+}
+</style>

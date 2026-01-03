@@ -19,7 +19,8 @@
         <h1 class="notranslate font-weight-bold mb-4">
           &ensp;
           <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center" />
-          &ensp;<aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
+          &ensp;
+          <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
         </h1>
 
         <div class="mb-4">
@@ -43,10 +44,7 @@
           </div>
 
           <div v-if="post.about_myself" class="col pl-2">
-            <BorgEditor v-if="options.modeEdit" v-model="post.about_myself" class="notranslate" />
-            <div v-if="!options.modeEdit" class="ck-content">
-              <div class="notranslate " v-html="UtilsStr.content(post.about_myself)"></div>
-            </div>
+            <BorgEditor :modeEdit="options.modeEdit" v-model="post.about_myself" />
           </div>
         </div>
 
