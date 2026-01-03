@@ -137,11 +137,6 @@ export default {
 .aInput {
   display: inline-block;
 
-  & label {
-    height: 100%;
-    line-height: 100%;
-  }
-
   & input,
   & label {
     padding: 2px;
