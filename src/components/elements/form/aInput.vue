@@ -142,9 +142,8 @@ export default {
     line-height: 100%;
   }
 
-  & input 
-  , & label
-  {
+  & input,
+  & label {
     padding: 2px;
     margin: 0;
     height: auto;
