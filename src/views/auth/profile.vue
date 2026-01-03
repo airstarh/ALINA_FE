@@ -23,7 +23,7 @@
         </h1>
 
         <div class="mb-4">
-          <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate" format="date" :modeEdit="options.modeEdit"></AlinaDatePicker>
+          <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate" format="dateTime" :modeEdit="options.modeEdit"></AlinaDatePicker>
         </div>
 
         <div class="mb-4">

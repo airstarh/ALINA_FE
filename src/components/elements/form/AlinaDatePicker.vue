@@ -1,43 +1,34 @@
 <template>
 
-  <div class="alina-date-picker p-1 rounded">
+  <div class="alina-date-picker">
     <div v-if="modeEdit" class="row no-gutters align-items-center justify-content-between">
       <div class="col-auto p-0 m-0" v-if="label.length">
         <div>{{ $t(label) }}</div>
       </div>
       <div class="col">
         <div class="container">
-          <div class="row no-gutters align-items-center justify-content-start">
-            <div class="col-auto text-nowrap p-1" v-if="['date', 'dateTime'].includes(format)">
-              <div>
-                <div class="text-nowrap">
-                  &nbsp;
-                  <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" />
-                  &nbsp;
-                  <aInput v-model="month" :label='$t("DT_M")' placeholder="MONTH" :modeEdit="true" :size="2" :max="12" :min="1" type="number" :idNameKey="`month-${idq}`" />
-                  &nbsp;
-                  <aInput v-model="day" :label='$t("DT_D")' placeholder="DAY" :modeEdit="true" :size="2" :max="31" :min="1" type="number" :idNameKey="`day-${idq}`" />
-                </div>
-              </div>
+          <div class="row align-items-center justify-content-start">
+            <div class="col-auto text-nowrap" v-if="['date', 'dateTime'].includes(format)">
+              &nbsp;
+              <aInput v-model="year" :label='$t("DT_Y")' placeholder="YEAR" :modeEdit="true" :size="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" inputWidth="5ch" labelWidth="2ch" />
+              &nbsp;
+              <aInput v-model="month" :label='$t("DT_M")' placeholder="MONTH" :modeEdit="true" :size="2" :max="12" :min="1" type="number" :idNameKey="`month-${idq}`" inputWidth="5ch" labelWidth="2ch" />
+              &nbsp;
+              <aInput v-model="day" :label='$t("DT_D")' placeholder="DAY" :modeEdit="true" :size="2" :max="31" :min="1" type="number" :idNameKey="`day-${idq}`" inputWidth="5ch" labelWidth="2ch" />
             </div>
-            <div class="col-auto text-nowrap p-1" v-if="['time', 'dateTime'].includes(format)">
-              <div>
-                <div class="text-nowrap">
-                  &nbsp;
-                  <aInput v-model="hour" type="number" placeholder="HOUR" :label='$t("DT_h")' :size="2" :max="23" :min="0" :idNameKey="`hour-${idq}`" :modeEdit="true" />
-                  &nbsp;
-                  <aInput v-model="min" type="number" placeholder="MIN" :label='$t("DT_m")' :size="2" :max="59" :min="0" :idNameKey="`min-${idq}`" :modeEdit="true" />
-                  &nbsp;
-                  <aInput v-model="sec" type="number" placeholder="SEC" :label='$t("DT_s")' :size="2" :max="59" :min="0" :idNameKey="`sec-${idq}`" :modeEdit="true" />
-                </div>
-              </div>
+            <div class="col-auto text-nowrap" v-if="['time', 'dateTime'].includes(format)">
+              &nbsp;
+              <aInput v-model="hour" type="number" placeholder="HOUR" :label='$t("DT_h")' :size="2" :max="23" :min="0" :idNameKey="`hour-${idq}`" :modeEdit="true" inputWidth="5ch" labelWidth="2ch" />
+              &nbsp;
+              <aInput v-model="min" type="number" placeholder="MIN" :label='$t("DT_m")' :size="2" :max="59" :min="0" :idNameKey="`min-${idq}`" :modeEdit="true" inputWidth="5ch" labelWidth="2ch" />
+              &nbsp;
+              <aInput v-model="sec" type="number" placeholder="SEC" :label='$t("DT_s")' :size="2" :max="59" :min="0" :idNameKey="`sec-${idq}`" :modeEdit="true" inputWidth="5ch" labelWidth="2ch" />
             </div>
-            <div class="col-auto text-nowrap p-1">
-              <div class="form-inline">
-                <strong>{{ UtilsDate.fromUnixToDateTime(valueData) }}</strong>
-                &nbsp;
-                <span @click="setNow" class="btn btn-xs btn-primary">{{ $t("Set now") }}</span>
-              </div>
+            <div class="col-auto text-nowrap">
+              &nbsp;
+              <strong>{{ UtilsDate.fromUnixToDateTime(valueData) }}</strong>
+              &nbsp;
+              <span @click="setNow" class="btn btn-xs btn-primary">{{ $t("Set now") }}</span>
             </div>
 
           </div>
@@ -178,9 +169,5 @@ export default {
 <style lang="scss">
 .alina-date-picker {
   display: inline-block;
-
-  & input {
-    width: 5ch !important;
-  }
 }
 </style>

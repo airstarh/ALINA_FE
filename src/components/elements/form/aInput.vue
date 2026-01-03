@@ -3,7 +3,9 @@
     <template v-if="modeEdit">
       <div class="row no-gutters align-items-center">
         <div v-if="label" class="col">
-          <label :for="idNameKey">{{ label }}:&nbsp;</label>
+          <label
+            :for="idNameKey"
+            :style="{ width: labelWidth }">{{ label }}:&nbsp;</label>
         </div>
         <div class="col">
           <input
@@ -87,6 +89,10 @@ export default {
       type: String,
       default: 'left'
     },
+    labelWidth: {
+      type: String,
+      default: 'auto'
+    },
     inputWidth: {
       type: String,
       default: 'auto'
@@ -130,5 +136,10 @@ export default {
 <style scoped lang="scss">
 .aInput {
   display: inline-block;
+
+  & input {
+    padding: 2px;
+    height: auto;
+  }
 }
 </style>
