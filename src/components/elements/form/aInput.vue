@@ -1,16 +1,22 @@
 <template>
-  <div class="aInput notranslate" :style="{display: componentDisplay}">
+  <div class="aInput notranslate" :style="{ display: componentDisplay }">
     <template v-if="modeEdit">
       <div class="d-flex no-gutters align-items-center">
-        <div v-if="label" class="col-auto">
+
+        <!-- Label Left -->
+        <div
+          v-if="label && flagLabelFirst"
+          class="col-auto">
           <label
             :for="idNameKey"
             :style="{ width: labelWidth }">{{ label }}:&nbsp;</label>
         </div>
+
+        <!-- Input -->
         <div class="col ml-1">
           <input
             :value="value"
-            @input="alinaEmit($event.target.value)"
+            @input="alinaEmit"
             :id="idNameKey" :name="idNameKey"
             :placeholder="placeholder"
             :style="{ textAlign: inputAlign, width: inputWidth }"
@@ -19,6 +25,15 @@
             :min="min"
             :tabindex="tabindex"
             :disabled="disabled" />
+        </div>
+
+        <!-- Label Right -->
+        <div
+          v-if="label && flagLabelFirst"
+          class="col-auto">
+          <label
+            :for="idNameKey"
+            :style="{ width: labelWidth }">&nbsp;{{ label }}</label>
         </div>
 
       </div>
@@ -51,6 +66,7 @@ export default {
   name: "aInput",
   emits: ['input'],
   props: {
+    // Common
     value: {
       type: [String, Number],
       default: ''
@@ -75,6 +91,30 @@ export default {
       type: Boolean,
       default: false
     },
+    size: {
+      type: Number,
+      default: null
+    },
+    max: {
+      type: Number,
+      default: null
+    },
+    min: {
+      type: Number,
+      default: null
+    },
+    tabindex: {
+      type: Number,
+      default: function () {
+        return AlinaPageGlobalAnalyzer.tabindexNext();
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default: null
+    },
+
+    //  COMPONENT SPECIAL
     formatter: {
       type: Function,
       default: v => v
@@ -101,27 +141,12 @@ export default {
       type: String,
       default: 'auto'
     },
-    size: {
-      type: Number,
-      default: null
-    },
-    max: {
-      type: Number,
-      default: null
-    },
-    min: {
-      type: Number,
-      default: null
-    },
-    tabindex: {
-      type: Number,
-      default: function () {
-        return AlinaPageGlobalAnalyzer.tabindexNext();
-      }
-    },
-    disabled: {
+    flagLabelFirst: {
       type: Boolean,
-      default: null
+      default: true
+    },
+    tv: {
+
     }
   },
   data() {
@@ -130,15 +155,20 @@ export default {
     }
   },
   methods: {
-    alinaEmit(val) {
-      this.valueData = val;
+    alinaEmit(event) {
+      this.valueData = event.target.value;
       this.$emit('input', this.valueData);
     },
+  },
+
+  computed: {
+
   }
 }
 </script>
 <style scoped lang="scss">
 .aInput {
+
   & input,
   & label {
     padding: 2px;

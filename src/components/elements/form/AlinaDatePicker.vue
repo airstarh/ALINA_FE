@@ -76,8 +76,8 @@ export default {
     format: {
       type: String,
       default: 'dateTime',
-      validator: function (value) {
-        return ['dateTime', 'date', 'time'].indexOf(value) !== -1;
+      validator: function (f) {
+        return ['dateTime', 'date', 'time'].indexOf(f) !== -1;
       }
     }
   },
