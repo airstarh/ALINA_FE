@@ -1,7 +1,7 @@
 <template>
   <div class="aInput notranslate">
     <template v-if="modeEdit">
-      <div class="row no-gutters align-items-center">
+      <div class="d-flex no-gutters align-items-center">
         <div v-if="label" class="col">
           <label
             :for="idNameKey"
@@ -136,6 +136,11 @@ export default {
 <style scoped lang="scss">
 .aInput {
   display: inline-block;
+
+  & label {
+    height: 100%;
+    line-height: 100%;
+  }
 
   & input {
     padding: 2px;
