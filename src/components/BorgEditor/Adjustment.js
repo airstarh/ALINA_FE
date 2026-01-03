@@ -207,7 +207,7 @@ export default class Adjustment {
               return (
                 '<iframe ' +
                 `src="${url}" ` +
-                'width="1280" height="720" ' +
+                'style="border: none;width:100%; min-height: 45vh" ' +
                 'allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" ' +
                 'frameborder="0" allowfullscreen ' +
                 '></iframe>'
@@ -225,7 +225,7 @@ export default class Adjustment {
               return (
                 '<iframe ' +
                 `src="${url}" ` +
-                'width="1280" height="720" ' +
+                'style="border: none;width:100%; min-height: 45vh" ' +
                 'allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;" ' +
                 'frameborder="0" allowfullscreen ' +
                 '></iframe>'
