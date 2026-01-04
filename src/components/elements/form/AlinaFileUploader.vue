@@ -59,25 +59,44 @@ export default {
   name: "AlinaFileUploader",
   props: {
     entity_id: {
+      type: Number,
       default: CurrentUser.obj().attributes.id
     },
     entity_table: {
+      type: String,
       default: 'user'
     },
-    container: 'FILE',
-    root_id: null,
-    parent_id: null,
-    level: 1,
-    order: 0,
+    container: {
+      type: String,
+      default: 'FILE'
+    },
+    root_id: {
+      type: Number,
+      default: null
+    },
+    parent_id: {
+      type: Number,
+      default: null
+    },
+    level: {
+      type: Number,
+      default: 1
+    },
+    order: {
+      default: 0
+    },
     pArrFiles: {
+      type: Array,
       default() {
         return [];
       }
     },
     modeEdit: {
+      type: Boolean,
       default: true
     },
     ownLength: {
+      type: Number,
       default: 0
     }
   },
