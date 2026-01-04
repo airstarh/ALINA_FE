@@ -37,23 +37,28 @@
       </router-link>
     </span>
     <div></div>
+
+
+
+
+
     <h1>BorgEditor</h1>
-    <div></div>
     <BorgEditor v-model="testEditor.aModel" />
-    <div></div>
-    <h3>HTML</h3>
-    <div></div>
-    <textarea v-model="testEditor.aModel" rows="5" style="width: 100%">
-    </textarea>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
     <h3>Result</h3>
+    <BorgEditor v-model="testEditor.aModel" :modeEdit="false" />
     <div class="clear">&nbsp;</div>
-    <div>
-      <div class="ck-content">
-        <div v-html="testEditor.aModel"></div>
-      </div>
-    </div>
+
+    <h3>HTML</h3>
+    <textarea v-model="testEditor.aModel" rows="5" style="width: 100%"> </textarea>
     <div class="clear">&nbsp;</div>
+
+
+
+
+
+
     <h1>Linking </h1>
     <div></div>
     <div>
@@ -239,11 +244,11 @@
           <b-list-group>
             <b-list-group-item variant="dark">{{
               AnObject.prop1
-              }}
+            }}
             </b-list-group-item>
             <b-list-group-item variant="dark">{{
               AnObject.prop2
-              }}
+            }}
             </b-list-group-item>
           </b-list-group>
 
