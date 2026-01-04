@@ -49,8 +49,15 @@
       <br>
 
       <img alt="Vue logo" src="@/assets/logo.png" height="50" />
-      <br>
+    </div>
+    <div class="clear">&nbsp;</div>
 
+
+
+
+
+    <div>
+      <h1>Avatar try</h1>
       <span class="btn-secondary text-left text-nowrap badge-pill p-2">
         <router-link :to="'/auth/profile/' + CurrentUser.id" class="fixed-height-150px">
           <img v-if="CurrentUser.emblem" :src="CurrentUser.emblem" width="100px" class="rounded-circle">
