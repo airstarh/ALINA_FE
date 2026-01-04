@@ -239,11 +239,11 @@
           <b-list-group>
             <b-list-group-item variant="dark">{{
               AnObject.prop1
-            }}
+              }}
             </b-list-group-item>
             <b-list-group-item variant="dark">{{
               AnObject.prop2
-            }}
+              }}
             </b-list-group-item>
           </b-list-group>
 
