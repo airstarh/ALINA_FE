@@ -97,7 +97,6 @@ export default {
   },
   created() {
     this.mergePropsAndData();
-    //this.loadFileList();
     this.loopFiles();
   },
   updated() {
