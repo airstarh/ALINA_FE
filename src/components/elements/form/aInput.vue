@@ -29,7 +29,7 @@
 
         <!-- Label Right -->
         <div
-          v-if="label && flagLabelFirst"
+          v-if="label && !flagLabelFirst"
           class="col-auto">
           <label
             :for="idNameKey"
