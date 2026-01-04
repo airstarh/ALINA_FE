@@ -1,14 +1,25 @@
 <template>
-  <div class="container border border-primary">
+  <div class="container">
+
+
+
+
+
     <div>
-      <h2>AlinaFileUploader</h2>
-      <AlinaFileUploader :pArrFiles="[
-        { id: -5, name_human: 'TEST' }
-      ]"></AlinaFileUploader>
+      <h1>AlinaFileUploader</h1>
+      <AlinaFileUploader
+        :pArrFiles="[
+          { id: -5, name_human: 'TEST' }
+        ]"></AlinaFileUploader>
     </div>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
     <div>
-      <h2>AlinaTableJson</h2>
+      <h1>AlinaTableJson</h1>
       <AlinaTableJson :pJson="[
         { one: 1, teo: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 },
         { one: 1, teo: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 },
@@ -16,9 +27,14 @@
         { one: 1, teo: 2, three: 3, four: 4, five: 5, six: 6, seven: 7 },
       ]"></AlinaTableJson>
     </div>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
     <div>
-      <h2>Test links and buttons</h2>
+      <h1>Test links and buttons</h1>
       <a href="#middle">a - Middle</a>
       |||
       <router-link :to="{ hash: 'middle' }">rl - Middle</router-link>
@@ -26,7 +42,7 @@
       <button @click="gotoMiddle">btn - Middle</button>
     </div>
     <img alt="Vue logo" src="@/assets/logo.png" height="50" />
-    <div></div>
+    <br>
     <span class="btn-secondary text-left text-nowrap badge-pill p-2">
       <router-link :to="'/auth/profile/' + CurrentUser.id" class="fixed-height-150px">
         <img v-if="CurrentUser.emblem" :src="CurrentUser.emblem" width="100px" class="rounded-circle">
@@ -36,22 +52,24 @@
         {{ UtilsStr.fullName(CurrentUser.firstname, CurrentUser.lastname, CurrentUser.id) }}
       </router-link>
     </span>
-    <div></div>
-
-
-
-
-
-    <h1>BorgEditor</h1>
-    <BorgEditor v-model="testEditor.aModel" />
     <div class="clear">&nbsp;</div>
 
-    <h3>Result</h3>
-    <BorgEditor v-model="testEditor.aModel" :modeEdit="false" />
-    <div class="clear">&nbsp;</div>
 
-    <h3>HTML</h3>
-    <textarea v-model="testEditor.aModel" rows="5" style="width: 100%"> </textarea>
+
+
+    <div>
+      <h1>BorgEditor</h1>
+      <h3>Editor</h3>
+      <BorgEditor v-model="testEditor.aModel" />
+      <br>
+
+      <h3>Result</h3>
+      <BorgEditor v-model="testEditor.aModel" :modeEdit="false" />
+      <br>
+
+      <h3>HTML</h3>
+      <textarea v-model="testEditor.aModel" rows="5" style="width: 100%"> </textarea>
+    </div>
     <div class="clear">&nbsp;</div>
 
 
@@ -60,9 +78,8 @@
 
 
     <h1>Linking </h1>
-    <div></div>
     <div>
-      ROUTER-LINKS:::
+      <h2>ROUTER-LINKS</h2>
       <router-link to="/about">About</router-link>
       |||
       <router-link to="/about/001">About 001</router-link>
@@ -71,10 +88,10 @@
       |||
       <router-link to="/about/003">About 003</router-link>
     </div>
-    <div></div>
-    <div></div>
+    <br>
+
     <div>
-      A-TAGS:::
+      <h2>A-TAGS</h2>
       <a href="#/about">a# About</a>
       |||
       <a href="#/about/001">a# About 001</a>
@@ -83,58 +100,92 @@
       |||
       <a href="#/about/003">a# About 003</a>
     </div>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
+
     <div>
+      <h1>AlinaYandexMap</h1>
       <AlinaYandexMap :item="protoTale"></AlinaYandexMap>
     </div>
-    <div></div>
-    <h1>SVH Icons</h1>
-    <div></div>
-    <span style="color:#76ff03; background-color: #ffb74d">
-      <svg width="55" class="icon--inline" color="currentColor">
-        <use :xlink:href="`${iconFb.url}`"></use>
-      </svg>
-      <svg width="55" class="icon--inline" color="currentColor">
-        <use :xlink:href="`${iconFb.url}`"></use>
-      </svg>
-      <svg width="55" class="icon--inline" color="currentColor">
-        <use :xlink:href="`${iconSk.url}`"></use>
-      </svg>
+    <div class="clear">&nbsp;</div>
 
-      <svg width="55">
-        <use :xlink:href="`${iconVk.url}`"></use>
-      </svg>
 
-      <svg width="55">
-        <use :xlink:href="`${iconWp.url}`"></use>
-      </svg>
 
-      <svg width="55" class="icon--inline" color="currentColor">
-        <use :xlink:href="`${iconVi.url}`"></use>
-      </svg>
 
-      <svg width="55">
-        <use :xlink:href="`${iconTg.url}`"></use>
-      </svg>
 
-      <svg width="55">
-        <use :xlink:href="`${iconIn.url}`"></use>
-      </svg>
-    </span>
-    <div></div>
-    <h1 id="middle">#Middle</h1>
-    <div></div>
+
     <div>
+      <h1>SVG Icons</h1>
+      <span style="color:#76ff03; background-color: #ffb74d">
+        <svg width="55" class="icon--inline" color="currentColor">
+          <use :xlink:href="`${iconFb.url}`"></use>
+        </svg>
+        <svg width="55" class="icon--inline" color="currentColor">
+          <use :xlink:href="`${iconFb.url}`"></use>
+        </svg>
+        <svg width="55" class="icon--inline" color="currentColor">
+          <use :xlink:href="`${iconSk.url}`"></use>
+        </svg>
+
+        <svg width="55">
+          <use :xlink:href="`${iconVk.url}`"></use>
+        </svg>
+
+        <svg width="55">
+          <use :xlink:href="`${iconWp.url}`"></use>
+        </svg>
+
+        <svg width="55" class="icon--inline" color="currentColor">
+          <use :xlink:href="`${iconVi.url}`"></use>
+        </svg>
+
+        <svg width="55">
+          <use :xlink:href="`${iconTg.url}`"></use>
+        </svg>
+
+        <svg width="55">
+          <use :xlink:href="`${iconIn.url}`"></use>
+        </svg>
+      </span>
+    </div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
+    <h1 id="middle">#Middle anchor</h1>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
+
+    <div>
+      <h1>Storage</h1>
       <div>
-        <h1>{{ sProp }} : mapped from Store</h1>
+        <h2>{{ sProp }} : mapped from Store</h2>
       </div>
       <div>
-        <h1>{{ $store.state.egStoreModule.sProp }} : direct from Store</h1>
+        <h2>{{ $store.state.egStoreModule.sProp }} : direct from Store</h2>
       </div>
       <button @click="methChangeProp">Change Prop</button>
+      &nbsp;
       <button @click="log">log</button>
     </div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
     <div class="m-buttons-1">
+      <h1>Ajax tests</h1>
       <br>
       <button @click="onClickBadResponse()" class="btn btn-lg btn-primary">TEST Bad Response
       </button>
@@ -148,30 +199,41 @@
       <br>
       <br>
     </div>
-    <div></div>
-    <h1>AlinaDatePicker</h1>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
     <div>
+      <h1>AlinaDatePicker</h1>
       <AlinaDatePicker v-model="uts" class="notranslate"></AlinaDatePicker>
+
       <div>{{ uts }} ||| {{ UtilsDate.fromUnixToDateTime(uts) }}</div>
     </div>
-    <div></div>
-    <h1>Date FNS</h1>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
     <div>
-      <!--<div>Now: {{ now }}</div>-->
-      <div>Now: {{ new Date() | date }}</div>
-      <div>Now: {{ $date(new Date()) }}</div>
-      <div>Now: {{ new Date() | date('dd MMMM yyyy') }}</div>
-      <div>Now: {{ $date(new Date(), 'dd MMMM yyyy') }}</div>
-      <div>Now: {{ $date(new Date(), 'X') }}</div>
-      <br>
-      {{ dateExample }}
+      <h1>Date FNS</h1>
+      <div>
+        <!--<div>Now: {{ now }}</div>-->
+        <div>Now: {{ new Date() | date }}</div>
+        <div>Now: {{ $date(new Date()) }}</div>
+        <div>Now: {{ new Date() | date('dd MMMM yyyy') }}</div>
+        <div>Now: {{ $date(new Date(), 'dd MMMM yyyy') }}</div>
+        <div>Now: {{ $date(new Date(), 'X') }}</div>
+        <br>
+        {{ dateExample }}
+      </div>
     </div>
-    <br>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
+
     <h1>Lodash</h1>
-    <div></div>
     <div>
       <!--##########-->
       <div>{{ JSON.stringify(lodashExample, null, 6) }}</div>
@@ -189,7 +251,12 @@
       <!-- The modal -->
       <b-modal id="my-modal">Hello From My Modal!</b-modal>
     </div>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
     <h1>Bootstrap</h1>
     <div></div>
     <div>
@@ -223,9 +290,13 @@
         </p>
       </div>
     </div>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
+
+
+
     <h1>XXX</h1>
-    <div></div>
     <b-container class="bv-example-row">
       <b-row class="justify-content-md-center">
         <b-col cols="12" md="5">
@@ -266,9 +337,10 @@
         <b-col col lg="2">3 of 3</b-col>
       </b-row>
     </b-container>
-    <div></div>
+    <div class="clear">&nbsp;</div>
+
+
     <h1>The emd</h1>
-    <div></div>
   </div>
 </template>
 
@@ -410,4 +482,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.clear {
+  margin-bottom: 500px;
+}
+</style>
