@@ -328,7 +328,7 @@
     <div>
       <h1>XXX</h1>
       <b-container class="bv-example-row">
-        <b-row class="justify-content-md-center">
+        <b-row class="justify-content-md-left">
           <b-col cols="12" md="5">
             <h2>
               <b-badge>Hello World</b-badge>&nbsp;
@@ -343,13 +343,11 @@
             </div>
 
             <b-list-group>
-              <b-list-group-item variant="dark">{{
-                AnObject.prop1
-                }}
+              <b-list-group-item variant="dark">{{ AnObject.prop1 }}
               </b-list-group-item>
               <b-list-group-item variant="dark">{{
                 AnObject.prop2
-                }}
+              }}
               </b-list-group-item>
             </b-list-group>
 
