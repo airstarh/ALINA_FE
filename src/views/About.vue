@@ -1,10 +1,14 @@
 <template>
   <div class="container">
+
+
+
+
     <div>
       <h1>Test</h1>
       <div>Test_Body </div>
-      <div class="clear">&nbsp;</div>
     </div>
+    <div class="clear">&nbsp;</div>
 
 
 
@@ -211,20 +215,26 @@
       &nbsp;
       <button @click="onTestSpinner()" class="btn btn-lg btn-primary">TEST SPINNER
       </button>
-
-      <br>
-      <br>
     </div>
     <div class="clear">&nbsp;</div>
 
 
 
 
+
     <div>
       <h1>AlinaDatePicker</h1>
-      <AlinaDatePicker v-model="uts" class="notranslate"></AlinaDatePicker>
 
-      <div>{{ uts }} ||| {{ UtilsDate.fromUnixToDateTime(uts) }}</div>
+      <AlinaDatePicker v-model="uts" />
+      <br>
+      <AlinaDatePicker v-model="uts" format="dateTime" :modeEdit="false" />
+      <br>
+      <AlinaDatePicker v-model="uts" format="date" :modeEdit="false" />
+      <br>
+      <AlinaDatePicker v-model="uts" format="time" :modeEdit="false" />
+      <br>
+
+      <p>{{ uts }} -> {{ UtilsDate.fromUnixToDateTime(uts) }}</p>
     </div>
     <div class="clear">&nbsp;</div>
 
