@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-
+    <div>
+      <h1>Test</h1>
+      <div>Test_Body </div>
+      <div class="clear">&nbsp;</div>
+    </div>
 
 
 
@@ -34,24 +38,29 @@
 
 
     <div>
-      <h1>Test links and buttons</h1>
-      <a href="#middle">a - Middle</a>
-      |||
-      <router-link :to="{ hash: 'middle' }">rl - Middle</router-link>
-      |||
-      <button @click="gotoMiddle">btn - Middle</button>
+      <h1>Links and buttons</h1>
+      <div>
+        <a href="#middle">a - Middle</a>
+        |||
+        <router-link :to="{ hash: 'middle' }">rl - Middle</router-link>
+        |||
+        <button @click="gotoMiddle">btn - Middle</button>
+      </div>
+      <br>
+
+      <img alt="Vue logo" src="@/assets/logo.png" height="50" />
+      <br>
+
+      <span class="btn-secondary text-left text-nowrap badge-pill p-2">
+        <router-link :to="'/auth/profile/' + CurrentUser.id" class="fixed-height-150px">
+          <img v-if="CurrentUser.emblem" :src="CurrentUser.emblem" width="100px" class="rounded-circle">
+          <img v-if="!CurrentUser.emblem" src="@/assets/anarki.png" width="100px" class="rounded-circle">
+        </router-link>
+        <router-link :to="'/auth/profile/' + CurrentUser.id" class="text-light">
+          {{ UtilsStr.fullName(CurrentUser.firstname, CurrentUser.lastname, CurrentUser.id) }}
+        </router-link>
+      </span>
     </div>
-    <img alt="Vue logo" src="@/assets/logo.png" height="50" />
-    <br>
-    <span class="btn-secondary text-left text-nowrap badge-pill p-2">
-      <router-link :to="'/auth/profile/' + CurrentUser.id" class="fixed-height-150px">
-        <img v-if="CurrentUser.emblem" :src="CurrentUser.emblem" width="100px" class="rounded-circle">
-        <img v-if="!CurrentUser.emblem" src="@/assets/anarki.png" width="100px" class="rounded-circle">
-      </router-link>
-      <router-link :to="'/auth/profile/' + CurrentUser.id" class="text-light">
-        {{ UtilsStr.fullName(CurrentUser.firstname, CurrentUser.lastname, CurrentUser.id) }}
-      </router-link>
-    </span>
     <div class="clear">&nbsp;</div>
 
 
@@ -77,7 +86,7 @@
 
 
 
-    <h1>Linking </h1>
+    <h1>Linking</h1>
     <div>
       <h2>ROUTER-LINKS</h2>
       <router-link to="/about">About</router-link>
@@ -233,61 +242,13 @@
 
 
 
-    <h1>Lodash</h1>
     <div>
-      <!--##########-->
-      <div>{{ JSON.stringify(lodashExample, null, 6) }}</div>
-      <div>{{ JSON.stringify(lodashExample2, null, 6) }}</div>
-      <!--##########-->
-    </div>
-    <br>
-    <div>
-      <!-- Using modifiers -->
-      <b-button v-b-modal.my-modal>Show Modal</b-button>
-
-      <!-- Using value -->
-      <b-button v-b-modal="'my-modal'">Show Modal</b-button>
-
-      <!-- The modal -->
-      <b-modal id="my-modal">Hello From My Modal!</b-modal>
-    </div>
-    <div class="clear">&nbsp;</div>
-
-
-
-
-
-    <h1>Bootstrap</h1>
-    <div></div>
-    <div>
+      <h1>Lodash</h1>
       <div>
-        <p>
-          <button type="button" class="btn btn-lg btn-default">Default</button>
-          <button type="button" class="btn btn-lg btn-primary">Primary</button>
-          <button type="button" class="btn btn-lg btn-success">Success</button>
-          <button type="button" class="btn btn-lg btn-info">Info</button>
-          <button type="button" class="btn btn-lg btn-warning">Warning</button>
-          <button type="button" class="btn btn-lg btn-danger">Danger</button>
-          <button type="button" class="btn btn-lg btn-link">Link</button>
-        </p>
-        <p>
-          <button type="button" class="btn btn-default">Default</button>
-          <button type="button" class="btn btn-primary">Primary</button>
-          <button type="button" class="btn btn-success">Success</button>
-          <button type="button" class="btn btn-info">Info</button>
-          <button type="button" class="btn btn-warning">Warning</button>
-          <button type="button" class="btn btn-danger">Danger</button>
-          <button type="button" class="btn btn-link">Link</button>
-        </p>
-        <p>
-          <button type="button" class="btn btn-sm btn-default">Default</button>
-          <button type="button" class="btn btn-sm btn-primary">Primary</button>
-          <button type="button" class="btn btn-sm btn-success">Success</button>
-          <button type="button" class="btn btn-sm btn-info">Info</button>
-          <button type="button" class="btn btn-sm btn-warning">Warning</button>
-          <button type="button" class="btn btn-sm btn-danger">Danger</button>
-          <button type="button" class="btn btn-sm btn-link">Link</button>
-        </p>
+        <!--##########-->
+        <div>{{ JSON.stringify(lodashExample, null, 6) }}</div>
+        <div>{{ JSON.stringify(lodashExample2, null, 6) }}</div>
+        <!--##########-->
       </div>
     </div>
     <div class="clear">&nbsp;</div>
@@ -296,47 +257,100 @@
 
 
 
-    <h1>XXX</h1>
-    <b-container class="bv-example-row">
-      <b-row class="justify-content-md-center">
-        <b-col cols="12" md="5">
-          <h2>
-            <b-badge>Hello World</b-badge>&nbsp;
-          </h2>
-          <div>
-            <ui-textbox label="AnObject.prop1" v-model="AnObject.prop1" icon="person_pin" type="text"
-              :floatingLabel="true"></ui-textbox>
-          </div>
-          <div>
-            <ui-textbox label="AnObject.prop2" v-model="AnObject.prop2" icon="security" type="text"
-              :floatingLabel="true"></ui-textbox>
-          </div>
+    <h1>Bootstrap</h1>
+    <div>
+      <div>
+        <!-- Using modifiers -->
+        <b-button v-b-modal.my-modal>Show Modal</b-button>
 
-          <b-list-group>
-            <b-list-group-item variant="dark">{{
-              AnObject.prop1
-            }}
-            </b-list-group-item>
-            <b-list-group-item variant="dark">{{
-              AnObject.prop2
-            }}
-            </b-list-group-item>
-          </b-list-group>
+        <!-- Using value -->
+        <b-button v-b-modal="'my-modal'">Show Modal</b-button>
 
-          <div>
-            <ui-datepicker icon="eventpacks" orientation="landscape" picker-type="modal" placeholder="Select a date"
-              v-model="picker8">Your Birthday
-            </ui-datepicker>
-          </div>
-        </b-col>
-      </b-row>
+        <!-- The modal -->
+        <b-modal id="my-modal">Hello From My Modal!</b-modal>
+      </div>
+      <br>
+      <div>
+        <div>
+          <p>
+            <button type="button" class="btn btn-lg btn-default">Default</button>
+            <button type="button" class="btn btn-lg btn-primary">Primary</button>
+            <button type="button" class="btn btn-lg btn-success">Success</button>
+            <button type="button" class="btn btn-lg btn-info">Info</button>
+            <button type="button" class="btn btn-lg btn-warning">Warning</button>
+            <button type="button" class="btn btn-lg btn-danger">Danger</button>
+            <button type="button" class="btn btn-lg btn-link">Link</button>
+          </p>
+          <p>
+            <button type="button" class="btn btn-default">Default</button>
+            <button type="button" class="btn btn-primary">Primary</button>
+            <button type="button" class="btn btn-success">Success</button>
+            <button type="button" class="btn btn-info">Info</button>
+            <button type="button" class="btn btn-warning">Warning</button>
+            <button type="button" class="btn btn-danger">Danger</button>
+            <button type="button" class="btn btn-link">Link</button>
+          </p>
+          <p>
+            <button type="button" class="btn btn-sm btn-default">Default</button>
+            <button type="button" class="btn btn-sm btn-primary">Primary</button>
+            <button type="button" class="btn btn-sm btn-success">Success</button>
+            <button type="button" class="btn btn-sm btn-info">Info</button>
+            <button type="button" class="btn btn-sm btn-warning">Warning</button>
+            <button type="button" class="btn btn-sm btn-danger">Danger</button>
+            <button type="button" class="btn btn-sm btn-link">Link</button>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="clear">&nbsp;</div>
 
-      <b-row>
-        <b-col>1 of 3</b-col>
-        <b-col cols="12" md="auto">Variable width content</b-col>
-        <b-col col lg="2">3 of 3</b-col>
-      </b-row>
-    </b-container>
+
+
+
+
+    <div>
+      <h1>XXX</h1>
+      <b-container class="bv-example-row">
+        <b-row class="justify-content-md-center">
+          <b-col cols="12" md="5">
+            <h2>
+              <b-badge>Hello World</b-badge>&nbsp;
+            </h2>
+            <div>
+              <ui-textbox label="AnObject.prop1" v-model="AnObject.prop1" icon="person_pin" type="text"
+                :floatingLabel="true"></ui-textbox>
+            </div>
+            <div>
+              <ui-textbox label="AnObject.prop2" v-model="AnObject.prop2" icon="security" type="text"
+                :floatingLabel="true"></ui-textbox>
+            </div>
+
+            <b-list-group>
+              <b-list-group-item variant="dark">{{
+                AnObject.prop1
+                }}
+              </b-list-group-item>
+              <b-list-group-item variant="dark">{{
+                AnObject.prop2
+                }}
+              </b-list-group-item>
+            </b-list-group>
+
+            <div>
+              <ui-datepicker icon="eventpacks" orientation="landscape" picker-type="modal" placeholder="Select a date"
+                v-model="picker8">Your Birthday
+              </ui-datepicker>
+            </div>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col>1 of 3</b-col>
+          <b-col cols="12" md="auto">Variable width content</b-col>
+          <b-col col lg="2">3 of 3</b-col>
+        </b-row>
+      </b-container>
+    </div>
     <div class="clear">&nbsp;</div>
 
 
