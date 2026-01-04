@@ -54,6 +54,7 @@ import CurrentUser from "@/services/CurrentUser";
 import UtilsData from "@/Utils/UtilsData";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 import UtilsFS from "@/Utils/UtilsFS";
+import aInput from "@/components/elements/form/aInput";
 
 export default {
   name: "AlinaFileUploader",
@@ -246,7 +247,8 @@ export default {
     },
   },
   components: {
-    AlinaHorizontalScrollJson
+    aInput,
+    AlinaHorizontalScrollJson,
   },
 };
 </script>
