@@ -466,7 +466,6 @@ export default {
     },
     dateplayer() {
       this.dateExample = UtilsDate.UnixSecsToFormat(1578535140);
-      this.uts = 477152940;
     },
     onClickBadResponse() {
       AjaxAlina.newInst({
