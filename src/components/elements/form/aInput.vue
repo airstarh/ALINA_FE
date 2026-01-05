@@ -30,7 +30,8 @@
             :tabindex="tabindex"
             :accept="accept"
             :multiple="multiple"
-            :disabled="disabled" />
+            :disabled="disabled"
+            :class="{ displayNone: computedFlagDisplayNone }" />
         </div>
 
         <!-- Label Right -->
@@ -328,6 +329,10 @@ export default {
       }
       return null;
 
+    },
+
+    computedFlagDisplayNone() {
+      return this.type === 'file';
     }
   }
 }
@@ -340,6 +345,12 @@ export default {
     padding: 2px;
     margin: 0;
     height: auto;
+  }
+
+  ;
+
+  & .displayNone {
+    display: none;
   }
 }
 </style>
