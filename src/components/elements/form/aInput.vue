@@ -283,6 +283,11 @@ export default {
 
     alinaEmit(event) {
       switch (this.type) {
+        case 'submit':
+        case 'reset':
+        case 'button':
+        case 'image':
+          break;
         case 'radio':
           // Emit the radio's value when selected
           this.$emit('update:modelValue', this.value);
