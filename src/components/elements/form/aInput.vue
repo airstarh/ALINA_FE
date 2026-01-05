@@ -28,6 +28,7 @@
             :min="min"
             :tabindex="tabindex"
             :accept="accept"
+            :multiple="multiple"
             :disabled="disabled" />
         </div>
 
