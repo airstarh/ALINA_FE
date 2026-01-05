@@ -168,7 +168,7 @@ export default {
       })
         .go();
     }, //##################################################
-    onChangeFileField(fileList, event) {
+    onChangeFileField(fileList) {
       AjaxAlina.newInst({
         method: 'POST',
         url: this.options.urlEmblem,
