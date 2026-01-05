@@ -10,7 +10,7 @@
           :style="{ width: labelWidth }">
           <span
             :class="{ 'btn btn-secondary': type === 'file' }">
-            {{ label }}<span v-if="type !== 'file'">:</span>&nbsp;
+            {{ label }}<span v-if="type !== 'file'">:&nbsp;</span>
           </span>
         </div>
 
@@ -22,7 +22,8 @@
             :checked="internalChecked"
             @input="onInput"
             @change="onChange"
-            :id="idNameKey" :name="idNameKey"
+            :id="idNameKey"
+            :name="idNameKey"
             :placeholder="placeholder"
             :style="{ textAlign: inputAlign, width: inputWidth }"
             :maxLength="maxLength"
@@ -341,13 +342,6 @@ export default {
 </script>
 <style scoped lang="scss">
 .aInput {
-
-  & input,
-  & label {
-    padding: 2px;
-    margin: 0;
-    height: auto;
-  }
 
   & input[type="checkbox"] {
     display: none;
