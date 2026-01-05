@@ -157,12 +157,12 @@ export default {
 
     trueValue: {
       type: [String, Number, Boolean, Object],
-      default: true
+      default: 1
     },
 
     falseValue: {
       type: [String, Number, Boolean, Object],
-      default: false
+      default: 0
     },
 
     //  COMPONENT SPECIAL
