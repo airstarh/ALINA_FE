@@ -22,10 +22,12 @@
             :id="idNameKey" :name="idNameKey"
             :placeholder="placeholder"
             :style="{ textAlign: inputAlign, width: inputWidth }"
+            :maxLength="maxLength"
             :size="size"
             :max="max"
             :min="min"
             :tabindex="tabindex"
+            :accept="accept"
             :disabled="disabled" />
         </div>
 
@@ -74,7 +76,7 @@ export default {
       default: ''
     },
 
-    // Current selected value (from parent v-model)
+    // TYPE=RADIO ONLY: Current selected value (from parent v-model)
     modelValue: {
       type: [String, Number, Boolean, Object],
       default: null
@@ -106,6 +108,11 @@ export default {
     },
 
     size: {
+      type: Number,
+      default: null
+    },
+
+    maxLength: {
       type: Number,
       default: null
     },
