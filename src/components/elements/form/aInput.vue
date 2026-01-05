@@ -361,7 +361,7 @@ export default {
     }
 
     & .col:last-child {
-      flex: 1 1 auto;
+      flex: 0 1 auto;
     }
   }
 
