@@ -9,19 +9,19 @@
         <div class="row no-gutters align-items-center justify-content-start">
           <div class="col-auto text-nowrap mb-1" v-if="['date', 'dateTime'].includes(format)">
             &nbsp;
-            <aInput v-model="year" :label='$t("DT_Y")' :placeholder="$t('YEAR')" :modeEdit="true" :maxLength="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" inputWidth="6ch" labelWidth="2ch" />
+            <aInput v-model="year" :label='$t("DT_Y")' :placeholder="$t('YEAR')" :modeEdit="true" :maxLength="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" inputWidth="6ch" labelWidth="3ch" />
             &nbsp;
-            <aInput v-model="month" :label='$t("DT_M")' :placeholder="$t('MONTH')" :modeEdit="true" :maxLength="2" :max="12" :min="1" type="number" :idNameKey="`month-${idq}`" inputWidth="6ch" labelWidth="2ch" />
+            <aInput v-model="month" :label='$t("DT_M")' :placeholder="$t('MONTH')" :modeEdit="true" :maxLength="2" :max="12" :min="1" type="number" :idNameKey="`month-${idq}`" inputWidth="6ch" labelWidth="3ch" />
             &nbsp;
-            <aInput v-model="day" :label='$t("DT_D")' :placeholder="$t('DAY')" :modeEdit="true" :maxLength="2" :max="31" :min="1" type="number" :idNameKey="`day-${idq}`" inputWidth="6ch" labelWidth="2ch" />
+            <aInput v-model="day" :label='$t("DT_D")' :placeholder="$t('DAY')" :modeEdit="true" :maxLength="2" :max="31" :min="1" type="number" :idNameKey="`day-${idq}`" inputWidth="6ch" labelWidth="3ch" />
           </div>
           <div class="col-auto text-nowrap mb-1" v-if="['time', 'dateTime'].includes(format)">
             &nbsp;
-            <aInput v-model="hour" type="number" :placeholder="$t('HOUR')" :label='$t("DT_h")' :maxLength="2" :max="23" :min="0" :idNameKey="`hour-${idq}`" :modeEdit="true" inputWidth="6ch" labelWidth="2ch" />
+            <aInput v-model="hour" type="number" :placeholder="$t('HOUR')" :label='$t("DT_h")' :maxLength="2" :max="23" :min="0" :idNameKey="`hour-${idq}`" :modeEdit="true" inputWidth="6ch" labelWidth="3ch" />
             &nbsp;
-            <aInput v-model="min" type="number" :placeholder="$t('MINUTE')" :label='$t("DT_m")' :maxLength="2" :max="59" :min="0" :idNameKey="`min-${idq}`" :modeEdit="true" inputWidth="6ch" labelWidth="2ch" />
+            <aInput v-model="min" type="number" :placeholder="$t('MINUTE')" :label='$t("DT_m")' :maxLength="2" :max="59" :min="0" :idNameKey="`min-${idq}`" :modeEdit="true" inputWidth="6ch" labelWidth="3ch" />
             &nbsp;
-            <aInput v-model="sec" type="number" :placeholder="$t('SECOND')" :label='$t("DT_s")' :maxLength="2" :max="59" :min="0" :idNameKey="`sec-${idq}`" :modeEdit="true" inputWidth="6ch" labelWidth="2ch" />
+            <aInput v-model="sec" type="number" :placeholder="$t('SECOND')" :label='$t("DT_s")' :maxLength="2" :max="59" :min="0" :idNameKey="`sec-${idq}`" :modeEdit="true" inputWidth="6ch" labelWidth="3ch" />
           </div>
           <div class="col-auto text-nowrap mb-1">
             &nbsp;
