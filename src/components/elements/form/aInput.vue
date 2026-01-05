@@ -35,7 +35,7 @@
             :multiple="multiple"
             :disabled="disabled"
             :class="{ displayNone: computedFlagDisplayNone }" />
-          <span v-if="type === 'checkbox'" class="checkMark">&nbsp;</span>
+          <span v-if="type === 'checkbox'" class="checkMark"><span v-if="internalChecked">V</span><span v-if="!internalChecked">&nbsp;</span></span>
         </div>
 
         <!-- Label Right -->
