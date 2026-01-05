@@ -1,16 +1,17 @@
 <template>
   <div class="aInput notranslate" :style="{ display: componentDisplay }">
     <template v-if="modeEdit">
-      <div class="d-flex no-gutters align-items-center">
+      <label class="d-flex no-gutters align-items-center" :for="idNameKey">
 
         <!-- Label Left -->
         <div
+          class="col-auto"
           v-if="label && flagLabelFirst"
-          class="col-auto">
-          <label
-            :for="idNameKey"
-            :style="{ width: labelWidth }"
-            :class="{ 'btn btn-secondary': type === 'file' }">{{ label }}<span v-if="type !== 'file'">:</span>&nbsp;</label>
+          :style="{ width: labelWidth }">
+          <span
+            :class="{ 'btn btn-secondary': type === 'file' }">
+            {{ label }}<span v-if="type !== 'file'">:</span>&nbsp;
+          </span>
         </div>
 
         <!-- Input -->
@@ -38,14 +39,13 @@
 
         <!-- Label Right -->
         <div
+          class="col-auto"
           v-if="label && !flagLabelFirst"
-          class="col-auto">
-          <label
-            :for="idNameKey"
-            :style="{ width: labelWidth }">&nbsp;{{ label }}</label>
+          :style="{ width: labelWidth }">
+          <span>&nbsp;{{ label }}</span>
         </div>
 
-      </div>
+      </label>
     </template>
 
     <template v-if="!modeEdit">
@@ -356,7 +356,7 @@ export default {
   & input[type="checkbox"]+.checkMark {
     display: inline-block;
     width: 1em;
-    background-color: #aaaaaa;
+    background-color: #ff0000;
   }
 
   & input[type="checkbox"]:checked+.checkMark {
