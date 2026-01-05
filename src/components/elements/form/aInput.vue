@@ -289,9 +289,10 @@ export default {
         case 'image':
           break;
         case 'radio':
+          this.valueData = this.value;
           // Emit the radio's value when selected
-          this.$emit('update:modelValue', this.value);
-          this.$emit('change', this.value);
+          this.$emit('update:modelValue', this.valueData);
+          this.$emit('change', this.valueData);
           break;
         case 'checkbox':
           this.valueData = event.target.checked ? this.trueValue : this.falseValue;
