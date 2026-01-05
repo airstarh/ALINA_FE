@@ -4,8 +4,15 @@
       <div class="row">
         <div class="col">
           <span class="text-lg-left">
-          <ui-checkbox v-model="item.geo_is_map_shown" :trueValue="1" :false-value="0" :checked="item.geo_is_map_shown==1">{{ $t("Show map") }}</ui-checkbox>
-            </span>
+            <aInput
+              type="checkbox"
+              :modeEdit="true"
+              :label="$t('Show map')"
+              v-model="item.geo_is_map_shown"
+              :trueValue="1"
+              :false-value="0"
+              :checked="item.geo_is_map_shown == 1" />
+          </span>
         </div>
       </div>
       <div class="row" v-if="item.geo_is_map_shown == 1">
@@ -82,66 +89,68 @@
       </div>
     </div>
     <yandex-map
-        v-if="item.geo_is_map_shown == 1"
-        :settings="ConfigApi.YandexMaps"
-        :controls="tagYandexMap.controls"
-        :coords="[item.geo_latitude, item.geo_longitude]"
-        :zoom="item.geo_zoom"
-        :scroll-zoom="false"
-        style="width: 95%; height: 500px;"
-        :behaviors="['default']"
-        :map-type="item.geo_map_type"
-        :cluster-options="{
-            1: {clusterDisableClickZoom: false}
-          }"
-    >
+      v-if="item.geo_is_map_shown == 1"
+      :settings="ConfigApi.YandexMaps"
+      :controls="tagYandexMap.controls"
+      :coords="[item.geo_latitude, item.geo_longitude]"
+      :zoom="item.geo_zoom"
+      :scroll-zoom="false"
+      style="width: 95%; height: 500px;"
+      :behaviors="['default']"
+      :map-type="item.geo_map_type"
+      :cluster-options="{
+        1: { clusterDisableClickZoom: false }
+      }">
       <ymap-marker
-          :marker-id="`yandex_map_${item.id}`"
-          marker-type="placemark"
-          :coords="[item.geo_latitude, item.geo_longitude]"
-          :hint-content="item.header"
-          :balloon="{header: computedMarkerHeader, body: '', footer: ''}"
-          :icon="{color: 'violet', glyph: 'dot'}"
-          cluster-name="1"
-      ></ymap-marker>
+        :marker-id="`yandex_map_${item.id}`"
+        marker-type="placemark"
+        :coords="[item.geo_latitude, item.geo_longitude]"
+        :hint-content="item.header"
+        :balloon="{ header: computedMarkerHeader, body: '', footer: '' }"
+        :icon="{ color: 'violet', glyph: 'dot' }"
+        cluster-name="1"></ymap-marker>
     </yandex-map>
   </div>
 </template>
 
 <script>
-import UtilsData               from "@/Utils/UtilsData";
-import ConfigApi               from "@/configs/ConfigApi";
+import UtilsData from "@/Utils/UtilsData";
+import ConfigApi from "@/configs/ConfigApi";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
+import aInput from "@/components/elements/form/aInput";
 
 export default {
   name: "AlinaYandexMap",
+  components: {
+    aInput
+  },
   created() {
     this.mMapLatLonToCSV();
     this.pageRecalcIframeHeight();
   },
   props: {
-    item:      {
-      type:    Object,
+    item: {
+      type: Object,
       default: () => {
         return {
-          id:               null,
-          header:           'Home',
-          body:             '',
-          body_txt:         '',
-          geo_latitude:     55.798324,
-          geo_longitude:    37.618993,
-          geo_map_type:     'map',
-          geo_zoom:         14,
+          id: null,
+          header: 'Home',
+          body: '',
+          body_txt: '',
+          geo_latitude: 55.798324,
+          geo_longitude: 37.618993,
+          geo_map_type: 'map',
+          geo_zoom: 14,
           geo_is_map_shown: 0,
         }
       },
     },
-    modeEdit:  {
-      type:    Boolean,
+    modeEdit: {
+      type: Boolean,
       default: true
     },
     markerUrl: {
-      type:    String,
+      type: String,
       default: '/'
     },
   },
@@ -177,16 +186,16 @@ export default {
       return res;
     }
   },
-  watch:    {
+  watch: {
     // ##################################################
     // # region Lat Lon Smart
-    "item.geo_latitude":  function () {
+    "item.geo_latitude": function () {
       this.mMapLatLonToCSV();
     },
     "item.geo_longitude": function () {
       this.mMapLatLonToCSV();
     },
-    "dtLatLongCSV":       function (newVal) {
+    "dtLatLongCSV": function (newVal) {
       let arr = newVal.split(',');
       if (arr[0]) {
         this.item.geo_latitude = arr[0].trim();
@@ -201,11 +210,11 @@ export default {
     }, // # endregion Lat Lon Smart
     // ##################################################
   },
-  methods:  {
+  methods: {
     // ##################################################
     // # region Lat Lon Smart
     mMapLatLonToCSV() {
-      let geo_latitude  = this.item.geo_latitude;
+      let geo_latitude = this.item.geo_latitude;
       let geo_longitude = this.item.geo_longitude;
       if (!UtilsData.isNumber(geo_latitude)) {
         geo_latitude = 0;
