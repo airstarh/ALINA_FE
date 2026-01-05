@@ -1,11 +1,12 @@
 <template>
   <div class="aInput notranslate" :style="{ display: componentDisplay }">
     <template v-if="modeEdit">
-      <label class="d-flex no-gutters align-items-center" :for="idNameKey">
+
+      <label class="row no-gutters align-items-center a-input-line" :for="idNameKey">
 
         <!-- Label Left -->
         <div
-          class="col-auto"
+          class="col left-label"
           v-if="label && flagLabelFirst"
           :style="{ width: labelWidth }">
           <span
@@ -15,7 +16,9 @@
         </div>
 
         <!-- Input -->
-        <div class="col">
+        <div
+          class="col main-input"
+          :style="{ width: inputWidth }">
           <input
             :type="type"
             :value="value"
@@ -25,7 +28,7 @@
             :id="idNameKey"
             :name="idNameKey"
             :placeholder="placeholder"
-            :style="{ textAlign: inputAlign, width: inputWidth }"
+            :style="{ textAlign: inputAlign, maxWidth: '99%' }"
             :maxLength="maxLength"
             :size="size"
             :max="max"
@@ -40,7 +43,7 @@
 
         <!-- Label Right -->
         <div
-          class="col-auto pl-2 pr-3"
+          class="col right-label"
           v-if="label && !flagLabelFirst"
           :style="{ width: labelWidth }">
           <span>{{ label }}</span>
@@ -180,7 +183,7 @@ export default {
 
     componentDisplay: {
       type: String,
-      default: 'inline-block'
+      default: 'block'
     },
 
     inputAlign: {
@@ -342,6 +345,27 @@ export default {
 </script>
 <style scoped lang="scss">
 .aInput {
+  max-width: 99%;
+  margin: 0 auto;
+
+  word-break: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+
+  & .row.a-input-line {
+    flex-wrap: nowrap;
+
+    & .col:first-child {
+      flex: 0 0 auto;
+    }
+
+    & .col:last-child {
+      min-width: 0;
+      
+      flex: 1 1 auto;
+    }
+  }
 
   & input[type="checkbox"] {
     display: none;
