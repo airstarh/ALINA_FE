@@ -15,6 +15,7 @@
         <!-- Input -->
         <div class="col ml-1">
           <input
+            :type="type"
             :value="value"
             :checked="internalChecked"
             @input="onInput"

@@ -20,13 +20,14 @@
         @hide="onHide">
         <div class="row no-gutters">
           <div class="col">
-            <ui-fileupload
-              v-if="modeEdit"
+            <aInput
+              :modeEdit="modeEdit"
               accept="*/*"
               :multiple="true"
               :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-              @change="onChangeFileField">{{ $t("Select your files") }}
-            </ui-fileupload>
+              type="file"
+              :label="$t('Select your files')"
+              @change="onChangeFileField" />
           </div>
           <div
             v-if="modeEdit && dArrFiles.length > 0"
@@ -150,7 +151,7 @@ export default {
       })
         .go();
     },
-    onChangeFileField(fileList, event) {
+    onChangeFileField(fileList,) {
       AjaxAlina.newInst({
         method: 'POST',
         url: this.options.urlFileUpload,
