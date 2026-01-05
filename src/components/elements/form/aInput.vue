@@ -45,7 +45,7 @@
         <div
           class="col right-label"
           v-if="label && !flagLabelFirst"
-          :style="{ textAlign: labelAlign, width: labelWidth }">>
+          :style="{ textAlign: labelAlign, width: labelWidth }">
           <span>{{ label }}</span>
         </div>
 
@@ -353,16 +353,11 @@ export default {
   max-width: 99%;
   margin: 0 auto;
 
-  word-break: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-
   & .row.a-input-line {
     flex-wrap: nowrap;
 
     & .col:first-child {
-      flex: 0 0 auto;
+      flex: 0 1 auto;
     }
 
     & .col:last-child {
@@ -370,6 +365,7 @@ export default {
     }
   }
 
+  // region CHECKBOX
   & input[type="checkbox"] {
     display: none;
   }
@@ -385,6 +381,8 @@ export default {
   & input[type="checkbox"]:checked+.checkMark {
     background-color: #00ff00;
   }
+
+  // endregion CHECKBOX
 
   & .displayNone {
     display: none;
