@@ -28,7 +28,7 @@
             :id="idNameKey"
             :name="idNameKey"
             :placeholder="placeholder"
-            :style="{ textAlign: inputAlign, maxWidth: '99%' }"
+            :style="{ textAlign: inputAlign, width: '99%' }"
             :maxLength="maxLength"
             :size="size"
             :max="max"
