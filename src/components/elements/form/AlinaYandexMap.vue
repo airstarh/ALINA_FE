@@ -1,18 +1,16 @@
 <template>
   <div class="mt-1 mb-1">
     <div v-if="modeEdit">
-      <div class="row">
+      <div class="row no-gutters">
         <div class="col">
-          <span class="text-lg-left">
-            <aInput
-              type="checkbox"
-              :modeEdit="true"
-              :label="$t('Show map')"
-              v-model="item.geo_is_map_shown"
-              :trueValue="1"
-              :false-value="0"
-              :checked="item.geo_is_map_shown == 1" />
-          </span>
+          <aInput
+            type="checkbox"
+            :modeEdit="true"
+            :label="$t('Show map')"
+            v-model="item.geo_is_map_shown"
+            :trueValue="1"
+            :false-value="0"
+            :checked="item.geo_is_map_shown == 1" />
         </div>
       </div>
       <div class="row" v-if="item.geo_is_map_shown == 1">

@@ -14,7 +14,7 @@
         </div>
 
         <!-- Input -->
-        <div class="col ml-1">
+        <div class="col">
           <input
             :type="type"
             :value="value"
@@ -33,6 +33,7 @@
             :multiple="multiple"
             :disabled="disabled"
             :class="{ displayNone: computedFlagDisplayNone }" />
+          <span v-if="type === 'checkbox'" class="checkMark">0</span>
         </div>
 
         <!-- Label Right -->
@@ -348,7 +349,19 @@ export default {
     height: auto;
   }
 
-  ;
+  & input[type="checkbox"] {
+    display: none;
+  }
+
+  & input[type="checkbox"]+.checkMark {
+    display: inline-block;
+    width: 1em;
+    background-color: #aaaaaa;
+  }
+
+  & input[type="checkbox"]:checked+.checkMark {
+    background-color: #00ff00;
+  }
 
   & .displayNone {
     display: none;
