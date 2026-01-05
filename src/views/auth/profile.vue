@@ -37,7 +37,15 @@
         <div class="row no-gutters justify-content-center">
           <div class="col-md-4">
             <a :href="post.emblem">
-              <ui-fileupload v-if="options.modeEdit" accept="image/*" :multiple="false" :name="ConfigApi.ALINA_FILE_UPLOAD_KEY" @change="onChangeFileField">{{ $t("Select an image") }}</ui-fileupload>
+              <aInput
+                v-if="options.modeEdit"
+                type="file"
+                :modeEdit="options.modeEdit"
+                :label="$t('Select an image')"
+                accept="image/*"
+                :multiple="false"
+                :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+                @change="onChangeFileField" />
               <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
               <img v-if="!post.emblem" src="@/assets/anarki.png" width="100%">
             </a>
