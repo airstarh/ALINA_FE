@@ -35,7 +35,7 @@
             :multiple="multiple"
             :disabled="disabled"
             :class="{ displayNone: computedFlagDisplayNone }" />
-          <span v-if="type === 'checkbox'" class="checkMark">0</span>
+          <span v-if="type === 'checkbox'" class="checkMark">&nbsp;</span>
         </div>
 
         <!-- Label Right -->
@@ -349,7 +349,7 @@ export default {
 
   & input[type="checkbox"]+.checkMark {
     display: inline-block;
-    width: 1em;
+    width: 1lh;
     background-color: #ff0000;
   }
 
