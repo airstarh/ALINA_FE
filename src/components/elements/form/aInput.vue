@@ -69,7 +69,7 @@
 
 export default {
   name: "aInput",
-  emits: ['input'],
+  emits: ['input', 'change', 'update:modelValue'],
   props: {
     // Common
     value: {
@@ -200,7 +200,7 @@ export default {
   },
   data() {
     return {
-      valueData: '',
+      valueData: null,
 
       typeAll: [
         'text',
@@ -304,6 +304,7 @@ export default {
           if (event.target.files.length > 0) {
             this.valueData = Array.from(event.target.files);
             this.$emit('input', this.valueData);
+            this.$emit('change', this.valueData);
           }
           break;
         default:
