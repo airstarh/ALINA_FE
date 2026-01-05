@@ -9,7 +9,8 @@
           class="col-auto">
           <label
             :for="idNameKey"
-            :style="{ width: labelWidth }">{{ label }}:&nbsp;</label>
+            :style="{ width: labelWidth }"
+            :class="{ 'btn btn-secondary': type === 'file' }">{{ label }}<span v-if="type !== 'file'">:</span>&nbsp;</label>
         </div>
 
         <!-- Input -->
