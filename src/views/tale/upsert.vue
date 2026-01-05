@@ -82,76 +82,54 @@
               <div class="col">
                 <div class="mb-3">
                   <!-- is_header_hidden -->
-                  <ui-checkbox v-model="tale.is_header_hidden" :trueValue="1" :false-value="0"
-                    :checked="tale.is_header_hidden == 1">{{ $t("Hide header") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Hide header")'' v-model="tale.is_header_hidden" :checked="tale.is_header_hidden == 1" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_date_hidden -->
-                  <ui-checkbox v-model="tale.is_date_hidden" :trueValue="1" :false-value="0"
-                    :checked="tale.is_date_hidden == 1">{{ $t("Hide date") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Hide date")'' v-model="tale.is_date_hidden" :checked="tale.is_date_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_avatar_hidden -->
-                  <ui-checkbox v-model="tale.is_avatar_hidden" :trueValue="1" :false-value="0"
-                    :checked="tale.is_avatar_hidden == 1">{{ $t("Hide avatar") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Hide avatar")'' v-model="tale.is_avatar_hidden" :checked="tale.is_avatar_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_social_sharing_hidden -->
-                  <ui-checkbox v-model="tale.is_social_sharing_hidden" :trueValue="1" :false-value="0"
-                    :checked="tale.is_social_sharing_hidden == 1">{{ $t("Hide social sharing") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Hide social sharing")'' v-model="tale.is_social_sharing_hidden" :checked="tale.is_social_sharing_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_denied -->
-                  <ui-checkbox v-model="tale.is_comment_denied" :trueValue="1" :false-value="0"
-                    :checked="tale.is_comment_denied == 1">{{ $t("Comments denied") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Comments denied")'' v-model="tale.is_comment_denied" :checked="tale.is_comment_denied" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_for_owner -->
-                  <ui-checkbox v-model="tale.is_comment_for_owner" :trueValue="1" :false-value="0"
-                    :checked="tale.is_comment_for_owner == 1">{{ $t("Comments only for owner") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Comments only for owner")'' v-model="tale.is_comment_for_owner" :checked="tale.is_comment_for_owner" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
               </div>
               <div class="col">
                 <div class="mb-3">
                   <!-- is_sticked -->
-                  <ui-checkbox v-model="tale.is_sticked" :trueValue="1" :false-value="0" :checked="tale.is_sticked == 1">
-                    {{ $t("Sticked") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Sticked")'' v-model="tale.is_sticked" :checked="tale.is_sticked" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_adult_denied -->
-                  <ui-checkbox v-model="tale.is_adult_denied" :trueValue="1" :false-value="0"
-                    :checked="tale.is_adult_denied == 1">{{ $t("Not for kids") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Not for kids")'' v-model="tale.is_adult_denied" :checked="tale.is_adult_denied" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_adv -->
-                  <ui-checkbox v-model="tale.is_adv" trueValue="1" false-value="0" :checked="tale.is_adv == 1">
-                    {{ $t("Advertisement") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Advertisement")'' v-model="tale.is_adv" :checked="tale.is_adv" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_draft -->
-                  <ui-checkbox v-model="tale.is_draft" :trueValue="1" :false-value="0" :checked="tale.is_draft == 1">
-                    {{ $t("Hide on feed") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Hide on feed")'' v-model="tale.is_draft" :checked="tale.is_draft" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_for_registered -->
-                  <ui-checkbox v-model="tale.is_for_registered" :trueValue="1" :false-value="0"
-                    :checked="tale.is_for_registered == 1">{{ $t("Only for registered users") }}
-                  </ui-checkbox>
+                  <aInput :label='$t("Only for registered users")'' v-model="tale.is_for_registered" :checked="tale.is_for_registered" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
 
                 <!-- seo_index -->
                 <div class="mb-3">
-                  <aInput v-model="tale.seo_index" :label="$tc('SEO Index')" :placeholder="$tc('SEO Index')" :modeEdit="options.modeEdit" />
+                  <aInput v-model="tale.seo_index" :label="$tc(' SEO Index')" :placeholder="$tc('SEO Index')" :modeEdit="options.modeEdit" />
                 </div>
               </div>
             </div>
