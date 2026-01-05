@@ -40,10 +40,10 @@
 
         <!-- Label Right -->
         <div
-          class="col-auto"
+          class="col-auto pl-2 pr-3"
           v-if="label && !flagLabelFirst"
           :style="{ width: labelWidth }">
-          <span>&nbsp;{{ label }}</span>
+          <span>{{ label }}</span>
         </div>
 
       </label>
