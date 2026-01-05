@@ -34,7 +34,7 @@
           <div class="" v-if="options.modeEdit">
             <div>Tale #{{ tale.id }}</div>
             <h1>
-              <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" componentDisplay="block" :inputWidth="`100%`" />
+              <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" componentDisplay="block" />
             </h1>
             <BorgEditor v-model="tale.body" />
             <div class="mb-3">&nbsp</div>
@@ -66,65 +66,65 @@
 
             <!-- alias -->
             <div class="mb-3">
-              <aInput v-model="tale.router_alias" :label="$tc('Page Alias')" :placeholder="$tc('Page Alias')" :modeEdit="options.modeEdit" componentDisplay="block" inputWidth="100%" />
+              <aInput v-model="tale.router_alias" :label="$tc('Page Alias')" :placeholder="$tc('Page Alias')" :modeEdit="options.modeEdit" />
             </div>
 
             <!-- iframe -->
             <div class="mb-3">
-              <aInput v-model="tale.iframe" :label="$tc('iframe')" :placeholder="$tc('iframe')" :modeEdit="options.modeEdit" componentDisplay="block" inputWidth="100%" />
+              <aInput v-model="tale.iframe" :label="$tc('iframe')" :placeholder="$tc('iframe')" :modeEdit="options.modeEdit" />
             </div>
 
             <div v-if="tale.iframe" class="mt-3">
               <iframe :src="tale.iframe" frameborder="1" width="90%" height="250px"></iframe>
             </div>
 
-            <div class="row">
+            <div class="row no-gutters" style="max-width: 99%;">
               <div class="col">
                 <div class="mb-3">
                   <!-- is_header_hidden -->
-                  <aInput :label='$t("Hide header")' v-model="tale.is_header_hidden" :checked="tale.is_header_hidden == 1" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Hide header")' v-model="tale.is_header_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_date_hidden -->
-                  <aInput :label='$t("Hide date")' v-model="tale.is_date_hidden" :checked="tale.is_date_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Hide date")' v-model="tale.is_date_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_avatar_hidden -->
-                  <aInput :label='$t("Hide avatar")' v-model="tale.is_avatar_hidden" :checked="tale.is_avatar_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Hide avatar")' v-model="tale.is_avatar_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_social_sharing_hidden -->
-                  <aInput :label='$t("Hide social sharing")' v-model="tale.is_social_sharing_hidden" :checked="tale.is_social_sharing_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Hide social sharing")' v-model="tale.is_social_sharing_hidden" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_denied -->
-                  <aInput :label='$t("Comments denied")' v-model="tale.is_comment_denied" :checked="tale.is_comment_denied" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Comments denied")' v-model="tale.is_comment_denied" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_for_owner -->
-                  <aInput :label='$t("Comments only for owner")' v-model="tale.is_comment_for_owner" :checked="tale.is_comment_for_owner" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Comments only for owner")' v-model="tale.is_comment_for_owner" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
               </div>
               <div class="col">
                 <div class="mb-3">
                   <!-- is_sticked -->
-                  <aInput :label='$t("Sticked")' v-model="tale.is_sticked" :checked="tale.is_sticked" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Sticked")' v-model="tale.is_sticked" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_adult_denied -->
-                  <aInput :label='$t("Not for kids")' v-model="tale.is_adult_denied" :checked="tale.is_adult_denied" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Not for kids")' v-model="tale.is_adult_denied" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_adv -->
-                  <aInput :label='$t("Advertisement")' v-model="tale.is_adv" :checked="tale.is_adv" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Advertisement")' v-model="tale.is_adv" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_draft -->
-                  <aInput :label='$t("Hide on feed")' v-model="tale.is_draft" :checked="tale.is_draft" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Hide on feed")' v-model="tale.is_draft" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
                 <div class="mb-3">
                   <!-- is_for_registered -->
-                  <aInput :label='$t("Only for registered users")'' v-model="tale.is_for_registered" :checked="tale.is_for_registered" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Only for registered users")'' v-model="tale.is_for_registered"  type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
 
                 <!-- seo_index -->
@@ -150,7 +150,7 @@
                   <a
                     :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
                     class="m-0">
-                    <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" :inputWidth="`100%`" />
+                    <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" />
                   </a>
                 </h1>
                 <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;"

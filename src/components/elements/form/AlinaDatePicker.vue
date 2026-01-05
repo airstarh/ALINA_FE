@@ -6,7 +6,7 @@
         <div>{{ $t(label) }}</div>
       </div>
       <div class="col">
-        <div class="row align-items-center justify-content-start">
+        <div class="row no-gutters align-items-center justify-content-start">
           <div class="col-auto text-nowrap mb-1" v-if="['date', 'dateTime'].includes(format)">
             &nbsp;
             <aInput v-model="year" :label='$t("DT_Y")' :placeholder="$t('YEAR')" :modeEdit="true" :maxLength="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" inputWidth="6ch" labelWidth="2ch" />
