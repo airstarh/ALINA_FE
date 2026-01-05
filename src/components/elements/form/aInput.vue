@@ -8,7 +8,7 @@
         <div
           class="col left-label"
           v-if="label && flagLabelFirst"
-          :style="{ width: labelWidth }">
+          :style="{ textAlign: labelAlign, width: labelWidth }">
           <span
             :class="{ 'btn btn-secondary': type === 'file' }">
             {{ label }}<span v-if="type !== 'file'">:&nbsp;</span>
@@ -45,7 +45,7 @@
         <div
           class="col right-label"
           v-if="label && !flagLabelFirst"
-          :style="{ width: labelWidth }">
+          :style="{ textAlign: labelAlign, width: labelWidth }">>
           <span>{{ label }}</span>
         </div>
 
@@ -184,6 +184,11 @@ export default {
     componentDisplay: {
       type: String,
       default: 'block'
+    },
+
+    labelAlign: {
+      type: String,
+      default: 'left'
     },
 
     inputAlign: {
@@ -362,7 +367,7 @@ export default {
 
     & .col:last-child {
       min-width: 0;
-      
+
       flex: 1 1 auto;
     }
   }
