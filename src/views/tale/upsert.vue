@@ -124,7 +124,7 @@
                 </div>
                 <div class="mb-3">
                   <!-- is_for_registered -->
-                  <aInput :label='$t("Only for registered users")'' v-model="tale.is_for_registered"  type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Only for registered users")' v-model="tale.is_for_registered"  type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
 
                 <!-- seo_index -->
