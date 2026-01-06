@@ -384,7 +384,7 @@ export default {
     flex-wrap: nowrap;
     align-items: center;
     justify-content: flex-start;
-    gap: 2px;
+    gap: 5px;
 
     & .a-item {
       min-width: 0;
