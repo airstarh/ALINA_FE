@@ -66,12 +66,12 @@
 
             <!-- alias -->
             <div class="mb-3">
-              <aInput v-model="tale.router_alias" :label="$tc('Page Alias')" :placeholder="$tc('Page Alias')" :modeEdit="options.modeEdit" />
+              <aInput v-model="tale.router_alias" :label="$tc('Page Alias')" :placeholder="$tc('Page Alias')" :modeEdit="options.modeEdit" componentDisplay="block" />
             </div>
 
             <!-- iframe -->
             <div class="mb-3">
-              <aInput v-model="tale.iframe" :label="$tc('iframe')" :placeholder="$tc('iframe')" :modeEdit="options.modeEdit" />
+              <aInput v-model="tale.iframe" :label="$tc('iframe')" :placeholder="$tc('iframe')" :modeEdit="options.modeEdit" componentDisplay="block" />
             </div>
 
             <div v-if="tale.iframe" class="mt-3">
@@ -124,7 +124,7 @@
                 </div>
                 <div class="mb-3">
                   <!-- is_for_registered -->
-                  <aInput :label='$t("Only for registered users")' v-model="tale.is_for_registered"  type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput :label='$t("Only for registered users")' v-model="tale.is_for_registered" type="checkbox" :flagLabelFirst="false" :modeEdit="true" />
                 </div>
 
                 <!-- seo_index -->
