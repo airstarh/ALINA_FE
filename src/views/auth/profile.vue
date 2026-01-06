@@ -63,7 +63,7 @@
     <StandardButtons v-if="options.modeEdit" :onGo="runAJax" class="mt-5"></StandardButtons>
 
     <div class="mt-5">&nbsp;</div>
-    1<!-- <tale_feed :doShowAuthorInfo="false" :queryProps="{ 'owner': this.curId }" v-if="this.curId"></tale_feed> -->
+    <tale_feed :doShowAuthorInfo="false" :queryProps="{ 'owner': this.curId }" v-if="this.curId"></tale_feed>
 
   </div>
 </template>
