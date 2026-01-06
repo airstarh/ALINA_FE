@@ -7,7 +7,6 @@ import 'whatwg-fetch'
 import VueCookies              from 'vue-cookies';
 import BootstrapVue            from "bootstrap-vue";
 import {BootstrapVueIcons}     from 'bootstrap-vue'
-import KeenUI                  from "keen-ui";
 import lodash                  from "lodash";
 import VueSocialSharing        from 'vue-social-sharing'
 import VueDateFns              from "vue-date-fns";
@@ -65,8 +64,6 @@ Vue.$cookies.config('1d', '/', '', true, 'None');
 Vue.use(BootstrapVue);
 //#####
 Vue.use(BootstrapVueIcons);
-//#####
-Vue.use(KeenUI);
 //#####
 /*Initial approach leads to constant console error message: You gave to install lodash*/
 /*Or Uncaught TypeError: Cannot redefine property: lodash*/
