@@ -1,5 +1,5 @@
 //import VueCookies          from 'vue-cookies';
-import UtilsData  from "@/Utils/UtilsData";
+import UtilsData from "@/Utils/UtilsData";
 import UtilsArray from "@/Utils/UtilsArray";
 
 export default class UtilsStr {
@@ -23,8 +23,8 @@ export default class UtilsStr {
 
     static fullNameAsArray(fn = null, ln = null, id = null, def = 'ツ') {
         let res = [];
-        res[0]  = def;
-        res[1]  = '   ';
+        res[0] = def;
+        res[1] = '   ';
 
         if (!UtilsData.empty(fn)) {
             res[0] = fn
@@ -69,9 +69,9 @@ export default class UtilsStr {
     // #####
     static hashtag(str) {
         if (UtilsData.empty(str)) return '';
-        const ht  = UtilsStr.regexHashTagList;
+        const ht = UtilsStr.regexHashTagList;
         const txt = `$1<a href="#/?txt=%23$2">#$2</a>`;
-        let repl  = str.replace(ht, txt);
+        let repl = str.replace(ht, txt);
         return repl;
     }
 
