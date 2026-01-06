@@ -2,11 +2,11 @@
   <div class="aInput notranslate" :style="{ display: componentDisplay }">
     <template v-if="modeEdit">
 
-      <label class="row no-gutters align-items-center a-input-line" :for="idNameKey">
+      <label class="a-flex" :for="idNameKey">
 
         <!-- Label Left -->
         <div
-          class="col left-label"
+          class="a-item label-left"
           v-if="label && flagLabelFirst"
           :style="{ textAlign: labelAlign, width: labelWidth }">
           <span
@@ -17,7 +17,7 @@
 
         <!-- Input -->
         <div
-          class="col main-input"
+          class="a-item a-input"
           :style="{ width: inputWidth }">
           <input
             :type="type"
@@ -43,7 +43,7 @@
 
         <!-- Label Right -->
         <div
-          class="col right-label"
+          class="a-item label-right"
           v-if="label && !flagLabelFirst"
           :style="{ textAlign: labelAlign, width: labelWidth }">
           <span>{{ label }}</span>
@@ -353,15 +353,27 @@ export default {
   max-width: 99%;
   margin: 0 auto;
 
-  & .row.a-input-line {
+  & .a-flex {
+    display: flex;
     flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2px;
 
-    & .col:first-child {
+    & .a-item {
+      min-width: 0;
+      word-break: normal;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    & .a-item:first-child {
       flex: 0 1 auto;
     }
 
-    & .col:last-child {
-      flex: 0 1 auto;
+    & .a-item:last-child {
+      flex: 1 1 auto;
     }
   }
 
