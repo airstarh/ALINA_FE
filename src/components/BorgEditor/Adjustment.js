@@ -29,6 +29,7 @@ export default class Adjustment {
       licenseKey: this.key,
       language: CurrentLocale.language,
       extraPlugins: [MyCustomUploadAdapterPlugin],
+      allowedContent: true,
       plugins: [
         ck.Image,
         ck.ImageInsert,
