@@ -183,7 +183,7 @@ export default {
 
     componentDisplay: {
       type: String,
-      default: 'block'
+      default: 'inline-block'
     },
 
     labelAlign: {

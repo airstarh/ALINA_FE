@@ -2,7 +2,7 @@
 
   <div class="alina-date-picker">
     <div v-if="modeEdit" class="row no-gutters align-items-center justify-content-between">
-      <div class="col p-0 m-0" v-if="label.length">
+      <div class="col-auto p-0 m-0" v-if="label.length">
         <div>{{ $t(label) }}</div>
       </div>
       <div class="col">
