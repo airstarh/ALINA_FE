@@ -8,7 +8,7 @@
         <div
           class="a-item label-left"
           v-if="label && flagLabelFirst"
-          :style="{ textAlign: labelAlign, width: labelWidth }">
+          :style="computedStyleLabel">
           <span
             :class="{ 'btn btn-secondary': type === 'file' }">
             {{ label }}<span v-if="type !== 'file'">:&nbsp;</span>
@@ -18,7 +18,7 @@
         <!-- Input -->
         <div
           class="a-item a-input"
-          :style="{ width: inputWidth }">
+          :style="computedStyleInput">
           <input
             :type="type"
             :value="value"
@@ -45,7 +45,7 @@
         <div
           class="a-item label-right"
           v-if="label && !flagLabelFirst"
-          :style="{ textAlign: labelAlign, width: labelWidth }">
+          :style="computedStyleLabel">
           <span>{{ label }}</span>
         </div>
 
@@ -198,12 +198,12 @@ export default {
 
     labelWidth: {
       type: String,
-      default: 'auto'
+      default: null
     },
 
     inputWidth: {
       type: String,
-      default: 'auto'
+      default: null
     },
 
     flagLabelFirst: {
@@ -344,7 +344,33 @@ export default {
 
     computedFlagDisplayNone() {
       return this.type === 'file';
-    }
+    },
+
+    computedStyleLabel() {
+      const style = {};
+
+      if (this.labelWidth) {
+        style['flex'] = 'none';
+        style['width'] = this.labelWidth;
+      }
+
+      if (this.labelAlign) {
+        style['text-align'] = this.labelAlign;
+      }
+
+      return style;
+    },
+
+    computedStyleInput() {
+      const style = {};
+
+      if (this.inputWidth) {
+        style['flex'] = 'none';
+        style['width'] = this.inputWidth;
+      }
+
+      return style;
+    },
   }
 }
 </script>
