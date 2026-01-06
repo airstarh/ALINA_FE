@@ -4,7 +4,7 @@
             <ckeditor :editor="Adjustment.editor" :config="Adjustment.tools" @input="borgEmit" :value="value" />
         </template>
         <template v-if="!modeEdit">
-            <div class="ck-content">
+            <div class="ck ck-content">
                 <div v-html="UtilsStr.content(value)"></div>
             </div>
         </template>
