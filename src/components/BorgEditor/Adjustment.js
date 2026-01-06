@@ -29,7 +29,11 @@ export default class Adjustment {
       licenseKey: this.key,
       language: CurrentLocale.language,
       extraPlugins: [MyCustomUploadAdapterPlugin],
-      allowedContent: true,
+      // TODO: Investigate, how is correct to use settings below:...
+      // allowedContent: true,
+      // enterMode: ck.ENTER_BR,
+      // shiftEnterMode: ck.ENTER_P,
+      // extraAllowedContent: 'br(*)',
       plugins: [
         ck.Image,
         ck.ImageInsert,
