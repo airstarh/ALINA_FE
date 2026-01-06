@@ -410,9 +410,13 @@ export default {
 
   & input[type="checkbox"]+.checkMark {
     display: inline-block;
+    // position: relative;
+    // top: 15px;
+
     width: 1lh;
     height: 1lh;
     text-align: center;
+    border-radius: 5px;
     
     color: #000000;
     background-color: #ff0000;
