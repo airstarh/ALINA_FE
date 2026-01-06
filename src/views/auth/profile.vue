@@ -44,7 +44,7 @@
                 :label="$t('Select an image')"
                 accept="image/*"
                 :multiple="false"
-                :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+                :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
                 @change="onChangeFileField" />
               <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
               <img v-if="!post.emblem" src="@/assets/anarki.png" width="100%">

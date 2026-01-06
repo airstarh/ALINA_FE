@@ -61,7 +61,7 @@
                 label="Select an image"
                 accept="image/*"
                 :multiple="true"
-                name="userfile"
+                idNameKey="userfile"
                 @change="onChangeFileField" />
             </div>
           </div>

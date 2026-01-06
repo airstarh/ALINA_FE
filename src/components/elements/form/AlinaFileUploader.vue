@@ -24,7 +24,7 @@
               :modeEdit="modeEdit"
               accept="*/*"
               :multiple="true"
-              :name="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+              :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
               type="file"
               :label="$t('Select your files')"
               @change="onChangeFileField" />
