@@ -409,10 +409,12 @@ export default {
   }
 
   & input[type="checkbox"]+.checkMark {
-    text-align: center;
-    color: #000000;
     display: inline-block;
     width: 1lh;
+    height: 1lh;
+    text-align: center;
+    
+    color: #000000;
     background-color: #ff0000;
   }
 
