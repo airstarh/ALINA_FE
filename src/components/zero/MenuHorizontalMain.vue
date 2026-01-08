@@ -3,7 +3,7 @@
     <b-navbar toggleable="lg" type="dark" class="corporate-bg-and-text">
       <!--################################################## -->
       <!--region ALWAYS-->
-      <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
+      <b-navbar-brand to="/">ZERO</b-navbar-brand>
       <b-navbar-nav class="flex-row">
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="m-2">
           <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
