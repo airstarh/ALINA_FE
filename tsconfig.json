@@ -19,6 +19,10 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true
     },
+    "vueCompilerOptions": {
+        "target": 2.7, // or 3 for Vue 3
+        "strictTemplates": true
+    },
     "exclude": [
         "node_modules",
         "dist",
