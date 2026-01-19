@@ -1,24 +1,27 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
+        "target": "es2017",
+        "module": "esnext",
         "checkJs": true,
         "baseUrl": "./",
         "paths": {
-            "@/*": [
-                "src/*"
-            ]
-        }
+            "@/*": [ "src/*" ],
+            "@components/*": [ "src/components/*" ],
+            "@utils/*": [ "src/utils/*" ]
+        },
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true
     },
     "exclude": [
-        "node_modules", 
-        "dist", 
+        "node_modules",
+        "dist",
         "dist-stage",
         ".vscode",
         "nbproject",
         "_DEV_DOCS"
     ],
-    "include": [
-        "src/**/*"
-    ]
+    "include": [ "src/**/*.js", "src/**/*.ts", "src/**/*.vue" ],
+    "typeAcquisition": {
+        "include": [ "vue" ]
+    }
 }
