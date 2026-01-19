@@ -70,17 +70,17 @@
 
 <script>
 // @ is an alias to /src
-import StandardButtons from "@/components/elements/form/StandardButtons";
-import aInput from "@/components/elements/form/aInput";
+import StandardButtons from "@/components/elements/form/StandardButtons.vue";
+import aInput from "@/components/elements/form/aInput.vue";
 import ConfigApi from "@/configs/ConfigApi";
 import AjaxAlina from "@/services/AjaxAlina";
 import CurrentUser from "@/services/CurrentUser";
-import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
-import tale_feed from "@/views/tale/feed";
+import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker.vue";
+import tale_feed from "@/views/tale/feed.vue";
 import UtilsObject from "@/Utils/UtilsObject";
 import UtilsStr from "@/Utils/UtilsStr";
 import UtilsDate from "../../Utils/UtilsDate";
-import BorgEditor from "@/components/BorgEditor";
+import BorgEditor from "@/components/BorgEditor/index.vue";
 //#####
 export default {
   name: "auth_profile",

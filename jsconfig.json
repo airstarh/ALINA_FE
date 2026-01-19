@@ -6,8 +6,7 @@
         "checkJs": true,
         "baseUrl": "./",
         "paths": {
-            "@/*": [ "src/*" ],
-            "@components/*": [ "src/components/*" ]
+            "@/*": [ "src/*" ]
         },
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true
