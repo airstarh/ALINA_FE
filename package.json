@@ -54,7 +54,7 @@
     "cache-loader": "^4.1.0",
     "cross-env": "^10.1.0",
     "postcss-loader": "^4.3.0",
-    "sass": "^1.97.1",
+    "sass": "^1.97.2",
     "sass-loader": "^10.5.2",
     "svgo": "^4.0.0",
     "svgo-loader": "^4.0.0",
