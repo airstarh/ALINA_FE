@@ -1,14 +1,14 @@
 <template>
   <div class="p-0 alina-tale-wrapper" :class="{
-                                    'container': !pageIsInIframe,
-                                    'container-fluid': pageIsInIframe
-                                  }">
+                                      'container': !pageIsInIframe,
+                                      'container-fluid': pageIsInIframe
+                                    }">
     <div v-if="!tale.id">...</div>
     <div v-if="tale.id" :class="[
-                                      'row',
-                                      'no-gutters',
-                                      `alina-tale-id-${tale.id}`
-                                    ]">
+                                        'row',
+                                        'no-gutters',
+                                        `alina-tale-id-${tale.id}`
+                                      ]">
       <div class="col">
         <!--##################################################-->
         <!--region Buttons-->
@@ -144,8 +144,8 @@
             <div class="row no-gutters">
               <div class="col mb-3" style="position: relative;" v-if="tale.is_header_hidden != 1">
                 <h1 :class="{
-                                                  'bg-danger': tale.is_adult_denied == 1
-                                                }" class="notranslate m-0 p-3  text-left rounded alina-tale-header"
+                                                    'bg-danger': tale.is_adult_denied == 1
+                                                  }" class="notranslate m-0 p-3  text-left rounded alina-tale-header"
                   :lang="tale.lang">
                   <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')" class="m-0">
                     <aInput v-model="tale.header" :placeholder="$t('Header').toString()" :modeEdit="options.modeEdit" />
