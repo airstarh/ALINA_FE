@@ -1,39 +1,37 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es2017",
         "module": "esnext",
-        "strict": true,
-        "jsx": "preserve",
-        "importHelpers": true,
         "moduleResolution": "node",
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "sourceMap": true,
-        "baseUrl": ".",
-        "types": [
-            "webpack-env"
-        ],
+        "baseUrl": "./",
         "paths": {
-            "@/*": [
-                "src/*"
-            ]
+            "@/*": [ "src/*" ]
         },
-        "lib": [
-            "esnext",
-            "dom",
-            "dom.iterable",
-            "scripthost"
-        ]
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "jsx": "preserve",
+        "lib": [ "esnext", "dom" ],
+        "types": [ "vue" ],
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
     },
-    "include": [
-        "**/*.ts",
-        "**/*.tsx",
-        "**/*.vue"
-    ],
     "exclude": [
-        "node_modules", "dist", "dist-stage",
+        "node_modules",
+        "dist",
+        "dist-stage",
         ".vscode",
         "nbproject",
         "_DEV_DOCS"
+    ],
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "src/**/*.js",
+        "src/shims-vue.d.ts"
     ]
 }
