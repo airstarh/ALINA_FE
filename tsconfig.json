@@ -28,9 +28,12 @@
     "include": [
         "**/*.ts",
         "**/*.tsx",
-        "**/*.vue",
+        "**/*.vue"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules", "dist", "dist-stage",
+        ".vscode",
+        "nbproject",
+        "_DEV_DOCS"
     ]
 }
