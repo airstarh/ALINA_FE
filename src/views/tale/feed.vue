@@ -195,7 +195,9 @@
           ? this.$route.query.txt.join(',')
           : this.$route.query?.txt || '';
 
-        this.feedPagination.pageCurrentNumber = this.$route.query?.pageCurrentNumber || 1;
+        this.feedPagination.pageCurrentNumber = Array.isArray(this.$route.query?.pageCurrentNumber)
+          ? 1
+          : parseInt(this.$route.query?.pageCurrentNumber || 1, 10);
 
         this.feedPagination.pageSize = this.$route.query?.pageSize || 10;
         this.ajaGetFeed();
