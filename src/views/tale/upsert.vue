@@ -37,7 +37,7 @@
               <aInput v-model="tale.header" :placeholder="$t('Header')" :modeEdit="options.modeEdit" componentDisplay="block" />
             </h1>
             <BorgEditor v-model="tale.body" :modeEdit="options.modeEdit" />
-            <div class="mb-3">&nbsp</div>
+            <div class="mb-3">&nbsp;</div>
             <div class="mt-1 mb-3">
               <AlinaDatePicker
                 v-model="tale.publish_at"
