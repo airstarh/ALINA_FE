@@ -29,7 +29,10 @@
           <div class="" v-if="options.modeEdit">
             <div>Tale #{{ tale.id }}</div>
             <h1>
-              <aInput v-model="tale.header" :placeholder="$t('Header').toString()" :modeEdit="options.modeEdit"
+              <aInput
+                v-model="tale.header"
+                :placeholder="$t('Header').toString()"
+                :modeEdit="options.modeEdit"
                 componentDisplay="block" />
             </h1>
             <BorgEditor v-model="tale.body" :modeEdit="options.modeEdit" />
