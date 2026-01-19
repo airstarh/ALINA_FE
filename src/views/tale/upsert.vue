@@ -272,24 +272,24 @@
 </template>
 <script>
 import UtilsData from "@/Utils/UtilsData";
-import StandardButtons from "@/components/elements/form/StandardButtons";
+import StandardButtons from "@/components/elements/form/StandardButtons.vue";
 import ConfigApi from "@/configs/ConfigApi";
 import AjaxAlina from "@/services/AjaxAlina";
 import CurrentUser from "@/services/CurrentUser";
-import Comment from "@/components/elements/form/Comment";
-import Like from "@/components/elements/form/Like";
-import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker";
+import Comment from "@/components/elements/form/Comment.vue";
+import Like from "@/components/elements/form/Like.vue";
+import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker.vue";
 import UtilsStr from "@/Utils/UtilsStr";
-import Share from "@/components/elements/form/Share";
-import AlinaYandexMap from "@/components/elements/form/AlinaYandexMap";
+import Share from "@/components/elements/form/Share.vue";
+import AlinaYandexMap from "@/components/elements/form/AlinaYandexMap.vue";
 import UtilsSys from "@/Utils/UtilsSys";
-import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete";
-import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader";
-import UserAvatar from "@/components/UserAvatar";
+import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete.vue";
+import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader.vue";
+import UserAvatar from "@/components/UserAvatar.vue";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 import UtilsDate from "../../Utils/UtilsDate";
-import BorgEditor from "@/components/BorgEditor";
-import aInput from "@/components/elements/form/aInput";
+import BorgEditor from "@/components/BorgEditor/index.vue";
+import aInput from "@/components/elements/form/aInput.vue";
 //#####
 export default {
   name: "tale_upsert",
