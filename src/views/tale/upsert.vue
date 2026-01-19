@@ -1,18 +1,23 @@
 <template>
-  <div class="p-0 alina-tale-wrapper" :class="{
-                                      'container': !pageIsInIframe,
-                                      'container-fluid': pageIsInIframe
-                                    }">
+  <div
+    class="p-0 alina-tale-wrapper"
+    :class="{
+      'container': !pageIsInIframe,
+      'container-fluid': pageIsInIframe
+    }">
     <div v-if="!tale.id">...</div>
     <div v-if="tale.id" :class="[
-                                        'row',
-                                        'no-gutters',
-                                        `alina-tale-id-${tale.id}`
-                                      ]">
+      'row',
+      'no-gutters',
+      `alina-tale-id-${tale.id}`
+    ]">
       <div class="col">
         <!--##################################################-->
         <!--region Buttons-->
-        <btnEditSaveCancelDelete v-if="!pFlagInFeed" :owner_id="tale.owner_id" :modeEdit="options.modeEdit"
+        <btnEditSaveCancelDelete
+          v-if="!pFlagInFeed"
+          :owner_id="tale.owner_id"
+          :modeEdit="options.modeEdit"
           :subject="tale" @onSave="ajaPostTale" @onEdit="onEdit" @onCancel="onCancel" @onDelete="ajaDeleteTale">
         </btnEditSaveCancelDelete>
         <!--endregion Buttons-->
@@ -33,7 +38,7 @@
               <AlinaDatePicker v-model="tale.publish_at" label="Publish at" idq="publish_at" class="notranslate"
                 :modeEdit="options.modeEdit"></AlinaDatePicker>
             </div>
-  
+
             <div v-if="CU.isAdmin()">
               <div class="input-group input-group mb-3">
                 <!-- body_free -->
@@ -47,27 +52,27 @@
                 <div v-html="tale.body_free"></div>
               </div>
             </div>
-  
+
             <div>
               {{ taleUrl }}
             </div>
-  
+
             <!-- alias -->
             <div class="mb-3">
               <aInput v-model="tale.router_alias" :label="$tc('Page Alias').toString()"
                 :placeholder="$tc('Page Alias').toString()" :modeEdit="options.modeEdit" componentDisplay="block" />
             </div>
-  
+
             <!-- iframe -->
             <div class="mb-3">
               <aInput v-model="tale.iframe" :label="$tc('iframe')" :placeholder="$tc('iframe').toString()"
                 :modeEdit="options.modeEdit" componentDisplay="block" />
             </div>
-  
+
             <div v-if="tale.iframe" class="mt-3">
               <iframe :src="tale.iframe" frameborder="1" width="90%" height="250px"></iframe>
             </div>
-  
+
             <div class="row no-gutters" style="max-width: 99%;">
               <div class="col">
                 <div class="mb-3">
@@ -127,7 +132,7 @@
                   <aInput :label='$t("Only for registered users").toString()' v-model="tale.is_for_registered"
                     type="checkbox" :flagLabelFirst="false" :modeEdit="options.modeEdit" />
                 </div>
-  
+
                 <!-- seo_index -->
                 <div class="mb-3">
                   <aInput v-model="tale.seo_index" :label="$tc(' SEO Index')" :placeholder="$tc('SEO Index')"
@@ -144,8 +149,8 @@
             <div class="row no-gutters">
               <div class="col mb-3" style="position: relative;" v-if="tale.is_header_hidden != 1">
                 <h1 :class="{
-                                                    'bg-danger': tale.is_adult_denied == 1
-                                                  }" class="notranslate m-0 p-3  text-left rounded alina-tale-header"
+                  'bg-danger': tale.is_adult_denied == 1
+                }" class="notranslate m-0 p-3  text-left rounded alina-tale-header"
                   :lang="tale.lang">
                   <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')" class="m-0">
                     <aInput v-model="tale.header" :placeholder="$t('Header').toString()" :modeEdit="options.modeEdit" />
@@ -240,291 +245,291 @@
   </div>
 </template>
 <script>
-  import UtilsData from "@/Utils/UtilsData";
-  import StandardButtons from "@/components/elements/form/StandardButtons.vue";
-  import ConfigApi from "@/configs/ConfigApi";
-  import AjaxAlina from "@/services/AjaxAlina";
-  import CurrentUser from "@/services/CurrentUser";
-  import Comment from "@/components/elements/form/Comment.vue";
-  import Like from "@/components/elements/form/Like.vue";
-  import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker.vue";
-  import UtilsStr from "@/Utils/UtilsStr";
-  import Share from "@/components/elements/form/Share.vue";
-  import AlinaYandexMap from "@/components/elements/form/AlinaYandexMap.vue";
-  import UtilsSys from "@/Utils/UtilsSys";
-  import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete.vue";
-  import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader.vue";
-  import UserAvatar from "@/components/UserAvatar.vue";
-  import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
-  import UtilsDate from "../../Utils/UtilsDate";
-  import BorgEditor from "@/components/BorgEditor/index.vue";
-  import aInput from "@/components/elements/form/aInput.vue";
-  //#####
-  export default {
-    name: "tale_upsert",
-    props: {
-      pTale: {
-        type: Object,
-        default: null
-      },
-      pFlagInFeed: {
-        type: Boolean,
-        default: false
-      },
+import UtilsData from "@/Utils/UtilsData";
+import StandardButtons from "@/components/elements/form/StandardButtons.vue";
+import ConfigApi from "@/configs/ConfigApi";
+import AjaxAlina from "@/services/AjaxAlina";
+import CurrentUser from "@/services/CurrentUser";
+import Comment from "@/components/elements/form/Comment.vue";
+import Like from "@/components/elements/form/Like.vue";
+import AlinaDatePicker from "@/components/elements/form/AlinaDatePicker.vue";
+import UtilsStr from "@/Utils/UtilsStr";
+import Share from "@/components/elements/form/Share.vue";
+import AlinaYandexMap from "@/components/elements/form/AlinaYandexMap.vue";
+import UtilsSys from "@/Utils/UtilsSys";
+import btnEditSaveCancelDelete from "@/components/elements/form/btnEditSaveCancelDelete.vue";
+import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader.vue";
+import UserAvatar from "@/components/UserAvatar.vue";
+import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
+import UtilsDate from "../../Utils/UtilsDate";
+import BorgEditor from "@/components/BorgEditor/index.vue";
+import aInput from "@/components/elements/form/aInput.vue";
+//#####
+export default {
+  name: "tale_upsert",
+  props: {
+    pTale: {
+      type: Object,
+      default: null
     },
-    data() {
-      return {
-        UtilsSys,
-        UtilsStr,
-        CU: CurrentUser.obj(),
-        ConfigApi: ConfigApi,
-        options: {
-          url: `${ConfigApi.url_base}/tale/upsert`,
-          urlDelete: `${ConfigApi.url_base}/tale/delete`,
-          modeEdit: false
-        },
-        tale: {
-          id: null,
-          header: '',
-          body: '',
-          body_free: '',
-          publish_at: '',
-          is_submitted: 0,
-          type: 'POST',
-          form_id: 'actionUpsert',
-          is_adult_denied: 0,
-          is_adv: 0,
-          owner_emblem: '',
-          owner_firstname: '',
-          owner_lastname: '',
-          owner_id: '',
-          count_like: '',
-          current_user_liked: '',
-          router_alias: '',
-          router_alias_id: null,
-          iframe: null,
-          count_root_tale_id: 0,
-          is_draft: 0,
-          is_comment_denied: 0,
-          is_sticked: 0,
-          is_sticked_on_home: 0, //ToDo: Seems not in use
-          is_header_hidden: 0,
-          is_date_hidden: 0,
-          is_avatar_hidden: 0,
-          is_social_sharing_hidden: 0,
-          is_for_registered: 0,
-          is_comment_for_owner: 0,
-          seo_index: 0.1,
-          geo_latitude: 0,
-          geo_longitude: 0,
-          geo_map_type: 'map',
-          geo_zoom: '11',
-          geo_is_map_shown: '0',
-          count_files: 0,
-        },
-        storage: {
-          keyTaleLastTouched: 'keyTaleLastTouched',
-        },
-      }
+    pFlagInFeed: {
+      type: Boolean,
+      default: false
     },
-    components: {
-      aInput,
-      UserAvatar,
-      btnEditSaveCancelDelete,
-      Share,
-      AlinaYandexMap,
-      StandardButtons,
-      Comment,
-      Like,
-      AlinaDatePicker,
-      AlinaFileUploader,
-      BorgEditor,
-    },
-    created() {
-      const id = this.routerTaleId;
-      this.ajaxGetTale(id);
-    },
-    computed: {
-      UtilsDate() {
-        return UtilsDate
-      },
-      taleUrl() {
-        let res = ConfigApi.url_base;
-        if (this.tale.router_alias) {
-          res += `/${this.tale.router_alias}`;
-        } else {
-          res += `/tale/upsert/${this.tale.id}`;
-        }
-        return res;
-      },
-      pageIsInIframe() {
-        return AlinaPageGlobalAnalyzer.pageIsInIframe();
-      },
-
-      /**
-       * Current tale ID from route params
-       * @type {(this: Vue) => string|number|null}
-       * @returns {string|number|null} The tale ID or null if not present
-       */
-      routerTaleId() {
-        let res = null;
-        const route = this.$route;
-        if (route && route.params && route.params.id) {
-          res = route.params.id;
-        }
-        return res;
-      },
-      currentTaleId() {
-        let res = null;
-        const tale = this.tale;
-        if (tale && tale.hasOwnProperty('id')) {
-          res = tale.id;
-        }
-        return res;
-      },
-    },
-    watch: {
-      "tale.id": function (valNew, valOld) {
-        if (this.tale.is_submitted === 1) {
-          this.options.modeEdit = false;
-        }
+  },
+  data() {
+    return {
+      UtilsSys,
+      UtilsStr,
+      CU: CurrentUser.obj(),
+      ConfigApi: ConfigApi,
+      options: {
+        url: `${ConfigApi.url_base}/tale/upsert`,
+        urlDelete: `${ConfigApi.url_base}/tale/delete`,
+        modeEdit: false
       },
       tale: {
-        handler(newVal, oldVal) {
-          if (this.options.modeEdit) {
-            this.taleLastTouchedRemember(newVal);
-          }
-        },
-        deep: true
+        id: null,
+        header: '',
+        body: '',
+        body_free: '',
+        publish_at: '',
+        is_submitted: 0,
+        type: 'POST',
+        form_id: 'actionUpsert',
+        is_adult_denied: 0,
+        is_adv: 0,
+        owner_emblem: '',
+        owner_firstname: '',
+        owner_lastname: '',
+        owner_id: '',
+        count_like: '',
+        current_user_liked: '',
+        router_alias: '',
+        router_alias_id: null,
+        iframe: null,
+        count_root_tale_id: 0,
+        is_draft: 0,
+        is_comment_denied: 0,
+        is_sticked: 0,
+        is_sticked_on_home: 0, //ToDo: Seems not in use
+        is_header_hidden: 0,
+        is_date_hidden: 0,
+        is_avatar_hidden: 0,
+        is_social_sharing_hidden: 0,
+        is_for_registered: 0,
+        is_comment_for_owner: 0,
+        seo_index: 0.1,
+        geo_latitude: 0,
+        geo_longitude: 0,
+        geo_map_type: 'map',
+        geo_zoom: '11',
+        geo_is_map_shown: '0',
+        count_files: 0,
       },
-      routerTaleId: function (valNew) {
-        this.ajaxGetTale(valNew);
+      storage: {
+        keyTaleLastTouched: 'keyTaleLastTouched',
+      },
+    }
+  },
+  components: {
+    aInput,
+    UserAvatar,
+    btnEditSaveCancelDelete,
+    Share,
+    AlinaYandexMap,
+    StandardButtons,
+    Comment,
+    Like,
+    AlinaDatePicker,
+    AlinaFileUploader,
+    BorgEditor,
+  },
+  created() {
+    const id = this.routerTaleId;
+    this.ajaxGetTale(id);
+  },
+  computed: {
+    UtilsDate() {
+      return UtilsDate
+    },
+    taleUrl() {
+      let res = ConfigApi.url_base;
+      if (this.tale.router_alias) {
+        res += `/${this.tale.router_alias}`;
+      } else {
+        res += `/tale/upsert/${this.tale.id}`;
       }
+      return res;
+    },
+    pageIsInIframe() {
+      return AlinaPageGlobalAnalyzer.pageIsInIframe();
     },
 
-    methods: {
-      // ##################################################
-      // region Functional Actions
-      taleLastTouchedRemember(tale) {
-        localStorage.setItem(this.storage.keyTaleLastTouched, JSON.stringify(tale));
-      },
-
-      taleLastTouchedRecall() {
-        const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched);
-        if (taleLastTouchedString) {
-          const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
-          if (taleLastTouchedObj && taleLastTouchedObj.id) {
-            if (taleLastTouchedObj?.body?.length > 10) {
-              if (taleLastTouchedObj.id == this.tale.id) {
-                Object.assign(this.tale, taleLastTouchedObj);
-              }
-            }
-          }
-        }
-      },
-      // endregion Functional Actions
-      // ##################################################
-      // region Event Handlers
-
-      onEdit() {
-        this.options.modeEdit = true;
-        this.taleLastTouchedRecall();
-      },
-
-      onCancel() {
+    /**
+     * Current tale ID from route params
+     * @type {(this: Vue) => string|number|null}
+     * @returns {string|number|null} The tale ID or null if not present
+     */
+    routerTaleId() {
+      let res = null;
+      const route = this.$route;
+      if (route && route.params && route.params.id) {
+        res = route.params.id;
+      }
+      return res;
+    },
+    currentTaleId() {
+      let res = null;
+      const tale = this.tale;
+      if (tale && tale.hasOwnProperty('id')) {
+        res = tale.id;
+      }
+      return res;
+    },
+  },
+  watch: {
+    "tale.id": function (valNew, valOld) {
+      if (this.tale.is_submitted === 1) {
         this.options.modeEdit = false;
-        this.taleLastTouchedRemember({});
-        if (this.tale.is_submitted == 0) {
-          this.$router.replace({ path: '/' })
-        } else {
-          this.ajaxGetTale(this.tale.id, true);
+      }
+    },
+    tale: {
+      handler(newVal, oldVal) {
+        if (this.options.modeEdit) {
+          this.taleLastTouchedRemember(newVal);
         }
-        return null;
       },
-      // endregion Event Handlers
-      // ##################################################
-      // region CRUD
-
-      ajaPostTale() {
-        AjaxAlina.newInst({
-          method: 'POST',
-          url: this.options.url,
-          postParams: this.tale,
-          onDone: (aja) => {
-            if (aja.respBody.meta.alina_response_success == 1) {
-              Object.assign(this.tale, aja.respBody.data);
-              this.options.modeEdit = false;
-              this.taleLastTouchedRemember({})
-            }
-          }
-        })
-          .go();
-      },
-
-      ajaxGetTale(id, forceGet = false) {
-        const _t = this;
-        //###############
-        if (this.pFlagInFeed) {
-          if (this.pTale) {
-            Object.assign(_t.tale, this.pTale);
-            return null;
-          }
-        }
-        //###############
-        //region Fix Double get
-        if (!UtilsData.empty(id) && id == _t.tale.id) {
-          if (!forceGet) {
-            return null;
-          }
-        }
-        //endregion Fix Double get
-        //###############
-        AjaxAlina.newInst({
-          method: 'GET',
-          url: id ? `${_t.options.url}/${id}` : `${_t.options.url}`,
-          onDone: (aja) => {
-            if (aja.respBody.meta.alina_response_success == 1) {
-              if (!UtilsData.empty(_t.routerTaleId)) {
-                if (aja.respBody.data.id != _t.routerTaleId) {
-                  _t.$router.replace({ path: `/tale/upsert/${aja.respBody.data.id}` });
-                  return null;
-                }
-              }
-              Object.assign(_t.tale, aja.respBody.data);
-              if (_t.tale.is_submitted == 0) {
-                if (this.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
-                  _t.options.modeEdit = true;
-                  this.taleLastTouchedRecall();
-                }
-              }
-              //###############
-              if (UtilsData.empty(id) && !UtilsData.empty(_t.tale.id)) {
-                _t.$router.replace({ path: `/tale/upsert/${_t.tale.id}` });
-              }
-              //###############
-            }
-          }
-        })
-          .go();
-      },
-
-      ajaDeleteTale(tale) {
-        if (!confirm("Are you sure?")) { return; }
-        const _t = this;
-        tale.form_id = 'actionDelete';
-        AjaxAlina.newInst({
-          method: 'POST',
-          url: `${this.options.urlDelete}/${tale.id}`,
-          postParams: tale,
-          onDone: (aja) => {
-            if (aja.respBody.meta.alina_response_success == 1) {
-              _t.$router.replace({ path: `/tale/feed` });
-            }
-          }
-        })
-          .go();
-      }, // endregion CRUD
-      // ##################################################
+      deep: true
+    },
+    routerTaleId: function (valNew) {
+      this.ajaxGetTale(valNew);
     }
-  };
+  },
+
+  methods: {
+    // ##################################################
+    // region Functional Actions
+    taleLastTouchedRemember(tale) {
+      localStorage.setItem(this.storage.keyTaleLastTouched, JSON.stringify(tale));
+    },
+
+    taleLastTouchedRecall() {
+      const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched);
+      if (taleLastTouchedString) {
+        const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
+        if (taleLastTouchedObj && taleLastTouchedObj.id) {
+          if (taleLastTouchedObj?.body?.length > 10) {
+            if (taleLastTouchedObj.id == this.tale.id) {
+              Object.assign(this.tale, taleLastTouchedObj);
+            }
+          }
+        }
+      }
+    },
+    // endregion Functional Actions
+    // ##################################################
+    // region Event Handlers
+
+    onEdit() {
+      this.options.modeEdit = true;
+      this.taleLastTouchedRecall();
+    },
+
+    onCancel() {
+      this.options.modeEdit = false;
+      this.taleLastTouchedRemember({});
+      if (this.tale.is_submitted == 0) {
+        this.$router.replace({ path: '/' })
+      } else {
+        this.ajaxGetTale(this.tale.id, true);
+      }
+      return null;
+    },
+    // endregion Event Handlers
+    // ##################################################
+    // region CRUD
+
+    ajaPostTale() {
+      AjaxAlina.newInst({
+        method: 'POST',
+        url: this.options.url,
+        postParams: this.tale,
+        onDone: (aja) => {
+          if (aja.respBody.meta.alina_response_success == 1) {
+            Object.assign(this.tale, aja.respBody.data);
+            this.options.modeEdit = false;
+            this.taleLastTouchedRemember({})
+          }
+        }
+      })
+        .go();
+    },
+
+    ajaxGetTale(id, forceGet = false) {
+      const _t = this;
+      //###############
+      if (this.pFlagInFeed) {
+        if (this.pTale) {
+          Object.assign(_t.tale, this.pTale);
+          return null;
+        }
+      }
+      //###############
+      //region Fix Double get
+      if (!UtilsData.empty(id) && id == _t.tale.id) {
+        if (!forceGet) {
+          return null;
+        }
+      }
+      //endregion Fix Double get
+      //###############
+      AjaxAlina.newInst({
+        method: 'GET',
+        url: id ? `${_t.options.url}/${id}` : `${_t.options.url}`,
+        onDone: (aja) => {
+          if (aja.respBody.meta.alina_response_success == 1) {
+            if (!UtilsData.empty(_t.routerTaleId)) {
+              if (aja.respBody.data.id != _t.routerTaleId) {
+                _t.$router.replace({ path: `/tale/upsert/${aja.respBody.data.id}` });
+                return null;
+              }
+            }
+            Object.assign(_t.tale, aja.respBody.data);
+            if (_t.tale.is_submitted == 0) {
+              if (this.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
+                _t.options.modeEdit = true;
+                this.taleLastTouchedRecall();
+              }
+            }
+            //###############
+            if (UtilsData.empty(id) && !UtilsData.empty(_t.tale.id)) {
+              _t.$router.replace({ path: `/tale/upsert/${_t.tale.id}` });
+            }
+            //###############
+          }
+        }
+      })
+        .go();
+    },
+
+    ajaDeleteTale(tale) {
+      if (!confirm("Are you sure?")) { return; }
+      const _t = this;
+      tale.form_id = 'actionDelete';
+      AjaxAlina.newInst({
+        method: 'POST',
+        url: `${this.options.urlDelete}/${tale.id}`,
+        postParams: tale,
+        onDone: (aja) => {
+          if (aja.respBody.meta.alina_response_success == 1) {
+            _t.$router.replace({ path: `/tale/feed` });
+          }
+        }
+      })
+        .go();
+    }, // endregion CRUD
+    // ##################################################
+  }
+};
 </script>
