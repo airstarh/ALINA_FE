@@ -37,6 +37,12 @@ module.exports = {
     },
 
     configureWebpack: {
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'src'),
+                '@components': path.resolve(__dirname, 'src/components')
+            }
+        },
         output: {
             chunkFilename: '[name].[contenthash].js',
         },

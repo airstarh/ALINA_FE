@@ -2,12 +2,12 @@
     "compilerOptions": {
         "target": "es2017",
         "module": "esnext",
+        "moduleResolution": "node",
         "checkJs": true,
         "baseUrl": "./",
         "paths": {
             "@/*": [ "src/*" ],
-            "@components/*": [ "src/components/*" ],
-            "@utils/*": [ "src/utils/*" ]
+            "@components/*": [ "src/components/*" ]
         },
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true
@@ -20,8 +20,9 @@
         "nbproject",
         "_DEV_DOCS"
     ],
-    "include": [ "src/**/*.js", "src/**/*.ts", "src/**/*.vue" ],
+    "include": [ "src/**/*.js", "src/**/*.ts", "src/**/*.vue", "src/shims-vue.d.ts" ],
     "typeAcquisition": {
-        "include": [ "vue" ]
+        "include": [ "vue" ],
+        "exclude": [ "vue3" ]
     }
 }

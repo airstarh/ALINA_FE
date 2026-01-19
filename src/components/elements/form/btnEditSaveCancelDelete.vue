@@ -26,7 +26,7 @@ export default {
     },
     owner_id: {
       type:    Number,
-      default: null
+      default: () => null
     },
     modeEdit: {
       type:    Boolean,
