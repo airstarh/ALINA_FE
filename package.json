@@ -48,6 +48,7 @@
     "whatwg-fetch": "^3.6.20"
   },
   "devDependencies": {
+    "@types/vue": "^2.0.0",
     "@types/webpack-env": "^1.18.8",
     "@vue/cli-plugin-babel": "^5.0.9",
     "@vue/cli-service": "^4.5.19",
