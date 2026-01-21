@@ -151,16 +151,24 @@
           <div v-else>
             <div class="row no-gutters">
               <div class="col mb-3" style="position: relative;" v-if="tale.is_header_hidden != 1">
-                <h1 :class="{
-                  'bg-danger': tale.is_adult_denied == 1
-                }" class="notranslate m-0 p-3  text-left rounded alina-tale-header"
+                <h1
+                  :class="[
+                    'notranslate m-0 p-3 text-left rounded alina-tale-header',
+                    {
+                      'bg-danger': tale.is_adult_denied == 1
+                    }
+                  ]"
                   :lang="tale.lang">
-                  <a :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')" class="m-0">
+                  <a
+                    :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
+                    class="m-0">
                     <aInput v-model="tale.header" :placeholder="$t('Header').toString()" :modeEdit="options.modeEdit" />
                   </a>
                 </h1>
-                <div class="notranslate" style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;"
-                  v-if="tale.is_date_hidden != 1">
+                <div
+                  v-if="tale.is_date_hidden != 1"
+                  class="notranslate"
+                  style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;">
                   <router-link :to="'/tale/upsert/' + tale.id"
                     class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration" style="font-size: 2vmin;">
                     {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
