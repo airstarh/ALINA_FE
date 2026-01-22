@@ -17,7 +17,7 @@
         <btnEditSaveCancelDelete
           v-if="!pFlagInFeed"
           :owner_id="tale.owner_id"
-          :modeEdit="options.modeEdit"
+          :modeEdit="dConf.modeEdit"
           :subject="tale"
           @onSave="ajaPostTale"
           @onEdit="onEdit"
@@ -33,20 +33,20 @@
           <!--region Tale. mode Edit-->
           <div
             class=""
-            v-if="options.modeEdit"
+            v-if="dConf.modeEdit"
           >
             <div>Tale #{{ tale.id }}</div>
             <h1>
               <aInput
                 v-model="tale.header"
                 :placeholder="$t('Header').toString()"
-                :modeEdit="options.modeEdit"
+                :modeEdit="dConf.modeEdit"
                 componentDisplay="block"
               />
             </h1>
             <BorgEditor
               v-model="tale.body"
-              :modeEdit="options.modeEdit"
+              :modeEdit="dConf.modeEdit"
             />
             <div class="mb-3">&nbsp;</div>
             <div class="mt-1 mb-3">
@@ -55,7 +55,7 @@
                 label="Publish at"
                 idq="publish_at"
                 class="notranslate"
-                :modeEdit="options.modeEdit"
+                :modeEdit="dConf.modeEdit"
               ></AlinaDatePicker>
             </div>
 
@@ -89,7 +89,7 @@
                 v-model="tale.router_alias"
                 :label="$tc('Page Alias').toString()"
                 :placeholder="$tc('Page Alias').toString()"
-                :modeEdit="options.modeEdit"
+                :modeEdit="dConf.modeEdit"
                 componentDisplay="block"
               />
             </div>
@@ -100,7 +100,7 @@
                 v-model="tale.iframe"
                 :label="$tc('iframe')"
                 :placeholder="$tc('iframe').toString()"
-                :modeEdit="options.modeEdit"
+                :modeEdit="dConf.modeEdit"
                 componentDisplay="block"
               />
             </div>
@@ -121,7 +121,7 @@
               class="row no-gutters"
               style="max-width: 99%"
             >
-              <div class="col">
+              <div class="col-md">
                 <div class="mb-3">
                   <!-- is_header_hidden -->
                   <aInput
@@ -139,7 +139,7 @@
                     v-model="tale.is_date_hidden"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
                 <div class="mb-3">
@@ -149,7 +149,7 @@
                     v-model="tale.is_avatar_hidden"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
                 <div class="mb-3">
@@ -159,7 +159,7 @@
                     v-model="tale.is_social_sharing_hidden"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
                 <div class="mb-3">
@@ -169,7 +169,7 @@
                     v-model="tale.is_comment_denied"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
                 <div class="mb-3">
@@ -179,11 +179,11 @@
                     v-model="tale.is_comment_for_owner"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
               </div>
-              <div class="col">
+              <div class="col-md">
                 <div class="mb-3">
                   <!-- is_sticked -->
                   <aInput
@@ -191,7 +191,7 @@
                     v-model="tale.is_sticked"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
                 <div class="mb-3">
@@ -201,7 +201,7 @@
                     v-model="tale.is_adult_denied"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
                 <div class="mb-3">
@@ -211,7 +211,7 @@
                     v-model="tale.is_adv"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
                 <div class="mb-3">
@@ -221,7 +221,7 @@
                     v-model="tale.is_draft"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
                 <div class="mb-3">
@@ -231,7 +231,7 @@
                     v-model="tale.is_for_registered"
                     type="checkbox"
                     :flagLabelFirst="false"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
 
@@ -241,7 +241,7 @@
                     v-model="tale.seo_index"
                     :label="$tc(' SEO Index')"
                     :placeholder="$tc('SEO Index')"
-                    :modeEdit="options.modeEdit"
+                    :modeEdit="dConf.modeEdit"
                   />
                 </div>
               </div>
@@ -274,7 +274,7 @@
                     <aInput
                       v-model="tale.header"
                       :placeholder="$t('Header').toString()"
-                      :modeEdit="options.modeEdit"
+                      :modeEdit="dConf.modeEdit"
                     />
                   </a>
                 </h1>
@@ -326,7 +326,7 @@
                 :lang="tale.lang"
               >
                 <BorgEditor
-                  :modeEdit="options.modeEdit"
+                  :modeEdit="dConf.modeEdit"
                   v-model="tale.body"
                 />
               </div>
@@ -360,7 +360,7 @@
           <div class="col">
             <AlinaYandexMap
               :item="tale"
-              :mode-edit="options.modeEdit"
+              :mode-edit="dConf.modeEdit"
             ></AlinaYandexMap>
           </div>
         </div>
@@ -369,13 +369,13 @@
         <!--region Attached Documents-->
         <div
           class="row no-gutters"
-          v-if="tale.count_files > 0 || options.modeEdit"
+          v-if="tale.count_files > 0 || dConf.modeEdit"
         >
           <div class="col mb-3">
             <AlinaFileUploader
               :entity_id="tale.id"
               entity_table="tale"
-              :modeEdit="options.modeEdit"
+              :modeEdit="dConf.modeEdit"
               :ownLength="tale.count_files"
             ></AlinaFileUploader>
           </div>
@@ -387,7 +387,7 @@
         <btnEditSaveCancelDelete
           v-if="!pFlagInFeed"
           :owner_id="tale.owner_id"
-          :modeEdit="options.modeEdit"
+          :modeEdit="dConf.modeEdit"
           :subject="tale"
           @onSave="ajaPostTale"
           @onEdit="onEdit"
@@ -477,8 +477,8 @@ export default {
       UtilsSys,
       UtilsStr,
       CU: CurrentUser.obj(),
-      ConfigApi: ConfigApi,
-      options: {
+      ConfigApi,
+      dConf: {
         url: `${ConfigApi.url_base}/tale/upsert`,
         urlDelete: `${ConfigApi.url_base}/tale/delete`,
         modeEdit: false,
@@ -586,12 +586,12 @@ export default {
   watch: {
     "tale.id": function (valNew, valOld) {
       if (this.tale.is_submitted === 1) {
-        this.options.modeEdit = false;
+        this.dConf.modeEdit = false;
       }
     },
     tale: {
       handler(newVal, oldVal) {
-        if (this.options.modeEdit) {
+        if (this.dConf.modeEdit) {
           this.taleLastTouchedRemember(newVal);
         }
       },
@@ -632,12 +632,12 @@ export default {
     // region Event Handlers
 
     onEdit() {
-      this.options.modeEdit = true;
+      this.dConf.modeEdit = true;
       this.taleLastTouchedRecall();
     },
 
     onCancel() {
-      this.options.modeEdit = false;
+      this.dConf.modeEdit = false;
       this.taleLastTouchedRemember({});
       if (this.tale.is_submitted == 0) {
         this.$router.replace({ path: "/" });
@@ -653,12 +653,12 @@ export default {
     ajaPostTale() {
       AjaxAlina.newInst({
         method: "POST",
-        url: this.options.url,
+        url: this.dConf.url,
         postParams: this.tale,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             Object.assign(this.tale, aja.respBody.data);
-            this.options.modeEdit = false;
+            this.dConf.modeEdit = false;
             this.taleLastTouchedRemember({});
           }
         },
@@ -685,7 +685,7 @@ export default {
       //###############
       AjaxAlina.newInst({
         method: "GET",
-        url: id ? `${_t.options.url}/${id}` : `${_t.options.url}`,
+        url: id ? `${_t.dConf.url}/${id}` : `${_t.dConf.url}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             if (!UtilsData.empty(_t.routerTaleId)) {
@@ -699,7 +699,7 @@ export default {
             Object.assign(_t.tale, aja.respBody.data);
             if (_t.tale.is_submitted == 0) {
               if (this.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
-                _t.options.modeEdit = true;
+                _t.dConf.modeEdit = true;
                 this.taleLastTouchedRecall();
               }
             }
@@ -721,7 +721,7 @@ export default {
       tale.form_id = "actionDelete";
       AjaxAlina.newInst({
         method: "POST",
-        url: `${this.options.urlDelete}/${tale.id}`,
+        url: `${this.dConf.urlDelete}/${tale.id}`,
         postParams: tale,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
