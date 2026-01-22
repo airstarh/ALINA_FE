@@ -2,15 +2,15 @@
   <div
     class="p-0 alina-tale-wrapper"
     :class="{
-      'container': !pageIsInIframe,
-      'container-fluid': pageIsInIframe
-    }">
+      container: !pageIsInIframe,
+      'container-fluid': pageIsInIframe,
+    }"
+  >
     <div v-if="!tale.id">...</div>
-    <div v-if="tale.id" :class="[
-      'row',
-      'no-gutters',
-      `alina-tale-id-${tale.id}`
-    ]">
+    <div
+      v-if="tale.id"
+      :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]"
+    >
       <div class="col">
         <!--##################################################-->
         <!--region Buttons-->
@@ -18,7 +18,12 @@
           v-if="!pFlagInFeed"
           :owner_id="tale.owner_id"
           :modeEdit="options.modeEdit"
-          :subject="tale" @onSave="ajaPostTale" @onEdit="onEdit" @onCancel="onCancel" @onDelete="ajaDeleteTale">
+          :subject="tale"
+          @onSave="ajaPostTale"
+          @onEdit="onEdit"
+          @onCancel="onCancel"
+          @onDelete="ajaDeleteTale"
+        >
         </btnEditSaveCancelDelete>
         <!--endregion Buttons-->
         <!--##################################################-->
@@ -26,30 +31,48 @@
         <div v-if="!pageIsInIframe">
           <!--##################################################-->
           <!--region Tale. mode Edit-->
-          <div class="" v-if="options.modeEdit">
+          <div
+            class=""
+            v-if="options.modeEdit"
+          >
             <div>Tale #{{ tale.id }}</div>
             <h1>
               <aInput
                 v-model="tale.header"
                 :placeholder="$t('Header').toString()"
                 :modeEdit="options.modeEdit"
-                componentDisplay="block" />
+                componentDisplay="block"
+              />
             </h1>
-            <BorgEditor v-model="tale.body" :modeEdit="options.modeEdit" />
+            <BorgEditor
+              v-model="tale.body"
+              :modeEdit="options.modeEdit"
+            />
             <div class="mb-3">&nbsp;</div>
             <div class="mt-1 mb-3">
-              <AlinaDatePicker v-model="tale.publish_at" label="Publish at" idq="publish_at" class="notranslate"
-                :modeEdit="options.modeEdit"></AlinaDatePicker>
+              <AlinaDatePicker
+                v-model="tale.publish_at"
+                label="Publish at"
+                idq="publish_at"
+                class="notranslate"
+                :modeEdit="options.modeEdit"
+              ></AlinaDatePicker>
             </div>
 
             <div v-if="CU.isAdmin()">
               <div class="input-group input-group mb-3">
                 <!-- body_free -->
                 <div class="input-group-prepend">
-                  <span class="input-group-text bg-dark text-light">{{ $tc('body_free') }}</span>
+                  <span class="input-group-text bg-dark text-light">{{
+                    $tc("body_free")
+                  }}</span>
                 </div>
-                <textarea class="form-control" :placeholder="$tc('body_free').toString()" v-model="tale.body_free"
-                  rows="20"></textarea>
+                <textarea
+                  class="form-control"
+                  :placeholder="$tc('body_free').toString()"
+                  v-model="tale.body_free"
+                  rows="20"
+                ></textarea>
               </div>
               <div class="mt-3 mb-3">
                 <div v-html="tale.body_free"></div>
@@ -62,84 +85,164 @@
 
             <!-- alias -->
             <div class="mb-3">
-              <aInput v-model="tale.router_alias" :label="$tc('Page Alias').toString()"
-                :placeholder="$tc('Page Alias').toString()" :modeEdit="options.modeEdit" componentDisplay="block" />
+              <aInput
+                v-model="tale.router_alias"
+                :label="$tc('Page Alias').toString()"
+                :placeholder="$tc('Page Alias').toString()"
+                :modeEdit="options.modeEdit"
+                componentDisplay="block"
+              />
             </div>
 
             <!-- iframe -->
             <div class="mb-3">
-              <aInput v-model="tale.iframe" :label="$tc('iframe')" :placeholder="$tc('iframe').toString()"
-                :modeEdit="options.modeEdit" componentDisplay="block" />
+              <aInput
+                v-model="tale.iframe"
+                :label="$tc('iframe')"
+                :placeholder="$tc('iframe').toString()"
+                :modeEdit="options.modeEdit"
+                componentDisplay="block"
+              />
             </div>
 
-            <div v-if="tale.iframe" class="mt-3">
-              <iframe :src="tale.iframe" frameborder="1" width="90%" height="250px"></iframe>
+            <div
+              v-if="tale.iframe"
+              class="mt-3"
+            >
+              <iframe
+                :src="tale.iframe"
+                frameborder="1"
+                width="90%"
+                height="250px"
+              ></iframe>
             </div>
 
-            <div class="row no-gutters" style="max-width: 99%;">
+            <div
+              class="row no-gutters"
+              style="max-width: 99%"
+            >
               <div class="col">
                 <div class="mb-3">
                   <!-- is_header_hidden -->
-                  <aInput :label='$t("Hide header").toString()' v-model="tale.is_header_hidden" type="checkbox"
-                    :flagLabelFirst="false" :modeEdit="true" />
+                  <aInput
+                    :label="$t('Hide header').toString()"
+                    v-model="tale.is_header_hidden"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="true"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_date_hidden -->
-                  <aInput :label='$t("Hide date").toString()' v-model="tale.is_date_hidden" type="checkbox"
-                    :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Hide date').toString()"
+                    v-model="tale.is_date_hidden"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_avatar_hidden -->
-                  <aInput :label='$t("Hide avatar").toString()' v-model="tale.is_avatar_hidden" type="checkbox"
-                    :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Hide avatar').toString()"
+                    v-model="tale.is_avatar_hidden"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_social_sharing_hidden -->
-                  <aInput :label='$t("Hide social sharing").toString()' v-model="tale.is_social_sharing_hidden"
-                    type="checkbox" :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Hide social sharing').toString()"
+                    v-model="tale.is_social_sharing_hidden"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_denied -->
-                  <aInput :label='$t("Comments denied").toString()' v-model="tale.is_comment_denied" type="checkbox"
-                    :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Comments denied').toString()"
+                    v-model="tale.is_comment_denied"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_comment_for_owner -->
-                  <aInput :label='$t("Comments only for owner").toString()' v-model="tale.is_comment_for_owner"
-                    type="checkbox" :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Comments only for owner').toString()"
+                    v-model="tale.is_comment_for_owner"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
               </div>
               <div class="col">
                 <div class="mb-3">
                   <!-- is_sticked -->
-                  <aInput :label='$t("Sticked").toString()' v-model="tale.is_sticked" type="checkbox"
-                    :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Sticked').toString()"
+                    v-model="tale.is_sticked"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_adult_denied -->
-                  <aInput :label='$t("Not for kids").toString()' v-model="tale.is_adult_denied" type="checkbox"
-                    :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Not for kids').toString()"
+                    v-model="tale.is_adult_denied"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_adv -->
-                  <aInput :label='$t("Advertisement").toString()' v-model="tale.is_adv" type="checkbox"
-                    :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Advertisement').toString()"
+                    v-model="tale.is_adv"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_draft -->
-                  <aInput :label='$t("Hide on feed").toString()' v-model="tale.is_draft" type="checkbox"
-                    :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Hide on feed').toString()"
+                    v-model="tale.is_draft"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
                 <div class="mb-3">
                   <!-- is_for_registered -->
-                  <aInput :label='$t("Only for registered users").toString()' v-model="tale.is_for_registered"
-                    type="checkbox" :flagLabelFirst="false" :modeEdit="options.modeEdit" />
+                  <aInput
+                    :label="$t('Only for registered users').toString()"
+                    v-model="tale.is_for_registered"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
 
                 <!-- seo_index -->
                 <div class="mb-3">
-                  <aInput v-model="tale.seo_index" :label="$tc(' SEO Index')" :placeholder="$tc('SEO Index')"
-                    :modeEdit="options.modeEdit" />
+                  <aInput
+                    v-model="tale.seo_index"
+                    :label="$tc(' SEO Index')"
+                    :placeholder="$tc('SEO Index')"
+                    :modeEdit="options.modeEdit"
+                  />
                 </div>
               </div>
             </div>
@@ -150,27 +253,46 @@
           <!--region Tale. mode Read-->
           <div v-else>
             <div class="row no-gutters">
-              <div class="col mb-3" style="position: relative;" v-if="tale.is_header_hidden != 1">
+              <div
+                class="col mb-3"
+                style="position: relative"
+                v-if="tale.is_header_hidden != 1"
+              >
                 <h1
                   :class="[
                     'notranslate m-0 p-3 text-left rounded alina-tale-header',
                     {
-                      'bg-danger': tale.is_adult_denied == 1
-                    }
+                      'bg-danger': tale.is_adult_denied == 1,
+                    },
                   ]"
-                  :lang="tale.lang">
+                  :lang="tale.lang"
+                >
                   <a
                     :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                    class="m-0">
-                    <aInput v-model="tale.header" :placeholder="$t('Header').toString()" :modeEdit="options.modeEdit" />
+                    class="m-0"
+                  >
+                    <aInput
+                      v-model="tale.header"
+                      :placeholder="$t('Header').toString()"
+                      :modeEdit="options.modeEdit"
+                    />
                   </a>
                 </h1>
                 <div
                   v-if="tale.is_date_hidden != 1"
                   class="notranslate"
-                  style="position: absolute; right: 1%; bottom: -1.5rem; padding: 1rem;">
-                  <router-link :to="'/tale/upsert/' + tale.id"
-                    class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration" style="font-size: 2vmin;">
+                  style="
+                    position: absolute;
+                    right: 1%;
+                    bottom: -1.5rem;
+                    padding: 1rem;
+                  "
+                >
+                  <router-link
+                    :to="'/tale/upsert/' + tale.id"
+                    class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
+                    style="font-size: 2vmin"
+                  >
                     {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
                   </router-link>
                 </div>
@@ -178,26 +300,53 @@
             </div>
             <!--##################################################-->
             <!--region User Info-->
-            <UserAvatar v-if="tale.is_avatar_hidden == 0" :userId="tale.owner_id" :userFirstName="tale.owner_firstname"
-              :userLastName="tale.owner_lastname" :emblemUrl="tale.owner_emblem" emblemWidth="7vmax" :someDate="null"
-              class="mt-5 mb-5 text-center"></UserAvatar>
+            <UserAvatar
+              v-if="tale.is_avatar_hidden == 0"
+              :userId="tale.owner_id"
+              :userFirstName="tale.owner_firstname"
+              :userLastName="tale.owner_lastname"
+              :emblemUrl="tale.owner_emblem"
+              emblemWidth="7vmax"
+              :someDate="null"
+              class="mt-5 mb-5 text-center"
+            ></UserAvatar>
             <!--endregion User Info-->
             <!--##################################################-->
             <div
-              v-if="(tale.is_header_hidden == 1 || tale.is_date_hidden == 1) && CU.ownsOrAdminOrModerator(tale.owner_id)">
-              <router-link :to="'/tale/upsert/' + tale.id">...
-              </router-link>
+              v-if="
+                (tale.is_header_hidden == 1 || tale.is_date_hidden == 1) &&
+                CU.ownsOrAdminOrModerator(tale.owner_id)
+              "
+            >
+              <router-link :to="'/tale/upsert/' + tale.id">... </router-link>
             </div>
             <div class="row no-gutters mt-1">
-              <div class="col" :lang="tale.lang">
-                <BorgEditor :modeEdit="options.modeEdit" v-model="tale.body" />
+              <div
+                class="col"
+                :lang="tale.lang"
+              >
+                <BorgEditor
+                  :modeEdit="options.modeEdit"
+                  v-model="tale.body"
+                />
               </div>
             </div>
-            <div v-if="tale.body_free" class="mt-3">
+            <div
+              v-if="tale.body_free"
+              class="mt-3"
+            >
               <div v-html="tale.body_free"></div>
             </div>
-            <div v-if="tale.iframe" class="mt-3">
-              <iframe :src="tale.iframe" frameborder="1" width="90%" height="500px"></iframe>
+            <div
+              v-if="tale.iframe"
+              class="mt-3"
+            >
+              <iframe
+                :src="tale.iframe"
+                frameborder="1"
+                width="90%"
+                height="500px"
+              ></iframe>
             </div>
             <div class="mt-3"></div>
           </div>
@@ -209,29 +358,50 @@
         <!--region Yandex Map-->
         <div class="row m-1">
           <div class="col">
-            <AlinaYandexMap :item="tale" :mode-edit="options.modeEdit"></AlinaYandexMap>
+            <AlinaYandexMap
+              :item="tale"
+              :mode-edit="options.modeEdit"
+            ></AlinaYandexMap>
           </div>
         </div>
         <!--endregion Yandex Map-->
         <!--##################################################-->
         <!--region Attached Documents-->
-        <div class="row no-gutters" v-if="tale.count_files > 0 || options.modeEdit">
+        <div
+          class="row no-gutters"
+          v-if="tale.count_files > 0 || options.modeEdit"
+        >
           <div class="col mb-3">
-            <AlinaFileUploader :entity_id="tale.id" entity_table="tale" :modeEdit="options.modeEdit"
-              :ownLength="tale.count_files"></AlinaFileUploader>
+            <AlinaFileUploader
+              :entity_id="tale.id"
+              entity_table="tale"
+              :modeEdit="options.modeEdit"
+              :ownLength="tale.count_files"
+            ></AlinaFileUploader>
           </div>
         </div>
         <!--endregion Attached Documents-->
         <!--##################################################-->
         <!--##################################################-->
         <!--region Buttons-->
-        <btnEditSaveCancelDelete v-if="!pFlagInFeed" :owner_id="tale.owner_id" :modeEdit="options.modeEdit"
-          :subject="tale" @onSave="ajaPostTale" @onEdit="onEdit" @onCancel="onCancel" @onDelete="ajaDeleteTale">
+        <btnEditSaveCancelDelete
+          v-if="!pFlagInFeed"
+          :owner_id="tale.owner_id"
+          :modeEdit="options.modeEdit"
+          :subject="tale"
+          @onSave="ajaPostTale"
+          @onEdit="onEdit"
+          @onCancel="onCancel"
+          @onDelete="ajaDeleteTale"
+        >
         </btnEditSaveCancelDelete>
         <!--endregion Buttons-->
         <!--##################################################-->
         <!--region Share & Likes-->
-        <div class="row no-gutters mb-3" v-if="tale.is_social_sharing_hidden != 1">
+        <div
+          class="row no-gutters mb-3"
+          v-if="tale.is_social_sharing_hidden != 1"
+        >
           <div class="col">
             <div class="text-left m-buttons-1">
               <Share :tale="tale"></Share>
@@ -239,17 +409,31 @@
           </div>
           <div class="col-auto">
             <div class="text-right">
-              <Like v-if="tale.is_comment_denied != 1" :pAmountLikes="tale.count_like"
-                :pCurrentUserLiked="tale.current_user_liked" ref_table="tale" :ref_id="tale.id"></Like>
+              <Like
+                v-if="tale.is_comment_denied != 1"
+                :pAmountLikes="tale.count_like"
+                :pCurrentUserLiked="tale.current_user_liked"
+                ref_table="tale"
+                :ref_id="tale.id"
+              ></Like>
             </div>
           </div>
         </div>
         <!--endregion Share & Likes-->
         <!--##################################################-->
-        <div v-if="tale.is_comment_denied != 1" class="mb-5">
-          <Comment v-if="tale.level < 2" :level="tale.level + 1" type="COMMENT"
-            :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id" :answer_to_tale_id="tale.id"
-            :count_by_answer_to_tale_id="tale.count_root_tale_id" :root_tale_object="tale"></Comment>
+        <div
+          v-if="tale.is_comment_denied != 1"
+          class="mb-5"
+        >
+          <Comment
+            v-if="tale.level < 2"
+            :level="tale.level + 1"
+            type="COMMENT"
+            :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
+            :answer_to_tale_id="tale.id"
+            :count_by_answer_to_tale_id="tale.count_root_tale_id"
+            :root_tale_object="tale"
+          ></Comment>
         </div>
       </div>
     </div>
@@ -281,11 +465,11 @@ export default {
   props: {
     pTale: {
       type: Object,
-      default: null
+      default: null,
     },
     pFlagInFeed: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   data() {
@@ -297,26 +481,26 @@ export default {
       options: {
         url: `${ConfigApi.url_base}/tale/upsert`,
         urlDelete: `${ConfigApi.url_base}/tale/delete`,
-        modeEdit: false
+        modeEdit: false,
       },
       tale: {
         id: null,
-        header: '',
-        body: '',
-        body_free: '',
-        publish_at: '',
+        header: "",
+        body: "",
+        body_free: "",
+        publish_at: "",
         is_submitted: 0,
-        type: 'POST',
-        form_id: 'actionUpsert',
+        type: "POST",
+        form_id: "actionUpsert",
         is_adult_denied: 0,
         is_adv: 0,
-        owner_emblem: '',
-        owner_firstname: '',
-        owner_lastname: '',
-        owner_id: '',
-        count_like: '',
-        current_user_liked: '',
-        router_alias: '',
+        owner_emblem: "",
+        owner_firstname: "",
+        owner_lastname: "",
+        owner_id: "",
+        count_like: "",
+        current_user_liked: "",
+        router_alias: "",
         router_alias_id: null,
         iframe: null,
         count_root_tale_id: 0,
@@ -333,15 +517,15 @@ export default {
         seo_index: 0.1,
         geo_latitude: 0,
         geo_longitude: 0,
-        geo_map_type: 'map',
-        geo_zoom: '11',
-        geo_is_map_shown: '0',
+        geo_map_type: "map",
+        geo_zoom: "11",
+        geo_is_map_shown: "0",
         count_files: 0,
       },
       storage: {
-        keyTaleLastTouched: 'keyTaleLastTouched',
+        keyTaleLastTouched: "keyTaleLastTouched",
       },
-    }
+    };
   },
   components: {
     aInput,
@@ -362,7 +546,7 @@ export default {
   },
   computed: {
     UtilsDate() {
-      return UtilsDate
+      return UtilsDate;
     },
     taleUrl() {
       let res = ConfigApi.url_base;
@@ -393,7 +577,7 @@ export default {
     currentTaleId() {
       let res = null;
       const tale = this.tale;
-      if (tale && tale.hasOwnProperty('id')) {
+      if (tale && tale.hasOwnProperty("id")) {
         res = tale.id;
       }
       return res;
@@ -411,22 +595,27 @@ export default {
           this.taleLastTouchedRemember(newVal);
         }
       },
-      deep: true
+      deep: true,
     },
     routerTaleId: function (valNew) {
       this.ajaxGetTale(valNew);
-    }
+    },
   },
 
   methods: {
     // ##################################################
     // region Functional Actions
     taleLastTouchedRemember(tale) {
-      localStorage.setItem(this.storage.keyTaleLastTouched, JSON.stringify(tale));
+      localStorage.setItem(
+        this.storage.keyTaleLastTouched,
+        JSON.stringify(tale)
+      );
     },
 
     taleLastTouchedRecall() {
-      const taleLastTouchedString = localStorage.getItem(this.storage.keyTaleLastTouched);
+      const taleLastTouchedString = localStorage.getItem(
+        this.storage.keyTaleLastTouched
+      );
       if (taleLastTouchedString) {
         const taleLastTouchedObj = JSON.parse(taleLastTouchedString);
         if (taleLastTouchedObj && taleLastTouchedObj.id) {
@@ -451,7 +640,7 @@ export default {
       this.options.modeEdit = false;
       this.taleLastTouchedRemember({});
       if (this.tale.is_submitted == 0) {
-        this.$router.replace({ path: '/' })
+        this.$router.replace({ path: "/" });
       } else {
         this.ajaxGetTale(this.tale.id, true);
       }
@@ -463,18 +652,17 @@ export default {
 
     ajaPostTale() {
       AjaxAlina.newInst({
-        method: 'POST',
+        method: "POST",
         url: this.options.url,
         postParams: this.tale,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             Object.assign(this.tale, aja.respBody.data);
             this.options.modeEdit = false;
-            this.taleLastTouchedRemember({})
+            this.taleLastTouchedRemember({});
           }
-        }
-      })
-        .go();
+        },
+      }).go();
     },
 
     ajaxGetTale(id, forceGet = false) {
@@ -496,13 +684,15 @@ export default {
       //endregion Fix Double get
       //###############
       AjaxAlina.newInst({
-        method: 'GET',
+        method: "GET",
         url: id ? `${_t.options.url}/${id}` : `${_t.options.url}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             if (!UtilsData.empty(_t.routerTaleId)) {
               if (aja.respBody.data.id != _t.routerTaleId) {
-                _t.$router.replace({ path: `/tale/upsert/${aja.respBody.data.id}` });
+                _t.$router.replace({
+                  path: `/tale/upsert/${aja.respBody.data.id}`,
+                });
                 return null;
               }
             }
@@ -519,28 +709,28 @@ export default {
             }
             //###############
           }
-        }
-      })
-        .go();
+        },
+      }).go();
     },
 
     ajaDeleteTale(tale) {
-      if (!confirm("Are you sure?")) { return; }
+      if (!confirm("Are you sure?")) {
+        return;
+      }
       const _t = this;
-      tale.form_id = 'actionDelete';
+      tale.form_id = "actionDelete";
       AjaxAlina.newInst({
-        method: 'POST',
+        method: "POST",
         url: `${this.options.urlDelete}/${tale.id}`,
         postParams: tale,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             _t.$router.replace({ path: `/tale/feed` });
           }
-        }
-      })
-        .go();
+        },
+      }).go();
     }, // endregion CRUD
     // ##################################################
-  }
+  },
 };
 </script>
