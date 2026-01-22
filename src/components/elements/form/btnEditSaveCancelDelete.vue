@@ -1,62 +1,88 @@
 <template>
-  <div v-if="CU.ownsOrAdminOrModerator(owner_id) && !pageIsInIframe()" class="row no-gutters mb-1 m-buttons-1">
+  <div
+    v-if="CU.ownsOrAdminOrModerator(owner_id) && !pageIsInIframe()"
+    class="row no-gutters mb-1 m-buttons-1"
+  >
     <!--Delete-->
-    <button @click="onDelete" class="col-3 btn btn-danger">{{ $t("TXT_DELETE") }}</button>
+    <button
+      @click="onDelete"
+      class="col-3 btn btn-danger"
+    >
+      {{ $t("TXT_DELETE") }}
+    </button>
     <!--Edit-->
-    <button @click="onEdit" class="col btn btn-secondary" v-if="!modeEdit">{{ $t("TXT_EDIT") }}</button>
+    <button
+      @click="onEdit"
+      class="col btn btn-secondary"
+      v-if="!modeEdit"
+    >
+      {{ $t("TXT_EDIT") }}
+    </button>
     <!--Cancel-->
-    <button @click="onCancel" class="col btn btn-secondary" v-if="modeEdit">{{ $t("TXT_CANCEL") }}</button>
+    <button
+      @click="onCancel"
+      class="col btn btn-secondary"
+      v-if="modeEdit"
+    >
+      {{ $t("TXT_CANCEL") }}
+    </button>
     <!--Save-->
-    <button @click="onSave" class="col btn btn-secondary" v-if="modeEdit">{{ $t("TXT_SUBMIT") }}</button>
+    <button
+      @click="onSave"
+      class="col btn btn-secondary"
+      v-if="modeEdit"
+    >
+      {{ $t("TXT_SUBMIT") }}
+    </button>
   </div>
 </template>
 
 <script>
-import CurrentUser             from "@/services/CurrentUser";
-import ConfigApi               from "@/configs/ConfigApi";
+import CurrentUser from "@/services/CurrentUser";
+import ConfigApi from "@/configs/ConfigApi";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
-  name:  "btnEditSaveCancelDelete",
-	emits: ['onSave', 'onEdit', 'onCancel', 'onDelete'],
+  name: "btnEditSaveCancelDelete",
+  emits: ["onSave", "onEdit", "onCancel", "onDelete"],
   props: {
-    subject:  {
-      type:    Object,
-      default: {}
+    subject: {
+      type: Object,
+      default: {},
     },
     owner_id: {
-      type:    Number,
-      default: () => null
+      type: Number,
+      default: () => null,
     },
     modeEdit: {
-      type:    Boolean,
-      default: false
-    }
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
       CU: CurrentUser.obj(),
-      ConfigApi
-    }
+      ConfigApi,
+    };
   },
   methods: {
     // ##################################################
     onSave() {
-      this.$emit('onSave', this.subject)
+      this.$emit("onSave", this.subject);
     },
     onEdit() {
-      this.$emit('onEdit', this.subject)
+      this.$emit("onEdit", this.subject);
     },
     onCancel() {
-      this.$emit('onCancel', this.subject)
+      this.$emit("onCancel", this.subject);
     },
     onDelete() {
-      this.$emit('onDelete', this.subject)
+      this.$emit("onDelete", this.subject);
     }, // ##################################################
     pageIsInIframe() {
       return AlinaPageGlobalAnalyzer.pageIsInIframe();
     }, // ##################################################
-  }
+  },
 };
 </script>
 

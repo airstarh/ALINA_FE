@@ -1,5 +1,10 @@
 const Translations = {
     en: {
+        i_delete: "🗑",
+        i_edit: "✎",
+        i_save: "✔",
+        i_ok: "✔",
+        i_cancel: "✖️",
         TXT_LOGIN: "Log-in",
         TXT_REGISTER: "Register",
         TXT_TOOLS: "Tools",
