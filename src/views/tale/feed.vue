@@ -68,28 +68,28 @@
                   class="col btn btn-secondary cursor-pointer"
                   @click="scrollToClassName('alina-feed-start')"
                 >
-                  &uarr;&uarr;
+                  {{ $t("i_up") }}{{ $t("i_up") }}
                 </div>
                 &nbsp;
                 <div
                   class="col btn btn-secondary cursor-pointer"
                   @click="scrollToClassName('alina-feed-end')"
                 >
-                  &darr;&darr;
+                  {{ $t("i_down") }}{{ $t("i_down") }}
                 </div>
                 &nbsp;
                 <div
                   class="col btn btn-secondary cursor-pointer"
                   @click="scrollToClassName(`alina-feed-tale-${index - 1}`)"
                 >
-                  &uarr;
+                  {{ $t("i_up") }}
                 </div>
                 &nbsp;
                 <div
                   class="col btn btn-secondary cursor-pointer"
                   @click="scrollToClassName(`alina-feed-tale-${index + 1}`)"
                 >
-                  &darr;
+                  {{ $t("i_down") }}
                 </div>
               </div>
             </div>
