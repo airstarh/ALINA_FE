@@ -8,7 +8,7 @@
       @click="onDelete"
       class="col-3 btn btn-danger"
     >
-      {{ $t("TXT_DELETE") }}
+      {{ $t("i_delete") }}
     </button>
     <!--Edit-->
     <button
@@ -16,7 +16,7 @@
       class="col btn btn-secondary"
       v-if="!modeEdit"
     >
-      {{ $t("TXT_EDIT") }}
+      {{ $t("i_edit") }}
     </button>
     <!--Cancel-->
     <button
@@ -24,7 +24,7 @@
       class="col btn btn-secondary"
       v-if="modeEdit"
     >
-      {{ $t("TXT_CANCEL") }}
+      {{ $t("i_cancel") }}
     </button>
     <!--Save-->
     <button
@@ -32,7 +32,7 @@
       class="col btn btn-secondary"
       v-if="modeEdit"
     >
-      {{ $t("TXT_SUBMIT") }}
+      {{ $t("i_ok") }}
     </button>
   </div>
 </template>
