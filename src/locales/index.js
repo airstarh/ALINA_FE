@@ -9,7 +9,6 @@ const Translations = {
         i_down: "↓",
         i_top: "↑↑",
         i_bottom: "↓↓",
-        i_bottom: "↓↓",
         i_previous: "←",
         i_next: "→",
         i_start: "◁",
