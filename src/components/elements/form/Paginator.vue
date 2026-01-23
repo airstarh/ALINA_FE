@@ -9,13 +9,13 @@
       @click="onClickPage(pageSize, 1)"
       :class="{ 'btn-secondary': 1 == pageCurrentNumber }"
     >
-      ᗕ
+      {{ $t("i_start") }}
     </div>
     <div
       class="btn btn-sm"
       @click="onClickPage(pageSize, pageCurrentNumber - 1)"
     >
-      ←
+      {{ $t("i_previous") }}
     </div>
     <div
       v-for="(v, i) in pagesArray"
@@ -30,14 +30,14 @@
       class="btn btn-sm"
       @click="onClickPage(pageSize, pageCurrentNumber + 1)"
     >
-      →
+      {{ $t("i_next") }}
     </div>
     <div
       class="btn btn-sm"
       @click="onClickPage(pageSize, pagesTotal)"
       :class="{ 'btn-secondary': pagesTotal == pageCurrentNumber }"
     >
-      ᗒ
+      {{ $t("i_finish") }}
     </div>
     <div class="btn btn-sm d-none d-lg-inline-block">
       {{ pageCurrentNumber }}/{{ pagesTotal }}
