@@ -7,12 +7,12 @@
     <div
       class="btn btn-sm"
       @click="onClickPage(pageSize, 1)"
-      :class="{ 'btn-secondary': 1 == pageCurrentNumber }"
+      :class="[{ 'btn-secondary': 1 == pageCurrentNumber }, 'rounded-circle']"
     >
       {{ $t("i_start") }}
     </div>
     <div
-      class="btn btn-sm"
+      class="btn btn-sm rounded-circle"
       @click="onClickPage(pageSize, pageCurrentNumber - 1)"
     >
       {{ $t("i_previous") }}
@@ -21,13 +21,13 @@
       v-for="(v, i) in pagesArray"
       :key="i"
       class="btn btn-sm"
-      :class="{ 'btn-secondary': v == pageCurrentNumber }"
+      :class="[{ 'btn-secondary': v == pageCurrentNumber }, 'rounded-circle']"
       @click="onClickPage(pageSize, v)"
     >
       {{ v }}
     </div>
     <div
-      class="btn btn-sm"
+      class="btn btn-sm rounded-circle"
       @click="onClickPage(pageSize, pageCurrentNumber + 1)"
     >
       {{ $t("i_next") }}
@@ -35,7 +35,7 @@
     <div
       class="btn btn-sm"
       @click="onClickPage(pageSize, pagesTotal)"
-      :class="{ 'btn-secondary': pagesTotal == pageCurrentNumber }"
+      :class="[{ 'btn-secondary': pagesTotal == pageCurrentNumber }, 'rounded-circle']"
     >
       {{ $t("i_finish") }}
     </div>
