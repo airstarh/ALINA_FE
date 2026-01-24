@@ -16,8 +16,8 @@
         <!--region Buttons-->
         <btnEditSaveCancelDelete
           v-if="!pFlagInFeed"
-          :owner_id="tale.owner_id"
           :modeEdit="dConf.modeEdit"
+          :owner_id="tale.owner_id"
           :subject="tale"
           @onSave="ajaPostTale"
           @onEdit="onEdit"
@@ -32,7 +32,6 @@
           <!--##################################################-->
           <!--region Tale. mode Edit-->
           <div
-            class=""
             v-if="dConf.modeEdit"
           >
             <div>Tale #{{ tale.id }}</div>
@@ -251,7 +250,7 @@
           <!--endregion Tale. mode Edit-->
           <!--##################################################-->
           <!--region Tale. mode Read-->
-          <div v-else>
+          <div v-if="!dConf.modeEdit">
             <div class="row no-gutters">
               <div
                 class="col mb-3"
@@ -348,7 +347,7 @@
                 height="500px"
               ></iframe>
             </div>
-            <div class="mt-3"></div>
+            <div class="mt-3">&nbsp;</div>
           </div>
           <!--endregion Tale. mode Read-->
           <!--##################################################-->
