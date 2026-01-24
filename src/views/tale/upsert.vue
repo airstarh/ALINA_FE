@@ -12,8 +12,10 @@
       :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]"
     >
       <div class="col">
+        
         <!--##################################################-->
-        <!--region Buttons-->
+
+        <!-- region BUTTONS -->
         <btnEditSaveCancelDelete
           v-if="!pFlagInFeed"
           :modeEdit="dConf.modeEdit"
@@ -25,12 +27,14 @@
           @onDelete="ajaDeleteTale"
         >
         </btnEditSaveCancelDelete>
-        <!--endregion Buttons-->
+        <!-- endregion BUTTONS -->
+        
         <!--##################################################-->
-        <!--region Tale-->
+        
+        <!-- region TALE -->
         <div v-if="!pageIsInIframe">
-          <!--##################################################-->
-          <!--region Tale. mode Edit-->
+          
+          <!-- region MODE EDIT -->
           <div v-if="dConf.modeEdit">
             <div>Tale #{{ tale.id }}</div>
             <h1>
@@ -254,9 +258,11 @@
             </div>
             <!-- endregion TALE VIEW SETTINGS -->
           </div>
-          <!--endregion Tale. mode Edit-->
+          <!-- endregion MODE EDIT -->
+
           <!--##################################################-->
-          <!--region Tale. mode Read-->
+
+          <!-- region MODE READ -->
           <div v-if="!dConf.modeEdit">
             <div class="row no-gutters">
               <div
@@ -356,11 +362,15 @@
             </div>
             <div class="mt-3">&nbsp;</div>
           </div>
-          <!--endregion Tale. mode Read-->
+          <!-- endregion MODE READ -->
+
           <!--##################################################-->
+          
         </div>
-        <!--endregion Tale-->
+        <!-- endregion TALE -->
+        
         <!--##################################################-->
+        
         <!--region Yandex Map-->
         <div class="row m-1">
           <div class="col">
