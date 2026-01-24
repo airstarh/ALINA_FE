@@ -31,9 +31,7 @@
         <div v-if="!pageIsInIframe">
           <!--##################################################-->
           <!--region Tale. mode Edit-->
-          <div
-            v-if="dConf.modeEdit"
-          >
+          <div v-if="dConf.modeEdit">
             <div>Tale #{{ tale.id }}</div>
             <h1>
               <aInput
@@ -93,7 +91,7 @@
               />
             </div>
 
-            <!-- iframe -->
+            <!-- region iframe -->
             <div class="mb-3">
               <aInput
                 v-model="tale.iframe"
@@ -115,9 +113,11 @@
                 height="250px"
               ></iframe>
             </div>
+            <!-- endregion iframe -->
 
+            <!-- region TALE VIEW SETTINGS -->
             <div
-              class="row no-gutters"
+              class="row no-gutters tale-view-settings"
               style="max-width: 99%"
             >
               <div class="col-md">
@@ -245,7 +245,7 @@
                 </div>
               </div>
             </div>
-            <!--##################################################-->
+            <!-- endregion TALE VIEW SETTINGS -->
           </div>
           <!--endregion Tale. mode Edit-->
           <!--##################################################-->
