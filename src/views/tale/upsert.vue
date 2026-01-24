@@ -45,7 +45,10 @@
               v-model="tale.body"
               :modeEdit="dConf.modeEdit"
             />
+
             <div class="mb-3">&nbsp;</div>
+
+            <!-- region DATE -->
             <div class="mt-1 mb-3">
               <AlinaDatePicker
                 v-model="tale.publish_at"
@@ -55,7 +58,9 @@
                 :modeEdit="dConf.modeEdit"
               ></AlinaDatePicker>
             </div>
+            <!-- endregion DATE -->
 
+            <!-- region BODY FREE -->
             <div v-if="CU.isAdmin()">
               <div class="input-group input-group mb-3">
                 <!-- body_free -->
@@ -75,13 +80,14 @@
                 <div v-html="tale.body_free"></div>
               </div>
             </div>
+            <!-- endregion BODY FREE -->
 
-            <div>
-              {{ taleUrl }}
-            </div>
-
-            <!-- alias -->
+            <!-- region ALIAS -->
             <div class="mb-3">
+              <div>
+                {{ taleUrl }}
+              </div>
+
               <aInput
                 v-model="tale.router_alias"
                 :label="$tc('Page Alias').toString()"
@@ -90,6 +96,7 @@
                 componentDisplay="block"
               />
             </div>
+            <!-- endregion ALIAS -->
 
             <!-- region iframe -->
             <div class="mb-3">
