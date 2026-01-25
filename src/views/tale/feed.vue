@@ -64,28 +64,28 @@
             <div class="sticky-top">
               <div class="row no-gutters text-center mt-5 alina-feed-up-down">
                 <div
-                  class="col btn btn-secondary cursor-pointer"
+                  class="col btn cursor-pointer"
                   @click="scrollToClassName('alina-feed-start')"
                 >
                   {{ $t("i_up") }}{{ $t("i_up") }}
                 </div>
                 &nbsp;
                 <div
-                  class="col btn btn-secondary cursor-pointer"
+                  class="col btn cursor-pointer"
                   @click="scrollToClassName('alina-feed-end')"
                 >
                   {{ $t("i_down") }}{{ $t("i_down") }}
                 </div>
                 &nbsp;
                 <div
-                  class="col btn btn-secondary cursor-pointer"
+                  class="col btn cursor-pointer"
                   @click="scrollToClassName(`alina-feed-tale-${index - 1}`)"
                 >
                   {{ $t("i_up") }}
                 </div>
                 &nbsp;
                 <div
-                  class="col btn btn-secondary cursor-pointer"
+                  class="col btn cursor-pointer"
                   @click="scrollToClassName(`alina-feed-tale-${index + 1}`)"
                 >
                   {{ $t("i_down") }}
@@ -422,5 +422,12 @@ h2 a:hover {
   /*bottom: 100px;*/
   top: 95vh;
   z-index: 1020;
+}
+
+.alina-feed-up-down {
+  & div.btn {
+    background-color: #22222288;
+    color: #666666;
+  }
 }
 </style>

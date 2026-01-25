@@ -14,7 +14,7 @@
       <div class="col-12">
         <div
           v-if="!pageIsInIframe"
-          class="row no-gutters align-items-center justify-content-between"
+          class="row no-gutters mt-2 mb-2 align-items-center justify-content-between"
         >
           <div class="col">
             <!-- region  AVATAR -->
@@ -26,13 +26,13 @@
               :emblemUrl="tale.owner_emblem"
               emblemWidth="7vmax"
               :someDate="null"
-              class="mt-5 mb-5 text-center"
+              class="text-center"
             />
             <!-- endregion  AVATAR -->
           </div>
           <div
             v-if="CU.ownsOrAdminOrModerator(tale.owner_id)"
-            class="col-auto"
+            class="col-2"
           >
             <!-- region BUTTONS -->
             <btnEditSaveCancelDelete
