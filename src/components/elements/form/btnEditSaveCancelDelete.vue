@@ -34,6 +34,7 @@
     <button
       @click="onDelete"
       class="col btn btn-danger"
+      v-if="modeEdit"
     >
       {{ $t("i_delete") }}
     </button>
