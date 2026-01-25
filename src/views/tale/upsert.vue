@@ -329,14 +329,6 @@
 
             <!--##################################################-->
 
-            <div
-              v-if="
-                (tale.is_header_hidden == 1 || tale.is_date_hidden == 1) &&
-                CU.ownsOrAdminOrModerator(tale.owner_id)
-              "
-            >
-              <router-link :to="'/tale/upsert/' + tale.id">... </router-link>
-            </div>
             <div class="row no-gutters mt-1">
               <div
                 class="col"
