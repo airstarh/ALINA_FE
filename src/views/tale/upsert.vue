@@ -48,36 +48,58 @@
           </div>
         </div>
 
-        <h1
-          v-if="!pageIsInIframe"
-          :class="[
-            'notranslate m-0 p-3 text-left rounded alina-tale-header',
-            {
-              'bg-danger': tale.is_adult_denied == 1,
-            },
-          ]"
-          :lang="tale.lang"
+        <div
+          v-if="!pageIsInIframe && tale.is_header_hidden != 1"
+          style="position: relative"
         >
-          <a
-            v-if="!dConf.modeEdit"
-            :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-            class="m-0"
+          <h1
+            :class="[
+              'notranslate m-0 p-3 text-left rounded alina-tale-header',
+              {
+                'bg-danger': tale.is_adult_denied == 1,
+              },
+            ]"
+            :lang="tale.lang"
           >
+            <a
+              v-if="!dConf.modeEdit"
+              :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
+              class="m-0"
+            >
+              <aInput
+                v-model="tale.header"
+                :placeholder="$t('Header').toString()"
+                :modeEdit="dConf.modeEdit"
+                componentDisplay="block"
+              />
+            </a>
             <aInput
+              v-if="dConf.modeEdit"
               v-model="tale.header"
               :placeholder="$t('Header').toString()"
               :modeEdit="dConf.modeEdit"
               componentDisplay="block"
             />
-          </a>
-          <aInput
-            v-if="dConf.modeEdit"
-            v-model="tale.header"
-            :placeholder="$t('Header').toString()"
-            :modeEdit="dConf.modeEdit"
-            componentDisplay="block"
-          />
-        </h1>
+          </h1>
+          <div
+            v-if="tale.is_date_hidden != 1"
+            class="notranslate"
+            style="
+              position: absolute;
+              right: 1%;
+              bottom: -1.5rem;
+              padding: 1rem;
+            "
+          >
+            <router-link
+              :to="'/tale/upsert/' + tale.id"
+              class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
+              style="font-size: 2vmin"
+            >
+              {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
+            </router-link>
+          </div>
+        </div>
 
         <!-- region TALE -->
         <div v-if="!pageIsInIframe">
@@ -304,33 +326,6 @@
 
           <!-- region MODE READ -->
           <div v-if="!dConf.modeEdit">
-            <div class="row no-gutters">
-              <div
-                class="col mb-3"
-                style="position: relative"
-                v-if="tale.is_header_hidden != 1"
-              >
-                <div
-                  v-if="tale.is_date_hidden != 1"
-                  class="notranslate"
-                  style="
-                    position: absolute;
-                    right: 1%;
-                    bottom: -1.5rem;
-                    padding: 1rem;
-                  "
-                >
-                  <router-link
-                    :to="'/tale/upsert/' + tale.id"
-                    class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
-                    style="font-size: 2vmin"
-                  >
-                    {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
-                  </router-link>
-                </div>
-              </div>
-            </div>
-
             <!--##################################################-->
 
             <div class="row no-gutters mt-1">
