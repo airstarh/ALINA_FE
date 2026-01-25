@@ -16,7 +16,7 @@
 
         <!-- region  AVATAR -->
         <UserAvatar
-          v-if="tale.is_avatar_hidden == 0"
+          v-if="tale.is_avatar_hidden == 0 && !pageIsInIframe"
           :userId="tale.owner_id"
           :userFirstName="tale.owner_firstname"
           :userLastName="tale.owner_lastname"
