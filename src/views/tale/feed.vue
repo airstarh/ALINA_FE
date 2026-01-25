@@ -1,5 +1,5 @@
 <template>
-  <div class="container p-0 m-0 mw-100 alina-feed-wrapper">
+  <div class="container p-0 alina-feed-wrapper">
     <div class="alina-feed-start"></div>
     <!--##################################################-->
     <!--region SEARCH FORM-->

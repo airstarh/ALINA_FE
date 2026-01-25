@@ -3,7 +3,7 @@
     v-if="tale.id"
     :key="tale.id"
     :class="[
-      'p-0 m-0 mw-100 alina-tale-wrapper',
+      'p-0 alina-tale-wrapper',
       {
         container: !pageIsInIframe,
         'container-fluid': pageIsInIframe,
