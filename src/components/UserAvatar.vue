@@ -34,7 +34,7 @@
             class=""
           >
             <img
-              :src="emblemUrl || '/noimage.png'"
+              :src="emblemUrl || 'noimage.png'"
               class="rounded-circle"
               :style="{ width: emblemWidth }"
             />
@@ -92,7 +92,7 @@ export default {
     },
     emblemUrl: {
       type: String,
-      default: "/noimage.png",
+      default: "noimage.png",
     },
     emblemWidth: {
       type: String,
