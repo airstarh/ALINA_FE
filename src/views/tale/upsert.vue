@@ -7,6 +7,9 @@
     }"
   >
     <div v-if="!tale.id">...</div>
+
+    <!--##################################################-->
+    
     <div
       v-if="tale.id"
       :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]"
