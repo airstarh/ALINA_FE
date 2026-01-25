@@ -372,7 +372,7 @@
 
         <!--##################################################-->
 
-        <!--region Yandex Map-->
+        <!-- region Yandex Map-->
         <div class="row m-1">
           <div class="col">
             <AlinaYandexMap
@@ -381,9 +381,11 @@
             ></AlinaYandexMap>
           </div>
         </div>
-        <!--endregion Yandex Map-->
+        <!-- endregion Yandex Map-->
+
         <!--##################################################-->
-        <!--region Attached Documents-->
+
+        <!-- region FILES -->
         <div
           class="row no-gutters"
           v-if="tale.count_files > 0 || dConf.modeEdit"
@@ -397,10 +399,11 @@
             ></AlinaFileUploader>
           </div>
         </div>
-        <!--endregion Attached Documents-->
+        <!-- endregion FILES -->
+
         <!--##################################################-->
-        <!--##################################################-->
-        <!--region Buttons-->
+
+        <!-- region Buttons-->
         <btnEditSaveCancelDelete
           v-if="!pFlagInFeed"
           :owner_id="tale.owner_id"
@@ -412,9 +415,11 @@
           @onDelete="ajaDeleteTale"
         >
         </btnEditSaveCancelDelete>
-        <!--endregion Buttons-->
+        <!-- endregion Buttons-->
+
         <!--##################################################-->
-        <!--region Share & Likes-->
+
+        <!-- region Share & Likes-->
         <div
           class="row no-gutters mb-3"
           v-if="tale.is_social_sharing_hidden != 1"
@@ -436,8 +441,11 @@
             </div>
           </div>
         </div>
-        <!--endregion Share & Likes-->
+        <!-- endregion Share & Likes-->
+
         <!--##################################################-->
+
+        <!-- region COMMENTS -->
         <div
           v-if="tale.is_comment_denied != 1"
           class="mb-5"
@@ -452,6 +460,9 @@
             :root_tale_object="tale"
           ></Comment>
         </div>
+        <!-- endregion COMMENTS -->
+
+        <!--##################################################-->
       </div>
     </div>
   </div>
