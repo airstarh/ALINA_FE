@@ -67,6 +67,7 @@
               v-model="tale.header"
               :placeholder="$t('Header').toString()"
               :modeEdit="dConf.modeEdit"
+              componentDisplay="block"
             />
           </a>
           <aInput
