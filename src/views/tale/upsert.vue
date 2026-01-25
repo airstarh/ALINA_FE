@@ -76,7 +76,7 @@
                 idq="publish_at"
                 class="notranslate"
                 :modeEdit="dConf.modeEdit"
-              ></AlinaDatePicker>
+              />
             </div>
             <!-- endregion DATE -->
 
