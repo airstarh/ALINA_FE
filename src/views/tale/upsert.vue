@@ -48,19 +48,42 @@
           </div>
         </div>
 
+        <h1
+          v-if="!pageIsInIframe"
+          :class="[
+            'notranslate m-0 p-3 text-left rounded alina-tale-header',
+            {
+              'bg-danger': tale.is_adult_denied == 1,
+            },
+          ]"
+          :lang="tale.lang"
+        >
+          <a
+            v-if="!dConf.modeEdit"
+            :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
+            class="m-0"
+          >
+            <aInput
+              v-model="tale.header"
+              :placeholder="$t('Header').toString()"
+              :modeEdit="dConf.modeEdit"
+            />
+          </a>
+          <aInput
+            v-if="dConf.modeEdit"
+            v-model="tale.header"
+            :placeholder="$t('Header').toString()"
+            :modeEdit="dConf.modeEdit"
+            componentDisplay="block"
+          />
+        </h1>
+
         <!-- region TALE -->
         <div v-if="!pageIsInIframe">
           <!-- region MODE EDIT -->
           <div v-if="dConf.modeEdit">
             <div>Tale #{{ tale.id }}</div>
-            <h1>
-              <aInput
-                v-model="tale.header"
-                :placeholder="$t('Header').toString()"
-                :modeEdit="dConf.modeEdit"
-                componentDisplay="block"
-              />
-            </h1>
+
             <BorgEditor
               v-model="tale.body"
               :modeEdit="dConf.modeEdit"
@@ -286,26 +309,6 @@
                 style="position: relative"
                 v-if="tale.is_header_hidden != 1"
               >
-                <h1
-                  :class="[
-                    'notranslate m-0 p-3 text-left rounded alina-tale-header',
-                    {
-                      'bg-danger': tale.is_adult_denied == 1,
-                    },
-                  ]"
-                  :lang="tale.lang"
-                >
-                  <a
-                    :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-                    class="m-0"
-                  >
-                    <aInput
-                      v-model="tale.header"
-                      :placeholder="$t('Header').toString()"
-                      :modeEdit="dConf.modeEdit"
-                    />
-                  </a>
-                </h1>
                 <div
                   v-if="tale.is_date_hidden != 1"
                   class="notranslate"

@@ -1,16 +1,20 @@
 <template>
-  <div class="aInput notranslate" :style="{ display: componentDisplay }">
+  <div
+    class="aInput notranslate"
+    :style="{ display: componentDisplay }"
+  >
     <template v-if="modeEdit">
-
-      <label class="a-flex" :for="idNameKey">
-
+      <label
+        class="a-flex"
+        :for="idNameKey"
+      >
         <!-- Label Left -->
         <div
           class="a-item label-left"
           v-if="label && flagLabelFirst"
-          :style="computedStyleLabel">
-          <span
-            :class="{ 'btn btn-secondary': type === 'file' }">
+          :style="computedStyleLabel"
+        >
+          <span :class="{ 'btn btn-secondary': type === 'file' }">
             {{ label }}<span v-if="type !== 'file'">:&nbsp;</span>
           </span>
         </div>
@@ -18,7 +22,8 @@
         <!-- Input -->
         <div
           class="a-item a-input"
-          :style="computedStyleInput">
+          :style="computedStyleInput"
+        >
           <input
             :type="type"
             :value="value"
@@ -28,7 +33,7 @@
             :id="idNameKey"
             :name="idNameKey"
             :placeholder="placeholder"
-            :style="{ textAlign: inputAlign, width: '99%' }"
+            :style="{ textAlign: inputAlign, width: inputWidth ?? '100%' }"
             :maxLength="maxLength"
             :size="size"
             :max="max"
@@ -37,23 +42,30 @@
             :accept="accept"
             :multiple="multiple"
             :disabled="disabled"
-            :class="{ displayNone: computedFlagDisplayNone }" />
-          <div v-if="type === 'checkbox'" class="checkMark"><span v-if="internalChecked">V</span><span v-if="!internalChecked">&nbsp;</span></div>
+            :class="{ displayNone: computedFlagDisplayNone }"
+            :aria-label="placeholder"
+          />
+          <div
+            v-if="type === 'checkbox'"
+            class="checkMark"
+          >
+            <span v-if="internalChecked">V</span
+            ><span v-if="!internalChecked">&nbsp;</span>
+          </div>
         </div>
 
         <!-- Label Right -->
         <div
           class="a-item label-right"
           v-if="label && !flagLabelFirst"
-          :style="computedStyleLabel">
+          :style="computedStyleLabel"
+        >
           <span>{{ label }}</span>
         </div>
-
       </label>
     </template>
 
     <template v-if="!modeEdit">
-
       <template v-if="type === 'text'">
         {{ formatter(value) }}
       </template>
@@ -69,146 +81,144 @@
           {{ formatter(value) }}
         </a>
       </template>
-
     </template>
   </div>
 </template>
 <script>
-
 export default {
   name: "aInput",
-  emits: ['input', 'change', 'update:modelValue'],
+  emits: ["input", "change", "update:modelValue"],
   props: {
     // Common
     value: {
       type: [String, Number, Boolean, Object],
-      default: ''
+      default: "",
     },
 
     // TYPE=RADIO ONLY: Current selected value (from parent v-model)
     modelValue: {
       type: [String, Number, Boolean, Object],
-      default: null
+      default: null,
     },
 
     modeEdit: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     label: {
       type: String,
-      default: ''
+      default: "",
     },
 
     placeholder: {
       type: String,
-      default: ''
+      default: "",
     },
 
     type: {
       type: String,
-      default: 'text'
+      default: "text",
     },
 
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
 
     size: {
       type: Number,
-      default: null
+      default: null,
     },
 
     maxLength: {
       type: Number,
-      default: null
+      default: null,
     },
 
     max: {
       type: Number,
-      default: null
+      default: null,
     },
 
     min: {
       type: Number,
-      default: null
+      default: null,
     },
 
     tabindex: {
       type: Number,
       default: function () {
         return AlinaPageGlobalAnalyzer.tabindexNext();
-      }
+      },
     },
 
     disabled: {
       type: Boolean,
-      default: null
+      default: null,
     },
 
     accept: {
       type: String,
-      default: null
+      default: null,
     },
 
     multiple: {
       type: Boolean,
-      default: null
+      default: null,
     },
 
     trueValue: {
       type: [String, Number, Boolean, Object],
-      default: 1
+      default: 1,
     },
 
     falseValue: {
       type: [String, Number, Boolean, Object],
-      default: 0
+      default: 0,
     },
 
     //  COMPONENT SPECIAL
     formatter: {
       type: Function,
-      default: v => v
+      default: (v) => v,
     },
 
     idNameKey: {
       type: String,
       default: function () {
         return AlinaPageGlobalAnalyzer.idNameKeyNext();
-      }
+      },
     },
 
     componentDisplay: {
       type: String,
-      default: 'inline-block'
+      default: "inline-block",
     },
 
     labelAlign: {
       type: String,
-      default: 'left'
+      default: "left",
     },
 
     inputAlign: {
       type: String,
-      default: 'left'
+      default: "left",
     },
 
     labelWidth: {
       type: String,
-      default: null
+      default: null,
     },
 
     inputWidth: {
       type: String,
-      default: null
+      default: null,
     },
 
     flagLabelFirst: {
       type: Boolean,
-      default: true
+      default: true,
     },
   },
   data() {
@@ -216,66 +226,55 @@ export default {
       valueData: null,
 
       typeAll: [
-        'text',
-        'password',
-        'email',
-        'number',
-        'tel',
-        'url',
-        'search',
-        'date',
-        'time',
-        'datetime-local',
-        'month',
-        'week',
-        'color',
-        'checkbox',
-        'radio',
-        'file',
-        'hidden',
-        'submit',
-        'reset',
-        'button',
-        'image',
-        'range'
+        "text",
+        "password",
+        "email",
+        "number",
+        "tel",
+        "url",
+        "search",
+        "date",
+        "time",
+        "datetime-local",
+        "month",
+        "week",
+        "color",
+        "checkbox",
+        "radio",
+        "file",
+        "hidden",
+        "submit",
+        "reset",
+        "button",
+        "image",
+        "range",
       ],
 
       typeText: [
-        'text',
-        'password',
-        'email',
-        'number',
-        'tel',
-        'url',
-        'search',
-        'date',
-        'time',
-        'datetime-local',
-        'month',
-        'week',
-        'color',
-        'range'
+        "text",
+        "password",
+        "email",
+        "number",
+        "tel",
+        "url",
+        "search",
+        "date",
+        "time",
+        "datetime-local",
+        "month",
+        "week",
+        "color",
+        "range",
       ],
 
-      typeFile: [
-        'file'
-      ],
+      typeFile: ["file"],
 
-      typeButton: [
-        'submit',
-        'reset',
-        'button',
-        'image',
-      ],
+      typeButton: ["submit", "reset", "button", "image"],
 
-      typeCheck: [
-        'checkbox'
-      ],
+      typeCheck: ["checkbox"],
 
-      typeRadio: [
-        'radio'
-      ],
-    }
+      typeRadio: ["radio"],
+    };
   },
 
   methods: {
@@ -287,9 +286,9 @@ export default {
 
     onChange(event) {
       if (
-        this.typeFile.includes(this.type)
-        || this.typeCheck.includes(this.type)
-        || this.typeRadio.includes(this.type)
+        this.typeFile.includes(this.type) ||
+        this.typeCheck.includes(this.type) ||
+        this.typeRadio.includes(this.type)
       ) {
         return this.alinaEmit(event);
       }
@@ -297,32 +296,34 @@ export default {
 
     alinaEmit(event) {
       switch (this.type) {
-        case 'submit':
-        case 'reset':
-        case 'button':
-        case 'image':
+        case "submit":
+        case "reset":
+        case "button":
+        case "image":
           break;
-        case 'radio':
+        case "radio":
           this.valueData = this.value;
           // Emit the radio's value when selected
-          this.$emit('update:modelValue', this.valueData);
-          this.$emit('change', this.valueData);
+          this.$emit("update:modelValue", this.valueData);
+          this.$emit("change", this.valueData);
           break;
-        case 'checkbox':
-          this.valueData = event.target.checked ? this.trueValue : this.falseValue;
-          this.$emit('input', this.valueData);
-          this.$emit('change', this.valueData);
+        case "checkbox":
+          this.valueData = event.target.checked
+            ? this.trueValue
+            : this.falseValue;
+          this.$emit("input", this.valueData);
+          this.$emit("change", this.valueData);
           break;
-        case 'file':
+        case "file":
           if (event.target.files.length > 0) {
             this.valueData = Array.from(event.target.files);
-            this.$emit('input', this.valueData);
-            this.$emit('change', this.valueData);
+            this.$emit("input", this.valueData);
+            this.$emit("change", this.valueData);
           }
           break;
         default:
           this.valueData = event.target.value;
-          this.$emit('input', this.valueData);
+          this.$emit("input", this.valueData);
           break;
       }
 
@@ -339,23 +340,22 @@ export default {
         return this.value === this.trueValue;
       }
       return null;
-
     },
 
     computedFlagDisplayNone() {
-      return this.type === 'file';
+      return this.type === "file";
     },
 
     computedStyleLabel() {
       const style = {};
 
       if (this.labelWidth) {
-        style['flex'] = 'none';
-        style['width'] = this.labelWidth;
+        style["flex"] = "none";
+        style["width"] = this.labelWidth;
       }
 
       if (this.labelAlign) {
-        style['text-align'] = this.labelAlign;
+        style["text-align"] = this.labelAlign;
       }
 
       return style;
@@ -365,14 +365,14 @@ export default {
       const style = {};
 
       if (this.inputWidth) {
-        style['flex'] = 'none';
-        style['width'] = this.inputWidth;
+        style["flex"] = "none";
+        style["width"] = this.inputWidth;
       }
 
       return style;
     },
-  }
-}
+  },
+};
 </script>
 <style scoped lang="scss">
 .aInput {
@@ -408,7 +408,7 @@ export default {
     display: none;
   }
 
-  & input[type="checkbox"]+.checkMark {
+  & input[type="checkbox"] + .checkMark {
     display: inline-block;
     // position: relative;
     // top: 15px;
@@ -417,12 +417,12 @@ export default {
     height: 1lh;
     text-align: center;
     border-radius: 5px;
-    
+
     color: #000000;
     background-color: #ff0000;
   }
 
-  & input[type="checkbox"]:checked+.checkMark {
+  & input[type="checkbox"]:checked + .checkMark {
     background-color: #00ff00;
   }
 
