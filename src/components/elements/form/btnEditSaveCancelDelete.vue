@@ -94,6 +94,9 @@ export default {
 
 <style scoped lang="scss">
 .btnEditSaveCancelDelete {
+  &.row {
+    gap: 2px;
+  }
   & button {
     min-height: 2ch;
     min-width: 4ch;
