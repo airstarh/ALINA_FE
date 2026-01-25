@@ -1,15 +1,8 @@
 <template>
   <div
     v-if="CU.ownsOrAdminOrModerator(owner_id) && !pageIsInIframe()"
-    class="row no-gutters mb-1 m-buttons-1"
+    class="row btnEditSaveCancelDelete"
   >
-    <!--Delete-->
-    <button
-      @click="onDelete"
-      class="col-3 btn btn-danger"
-    >
-      {{ $t("i_delete") }}
-    </button>
     <!--Edit-->
     <button
       @click="onEdit"
@@ -18,6 +11,16 @@
     >
       {{ $t("i_edit") }}
     </button>
+
+    <!--Save-->
+    <button
+      @click="onSave"
+      class="col btn btn-secondary"
+      v-if="modeEdit"
+    >
+      {{ $t("i_ok") }}
+    </button>
+
     <!--Cancel-->
     <button
       @click="onCancel"
@@ -26,13 +29,13 @@
     >
       {{ $t("i_cancel") }}
     </button>
-    <!--Save-->
+
+    <!--Delete-->
     <button
-      @click="onSave"
-      class="col btn btn-secondary"
-      v-if="modeEdit"
+      @click="onDelete"
+      class="col btn btn-danger"
     >
-      {{ $t("i_ok") }}
+      {{ $t("i_delete") }}
     </button>
   </div>
 </template>
@@ -66,24 +69,35 @@ export default {
     };
   },
   methods: {
-    // ##################################################
     onSave() {
       this.$emit("onSave", this.subject);
     },
+
     onEdit() {
       this.$emit("onEdit", this.subject);
     },
+
     onCancel() {
       this.$emit("onCancel", this.subject);
     },
+
     onDelete() {
       this.$emit("onDelete", this.subject);
-    }, // ##################################################
+    },
+
     pageIsInIframe() {
       return AlinaPageGlobalAnalyzer.pageIsInIframe();
-    }, // ##################################################
+    },
   },
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.btnEditSaveCancelDelete {
+  & button {
+    min-height: 2ch;
+    min-width: 4ch;
+    padding: 3px;
+  }
+}
+</style>

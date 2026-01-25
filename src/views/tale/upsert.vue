@@ -1,52 +1,52 @@
 <template>
   <div
-    class="p-0 alina-tale-wrapper"
-    :class="{
-      container: !pageIsInIframe,
-      'container-fluid': pageIsInIframe,
-    }"
+    v-if="tale.id"
+    :key="tale.id"
+    :class="[
+      'p-0 alina-tale-wrapper -100',
+      {
+        'container': !pageIsInIframe,
+        'container-fluid': pageIsInIframe,
+      },
+    ]"
   >
-    <div v-if="!tale.id">...</div>
-
-    <!--##################################################-->
-    
-    <div
-      v-if="tale.id"
-      :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]"
-    >
-      <div class="col">
-        <!--##################################################-->
-
-        <!-- region  AVATAR -->
-        <UserAvatar
-          v-if="tale.is_avatar_hidden == 0 && !pageIsInIframe"
-          :userId="tale.owner_id"
-          :userFirstName="tale.owner_firstname"
-          :userLastName="tale.owner_lastname"
-          :emblemUrl="tale.owner_emblem"
-          emblemWidth="7vmax"
-          :someDate="null"
-          class="mt-5 mb-5 text-center"
-        ></UserAvatar>
-        <!-- endregion  AVATAR -->
-
-        <!--##################################################-->
-
-        <!-- region BUTTONS -->
-        <btnEditSaveCancelDelete
-          v-if="!pFlagInFeed"
-          :modeEdit="dConf.modeEdit"
-          :owner_id="tale.owner_id"
-          :subject="tale"
-          @onSave="ajaPostTale"
-          @onEdit="onEdit"
-          @onCancel="onCancel"
-          @onDelete="ajaDeleteTale"
+    <div :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]">
+      <div class="col-12">
+        <div
+          v-if="!pageIsInIframe"
+          class="row align-items-center justify-content-between"
         >
-        </btnEditSaveCancelDelete>
-        <!-- endregion BUTTONS -->
-
-        <!--##################################################-->
+          <div class="col-10">
+            <!-- region  AVATAR -->
+            <UserAvatar
+              v-if="tale.is_avatar_hidden == 0"
+              :userId="tale.owner_id"
+              :userFirstName="tale.owner_firstname"
+              :userLastName="tale.owner_lastname"
+              :emblemUrl="tale.owner_emblem"
+              emblemWidth="7vmax"
+              :someDate="null"
+              class="mt-5 mb-5 text-center"
+            />
+            <!-- endregion  AVATAR -->
+          </div>
+          <div
+            v-if="CU.ownsOrAdminOrModerator(tale.owner_id)"
+            class="col-2"
+          >
+            <!-- region BUTTONS -->
+            <btnEditSaveCancelDelete
+              :modeEdit="dConf.modeEdit"
+              :owner_id="tale.owner_id"
+              :subject="tale"
+              @onSave="ajaPostTale"
+              @onEdit="onEdit"
+              @onCancel="onCancel"
+              @onDelete="ajaDeleteTale"
+            />
+            <!-- endregion BUTTONS -->
+          </div>
+        </div>
 
         <!-- region TALE -->
         <div v-if="!pageIsInIframe">
@@ -416,8 +416,7 @@
           @onEdit="onEdit"
           @onCancel="onCancel"
           @onDelete="ajaDeleteTale"
-        >
-        </btnEditSaveCancelDelete>
+        />
         <!-- endregion Buttons-->
 
         <!--##################################################-->
@@ -470,6 +469,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import UtilsData from "@/Utils/UtilsData";
 import StandardButtons from "@/components/elements/form/StandardButtons.vue";
@@ -670,11 +670,13 @@ export default {
     onCancel() {
       this.dConf.modeEdit = false;
       this.taleLastTouchedRemember({});
+
       if (this.tale.is_submitted == 0) {
         this.$router.replace({ path: "/" });
       } else {
         this.ajaxGetTale(this.tale.id, true);
       }
+
       return null;
     },
     // endregion Event Handlers

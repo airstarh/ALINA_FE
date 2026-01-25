@@ -34,7 +34,7 @@ export default class CurrentUser {
 
     //##################################################
     /**
-     * @return {CurrentUser}
+     * @return {this}
      * */
     static obj() {
         const _static = this;
