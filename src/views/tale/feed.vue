@@ -36,7 +36,7 @@
     <!--##################################################-->
     <!--region FEED-PAGINATOR-UP-DOWN-TALE-->
     <div
-      v-if="feed.length > 0"
+      v-if="feed.length"
       class="alina-feed-paginator-tale"
     >
       <div class="row no-gutters">
@@ -58,8 +58,7 @@
           <div
             v-for="(tale, index) in feed"
             v-bind:key="tale.id"
-            class="mt-5 alina-feed-tale"
-            :class="[`alina-feed-tale-${index}`]"
+            :class="['mt-5 alina-feed-tale', `alina-feed-tale-${index}`]"
           >
             <!--region UP-DOWN-->
             <div class="sticky-top">
