@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="CU.ownsOrAdminOrModerator(owner_id) && !pageIsInIframe()"
-    class="row btnEditSaveCancelDelete"
+    class="row no-gutters btnEditSaveCancelDelete"
   >
     <!--Edit-->
     <button

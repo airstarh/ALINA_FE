@@ -3,9 +3,9 @@
     v-if="tale.id"
     :key="tale.id"
     :class="[
-      'p-0 alina-tale-wrapper -100',
+      'p-0 m-0 mw-100 alina-tale-wrapper',
       {
-        'container': !pageIsInIframe,
+        container: !pageIsInIframe,
         'container-fluid': pageIsInIframe,
       },
     ]"
@@ -14,9 +14,9 @@
       <div class="col-12">
         <div
           v-if="!pageIsInIframe"
-          class="row align-items-center justify-content-between"
+          class="row no-gutters align-items-center justify-content-between"
         >
-          <div class="col-10">
+          <div class="col">
             <!-- region  AVATAR -->
             <UserAvatar
               v-if="tale.is_avatar_hidden == 0"
@@ -32,7 +32,7 @@
           </div>
           <div
             v-if="CU.ownsOrAdminOrModerator(tale.owner_id)"
-            class="col-2"
+            class="col-auto"
           >
             <!-- region BUTTONS -->
             <btnEditSaveCancelDelete
@@ -376,7 +376,7 @@
         <!--##################################################-->
 
         <!-- region Yandex Map-->
-        <div class="row m-1">
+        <div class="row no-gutters m-1">
           <div class="col">
             <AlinaYandexMap
               :item="tale"
@@ -403,21 +403,6 @@
           </div>
         </div>
         <!-- endregion FILES -->
-
-        <!--##################################################-->
-
-        <!-- region Buttons-->
-        <btnEditSaveCancelDelete
-          v-if="!pFlagInFeed"
-          :owner_id="tale.owner_id"
-          :modeEdit="dConf.modeEdit"
-          :subject="tale"
-          @onSave="ajaPostTale"
-          @onEdit="onEdit"
-          @onCancel="onCancel"
-          @onDelete="ajaDeleteTale"
-        />
-        <!-- endregion Buttons-->
 
         <!--##################################################-->
 

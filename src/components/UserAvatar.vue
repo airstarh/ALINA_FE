@@ -117,9 +117,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@media (max-width: 500px) {
-}
-
 .alina-user-avatar-wrapper {
   background-color: #777;
   border-radius: 0 20px 20px 0;
