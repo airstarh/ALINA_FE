@@ -12,7 +12,21 @@
       :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]"
     >
       <div class="col">
-        
+        <!--##################################################-->
+
+        <!-- region  AVATAR -->
+        <UserAvatar
+          v-if="tale.is_avatar_hidden == 0"
+          :userId="tale.owner_id"
+          :userFirstName="tale.owner_firstname"
+          :userLastName="tale.owner_lastname"
+          :emblemUrl="tale.owner_emblem"
+          emblemWidth="7vmax"
+          :someDate="null"
+          class="mt-5 mb-5 text-center"
+        ></UserAvatar>
+        <!-- endregion  AVATAR -->
+
         <!--##################################################-->
 
         <!-- region BUTTONS -->
@@ -28,12 +42,11 @@
         >
         </btnEditSaveCancelDelete>
         <!-- endregion BUTTONS -->
-        
+
         <!--##################################################-->
-        
+
         <!-- region TALE -->
         <div v-if="!pageIsInIframe">
-          
           <!-- region MODE EDIT -->
           <div v-if="dConf.modeEdit">
             <div>Tale #{{ tale.id }}</div>
@@ -310,20 +323,9 @@
                 </div>
               </div>
             </div>
+
             <!--##################################################-->
-            <!--region User Info-->
-            <UserAvatar
-              v-if="tale.is_avatar_hidden == 0"
-              :userId="tale.owner_id"
-              :userFirstName="tale.owner_firstname"
-              :userLastName="tale.owner_lastname"
-              :emblemUrl="tale.owner_emblem"
-              emblemWidth="7vmax"
-              :someDate="null"
-              class="mt-5 mb-5 text-center"
-            ></UserAvatar>
-            <!--endregion User Info-->
-            <!--##################################################-->
+
             <div
               v-if="
                 (tale.is_header_hidden == 1 || tale.is_date_hidden == 1) &&
@@ -365,12 +367,11 @@
           <!-- endregion MODE READ -->
 
           <!--##################################################-->
-          
         </div>
         <!-- endregion TALE -->
-        
+
         <!--##################################################-->
-        
+
         <!--region Yandex Map-->
         <div class="row m-1">
           <div class="col">
