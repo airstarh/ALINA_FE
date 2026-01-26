@@ -490,7 +490,7 @@ export default {
         owner_emblem: "",
         owner_firstname: "",
         owner_lastname: "",
-        owner_id: "",
+        owner_id: -1,
         count_like: "",
         current_user_liked: "",
         router_alias: "",
