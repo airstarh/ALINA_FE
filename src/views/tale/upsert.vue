@@ -101,17 +101,18 @@
           </div>
         </div>
 
+        <div class="mb-2">&nbsp;</div>
+
+        <BorgEditor
+          v-if="!pageIsInIframe"
+          :modeEdit="dConf.modeEdit"
+          v-model="tale.body"
+        />
+
         <!-- region TALE -->
         <div v-if="!pageIsInIframe">
           <!-- region MODE EDIT -->
           <div v-if="dConf.modeEdit">
-            <div>Tale #{{ tale.id }}</div>
-
-            <BorgEditor
-              v-model="tale.body"
-              :modeEdit="dConf.modeEdit"
-            />
-
             <div class="mb-3">&nbsp;</div>
 
             <!-- region DATE -->
@@ -328,17 +329,6 @@
           <div v-if="!dConf.modeEdit">
             <!--##################################################-->
 
-            <div class="row no-gutters mt-1">
-              <div
-                class="col"
-                :lang="tale.lang"
-              >
-                <BorgEditor
-                  :modeEdit="dConf.modeEdit"
-                  v-model="tale.body"
-                />
-              </div>
-            </div>
             <div
               v-if="tale.body_free"
               class="mt-3"
