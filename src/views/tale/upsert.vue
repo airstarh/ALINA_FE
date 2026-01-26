@@ -327,8 +327,6 @@
 
           <!-- region MODE READ -->
           <div v-if="!dConf.modeEdit">
-            <!--##################################################-->
-
             <div
               v-if="tale.body_free"
               class="mt-3"
@@ -349,8 +347,6 @@
             <div class="mt-3">&nbsp;</div>
           </div>
           <!-- endregion MODE READ -->
-
-          <!--##################################################-->
         </div>
         <!-- endregion TALE -->
 
