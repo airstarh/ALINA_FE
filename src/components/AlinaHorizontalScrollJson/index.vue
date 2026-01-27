@@ -1,27 +1,45 @@
 <template>
   <div class="table-responsive">
-
     <div class="scrolling-wrapper">
       <div
-          class="scrolling-item"
-          v-for="(row, index) in pJson"
+        class="scrolling-item"
+        v-for="(row, index) in pJson"
       >
-        <div v-if="modeManage" class="text-left">
+        <div
+          v-if="modeManage"
+          class="text-left"
+        >
           <div v-if="isCurrentUserAllowedEdit(row)">
-            <input type="text" v-model="row.name_human" class="form-control form-control-sm"
-                   :placeholder="$t('File Name')">
-            <input type="text" v-model="row.order" class="form-control form-control-sm" :placeholder="$t('File Order')">
-            <b-btn block size="sm" variant="success" @click="$emit('onChange', row, index)">{{
-                $t('TXT_SUBMIT')
-              }}
+            <input
+              type="text"
+              v-model="row.name_human"
+              class="form-control form-control-sm"
+              :placeholder="$t('File Name')"
+            />
+            <input
+              type="text"
+              v-model="row.order"
+              class="form-control form-control-sm"
+              :placeholder="$t('File Order')"
+            />
+            <b-btn
+              block
+              size="sm"
+              variant="success"
+              @click="$emit('onChange', row, index)"
+              >{{ $t("TXT_SUBMIT") }}
             </b-btn>
-            <b-btn block size="sm" variant="danger" @click="$emit('onDelete', row, index)">{{ $t('Delete') }}</b-btn>
+            <b-btn
+              block
+              size="sm"
+              variant="danger"
+              @click="$emit('onDelete', row, index)"
+              >{{ $t("Delete") }}</b-btn
+            >
           </div>
         </div>
 
-        <AlinAFile
-            :p-file-json="row"
-        ></AlinAFile>
+        <AlinAFile :p-file-json="row"></AlinAFile>
       </div>
     </div>
   </div>
@@ -29,37 +47,37 @@
 
 <script>
 import CurrentUser from "@/services/CurrentUser";
-import AlinAFile   from "@/components/AlinaHorizontalScrollJson/AlinAFile.vue";
+import AlinAFile from "@/components/AlinaHorizontalScrollJson/AlinAFile.vue";
 
 export default {
-  name:       "AlinaHorizontalScroll",
-  emits:      ['onDelete', 'onChange'],
+  name: "AlinaHorizontalScroll",
+  emits: ["onDelete", "onChange"],
   components: {
-    AlinAFile
+    AlinAFile,
   },
-  props:      {
-    pJson:           {
-      default: []
+  props: {
+    pJson: {
+      default: [],
     },
-    showOnly:        {
+    showOnly: {
       default() {
-        return []
-      }
+        return [];
+      },
     },
-    modeManage:      {
-      default: false
+    modeManage: {
+      default: false,
     },
     modeHideHeaders: {
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
-      dJson:       [],
-      arrHeaders:  [],
-      arrData:     [],
+      dJson: [],
+      arrHeaders: [],
+      arrData: [],
       CurrentUser: CurrentUser.obj(),
-    }
+    };
   },
   created() {
     this.defineHeaders();
@@ -75,7 +93,11 @@ export default {
       if (this.showOnly.length > 0) {
         this.arrHeaders = this.showOnly;
       } else {
-        this.arrHeaders = Object.keys(Array.isArray(this.pJson) && this.pJson.length > 0 ? this.pJson[this.pJson.length - 1] : []);
+        this.arrHeaders = Object.keys(
+          Array.isArray(this.pJson) && this.pJson.length > 0
+            ? this.pJson[this.pJson.length - 1]
+            : []
+        );
       }
     },
     isCurrentUserAllowedEdit(obj) {
@@ -85,20 +107,14 @@ export default {
       //return isOwner || this.CurrentUser.isAdmin() || this.CurrentUser.isModerator();
     },
     isHeaderAsHtml(header) {
-      const arrHtmlHeaders = [
-        'url',
-        'img',
-        'icon',
-        'link',
-      ];
+      const arrHtmlHeaders = ["url", "img", "icon", "link"];
       return arrHtmlHeaders.includes(header);
     },
-  }
+  },
 };
 </script>
 
 <style scoped lang="scss">
-
 .scrolling-wrapper {
   display: flex;
   flex-wrap: nowrap;

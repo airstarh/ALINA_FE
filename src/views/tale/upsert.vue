@@ -332,10 +332,10 @@
 
         <!-- region FILES -->
         <div
-          class="row no-gutters"
+          class="row no-gutters mb-3"
           v-if="tale.count_files > 0 || dConf.modeEdit"
         >
-          <div class="col mb-3">
+          <div class="col">
             <AlinaFileUploader
               :entity_id="tale.id"
               entity_table="tale"

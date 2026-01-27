@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import AlinaHorizontalScrollJson from "@/components/AlinaHorizontalScrollJson";
+import AlinaHorizontalScrollJson from "@/components/AlinaHorizontalScrollJson/index.vue";
 import ConfigApi from "@/configs/ConfigApi";
 import AjaxAlina from "@/services/AjaxAlina";
 import UtilsArray from "@/Utils/UtilsArray";
