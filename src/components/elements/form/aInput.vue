@@ -67,7 +67,12 @@
 
     <template v-if="!modeEdit">
       <template v-if="type === 'text'">
-        {{ formatter(value) }}
+        <template v-if="href">
+          <a :href="href">{{ formatter(value) }}</a>
+        </template>
+        <template v-else>
+          {{ formatter(value) }}
+        </template>
       </template>
 
       <template v-else-if="type === 'email'">
@@ -219,6 +224,11 @@ export default {
     flagLabelFirst: {
       type: Boolean,
       default: true,
+    },
+
+    href: {
+      type: String,
+      default: null,
     },
   },
   data() {

@@ -25,24 +25,12 @@
             ]"
             :lang="tale.lang"
           >
-            <a
-              v-if="!dConf.modeEdit"
-              :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-              class="m-0"
-            >
-              <aInput
-                v-model="tale.header"
-                :placeholder="$t('Header').toString()"
-                :modeEdit="dConf.modeEdit"
-                componentDisplay="block"
-              />
-            </a>
             <aInput
-              v-if="dConf.modeEdit"
               v-model="tale.header"
               :placeholder="$t('Header').toString()"
               :modeEdit="dConf.modeEdit"
               componentDisplay="block"
+              :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
             />
           </h1>
           <div
@@ -79,7 +67,6 @@
               :emblemUrl="tale.owner_emblem"
               emblemWidth="7vmax"
               :someDate="null"
-              
             />
             <!-- endregion  AVATAR -->
           </div>
