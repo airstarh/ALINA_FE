@@ -94,6 +94,31 @@
           v-model="tale.body"
         />
 
+        <!-- region iframe -->
+        <div class="mt-2 mb-2">
+          <aInput
+            v-model="tale.iframe"
+            :src="tale.iframe"
+            :label="$tc('iframe')"
+            :placeholder="$tc('iframe').toString()"
+            :modeEdit="dConf.modeEdit"
+            componentDisplay="block"
+          />
+
+          <div
+            v-if="tale.iframe && dConf.modeEdit"
+            class="mt-3 mb-3"
+          >
+            <iframe
+              :src="tale.iframe"
+              frameborder="1"
+              width="90%"
+              height="250px"
+            ></iframe>
+          </div>
+        </div>
+        <!-- endregion iframe -->
+
         <!-- region TALE -->
         <div v-if="!pageIsInIframe">
           <!-- region MODE EDIT -->
@@ -134,6 +159,8 @@
             </div>
             <!-- endregion BODY FREE -->
 
+            <!-- region TALE VIEW SETTINGS -->
+
             <!-- region ALIAS -->
             <div class="mb-3">
               <div>
@@ -150,31 +177,6 @@
             </div>
             <!-- endregion ALIAS -->
 
-            <!-- region iframe -->
-            <div class="mb-3">
-              <aInput
-                v-model="tale.iframe"
-                :label="$tc('iframe')"
-                :placeholder="$tc('iframe').toString()"
-                :modeEdit="dConf.modeEdit"
-                componentDisplay="block"
-              />
-            </div>
-
-            <div
-              v-if="tale.iframe"
-              class="mt-3"
-            >
-              <iframe
-                :src="tale.iframe"
-                frameborder="1"
-                width="90%"
-                height="250px"
-              ></iframe>
-            </div>
-            <!-- endregion iframe -->
-
-            <!-- region TALE VIEW SETTINGS -->
             <div
               class="row no-gutters tale-view-settings"
               style="max-width: 99%"
@@ -318,17 +320,7 @@
             >
               <div v-html="tale.body_free"></div>
             </div>
-            <div
-              v-if="tale.iframe"
-              class="mt-3"
-            >
-              <iframe
-                :src="tale.iframe"
-                frameborder="1"
-                width="90%"
-                height="500px"
-              ></iframe>
-            </div>
+            
             <div class="mt-3">&nbsp;</div>
           </div>
           <!-- endregion MODE READ -->

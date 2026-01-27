@@ -70,6 +70,14 @@
         <template v-if="href">
           <a :href="href">{{ formatter(value) }}</a>
         </template>
+        <template v-if="src">
+          <iframe
+            :src="src"
+            frameborder="1"
+            width="90%"
+            height="250px"
+          ></iframe>
+        </template>
         <template v-else>
           {{ formatter(value) }}
         </template>
@@ -227,6 +235,11 @@ export default {
     },
 
     href: {
+      type: String,
+      default: null,
+    },
+
+    src: {
       type: String,
       default: null,
     },
