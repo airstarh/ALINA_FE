@@ -16,18 +16,6 @@
             'border-radius': isComment ? '0 25px 25px 0' : '25px',
           }"
         >
-          <router-link
-            :to="'/auth/profile/' + userId"
-            class="text-light alina-user-avatar"
-          >
-            {{
-              UtilsStr.firstName(
-                this.userFirstName,
-                this.userLastName,
-                this.userId
-              )
-            }}
-          </router-link>
           <span>&nbsp;</span>
           <router-link
             :to="'/auth/profile/' + userId"
@@ -44,6 +32,14 @@
             :to="'/auth/profile/' + userId"
             class="text-light alina-user-avatar"
           >
+            {{
+              UtilsStr.firstName(
+                this.userFirstName,
+                this.userLastName,
+                this.userId
+              )
+            }}
+            <span>&nbsp;</span>
             {{
               UtilsStr.lastName(
                 this.userFirstName,
@@ -118,13 +114,13 @@ export default {
 
 <style scoped lang="scss">
 .alina-user-avatar-wrapper {
-  background-color: #777;
+  background-color: #22222288;
   border-radius: 0 20px 20px 0;
 }
 
 a.alina-user-avatar {
   display: inline-block;
-  max-width: 11ch;
+  max-width: 24ch;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

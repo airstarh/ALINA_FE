@@ -13,42 +13,6 @@
     <div :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]">
       <div class="col-12">
         <div
-          v-if="!pageIsInIframe"
-          class="row no-gutters mt-2 mb-2 align-items-center justify-content-between"
-        >
-          <div class="col">
-            <!-- region  AVATAR -->
-            <UserAvatar
-              v-if="tale.is_avatar_hidden == 0"
-              :userId="tale.owner_id"
-              :userFirstName="tale.owner_firstname"
-              :userLastName="tale.owner_lastname"
-              :emblemUrl="tale.owner_emblem"
-              emblemWidth="7vmax"
-              :someDate="null"
-              class="text-center"
-            />
-            <!-- endregion  AVATAR -->
-          </div>
-          <div
-            v-if="CU.ownsOrAdminOrModerator(tale.owner_id)"
-            class="col-2"
-          >
-            <!-- region BUTTONS -->
-            <btnEditSaveCancelDelete
-              :modeEdit="dConf.modeEdit"
-              :owner_id="tale.owner_id"
-              :subject="tale"
-              @onSave="ajaPostTale"
-              @onEdit="onEdit"
-              @onCancel="onCancel"
-              @onDelete="ajaDeleteTale"
-            />
-            <!-- endregion BUTTONS -->
-          </div>
-        </div>
-
-        <div
           v-if="!pageIsInIframe && tale.is_header_hidden != 1"
           style="position: relative"
         >
@@ -101,7 +65,41 @@
           </div>
         </div>
 
-        <div class="mb-2">&nbsp;</div>
+        <div
+          v-if="!pageIsInIframe"
+          class="row no-gutters mt-2 mb-2 align-items-center justify-content-between mb-3 mt-3"
+        >
+          <div class="col">
+            <!-- region  AVATAR -->
+            <UserAvatar
+              v-if="tale.is_avatar_hidden == 0"
+              :userId="tale.owner_id"
+              :userFirstName="tale.owner_firstname"
+              :userLastName="tale.owner_lastname"
+              :emblemUrl="tale.owner_emblem"
+              emblemWidth="7vmax"
+              :someDate="null"
+              
+            />
+            <!-- endregion  AVATAR -->
+          </div>
+          <div
+            v-if="CU.ownsOrAdminOrModerator(tale.owner_id)"
+            class="col-2"
+          >
+            <!-- region BUTTONS -->
+            <btnEditSaveCancelDelete
+              :modeEdit="dConf.modeEdit"
+              :owner_id="tale.owner_id"
+              :subject="tale"
+              @onSave="ajaPostTale"
+              @onEdit="onEdit"
+              @onCancel="onCancel"
+              @onDelete="ajaDeleteTale"
+            />
+            <!-- endregion BUTTONS -->
+          </div>
+        </div>
 
         <BorgEditor
           v-if="!pageIsInIframe"
