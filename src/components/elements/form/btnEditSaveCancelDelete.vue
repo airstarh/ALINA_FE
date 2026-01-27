@@ -6,7 +6,7 @@
     <!--Edit-->
     <button
       @click="onEdit"
-      class="col btn btn-secondary"
+      class="col btn "
       v-if="!modeEdit"
     >
       {{ $t("i_edit") }}
@@ -27,7 +27,7 @@
       class="col btn btn-secondary"
       v-if="modeEdit"
     >
-      {{ $t("i_cancel") }}
+      {{ $t("i_undo") }}
     </button>
 
     <!--Delete-->
@@ -102,6 +102,7 @@ export default {
     min-height: 2ch;
     min-width: 4ch;
     padding: 3px;
+    
   }
 }
 </style>

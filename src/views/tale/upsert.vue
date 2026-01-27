@@ -18,7 +18,7 @@
         >
           <h1
             :class="[
-              'notranslate m-0 p-3 text-left rounded alina-tale-header',
+              'notranslate m-0 p-2 text-left rounded alina-tale-header',
               {
                 'bg-danger': tale.is_adult_denied == 1,
               },
