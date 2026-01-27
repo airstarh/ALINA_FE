@@ -101,10 +101,9 @@ export default {
       }
     },
     isCurrentUserAllowedEdit(obj) {
-      //ToDo: Extend
       const isOwner = CurrentUser.obj().owns(obj.owner_id);
-      return isOwner;
-      //return isOwner || this.CurrentUser.isAdmin() || this.CurrentUser.isModerator();
+      // return isOwner;
+      return isOwner || this.CurrentUser.isAdmin() || this.CurrentUser.isModerator();
     },
     isHeaderAsHtml(header) {
       const arrHtmlHeaders = ["url", "img", "icon", "link"];
