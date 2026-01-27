@@ -94,8 +94,17 @@
           v-model="tale.body"
         />
 
+        <div class="mb-3">&nbsp;</div>
+
+        <!-- region BODY FREE -->
+        <div
+          v-if="!dConf.modeEdit && tale.body_free"
+          v-html="tale.body_free"
+        ></div>
+        <!-- endregion BODY FREE -->
+
         <!-- region iframe -->
-        <div class="mt-2 mb-2">
+        <div>
           <aInput
             v-model="tale.iframe"
             :src="tale.iframe"
@@ -119,215 +128,194 @@
         </div>
         <!-- endregion iframe -->
 
-        <!-- region TALE -->
-        <div v-if="!pageIsInIframe">
-          <!-- region MODE EDIT -->
-          <div v-if="dConf.modeEdit">
-            <div class="mb-3">&nbsp;</div>
+        <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
-            <!-- region DATE -->
-            <div class="mt-1 mb-3">
-              <AlinaDatePicker
-                v-model="tale.publish_at"
-                label="Publish at"
-                idq="publish_at"
-                class="notranslate"
-                :modeEdit="dConf.modeEdit"
-              />
+        <!-- region EDIT -->
+        <div v-if="!pageIsInIframe && dConf.modeEdit">
+          <div class="mb-3">&nbsp;</div>
+
+          <!-- region DATE -->
+          <AlinaDatePicker
+            v-model="tale.publish_at"
+            label="Publish at"
+            idq="publish_at"
+            class="notranslate"
+            :modeEdit="dConf.modeEdit"
+          />
+          <!-- endregion DATE -->
+
+          <div class="mb-3">&nbsp;</div>
+
+          <!-- region BODY FREE -->
+          <div v-if="CU.isAdmin()">
+            <div class="input-group input-group mb-3">
+              <!-- body_free -->
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-dark text-light">{{
+                  $tc("body_free")
+                }}</span>
+              </div>
+              <textarea
+                class="form-control"
+                :placeholder="$tc('body_free').toString()"
+                v-model="tale.body_free"
+                rows="20"
+              ></textarea>
             </div>
-            <!-- endregion DATE -->
-
-            <!-- region BODY FREE -->
-            <div v-if="CU.isAdmin()">
-              <div class="input-group input-group mb-3">
-                <!-- body_free -->
-                <div class="input-group-prepend">
-                  <span class="input-group-text bg-dark text-light">{{
-                    $tc("body_free")
-                  }}</span>
-                </div>
-                <textarea
-                  class="form-control"
-                  :placeholder="$tc('body_free').toString()"
-                  v-model="tale.body_free"
-                  rows="20"
-                ></textarea>
-              </div>
-              <div class="mt-3 mb-3">
-                <div v-html="tale.body_free"></div>
-              </div>
-            </div>
-            <!-- endregion BODY FREE -->
-
-            <!-- region TALE VIEW SETTINGS -->
-
-            <!-- region ALIAS -->
-            <div class="mb-3">
-              <div>
-                {{ taleUrl }}
-              </div>
-
-              <aInput
-                v-model="tale.router_alias"
-                :label="$tc('Page Alias').toString()"
-                :placeholder="$tc('Page Alias').toString()"
-                :modeEdit="dConf.modeEdit"
-                componentDisplay="block"
-              />
-            </div>
-            <!-- endregion ALIAS -->
-
-            <div
-              class="row no-gutters tale-view-settings"
-              style="max-width: 99%"
-            >
-              <div class="col-md">
-                <div class="mb-3">
-                  <!-- is_header_hidden -->
-                  <aInput
-                    :label="$t('Hide header').toString()"
-                    v-model="tale.is_header_hidden"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="true"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_date_hidden -->
-                  <aInput
-                    :label="$t('Hide date').toString()"
-                    v-model="tale.is_date_hidden"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_avatar_hidden -->
-                  <aInput
-                    :label="$t('Hide avatar').toString()"
-                    v-model="tale.is_avatar_hidden"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_social_sharing_hidden -->
-                  <aInput
-                    :label="$t('Hide social sharing').toString()"
-                    v-model="tale.is_social_sharing_hidden"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_comment_denied -->
-                  <aInput
-                    :label="$t('Comments denied').toString()"
-                    v-model="tale.is_comment_denied"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_comment_for_owner -->
-                  <aInput
-                    :label="$t('Comments only for owner').toString()"
-                    v-model="tale.is_comment_for_owner"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-              </div>
-              <div class="col-md">
-                <div class="mb-3">
-                  <!-- is_sticked -->
-                  <aInput
-                    :label="$t('Sticked').toString()"
-                    v-model="tale.is_sticked"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_adult_denied -->
-                  <aInput
-                    :label="$t('Not for kids').toString()"
-                    v-model="tale.is_adult_denied"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_adv -->
-                  <aInput
-                    :label="$t('Advertisement').toString()"
-                    v-model="tale.is_adv"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_draft -->
-                  <aInput
-                    :label="$t('Hide on feed').toString()"
-                    v-model="tale.is_draft"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-                <div class="mb-3">
-                  <!-- is_for_registered -->
-                  <aInput
-                    :label="$t('Only for registered users').toString()"
-                    v-model="tale.is_for_registered"
-                    type="checkbox"
-                    :flagLabelFirst="false"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-
-                <!-- seo_index -->
-                <div class="mb-3">
-                  <aInput
-                    v-model="tale.seo_index"
-                    :label="$tc(' SEO Index')"
-                    :placeholder="$tc('SEO Index')"
-                    :modeEdit="dConf.modeEdit"
-                  />
-                </div>
-              </div>
-            </div>
-            <!-- endregion TALE VIEW SETTINGS -->
-          </div>
-          <!-- endregion MODE EDIT -->
-
-          <!--##################################################-->
-
-          <!-- region MODE READ -->
-          <div v-if="!dConf.modeEdit">
-            <div
-              v-if="tale.body_free"
-              class="mt-3"
-            >
+            <div class="mt-3 mb-3">
               <div v-html="tale.body_free"></div>
             </div>
-            
-            <div class="mt-3">&nbsp;</div>
           </div>
-          <!-- endregion MODE READ -->
-        </div>
-        <!-- endregion TALE -->
+          <!-- endregion BODY FREE -->
 
-        <!--##################################################-->
+          <!-- region ALIAS -->
+          <div class="mb-3">
+            <div>
+              {{ taleUrl }}
+            </div>
+
+            <aInput
+              v-model="tale.router_alias"
+              :label="$tc('Page Alias').toString()"
+              :placeholder="$tc('Page Alias').toString()"
+              :modeEdit="dConf.modeEdit"
+              componentDisplay="block"
+            />
+          </div>
+          <!-- endregion ALIAS -->
+
+          <!-- region TALE VIEW SETTINGS -->
+          <div class="row no-gutters tale-view-settings">
+            <div class="col-md">
+              <div class="mb-3">
+                <!-- is_header_hidden -->
+                <aInput
+                  :label="$t('Hide header').toString()"
+                  v-model="tale.is_header_hidden"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="true"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_date_hidden -->
+                <aInput
+                  :label="$t('Hide date').toString()"
+                  v-model="tale.is_date_hidden"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_avatar_hidden -->
+                <aInput
+                  :label="$t('Hide avatar').toString()"
+                  v-model="tale.is_avatar_hidden"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_social_sharing_hidden -->
+                <aInput
+                  :label="$t('Hide social sharing').toString()"
+                  v-model="tale.is_social_sharing_hidden"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_comment_denied -->
+                <aInput
+                  :label="$t('Comments denied').toString()"
+                  v-model="tale.is_comment_denied"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_comment_for_owner -->
+                <aInput
+                  :label="$t('Comments only for owner').toString()"
+                  v-model="tale.is_comment_for_owner"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="mb-3">
+                <!-- is_sticked -->
+                <aInput
+                  :label="$t('Sticked').toString()"
+                  v-model="tale.is_sticked"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_adult_denied -->
+                <aInput
+                  :label="$t('Not for kids').toString()"
+                  v-model="tale.is_adult_denied"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_adv -->
+                <aInput
+                  :label="$t('Advertisement').toString()"
+                  v-model="tale.is_adv"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_draft -->
+                <aInput
+                  :label="$t('Hide on feed').toString()"
+                  v-model="tale.is_draft"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+              <div class="mb-3">
+                <!-- is_for_registered -->
+                <aInput
+                  :label="$t('Only for registered users').toString()"
+                  v-model="tale.is_for_registered"
+                  type="checkbox"
+                  :flagLabelFirst="false"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+
+              <!-- seo_index -->
+              <div class="mb-3">
+                <aInput
+                  v-model="tale.seo_index"
+                  :label="$tc(' SEO Index')"
+                  :placeholder="$tc('SEO Index')"
+                  :modeEdit="dConf.modeEdit"
+                />
+              </div>
+            </div>
+          </div>
+          <!-- endregion TALE VIEW SETTINGS -->
+        </div>
+        <!-- endregion EDIT -->
+
+        <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
         <!-- region Yandex Map-->
         <div class="row no-gutters m-1">
