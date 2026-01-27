@@ -67,20 +67,21 @@
 
     <template v-if="!modeEdit">
       <template v-if="type === 'text'">
-        <template v-if="href">
-          <a :href="href">{{ formatter(value) }}</a>
-        </template>
-        <template v-if="src">
-          <iframe
-            :src="src"
-            frameborder="1"
-            width="90%"
-            height="250px"
-          ></iframe>
-        </template>
-        <template v-else>
-          {{ formatter(value) }}
-        </template>
+        <a
+          v-if="href"
+          :href="href"
+          >{{ formatter(value) }}</a
+        >
+
+        <iframe
+          v-else-if="src"
+          :src="src"
+          frameborder="1"
+          width="90%"
+          height="250px"
+        />
+
+        <span v-else>{{ formatter(value) }}</span>
       </template>
 
       <template v-else-if="type === 'email'">
