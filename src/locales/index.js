@@ -4,6 +4,7 @@ const Translations = {
         i_ok: "✔",
         i_save: "✔",
         i_cancel: "×",
+        i_clear: "⌫",
         i_delete: "🗑",
         i_up: "↑",
         i_down: "↓",

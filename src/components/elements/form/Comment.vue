@@ -93,28 +93,28 @@
                   @click="ajaDeleteComment(feed[feedIndex], feedIndex)"
                   class="btn btn-sm btn-danger"
                 >
-                  {{ $t("TXT_DELETE") }}
+                  {{ $t("i_delete") }}
                 </button>
                 <button
                   @click="toggleCommentEditMode(feed[feedIndex], feedIndex)"
                   v-if="!state.feedsInEdit.includes(tale.id)"
                   class="btn btn-sm btn-secondary"
                 >
-                  {{ $t("TXT_EDIT") }}
+                  {{ $t("i_edit") }}
                 </button>
                 <button
                   @click="commentCancelEdit(feed[feedIndex], feedIndex)"
                   v-if="state.feedsInEdit.includes(tale.id)"
                   class="btn btn-sm btn-secondary"
                 >
-                  {{ $t("TXT_CANCEL") }}
+                  {{ $t("i_undo") }}
                 </button>
                 <button
                   @click="ajaCommentSave(feed[feedIndex], feedIndex)"
                   v-if="state.feedsInEdit.includes(tale.id)"
                   class="btn btn-sm btn-secondary"
                 >
-                  {{ $t("TXT_SUBMIT") }}
+                  {{ $t("i_ok") }}
                 </button>
               </span>
             </div>
@@ -178,18 +178,18 @@
                       this.body = '';
                     }
                   "
-                  class="btn btn-sm btn-danger"
+                  class="btn btn-sm btn-warning"
                 >
-                  {{ $t("TXT_CLEAR") }}
+                  {{ $t("i_clear") }}
                 </button>
               </div>
               <div class="col">
                 <button
                   @click="ajaCommentAdd"
                   type="button"
-                  class="col btn btn-sm btn-secondary"
+                  class="col btn btn-sm btn-success"
                 >
-                  {{ $t("TXT_SUBMIT") }}
+                  {{ $t("i_ok") }}
                 </button>
               </div>
             </div>
@@ -207,7 +207,7 @@
       </div>
       <!--##################################################-->
       <!--region Login or Register-->
-      <div class="m-3">&nbsp;</div>
+      
       <div
         v-if="!CU.isLoggedIn()"
         class="col"
@@ -218,7 +218,7 @@
           target="_top"
           >{{ $t("IMP_LOGIN") }}
         </a>
-        {{ $t("or") }}
+        {{ $t("i_ok") }}
         <a
           href="#/auth/register"
           class="btn btn-sm btn-primary"
