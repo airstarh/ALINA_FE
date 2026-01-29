@@ -50,7 +50,6 @@
             emblemWidth="min(50px, 5vmax)"
             :someDate="tale.publish_at"
             :isComment="true"
-            class=""
           ></UserAvatar>
           <!--endregion User Info-->
           <!--##################################################-->
