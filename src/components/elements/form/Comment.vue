@@ -1,6 +1,6 @@
 <template>
   <div
-    :style="options.style"
+    :style="dConf.style"
     class=""
   >
     <div class="mb-2">
@@ -263,7 +263,7 @@ export default {
       AlinaStorage,
       ConfigApi,
       CU: CurrentUser.obj(),
-      options: {
+      dConf: {
         urlFeed: `${ConfigApi.url_base}/tale/feed`,
         urlTaleUpsert: `${ConfigApi.url_base}/tale/upsert`,
         urlCommentDel: `${ConfigApi.url_base}/tale/delete`,
@@ -341,7 +341,7 @@ export default {
       AjaxAlina.newInst({
         method: "GET",
         getParams: GET,
-        url: `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}/${this.answer_to_tale_id}`,
+        url: `${this.dConf.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}/${this.answer_to_tale_id}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             if (more) {
@@ -360,7 +360,7 @@ export default {
       const _t = this;
       AjaxAlina.newInst({
         method: "POST",
-        url: this.options.urlTaleUpsert,
+        url: this.dConf.urlTaleUpsert,
         enctype: "application/json",
         postParams: {
           level: this.level,
@@ -408,7 +408,7 @@ export default {
       comment.form_id = "actionUpsert";
       AjaxAlina.newInst({
         method: "POST",
-        url: `${this.options.urlTaleUpsert}/${comment.id}`,
+        url: `${this.dConf.urlTaleUpsert}/${comment.id}`,
         postParams: comment,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
@@ -429,7 +429,7 @@ export default {
       comment.form_id = "actionDelete";
       AjaxAlina.newInst({
         method: "POST",
-        url: `${this.options.urlCommentDel}/${comment.id}`,
+        url: `${this.dConf.urlCommentDel}/${comment.id}`,
         postParams: comment,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
