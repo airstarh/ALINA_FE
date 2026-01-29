@@ -1,2 +1,8 @@
-@import '../../../node_modules/bootstrap/dist/css/bootstrap.css';
-@import '../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css';
+@import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
+@import "../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css";
+
+.btn:focus {
+  box-shadow: none !important;
+  outline: 2px solid rgba(0, 0, 0, 0.5);
+  outline-offset: 2px;
+}
