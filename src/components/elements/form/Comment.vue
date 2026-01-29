@@ -6,11 +6,12 @@
     <div class="mb-2">
       <b-button
         v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
-        :class="{
-          'btn-md': level == 1,
-          'btn-sm': level > 1,
-        }"
-        class="bg-black"
+        :class="[
+          {
+            'btn-md': level == 1,
+            'btn-sm': level > 1,
+          },
+        ]"
         >{{ $tc("COUNTER_COMMENTS", commentsTotal) }}
       </b-button>
     </div>
@@ -20,7 +21,6 @@
       @shown="pageRecalcIframeHeight"
       @hidden="pageRecalcIframeHeight"
       :visible="level == 3"
-      class=""
     >
       <!--##################################################-->
       <!--region SUBMITTED COMMENTS-->
