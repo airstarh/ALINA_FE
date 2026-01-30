@@ -1,7 +1,7 @@
 <template>
   <span>
     <button
-      class="btn btn-sm btn-secondary rounded-circle"
+      class="btn btn-sm btn-secondary rounded-circle corporate-bg-and-text"
       @click="copyToBuffer"
       :title="$t('Copy link')"
     >
@@ -26,25 +26,7 @@
         </svg>
       </button>
     </ShareNetwork>
-    <ShareNetwork
-      network="facebook"
-      :url="hrefToBackend"
-      :title="`${tale.header}`"
-      :description="UtilsStr.truncate(tale.body_txt, 100)"
-    >
-      <button
-        class="btn p-1"
-        title="facebook"
-      >
-        <svg
-          height="1.8rem"
-          width="1.8rem"
-          class="corporate-svg-fill"
-        >
-          <use :xlink:href="`${iconFb.url}`"></use>
-        </svg>
-      </button>
-    </ShareNetwork>
+
     <ShareNetwork
       network="Telegram"
       :url="hrefToBackend"
@@ -61,25 +43,6 @@
           class="corporate-svg-fill"
         >
           <use :xlink:href="`${iconTg.url}`"></use>
-        </svg>
-      </button>
-    </ShareNetwork>
-    <ShareNetwork
-      network="WhatsApp"
-      :url="hrefToBackend"
-      :title="`${tale.header}`"
-      :description="UtilsStr.truncate(tale.body_txt, 100)"
-    >
-      <button
-        class="btn p-1"
-        title="WhatsApp"
-      >
-        <svg
-          height="1.8rem"
-          width="1.8rem"
-          class="corporate-svg-fill"
-        >
-          <use :xlink:href="`${iconWp.url}`"></use>
         </svg>
       </button>
     </ShareNetwork>
@@ -103,6 +66,47 @@
         </svg>
       </button>
     </ShareNetwork>
+
+    <ShareNetwork
+      network="WhatsApp"
+      :url="hrefToBackend"
+      :title="`${tale.header}`"
+      :description="UtilsStr.truncate(tale.body_txt, 100)"
+    >
+      <button
+        class="btn p-1"
+        title="WhatsApp"
+      >
+        <svg
+          height="1.8rem"
+          width="1.8rem"
+          class="corporate-svg-fill"
+        >
+          <use :xlink:href="`${iconWp.url}`"></use>
+        </svg>
+      </button>
+    </ShareNetwork>
+
+    <ShareNetwork
+      network="facebook"
+      :url="hrefToBackend"
+      :title="`${tale.header}`"
+      :description="UtilsStr.truncate(tale.body_txt, 100)"
+    >
+      <button
+        class="btn p-1"
+        title="facebook"
+      >
+        <svg
+          height="1.8rem"
+          width="1.8rem"
+          class="corporate-svg-fill"
+        >
+          <use :xlink:href="`${iconFb.url}`"></use>
+        </svg>
+      </button>
+    </ShareNetwork>
+
     <ShareNetwork
       network="LinkedIn"
       :url="hrefToBackend"
