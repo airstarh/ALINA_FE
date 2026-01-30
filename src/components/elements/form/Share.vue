@@ -1,7 +1,7 @@
 <template>
   <span>
     <button
-      class="btn btn-sm btn-secondary rounded-circle corporate-bg-and-text"
+      class="btn btn-sm btn-secondary rounded-circle"
       @click="copyToBuffer"
       :title="$t('Copy link')"
     >
