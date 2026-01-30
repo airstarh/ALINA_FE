@@ -612,6 +612,7 @@ export default {
     // region CRUD
 
     ajaPostTale() {
+      this.tale.is_submitted = 1;
       AjaxAlina.newInst({
         method: "POST",
         url: this.dConf.url,
@@ -659,9 +660,9 @@ export default {
             }
             Object.assign(_t.tale, aja.respBody.data);
             if (_t.tale.is_submitted == 0) {
-              if (this.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
+              if (_t.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
                 _t.dConf.modeEdit = true;
-                this.taleLastTouchedRecall();
+                _t.taleLastTouchedRecall();
               }
             }
             //###############
