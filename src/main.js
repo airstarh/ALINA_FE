@@ -1,20 +1,20 @@
-import Vue                     from "vue";
-import App                     from "@/App.vue";
-import router                  from "@/router";
-import store                   from "@/store/store";
-import ConfigApi               from "@/configs/ConfigApi";
+import Vue from "vue";
+import App from "@/App.vue";
+import router from "@/router";
+import store from "@/store/store";
+import ConfigApi from "@/configs/ConfigApi";
 import 'whatwg-fetch'
-import VueCookies              from 'vue-cookies';
-import BootstrapVue            from "bootstrap-vue";
-import {BootstrapVueIcons}     from 'bootstrap-vue'
-import lodash                  from "lodash";
-import VueSocialSharing        from 'vue-social-sharing'
-import VueDateFns              from "vue-date-fns";
-import VueI18n                 from 'vue-i18n'
-import Translations            from '@/locales/index'
-import CurrentLocale           from "@/services/CurrentLocale";
-import CKEditor                from '@ckeditor/ckeditor5-vue2';
-import YmapPlugin              from 'vue-yandex-maps'
+import VueCookies from 'vue-cookies';
+import BootstrapVue from "bootstrap-vue";
+import { BootstrapVueIcons } from 'bootstrap-vue'
+import lodash from "lodash";
+import VueSocialSharing from 'vue-social-sharing'
+import VueDateFns from "vue-date-fns";
+import VueI18n from 'vue-i18n'
+import Translations from '@/locales/index'
+import CurrentLocale from "@/services/CurrentLocale";
+import CKEditor from '@ckeditor/ckeditor5-vue2';
+import YmapPlugin from 'vue-yandex-maps'
 import AlinaPageGlobalAnalyzer from '@/services/AlinaPageGlobalAnalyzer'
 
 window.AlinaPageGlobalAnalyzer = AlinaPageGlobalAnalyzer;
@@ -54,7 +54,10 @@ const i18n = new VueI18n({
             }
             return (choicesLength < 4) ? 2 : 3;
         }
-    }
+    },
+    // SUPPRESS WARNINGS
+    silentTranslationWarn: true,        // suppress "missing key" warnings
+    silentFallbackWarn: true,            // suppress fallback warnings
 });
 //#####
 Vue.use(VueCookies);
