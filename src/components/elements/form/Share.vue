@@ -5,7 +5,7 @@
       @click="copyToBuffer"
       :title="$t('Copy link')"
     >
-      {{ $t("i_copy") }}
+    <b-icon icon="share"></b-icon>
     </button>
     <ShareNetwork
       network="VK"
