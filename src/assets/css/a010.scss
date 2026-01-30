@@ -29,3 +29,8 @@
   border-color: var(--corporate-bg);
   outline-color: var(--corporate-bg);
 }
+
+.modal-dialog,
+.modal-dialog * {
+  background-color: #444444;
+}
