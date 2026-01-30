@@ -164,7 +164,7 @@
         <!--endregion User Info-->
         <!--##################################################-->
         <!--region EDITOR-->
-        <div class="row no-gutters mt-5">
+        <div :class="['row no-gutters', { 'mt-5': level == 1 }]">
           <div class="col">
             <BorgEditor
               v-model="body"
@@ -207,7 +207,7 @@
       </div>
       <!--##################################################-->
       <!--region Login or Register-->
-      
+
       <div
         v-if="!CU.isLoggedIn()"
         class="col"
