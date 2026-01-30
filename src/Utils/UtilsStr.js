@@ -93,4 +93,10 @@ export default class UtilsStr {
         value = value.toString();
         return value.charAt(0).toUpperCase() + value.slice(1)
     }
+
+    static stripHTML(htmlString) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlString, 'text/html');
+        return doc.body.textContent || '';
+    }
 }

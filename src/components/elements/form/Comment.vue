@@ -232,7 +232,7 @@
 </template>
 
 <script>
-import UtilsStr from "@/Utils/UtilsStr";
+import UtilsStr from "@/Utils/UtilsStr.js";
 import AjaxAlina from "@/services/AjaxAlina";
 import ConfigApi from "@/configs/ConfigApi";
 import UtilsArray from "@/Utils/UtilsArray";
@@ -256,7 +256,6 @@ export default {
   },
   data() {
     return {
-      UtilsStr,
       AlinaStorage,
       ConfigApi,
       CU: CurrentUser.obj(),
@@ -354,6 +353,10 @@ export default {
       }).go();
     },
     ajaCommentAdd(event) {
+      if (UtilsStr.stripHTML(this.body) === "") {
+        return;
+      }
+
       const _t = this;
       AjaxAlina.newInst({
         method: "POST",
@@ -400,7 +403,12 @@ export default {
         UtilsArray.elRemoveByValue(this.state.feedsInEdit, comment.id);
       }
     },
+
     ajaCommentSave(comment, feedIndex) {
+      if (UtilsStr.stripHTML(comment.body) === "") {
+        return;
+      }
+
       const _t = this;
       comment.form_id = "actionUpsert";
       AjaxAlina.newInst({
