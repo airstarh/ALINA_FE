@@ -164,34 +164,32 @@
         <!--endregion User Info-->
         <!--##################################################-->
         <!--region EDITOR-->
-        <div :class="['row no-gutters', { 'mt-5': level == 1 }]">
-          <div class="col">
-            <BorgEditor
-              v-model="body"
-              @ready="pageRecalcIframeHeight()"
-            />
-            <div class="row no-gutters">
-              <div class="col">
-                <button
-                  @click="
-                    () => {
-                      this.body = '';
-                    }
-                  "
-                  class="btn btn-sm btn-warning"
-                >
-                  {{ $t("i_clear") }}
-                </button>
-              </div>
-              <div class="col">
-                <button
-                  @click="ajaCommentAdd"
-                  type="button"
-                  class="btn btn-sm btn-success btn-block"
-                >
-                  {{ $t("i_ok") }}
-                </button>
-              </div>
+        <div :class="['alina-comment-editor', { 'mt-5': level == 1 }]">
+          <BorgEditor
+            v-model="body"
+            @ready="pageRecalcIframeHeight()"
+          />
+          <div class="row no-gutters">
+            <div class="col">
+              <button
+                @click="
+                  () => {
+                    this.body = '';
+                  }
+                "
+                class="btn btn-sm btn-warning"
+              >
+                {{ $t("i_clear") }}
+              </button>
+            </div>
+            <div class="col">
+              <button
+                @click="ajaCommentAdd"
+                type="button"
+                class="btn btn-sm btn-success btn-block"
+              >
+                {{ $t("i_ok") }}
+              </button>
             </div>
           </div>
         </div>
