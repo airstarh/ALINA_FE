@@ -1,5 +1,12 @@
 <template>
   <span>
+    <button
+      class="btn btn-sm btn-secondary"
+      @click="copyToBuffer"
+      :title="$t('Copy link')"
+    >
+      {{ $t("i_copy") }}
+    </button>
     <ShareNetwork
       network="VK"
       :url="hrefToBackend"
@@ -157,6 +164,11 @@ export default {
       UtilsStr,
       ConfigApi,
     };
+  },
+  methods: {
+    copyToBuffer() {
+      navigator.clipboard.writeText(this.hrefToBackend);
+    },
   },
 };
 </script>

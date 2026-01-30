@@ -19,6 +19,7 @@ const Translations = {
         i_search: "🔍",
         i_like: "👍",
         i_dislike: "👎",
+        i_copy: "🔗",
         i_link: "🔗",
         i_share: "🔗",
         // ###########################################################################################
@@ -214,6 +215,7 @@ const Translations = {
         "HOUR": "ЧАС",
         "MINUTE": "МИНУТА",
         "SECOND": "СЕКУНДА",
+        "Copy link": "Копировать ссылку",
     },
 };
 export default Translations;
