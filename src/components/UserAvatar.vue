@@ -1,14 +1,6 @@
 <template>
   <div class="UserAvatar">
-    <div
-      class="text-right"
-      v-if="!UtilsData.empty(someDate)"
-    >
-      <span style="font-size: min(4vmin, 0.7em)">{{
-        UtilsDate.fromUnixToDateTime(someDate)
-      }}</span>
-    </div>
-    <div class="row no-gutters">
+    <div class="row no-gutters align-items-center">
       <div class="col">
         <span
           class="text-left text-nowrap p-2 alina-user-avatar-wrapper"
@@ -49,6 +41,16 @@
             }}
           </router-link>
         </span>
+      </div>
+      <div class="col">
+        <div
+      class="text-right"
+      v-if="!UtilsData.empty(someDate)"
+    >
+      <span style="font-size: min(4vmin, 0.7em)">{{
+        UtilsDate.fromUnixToDateTime(someDate)
+      }}</span>
+    </div>
       </div>
     </div>
   </div>

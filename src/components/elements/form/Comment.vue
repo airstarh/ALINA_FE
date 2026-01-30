@@ -187,7 +187,7 @@
                 <button
                   @click="ajaCommentAdd"
                   type="button"
-                  class="col btn btn-sm btn-success"
+                  class="btn btn-sm btn-success btn-block"
                 >
                   {{ $t("i_ok") }}
                 </button>
@@ -243,7 +243,7 @@ import Like from "@/components/elements/form/Like";
 import Paginator from "@/components/elements/form/Paginator";
 import CurrentUser from "@/services/CurrentUser";
 import AlinaStorage from "@/services/AlinaStorage";
-import UserAvatar from "@/components/UserAvatar";
+import UserAvatar from "@/components/UserAvatar.vue";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 import BorgEditor from "@/components/BorgEditor";
 
