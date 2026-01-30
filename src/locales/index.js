@@ -19,6 +19,8 @@ const Translations = {
         i_search: "🔍",
         i_like: "👍",
         i_dislike: "👎",
+        i_link: "🔗",
+        i_share: "🔗",
         // ###########################################################################################
         TXT_LOGIN: "Log-in",
         TXT_REGISTER: "Register",
