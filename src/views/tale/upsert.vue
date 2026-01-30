@@ -420,6 +420,7 @@ import aInput from "@/components/elements/form/aInput.vue";
 //#####
 export default {
   name: "tale_upsert",
+  emits: ["deleted"],
   props: {
     pTale: {
       type: Object,
@@ -685,7 +686,12 @@ export default {
         postParams: tale,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            _t.$router.replace({ path: `/tale/feed` });
+            _t.tale = {};
+            _t.$emit("deleted");
+
+            if (!_t.$route.path.includes("tale/feed")) {
+              _t.$router.replace({ path: `/tale/feed` });
+            }
           }
         },
       }).go();

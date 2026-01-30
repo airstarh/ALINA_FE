@@ -57,11 +57,15 @@
           <!--region TALE-->
           <div
             v-for="(tale, index) in feed"
+            v-if="tale.id"
             v-bind:key="tale.id"
             :class="['mt-5 alina-feed-tale', `alina-feed-tale-${index}`]"
           >
             <!--region UP-DOWN-->
-            <div class="sticky-top">
+            <div
+              v-if="tale.id"
+              class="sticky-top"
+            >
               <div class="row no-gutters text-center mt-5 alina-feed-up-down">
                 <div
                   class="col btn cursor-pointer"
@@ -130,6 +134,7 @@
                 <tale_upsert
                   :p-flag-in-feed="true"
                   :p-tale="tale"
+                  @deleted="ajaGetFeed"
                 ></tale_upsert>
               </div>
             </transition>
