@@ -290,31 +290,34 @@
       <div>
         <div>
           <p>
-            <button type="button" class="btn btn-lg btn-default">Default</button>
+            <button type="button" class="btn btn-lg btn-secondary">Secondary</button>
             <button type="button" class="btn btn-lg btn-primary">Primary</button>
             <button type="button" class="btn btn-lg btn-success">Success</button>
             <button type="button" class="btn btn-lg btn-info">Info</button>
             <button type="button" class="btn btn-lg btn-warning">Warning</button>
             <button type="button" class="btn btn-lg btn-danger">Danger</button>
             <button type="button" class="btn btn-lg btn-link">Link</button>
+            <button type="button" class="btn btn-lg btn-default text-white">Default</button>
           </p>
           <p>
-            <button type="button" class="btn btn-default">Default</button>
+            <button type="button" class="btn btn-secondary">Secondary</button>
             <button type="button" class="btn btn-primary">Primary</button>
             <button type="button" class="btn btn-success">Success</button>
             <button type="button" class="btn btn-info">Info</button>
             <button type="button" class="btn btn-warning">Warning</button>
             <button type="button" class="btn btn-danger">Danger</button>
             <button type="button" class="btn btn-link">Link</button>
+            <button type="button" class="btn btn-default">Default</button>
           </p>
           <p>
-            <button type="button" class="btn btn-sm btn-default">Default</button>
+            <button type="button" class="btn btn-sm btn-secondary">Secondary</button>
             <button type="button" class="btn btn-sm btn-primary">Primary</button>
             <button type="button" class="btn btn-sm btn-success">Success</button>
             <button type="button" class="btn btn-sm btn-info">Info</button>
             <button type="button" class="btn btn-sm btn-warning">Warning</button>
             <button type="button" class="btn btn-sm btn-danger">Danger</button>
             <button type="button" class="btn btn-sm btn-link">Link</button>
+            <button type="button" class="btn btn-sm btn-default">Default</button>
           </p>
         </div>
       </div>
@@ -327,8 +330,22 @@
 
     <div>
       <h1>aInput</h1>
+      <br><aInput v-model="aInputModel"/>
+      <br><aInput v-model="aInputModel" modeEdit="true"/>
+      <br><aInput v-model="aInputModel" modeEdit="true"/> inline <aInput v-model="aInputModel" modeEdit="true"/>
+      <br><aInput v-model="aInputModel" modeEdit="true" label="Label"/>
+      <br><aInput v-model="aInputModel" modeEdit="true" label="Label" :flagLabelFirst="false"/>
+      <br>
+      <div>
+      <aInput v-model="aInputModel" modeEdit="true" label="componentDisplay = block" componentDisplay="block"/>
+    </div>
     </div>
     <div class="clear">&nbsp;</div>
+
+
+
+
+
 
 
     <h1>The emd</h1>
@@ -352,11 +369,12 @@ import iconTg from "@/assets/svg/socialnets/telgram.svg";
 import iconIn from "@/assets/svg/socialnets/linkedin.svg";
 import iconSk from "@/assets/svg/socialnets/skype.svg";
 import iconVi from "@/assets/svg/socialnets/viber.svg";
-import BorgEditor from "@/components/BorgEditor";
+import BorgEditor from "@/components/BorgEditor/index.vue";
 import CurrentUser from "@/services/CurrentUser";
 import UtilsStr from "@/Utils/UtilsStr";
 import AlinaTableJson from "@/components/AlinaTableJson";
-import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader";
+import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader.vue";
+import aInput from "@/components/elements/form/aInput.vue";
 
 export default {
   name: "About",
@@ -366,11 +384,14 @@ export default {
     AlinaTableJson,
     AlinaFileUploader,
     BorgEditor,
+    aInput,
   },
   data() {
     const twoWeeksFromNow = new Date();
     twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14);
+
     return {
+      aInputModel: 'aInputModel',
       protoTale: {
         header: 'This is Tale prototype',
         body: '',
