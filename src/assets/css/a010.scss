@@ -22,8 +22,8 @@
 .btn-secondary,
 .btn-secondary:focus,
 .btn-secondary:hover {
-  background-color: var(--corporate-bg);
   color: rgba(var(--corporate-txt));
+  background-color: var(--corporate-bg);
   border-color: var(--corporate-bg);
   outline-color: var(--corporate-bg);
 }
