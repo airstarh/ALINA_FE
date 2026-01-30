@@ -10,13 +10,14 @@
       >
         <!-- Label Left -->
         <div
-          class="a-item label-left"
           v-if="label && flagLabelFirst"
+          :class="[
+            'a-item label-left',
+            { 'btn btn-secondary': type === 'file' }
+          ]"
           :style="computedStyleLabel"
         >
-          <span :class="{ 'btn btn-secondary': type === 'file' }">
-            {{ label }}<span v-if="type !== 'file'">:&nbsp;</span>
-          </span>
+          <span>{{ label }}<span v-if="type !== 'file'">:&nbsp;</span></span>
         </div>
 
         <!-- Input -->
@@ -408,7 +409,7 @@ export default {
     flex-wrap: nowrap;
     align-items: center;
     justify-content: flex-start;
-    gap: 5px;
+    gap: 2px;
 
     & .a-item {
       min-width: 0;
