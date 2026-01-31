@@ -2,7 +2,7 @@
   <div class="container p-0 alina-feed-wrapper">
     <div class="alina-feed-start"></div>
     <!--##################################################-->
-    <!--region SEARCH FORM-->
+    <!-- region SEARCH -->
     <div class="row no-gutters">
       <div class="col">
         <div class="input-group mb-3 btn btn-block btn-dark">
@@ -32,9 +32,11 @@
         </div>
       </div>
     </div>
-    <!--endregion SEARCH FORM-->
+    <!-- endregion SEARCH -->
     <!--##################################################-->
-    <!--region FEED-PAGINATOR-UP-DOWN-TALE-->
+
+    <!--##################################################-->
+    <!-- region FEED  -->
     <div
       v-if="feed.length"
       class="alina-feed-paginator-tale"
@@ -42,7 +44,7 @@
       <div class="row no-gutters">
         <div class="col mx-auto">
           <!--##################################################-->
-          <!--region PAGINATOR-->
+          <!-- region PAGINATOR -->
           <div class="text-center alina-feed-paginator">
             <Paginator
               :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
@@ -52,16 +54,19 @@
               :onClickPage="pageChange"
             ></Paginator>
           </div>
-          <!--endregion PAGINATOR-->
+          <!-- endregion PAGINATOR -->
           <!--##################################################-->
-          <!--region TALE-->
+
+          <!--##################################################-->
+          <!-- region WRAPPER TALE-->
           <div
             v-for="(tale, index) in feed"
             v-if="tale.id"
             v-bind:key="tale.id"
             :class="['mt-5 alina-feed-tale', `alina-feed-tale-${index}`]"
           >
-            <!--region UP-DOWN-->
+            <!--##################################################-->
+            <!-- region UP DOWN -->
             <div
               v-if="tale.id"
               class="sticky-top"
@@ -96,9 +101,11 @@
                 </div>
               </div>
             </div>
-            <!--endregion UP-DOWN-->
+            <!-- endregion UP DOWN -->
             <!--##################################################-->
+
             <transition name="slide-fade">
+              <!-- region ADULT -->
               <div
                 :key="`${tale.id}_1`"
                 v-if="
@@ -109,7 +116,7 @@
                   <div class="img-wrapper">
                     <img
                       class="img-responsive"
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Parental_Advisory_label.svg/500px-Parental_Advisory_label.svg.png"
+                      src="@/assets/adult.png"
                     />
                     <div class="img-overlay">
                       <button
@@ -122,6 +129,8 @@
                   </div>
                 </div>
               </div>
+              <!-- endregion ADULT -->
+              <!-- region TALE -->
               <div
                 v-else
                 :key="`${tale.id}_2`"
@@ -137,45 +146,48 @@
                   @deleted="ajaGetFeed"
                 ></tale_upsert>
               </div>
+              <!-- endregion TALE -->
             </transition>
           </div>
-          <!--endregion TALE-->
+          <!-- endregion WRAPPER TALE-->
           <!--##################################################-->
+
           <!--##################################################-->
-          <!--region UP-DOWN-->
+          <!-- region UPDOWN -->
           <div class="sticky-top">
             <div class="row no-gutters text-center mb-5 alina-feed-up-down">
               <div
                 class="col btn btn-secondary cursor-pointer"
                 @click="scrollToClassName('alina-feed-start')"
               >
-                &uarr;&uarr;
+                {{ $t("i_up") }}{{ $t("i_up") }}
               </div>
               &nbsp;
               <div
                 class="col btn btn-secondary cursor-pointer"
                 @click="scrollToClassName('alina-feed-end')"
               >
-                &darr;&darr;
+                {{ $t("i_down") }}{{ $t("i_down") }}
               </div>
               &nbsp;
               <div
                 class="col btn btn-secondary cursor-pointer"
                 @click="scrollToClassName(`alina-feed-tale-${feed.length - 1}`)"
               >
-                &uarr;
+                {{ $t("i_up") }}
               </div>
               &nbsp;
               <div
                 class="col btn btn-secondary cursor-pointer"
                 @click="scrollToClassName(`alina-feed-tale-${feed.length + 1}`)"
               >
-                &darr;
+                {{ $t("i_down") }}
               </div>
             </div>
           </div>
-          <!--endregion UP-DOWN-->
+          <!-- endregion UPDOWN -->
           <!--##################################################-->
+
           <!--##################################################-->
           <!-- region PAGINATOR -->
           <div class="mt-5 text-center alina-feed-paginator">
@@ -192,7 +204,9 @@
         </div>
       </div>
     </div>
-    <!--endregion FEED-PAGINATOR-UP-DOWN-TALE-->
+    <!-- endregion FEED -->
+    <!--##################################################-->
+
     <!--##################################################-->
     <div class="alina-feed-end"></div>
   </div>
