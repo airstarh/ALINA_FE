@@ -59,13 +59,13 @@
           <!-- endregion PAGINATOR -->
           <!--##################################################-->
 
-          <!--##################################################-->
+          <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
           <!-- region WRAPPER TALE-->
           <div
             v-for="(tale, index) in feed"
             v-if="tale.id"
             v-bind:key="tale.id"
-            :class="['mt-5 alina-feed-tale', `alina-feed-tale-${index}`]"
+            :class="['mt-5 alina-feed-tale', `alina-feed-tale-order-${index}`, `alina-feed-tale-id-${tale.id}`]"
           >
             <!--##################################################-->
             <!-- region UP DOWN -->
@@ -152,10 +152,10 @@
             </transition>
           </div>
           <!-- endregion WRAPPER TALE-->
-          <!--##################################################-->
+          <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
           <!--##################################################-->
-          <!-- region UPDOWN -->
+          <!-- region LAST UPDOWN -->
           <div class="sticky-top">
             <div class="row no-gutters text-center mb-5 alina-feed-up-down">
               <div
@@ -187,11 +187,11 @@
               </div>
             </div>
           </div>
-          <!-- endregion UPDOWN -->
+          <!-- endregion LAST UPDOWN -->
           <!--##################################################-->
 
           <!--##################################################-->
-          <!-- region PAGINATOR -->
+          <!-- region LAST PAGINATOR -->
           <div class="mt-5 text-center alina-feed-paginator">
             <Paginator
               :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
@@ -201,7 +201,7 @@
               :onClickPage="pageChange"
             ></Paginator>
           </div>
-          <!-- endregion PAGINATOR -->
+          <!-- endregion LAST PAGINATOR -->
           <!--##################################################-->
         </div>
       </div>
