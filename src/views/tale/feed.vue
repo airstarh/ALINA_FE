@@ -151,6 +151,7 @@
                     is_draft: tale.is_draft,
                     is_sticked: tale.is_sticked,
                   },
+                  !expandedTales[tale.id] ? 'collapsed' : '',
                 ]"
               >
                 <tale_upsert
@@ -162,8 +163,11 @@
               <!-- endregion TALE -->
             </transition>
             <div class="text-center">
-              <button class="btn btn-secondary">
-                {{ $t("i_expand") }} / {{ $t("i_collapse") }}
+              <button
+                class="btn btn-sm btn-secondary"
+                @click="toggleExpand(tale.id)"
+              >
+                {{ expandedTales[tale.id] ? $t("i_collapse") : $t("i_expand") }}
               </button>
             </div>
           </div>
@@ -183,27 +187,11 @@
               &nbsp;
               <div
                 class="col btn btn-secondary cursor-pointer"
-                @click="scrollToClassName('alina-feed-end')"
-              >
-                {{ $t("i_down") }}{{ $t("i_down") }}
-              </div>
-              &nbsp;
-              <div
-                class="col btn btn-secondary cursor-pointer"
                 @click="
                   scrollToClassName(`alina-feed-tale-order-${feed.length - 1}`)
                 "
               >
                 {{ $t("i_up") }}
-              </div>
-              &nbsp;
-              <div
-                class="col btn btn-secondary cursor-pointer"
-                @click="
-                  scrollToClassName(`alina-feed-tale-order-${feed.length + 1}`)
-                "
-              >
-                {{ $t("i_down") }}
               </div>
             </div>
           </div>
@@ -243,8 +231,6 @@ import Like from "@/components/elements/form/Like.vue";
 import Share from "@/components/elements/form/Share.vue";
 import Paginator from "@/components/elements/form/Paginator.vue";
 import tale_upsert from "@/views/tale/upsert.vue";
-import UtilsStr from "@/Utils/UtilsStr";
-import UtilsSys from "@/Utils/UtilsSys";
 
 export default {
   name: "tale_feed",
@@ -273,8 +259,7 @@ export default {
 
   data() {
     return {
-      UtilsSys,
-      UtilsStr,
+      expandedTales: {},
       ConfigApi: ConfigApi,
       options: {
         urlFeed: `${ConfigApi.url_base}/tale/feed`,
@@ -298,6 +283,10 @@ export default {
   },
 
   methods: {
+    toggleExpand(taleId) {
+      this.$set(this.expandedTales, taleId, !this.expandedTales[taleId]);
+    },
+
     modifyAddressBar(q = {}) {
       const path = this.$router.currentRoute.path;
       const query = {
@@ -462,7 +451,7 @@ export default {
       background-color: #222222ff;
       color: #dddddddd;
     }
-    
+
     & div.btn:first-child {
       border-radius: 20px 0 0 0;
     }
@@ -470,6 +459,11 @@ export default {
     & div.btn:last-child {
       border-radius: 0 20px 0 0;
     }
+  }
+
+  .collapsed {
+    overflow: hidden;;
+    max-height: 150vh;
   }
 }
 </style>
