@@ -1,5 +1,6 @@
 const Translations = {
     en: {
+        i_close: "x",
         i_edit: "✎",
         i_ok: "✔",
         i_save: "✔",
