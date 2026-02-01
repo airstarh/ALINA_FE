@@ -55,7 +55,13 @@
               :to="`/auth/profile/${item.user_id}`"
               class="btn btn-primary"
             >
-              {{ item.from_firstname }} {{ item.from_lastname }}
+              {{
+                UtilsStr.fullName(
+                  item.from_firstname,
+                  item.from_lastname,
+                  item.user_id
+                )
+              }}
             </router-link>
           </div>
         </div>
@@ -76,6 +82,8 @@ import CurrentUser from "@/services/CurrentUser";
 import ConfigApi from "@/configs/ConfigApi";
 import AjaxAlina from "@/services/AjaxAlina";
 import Paginator from "@/components/elements/form/Paginator";
+import UtilsStr from "@/Utils/UtilsStr.js";
+
 export default {
   name: "Like",
   components: {
@@ -101,6 +109,7 @@ export default {
   },
   data() {
     return {
+      UtilsStr,
       options: {
         urlLike: `${ConfigApi.url_base}/like/process`,
         urlFeed: `${ConfigApi.url_base}/like/selectlist`,
