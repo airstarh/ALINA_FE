@@ -65,12 +65,15 @@
       v-if="isImagePopupOpen"
       class="image-popup-overlay"
       @click.self="closeImagePopup"
+      role="dialog"
+      aria-modal="true"
     >
       <div class="image-popup-content">
         <button
           class="image-popup-close"
           @click="closeImagePopup"
           aria-label="Close"
+          tabindex="-1"
         >
           ×
         </button>
@@ -173,60 +176,59 @@ export default {
 }
 
 .alina-file {
-  position: relative;
-
-  & .alina-file-image-container {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.9;
-    }
-  }
-
-  /* Popup overlay (full screen, dark background) */
   & .image-popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
   }
 
-  /* Popup content (image + close button) */
   & .image-popup-content {
     position: relative;
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 100vw;
+    max-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
-  /* Close button */
   & .image-popup-close {
     position: absolute;
-    top: -10px;
-    right: -10px;
-    background: rgb(153, 0, 0);
+    top: -15px;
+    right: -15px;
+    background: white;
     border: none;
     border-radius: 50%;
-    width: 30px;
-    height: 3 Newton;
-    font-size: 20px;
-    line-height: 30px;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+    line-height: 36px;
     text-align: center;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     z-index: 1001;
   }
 
-  /* Image inside popup */
   & .image-popup-img {
-    max-width: 90vw;
-    max-height: 90vh;
+    // Key: force 100% of viewport in one dimension
+    width: 100vw;
+    height: 100vh;
+
+    // Preserve aspect ratio — scale down if needed, never stretch
     object-fit: contain;
-    border-radius: 4px;
+
+    // Center the image inside the box
+    object-position: center;
+
+    // Visual polish
+    border-radius: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   }
 }
 </style>
