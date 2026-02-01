@@ -98,7 +98,7 @@ export default {
   data() {
     return {
       UtilsFS,
-      isImagePopupOpen: false, // Track popup state
+      isImagePopupOpen: false,
     };
   },
   methods: {
@@ -114,10 +114,21 @@ export default {
     },
     openImagePopup() {
       this.isImagePopupOpen = true;
+      document.addEventListener("keydown", this.handleEscKey);
     },
     closeImagePopup() {
       this.isImagePopupOpen = false;
+      document.removeEventListener("keydown", this.handleEscKey);
     },
+    handleEscKey(event) {
+      if (event.key === "Escape") {
+        this.closeImagePopup();
+      }
+    },
+  },
+
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.handleEscKey);
   },
 };
 </script>
