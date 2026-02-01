@@ -1,12 +1,11 @@
 <template>
   <div class="alina-file">
-
     <div v-if="UtilsFS.typeVideo === pFileJson.fType">
       <figure>
         <video
-            :src="pFileJson.url_path"
-            controls
-            preload="none"
+          :src="pFileJson.url_path"
+          controls
+          preload="none"
         ></video>
       </figure>
     </div>
@@ -14,40 +13,69 @@
     <div v-if="UtilsFS.typeAudio === pFileJson.fType">
       <figure>
         <audio
-            :src="pFileJson.url_path"
-            controls
-            preload="none"
+          :src="pFileJson.url_path"
+          controls
+          preload="none"
         ></audio>
       </figure>
     </div>
 
     <a
-        :href="pFileJson.url_path"
-        :title="pFileJson.name_human"
-        target="_blank"
-        :download="flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null"
+      :href="pFileJson.url_path"
+      :title="pFileJson.name_human"
+      target="_blank"
+      :download="
+        flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
+      "
     >
       <figure
-          v-if="UtilsFS.typeImage === pFileJson.fType"
-          class="alina-file-image"
+        v-if="UtilsFS.typeImage === pFileJson.fType"
+        class="alina-file-image"
       >
         <img
-            :src="pFileJson.url_path"
-            :alt="pFileJson.name_human"
-            :title="pFileJson.name_human"
-        >
+          :src="pFileJson.url_path"
+          :alt="pFileJson.name_human"
+          :title="pFileJson.name_human"
+        />
       </figure>
 
       <div class="alina-file-icon">
-        <b-icon v-if="UtilsFS.typeGeneric === pFileJson.fType" icon="file-earmark-richtext"></b-icon>
-        <b-icon v-if="UtilsFS.typeText === pFileJson.fType" icon="card-text"></b-icon>
-        <b-icon v-if="UtilsFS.typeTextVector === pFileJson.fType" icon="file-word-fill"></b-icon>
-        <b-icon v-if="UtilsFS.typeTable === pFileJson.fType" icon="file-excel-fill"></b-icon>
-        <b-icon v-if="UtilsFS.typePresentation === pFileJson.fType" icon="file-ppt-fill"></b-icon>
-        <b-icon v-if="UtilsFS.typeEmail === pFileJson.fType" icon="chat-dots-fill"></b-icon>
-        <b-icon v-if="UtilsFS.typePdf === pFileJson.fType" icon="file-pdf-fill"></b-icon>
-        <b-icon v-if="UtilsFS.typeArchive === pFileJson.fType" icon="folder-fill"></b-icon>
-        <b-icon v-if="UtilsFS.typeWeb === pFileJson.fType" icon="file-earmark-code"></b-icon>
+        <b-icon
+          v-if="UtilsFS.typeGeneric === pFileJson.fType"
+          icon="file-earmark-richtext"
+        ></b-icon>
+        <b-icon
+          v-if="UtilsFS.typeText === pFileJson.fType"
+          icon="card-text"
+        ></b-icon>
+        <b-icon
+          v-if="UtilsFS.typeTextVector === pFileJson.fType"
+          icon="file-word-fill"
+        ></b-icon>
+        <b-icon
+          v-if="UtilsFS.typeTable === pFileJson.fType"
+          icon="file-excel-fill"
+        ></b-icon>
+        <b-icon
+          v-if="UtilsFS.typePresentation === pFileJson.fType"
+          icon="file-ppt-fill"
+        ></b-icon>
+        <b-icon
+          v-if="UtilsFS.typeEmail === pFileJson.fType"
+          icon="chat-dots-fill"
+        ></b-icon>
+        <b-icon
+          v-if="UtilsFS.typePdf === pFileJson.fType"
+          icon="file-pdf-fill"
+        ></b-icon>
+        <b-icon
+          v-if="UtilsFS.typeArchive === pFileJson.fType"
+          icon="folder-fill"
+        ></b-icon>
+        <b-icon
+          v-if="UtilsFS.typeWeb === pFileJson.fType"
+          icon="file-earmark-code"
+        ></b-icon>
         <!--        <b-icon v-if="UtilsFS.typeVideo === pFileJson.fType" icon="play-circle-fill"></b-icon>-->
         <!--        <b-icon v-if="UtilsFS.typeAudio === pFileJson.fType" icon="music-note-beamed"></b-icon>-->
       </div>
@@ -62,42 +90,35 @@
 import UtilsFS from "@/Utils/UtilsFS";
 
 export default {
-  name:     "AlinAFile",
+  name: "AlinAFile",
   computed: {},
-  props:    {
+  props: {
     pFileJson: {
-      default: {}
+      default: {},
     },
   },
 
   data() {
     return {
-      UtilsFS
-    }
+      UtilsFS,
+    };
   },
   methods: {
     flagShowDownLoad(fType) {
       return (
-          UtilsFS.typeImage !== fType
-          &&
-          UtilsFS.typePdf !== fType
-          &&
-          UtilsFS.typeAudio !== fType
-          &&
-          UtilsFS.typeVideo !== fType
-          &&
-          UtilsFS.typeText !== fType
-          &&
-          UtilsFS.typeWeb !== fType
-      )
-    }
-  }
+        UtilsFS.typeImage !== fType &&
+        UtilsFS.typePdf !== fType &&
+        UtilsFS.typeAudio !== fType &&
+        UtilsFS.typeVideo !== fType &&
+        UtilsFS.typeText !== fType &&
+        UtilsFS.typeWeb !== fType
+      );
+    },
+  },
 };
 </script>
 <style scoped lang="scss">
-
 .alina-file {
-
   & .alina-file-icon {
     font-size: 10vmin;
   }
@@ -118,7 +139,6 @@ export default {
   }
 
   figure {
-
     & audio {
       display: block;
       margin: 0;
