@@ -22,6 +22,8 @@ const Translations = {
         i_copy: "🔗",
         i_link: "🔗",
         i_share: "🔗",
+        i_expand: "▼",
+        i_collapse: "▲",
         // ###########################################################################################
         TXT_LOGIN: "Log-in",
         TXT_REGISTER: "Register",

@@ -63,47 +63,57 @@
           <!-- region WRAPPER TALE-->
           <div
             v-for="(tale, index) in feed"
+            :key="tale.id"
             v-if="tale.id"
             v-bind:key="tale.id"
-            :class="['mt-5 alina-feed-tale', `alina-feed-tale-order-${index}`, `alina-feed-tale-id-${tale.id}`]"
+            :class="[
+              'mt-5 p-1',
+              'alina-feed-tale',
+              `alina-feed-tale-order-${index}`,
+              `alina-feed-tale-id-${tale.id}`,
+            ]"
           >
             <!--##################################################-->
-            <!-- region UP DOWN -->
+            <!-- region UP DOWN EACH TALE -->
             <div
               v-if="tale.id"
               class="sticky-top"
             >
-              <div class="row no-gutters text-center mt-5 alina-feed-up-down">
+              <div class="row no-gutters text-center alina-feed-up-down mt-3">
                 <div
-                  class="col btn cursor-pointer"
+                  class="col btn btn-sm cursor-pointer"
                   @click="scrollToClassName('alina-feed-start')"
                 >
                   {{ $t("i_up") }}{{ $t("i_up") }}
                 </div>
                 &nbsp;
                 <div
-                  class="col btn cursor-pointer"
+                  class="col btn btn-sm cursor-pointer"
                   @click="scrollToClassName('alina-feed-end')"
                 >
                   {{ $t("i_down") }}{{ $t("i_down") }}
                 </div>
                 &nbsp;
                 <div
-                  class="col btn cursor-pointer"
-                  @click="scrollToClassName(`alina-feed-tale-${index - 1}`)"
+                  class="col btn btn-sm cursor-pointer"
+                  @click="
+                    scrollToClassName(`alina-feed-tale-order-${index - 1}`)
+                  "
                 >
                   {{ $t("i_up") }}
                 </div>
                 &nbsp;
                 <div
-                  class="col btn cursor-pointer"
-                  @click="scrollToClassName(`alina-feed-tale-${index + 1}`)"
+                  class="col btn btn-sm cursor-pointer"
+                  @click="
+                    scrollToClassName(`alina-feed-tale-order-${index + 1}`)
+                  "
                 >
                   {{ $t("i_down") }}
                 </div>
               </div>
             </div>
-            <!-- endregion UP DOWN -->
+            <!-- endregion UP DOWN EACH TALE -->
             <!--##################################################-->
 
             <transition name="slide-fade">
@@ -136,11 +146,12 @@
               <div
                 v-else
                 :key="`${tale.id}_2`"
-                :class="{
-                  is_draft: tale.is_draft,
-                  is_sticked: tale.is_sticked,
-                }"
-                class="corporate-border-color"
+                :class="[
+                  {
+                    is_draft: tale.is_draft,
+                    is_sticked: tale.is_sticked,
+                  },
+                ]"
               >
                 <tale_upsert
                   :p-flag-in-feed="true"
@@ -150,6 +161,11 @@
               </div>
               <!-- endregion TALE -->
             </transition>
+            <div class="text-center">
+              <button class="btn btn-secondary">
+                {{ $t("i_expand") }} / {{ $t("i_collapse") }}
+              </button>
+            </div>
           </div>
           <!-- endregion WRAPPER TALE-->
           <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
@@ -174,14 +190,18 @@
               &nbsp;
               <div
                 class="col btn btn-secondary cursor-pointer"
-                @click="scrollToClassName(`alina-feed-tale-${feed.length - 1}`)"
+                @click="
+                  scrollToClassName(`alina-feed-tale-order-${feed.length - 1}`)
+                "
               >
                 {{ $t("i_up") }}
               </div>
               &nbsp;
               <div
                 class="col btn btn-secondary cursor-pointer"
-                @click="scrollToClassName(`alina-feed-tale-${feed.length + 1}`)"
+                @click="
+                  scrollToClassName(`alina-feed-tale-order-${feed.length + 1}`)
+                "
               >
                 {{ $t("i_down") }}
               </div>
@@ -431,24 +451,25 @@ export default {
   opacity: 0;
 }
 
-h1 a:hover,
-h2 a:hover {
-  text-decoration: none;
-}
+.alina-feed-tale {
+  border-radius: 20px;
+  background-color: #333333;
+  filter: drop-shadow(1px 1px 30px rgba(0, 0, 0, 0.8));
+  margin-bottom: 25vh;
 
-/**experimental*/
-.stick-bottom {
-  position: -webkit-sticky;
-  position: sticky;
-  /*bottom: 100px;*/
-  top: 95vh;
-  z-index: 1020;
-}
+  & .alina-feed-up-down {
+    & div.btn {
+      background-color: #222222ff;
+      color: #dddddddd;
+    }
+    
+    & div.btn:first-child {
+      border-radius: 20px 0 0 0;
+    }
 
-.alina-feed-up-down {
-  & div.btn {
-    background-color: #22222288;
-    color: #666666;
+    & div.btn:last-child {
+      border-radius: 0 20px 0 0;
+    }
   }
 }
 </style>
