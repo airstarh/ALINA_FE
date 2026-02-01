@@ -30,7 +30,8 @@
   outline-color: var(--corporate-bg);
 }
 
-.modal-dialog,
-.modal-dialog * {
-  background-color: #444444;
+.modal-dialog {
+  & .modal-content {
+    background-color: #444444;
+  }
 }

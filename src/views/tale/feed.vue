@@ -179,6 +179,9 @@
                 class="btn btn-sm btn-secondary position-relative rounded-pill"
                 @click="
                   toggleExpand(tale.id);
+                  expandedTales[tale.id]
+                    ? () => {}
+                    : scrollToClassName(`alina-feed-tale-order-${index}`);
                 "
                 style="top: 20px; width: 20vw"
               >
