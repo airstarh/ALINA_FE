@@ -420,7 +420,7 @@ import aInput from "@/components/elements/form/aInput.vue";
 //#####
 export default {
   name: "tale_upsert",
-  emits: ["deleted"],
+  emits: ["deleted", "taleChanged", "modeEditChanged"],
   props: {
     pTale: {
       type: Object,
@@ -503,6 +503,7 @@ export default {
     const id = this.routerTaleId;
     this.ajaxGetTale(id);
   },
+
   computed: {
     UtilsDate() {
       return UtilsDate;
@@ -543,19 +544,29 @@ export default {
     },
   },
   watch: {
+    "dConf.modeEdit"(newVal) {
+      this.$emit("modeEditChanged", {
+        taleId: this.tale.id,
+        modeEdit: newVal,
+      });
+    },
+
     "tale.id": function (valNew, valOld) {
       if (this.tale.is_submitted === 1) {
         this.dConf.modeEdit = false;
       }
     },
+
     tale: {
       handler(newVal, oldVal) {
         if (this.dConf.modeEdit) {
           this.taleLastTouchedRemember(newVal);
+          this.$emit('taleChanged', newVal);
         }
       },
       deep: true,
     },
+
     routerTaleId: function (valNew) {
       this.ajaxGetTale(valNew);
     },

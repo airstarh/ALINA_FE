@@ -159,14 +159,28 @@
                   :p-flag-in-feed="true"
                   :p-tale="tale"
                   @deleted="ajaGetFeed"
+                  @taleChanged="
+                    (newTale) => {
+                      handleTaleChanged(newTale, index);
+                    }
+                  "
+                  @modeEditChanged="
+                    ({ taleId, modeEdit }) => {
+                      handleModeEditChanged(taleId, modeEdit, index);
+                    }
+                  "
                 ></tale_upsert>
               </div>
               <!-- endregion TALE -->
             </transition>
-            <div class="text-center">
+            <div class="text-center position-relative">
               <button
-                class="btn btn-sm btn-secondary"
-                @click="toggleExpand(tale.id)"
+                v-if="!taleMustBeExpanded(tale)"
+                class="btn btn-sm btn-secondary position-relative rounded-pill"
+                @click="
+                  toggleExpand(tale.id);
+                "
+                style="top: 20px; width: 20vw"
               >
                 {{ expandedTales[tale.id] ? $t("i_collapse") : $t("i_expand") }}
               </button>
@@ -284,8 +298,18 @@ export default {
   },
 
   methods: {
-    toggleExpand(taleId) {
-      this.$set(this.expandedTales, taleId, !this.expandedTales[taleId]);
+    taleMustBeExpanded(tale) {
+      return (tale?.body?.length || 0) < 1000;
+    },
+
+    toggleExpand(taleId, forcedValue = null) {
+      let val = !this.expandedTales[taleId];
+
+      if (forcedValue !== null) {
+        val = forcedValue;
+      }
+
+      this.$set(this.expandedTales, taleId, val);
     },
 
     modifyAddressBar(q = {}) {
@@ -325,11 +349,15 @@ export default {
         getParams: { ...{}, ...this.queryProps, ...this.$route.query },
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
+            //~example~ UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
             this.feed = aja.respBody.data.tale;
+
+            this.feed.map((tale) => {
+              this.toggleExpand(tale?.id, this.taleMustBeExpanded(tale));
+            });
+
             this.feedPagination = aja.respBody.meta.tale;
-            //this.feedPagination= Obj.mergeRecursively(this.feedPagination, aja.respBody.meta.tale);
-            // #####
+
             if (this.feedPagination.pageCurrentNumber != 1) {
               this.scrollTop();
             }
@@ -379,6 +407,21 @@ export default {
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
       }
+    },
+
+    handleTaleChanged(newTale, index) {
+      this.feed[index] = newTale;
+    },
+
+    handleModeEditChanged(taleId, modeEdit, index) {
+      if (modeEdit === true) {
+        this.toggleExpand(taleId, true);
+      }
+    },
+
+    log(data) {
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+      console.log(data);
     },
   },
 
@@ -463,8 +506,8 @@ export default {
   }
 
   .collapsed {
-    overflow: hidden;;
-    max-height: 150vh;
+    overflow: hidden;
+    max-height: 55vh;
   }
 }
 </style>
