@@ -200,9 +200,9 @@ export default {
 
   & .image-popup-close {
     position: absolute;
-    top: -15px;
-    right: -15px;
-    background: white;
+    top: 15px;
+    right: 15px;
+    background: var(--corporate-bg);
     border: none;
     border-radius: 50%;
     width: 36px;
