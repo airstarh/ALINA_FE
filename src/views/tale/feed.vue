@@ -510,7 +510,7 @@ export default {
 
   .collapsed {
     overflow: hidden;
-    max-height: 55vh;
+    max-height: 65vh;
   }
 }
 </style>
