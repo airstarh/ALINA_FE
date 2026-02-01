@@ -151,6 +151,7 @@
                     is_draft: tale.is_draft,
                     is_sticked: tale.is_sticked,
                   },
+                  'corporate-border-color',
                   !expandedTales[tale.id] ? 'collapsed' : '',
                 ]"
               >
