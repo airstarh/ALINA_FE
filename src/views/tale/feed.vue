@@ -67,7 +67,7 @@
             v-if="tale.id"
             v-bind:key="tale.id"
             :class="[
-              'mt-5 p-1',
+              'mt-5',
               'alina-feed-tale',
               `alina-feed-tale-order-${index}`,
               `alina-feed-tale-id-${tale.id}`,
