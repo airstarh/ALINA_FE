@@ -72,7 +72,7 @@
         <button
           class="image-popup-close"
           @click="closeImagePopup"
-          aria-label="Close"
+          aria-label="Close image popup"
           tabindex="0"
         >
           {{ $t("i_close") }}
@@ -218,7 +218,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1111;
     overflow: auto;
 
     // Force viewport-relative, ignore any scrollable ancestors
@@ -248,7 +248,7 @@ export default {
     text-align: center;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    z-index: 1001;
+    z-index: 1111;
   }
 
   & .image-popup-img {
