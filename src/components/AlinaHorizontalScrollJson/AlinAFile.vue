@@ -187,6 +187,10 @@ export default {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    overflow: auto;
+
+    // Force viewport-relative, ignore any scrollable ancestors
+    contain: layout size style;
   }
 
   & .image-popup-content {
