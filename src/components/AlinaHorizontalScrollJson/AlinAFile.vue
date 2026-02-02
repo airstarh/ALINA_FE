@@ -100,8 +100,8 @@ export default {
     return {
       UtilsFS,
       isImagePopupOpen: false,
-      popupHistoryKey: null,
-      scrollPosition: 0, // To restore scroll position
+      popupStateKey: null,
+      savedScrollPosition: 0,
     };
   },
   methods: {
@@ -117,19 +117,22 @@ export default {
     },
 
     openImagePopup() {
-      this.isImagePopupOpen = true;
+      // 1. Save current scroll position
+      this.savedScrollPosition = window.scrollY;
 
-      // 1. Prevent background scrolling
-      this.scrollPosition = window.scrollY;
+      // 2. Disable background scrolling
       document.body.style.overflow = "hidden";
       document.body.style.position = "fixed";
-      document.body.style.top = `-${this.scrollPosition}px`;
+      document.body.style.top = `-${this.savedScrollPosition}px`;
 
-      // 2. Add history state
-      this.popupHistoryKey = `alinaPopup_${Date.now()}`;
-      history.pushState({ key: this.popupHistoryKey }, "");
+      // 3. Open popup
+      this.isImagePopupOpen = true;
 
-      // 3. Listeners
+      // 4. Create unique state key and push to history
+      this.popupStateKey = `alinaPopup_${Date.now()}`;
+      history.pushState({ popupKey: this.popupStateKey }, "");
+
+      // 5. Listeners
       window.addEventListener("popstate", this.handlePopState);
       document.addEventListener("keydown", this.handleEscKey);
     },
@@ -137,41 +140,42 @@ export default {
     closeImagePopup() {
       if (!this.isImagePopupOpen) return;
 
+      // 1. Close popup
       this.isImagePopupOpen = false;
 
-      // 1. Restore scrolling
+      // 2. Restore scrolling
       document.body.style.removeProperty("overflow");
       document.body.style.removeProperty("position");
       document.body.style.removeProperty("top");
-      window.scrollTo(0, this.scrollPosition);
+      window.scrollTo(0, this.savedScrollPosition);
 
-      // 2. Clean history
-      history.replaceState({}, document.title); // Remove our state
+      // 3. Clean history (remove our entry)
+      history.replaceState({}, document.title);
 
-      // 3. Remove listeners
+      // 4. Remove listeners
       window.removeEventListener("popstate", this.handlePopState);
       document.removeEventListener("keydown", this.handleEscKey);
     },
 
     handlePopState(event) {
-      // Close popup if our history state is active
-      if (event.state && event.state.key === this.popupHistoryKey) {
+      // Only close if our popup state is active
+      if (event.state && event.state.popupKey === this.popupStateKey) {
         this.closeImagePopup();
       }
     },
 
     handleEscKey(event) {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" || event.key === "Backspace") {
         this.closeImagePopup();
       }
     },
   },
   mounted() {
-    // Catch popstate early
+    // Early listener for popstate (catches back button before interaction)
     window.addEventListener("popstate", this.handlePopState);
   },
   beforeDestroy() {
-    // Cleanup
+    // Cleanup listeners
     window.removeEventListener("popstate", this.handlePopState);
     document.removeEventListener("keydown", this.handleEscKey);
   },
