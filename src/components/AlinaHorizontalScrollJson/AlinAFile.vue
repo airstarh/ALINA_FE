@@ -73,7 +73,7 @@
           class="image-popup-close"
           @click="closeImagePopup"
           aria-label="Close"
-          tabindex="-1"
+          tabindex="0"
         >
           {{ $t("i_close") }}
         </button>
@@ -81,6 +81,7 @@
           :src="pFileJson.url_path"
           :alt="pFileJson.name_human"
           class="image-popup-img"
+          @click.self="closeImagePopup"
         />
       </div>
     </div>
@@ -117,20 +118,51 @@ export default {
     },
     openImagePopup() {
       this.isImagePopupOpen = true;
+
+      history.pushState({ popup: true }, "");
+
+      window.addEventListener("popstate", this.handlePopState);
       document.addEventListener("keydown", this.handleEscKey);
     },
+
     closeImagePopup() {
       this.isImagePopupOpen = false;
+
+      history.replaceState({}, document.title);
+
+      window.removeEventListener("popstate", this.handlePopState);
       document.removeEventListener("keydown", this.handleEscKey);
     },
+
+    handlePopState(event) {
+      if (event.state && event.state.popup) {
+        this.closeImagePopup();
+      }
+    },
+
     handleEscKey(event) {
       if (event.key === "Escape") {
         this.closeImagePopup();
       }
     },
   },
-
+  mounted() {
+    // Handle focus trap
+    if (this.isImagePopupOpen) {
+      document.body.setAttribute("aria-hidden", "true");
+    }
+  },
+  updated() {
+    if (this.isImagePopupOpen) {
+      // Focus close button when opened
+      this.$nextTick(() => {
+        const closeBtn = this.$el.querySelector(".image-popup-close");
+        if (closeBtn) closeBtn.focus();
+      });
+    }
+  },
   beforeDestroy() {
+    window.removeEventListener("popstate", this.handlePopState);
     document.removeEventListener("keydown", this.handleEscKey);
   },
 };
