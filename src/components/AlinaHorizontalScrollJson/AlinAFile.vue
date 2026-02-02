@@ -103,6 +103,7 @@ export default {
     return {
       UtilsFS,
       isImagePopupOpen: false,
+      wasBackButtonUsed: false, // Tracks if popup was closed via back button
     };
   },
   methods: {
@@ -116,27 +117,48 @@ export default {
         UtilsFS.typeWeb !== fType
       );
     },
+
     openImagePopup() {
       this.isImagePopupOpen = true;
+      this.wasBackButtonUsed = false;
 
-      history.pushState({ popup: true }, "");
+      // Push unique state to history
+      history.pushState(
+        { alinaPopup: true, timestamp: Date.now() },
+        document.title
+      );
 
       window.addEventListener("popstate", this.handlePopState);
       document.addEventListener("keydown", this.handleEscKey);
     },
 
     closeImagePopup() {
-      this.isImagePopupOpen = false;
+      if (this.isImagePopupOpen) {
+        this.isImagePopupOpen = false;
+        this.wasBackButtonUsed = true; // Mark as closed via back/escape
 
-      history.replaceState({}, document.title);
+        // Clean up listeners
+        window.removeEventListener("popstate", this.handlePopState);
+        document.removeEventListener("keydown", this.handleEscKey);
 
-      window.removeEventListener("popstate", this.handlePopState);
-      document.removeEventListener("keydown", this.handleEscKey);
+        // Clean history state (replace, not remove)
+        history.replaceState({}, document.title);
+      }
     },
 
     handlePopState(event) {
-      if (event.state && event.state.popup) {
+      // Case 1: Popup is open → close it on back button
+      if (this.isImagePopupOpen && event.state && event.state.alinaPopup) {
         this.closeImagePopup();
+        event.preventDefault(); // Stop browser navigation
+        return false;
+      }
+
+      // Case 2: Popup was just closed via back → prevent double-back
+      if (this.wasBackButtonUsed) {
+        event.preventDefault();
+        this.wasBackButtonUsed = false;
+        return false;
       }
     },
 
@@ -147,21 +169,11 @@ export default {
     },
   },
   mounted() {
-    // Handle focus trap
-    if (this.isImagePopupOpen) {
-      document.body.setAttribute("aria-hidden", "true");
-    }
-  },
-  updated() {
-    if (this.isImagePopupOpen) {
-      // Focus close button when opened
-      this.$nextTick(() => {
-        const closeBtn = this.$el.querySelector(".image-popup-close");
-        if (closeBtn) closeBtn.focus();
-      });
-    }
+    // Listen for popstate early (handles back button before user interaction)
+    window.addEventListener("popstate", this.handlePopState);
   },
   beforeDestroy() {
+    // Clean up all listeners
     window.removeEventListener("popstate", this.handlePopState);
     document.removeEventListener("keydown", this.handleEscKey);
   },
