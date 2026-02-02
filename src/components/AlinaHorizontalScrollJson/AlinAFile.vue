@@ -75,7 +75,7 @@
           aria-label="Close"
           tabindex="-1"
         >
-          ×
+          {{ $t("i_close") }}
         </button>
         <img
           :src="pFileJson.url_path"
