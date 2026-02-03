@@ -35,3 +35,11 @@
     background-color: #444444;
   }
 }
+
+.wrap-extreme {
+  word-wrap: break-all;
+  word-break: break-all;
+  overflow-wrap: anywhere;
+  hyphens: none;
+  white-space: normal;
+}
