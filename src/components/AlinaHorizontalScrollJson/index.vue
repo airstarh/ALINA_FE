@@ -1,5 +1,5 @@
 <template>
-  <div class="table-responsive">
+  <div>
     <div class="scrolling-wrapper">
       <div
         class="scrolling-item"
@@ -103,7 +103,9 @@ export default {
     isCurrentUserAllowedEdit(obj) {
       const isOwner = CurrentUser.obj().owns(obj.owner_id);
       // return isOwner;
-      return isOwner || this.CurrentUser.isAdmin() || this.CurrentUser.isModerator();
+      return (
+        isOwner || this.CurrentUser.isAdmin() || this.CurrentUser.isModerator()
+      );
     },
     isHeaderAsHtml(header) {
       const arrHtmlHeaders = ["url", "img", "icon", "link"];
@@ -116,21 +118,15 @@ export default {
 <style scoped lang="scss">
 .scrolling-wrapper {
   display: flex;
+  align-items: stretch;
+  gap: 5px;
   flex-wrap: nowrap;
   overflow-x: auto;
 
   & .scrolling-item {
-    text-align: center;
-    flex: 0 0 auto;
-    width: 40vmin;
-    height: 50vmin;
-    padding: 1vw;
-    margin: 5px 1px;
+    flex: 1 0 auto;
     border: #777 solid 1px;
     border-radius: 10px;
-    word-wrap: break-word !important;
-    overflow-wrap: anywhere !important;
-    overflow: hidden;
   }
 }
 </style>

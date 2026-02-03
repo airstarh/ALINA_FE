@@ -1,45 +1,40 @@
 <template>
-  <div class="alina-file">
-    <!-- Video -->
-    <div v-if="UtilsFS.typeVideo === pFileJson.fType">
-      <figure>
-        <video
-          :src="pFileJson.url_path"
-          controls
-          preload="none"
-        ></video>
-      </figure>
-    </div>
+  <figure
+    :class="[
+      'file',
+      {
+        audio: UtilsFS.typeAudio === pFileJson.fType,
+        video: UtilsFS.typeVideo === pFileJson.fType,
+        image: UtilsFS.typeImage === pFileJson.fType,
+      },
+    ]"
+  >
+    <video
+      v-if="UtilsFS.typeVideo === pFileJson.fType"
+      :src="pFileJson.url_path"
+      controls
+      preload="none"
+    ></video>
 
-    <!-- Audio -->
-    <div v-if="UtilsFS.typeAudio === pFileJson.fType">
-      <figure>
-        <audio
-          :src="pFileJson.url_path"
-          controls
-          preload="none"
-        ></audio>
-      </figure>
-    </div>
+    <audio
+      v-else-if="UtilsFS.typeAudio === pFileJson.fType"
+      :src="pFileJson.url_path"
+      controls
+      preload="none"
+    ></audio>
 
     <!-- Image (now with popup) -->
-    <div
-      v-if="UtilsFS.typeImage === pFileJson.fType"
-      class="alina-file-image-container"
+    <img
+      v-else-if="UtilsFS.typeImage === pFileJson.fType"
+      :src="pFileJson.url_path"
+      :alt="pFileJson.name_human"
+      :title="pFileJson.name_human"
       @click="openImagePopup"
-    >
-      <figure class="alina-file-image">
-        <img
-          :src="pFileJson.url_path"
-          :alt="pFileJson.name_human"
-          :title="pFileJson.name_human"
-        />
-      </figure>
-    </div>
+    />
 
-    <!-- Other file types (icons + name) -->
     <a
       v-else
+      class="generic"
       :href="pFileJson.url_path"
       :title="pFileJson.name_human"
       target="_blank"
@@ -47,20 +42,32 @@
         flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
       "
     >
-      <div class="alina-file-icon">
-        <!-- icons as before -->
+      <div class="text">{{ pFileJson.name_human }}</div>
+      <div class="icon">
         <b-icon
           v-if="UtilsFS.typeGeneric === pFileJson.fType"
           icon="file-earmark-richtext"
         ></b-icon>
-        <!-- ... other icons ... -->
-      </div>
-      <div class="alina-file-name">
-        {{ pFileJson.name_human }}
       </div>
     </a>
 
-    <!-- Image Popup Modal -->
+    <!-- <figcaption>
+      <a
+        class="alina-file-name"
+        :href="pFileJson.url_path"
+        :title="pFileJson.name_human"
+        target="_blank"
+        :download="
+          flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
+        "
+      >
+        {{ pFileJson.name_human }}
+      </a>
+    </figcaption> -->
+
+    <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
+
+    <!-- region POPUP -->
     <div
       v-if="isImagePopupOpen"
       class="image-popup-overlay"
@@ -85,7 +92,8 @@
         />
       </div>
     </div>
-  </div>
+    <!-- endregion POPUP -->
+  </figure>
 </template>
 
 <script>
@@ -94,7 +102,15 @@ import UtilsFS from "@/Utils/UtilsFS";
 export default {
   name: "AlinAFile",
   props: {
-    pFileJson: { type: Object, required: true },
+    pFileJson: {
+      type: Object,
+      required: true,
+      default: () => ({
+        url_path: "",
+        name_human: "",
+        fType: "generic",
+      }),
+    },
   },
   data() {
     return {
@@ -182,103 +198,128 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.alina-file {
-  & .alina-file-icon {
-    font-size: 10vmin;
+<style scoped lang="css">
+figure.file {
+  height: 40vh;
+  min-width: 10vw;
+  padding:2px;
+  margin:0;
+
+  & figcaption {
+    & a {
+      text-decoration: none;
+      color: white;
+      background-color: #000000;
+
+      & .alina-file-name {
+        text-align: left;
+        font-size: 0.8em;
+
+        overflow-wrap: break-word;
+        word-wrap: break-word; /* fallback */
+        white-space: normal;
+      }
+    }
   }
 
-  & .alina-file-name {
-    text-align: left;
-    font-size: 3vmin;
-  }
-
-  & figure.alina-file-image {
-    height: 35vmin;
+  & img {
+    height: 100%;
     width: 100%;
-    overflow: hidden;
-
-    & img {
-      width: 100%;
-    }
+    object-fit: contain;
   }
 
-  figure {
-    & audio {
-      display: block;
-      margin: 0;
-      padding: 0;
-      width: 99%;
+  & audio {
+    width: 100%;
+    object-fit: contain;
+  }
+
+  & video {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  & a.generic,
+  & a.generic:hover {
+    height: 100%;
+    width: 9cm;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-decoration: none;
+
+    & .text {
+      flex: 1 0 auto;
+
+      background-color: black;
+      color: white;
+      
     }
 
-    & video {
-      display: block;
-      margin: 0;
-      padding: 0;
-      width: 99%;
-      max-height: 35vmin;
+    & .icon {
+      flex: 0 1 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & svg {
+        display: block;
+        height: 100%;
+        width: auto;
+        object-fit: contain;
+      }
     }
   }
 }
 
-.alina-file {
+figure.audio {
+  width: 7cm;
+}
+
+figure {
   & .image-popup-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #55555544;
     z-index: 1111;
-    overflow: auto;
-
-    // Force viewport-relative, ignore any scrollable ancestors
-    contain: layout size style;
+    overflow: hidden;
   }
 
   & .image-popup-content {
     position: relative;
-    max-width: 100vw;
-    max-height: 100vh;
+    height: 99vh;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
 
-  & .image-popup-close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: var(--corporate-bg);
-    border: none;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    font-size: 24px;
-    line-height: 36px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    z-index: 1111;
-  }
+    & .image-popup-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: var(--corporate-bg);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 24px;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      z-index: 1111;
+    }
 
-  & .image-popup-img {
-    // Key: force 100% of viewport in one dimension
-    width: 100vw;
-    height: 100vh;
-
-    // Preserve aspect ratio — scale down if needed, never stretch
-    object-fit: contain;
-
-    // Center the image inside the box
-    object-position: center;
-
-    // Visual polish
-    border-radius: 6px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    & .image-popup-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
 }
 </style>
