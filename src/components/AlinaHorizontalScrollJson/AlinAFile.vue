@@ -44,7 +44,11 @@
       <div class="text">{{ pFileJson.name_human }}</div>
       <div class="icon">
         <b-icon
-          v-if="UtilsFS.typeGeneric === pFileJson.fType"
+          v-if="UtilsFS.typePdf === pFileJson.fType"
+          icon="file-earmark-pdf"
+        ></b-icon>
+        <b-icon
+          v-else
           icon="file-earmark-richtext"
         ></b-icon>
       </div>
@@ -283,7 +287,7 @@ figure {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #55555544;
+    background-color: #555555dd;
     z-index: 1111;
     overflow: hidden;
   }
