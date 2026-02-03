@@ -21,6 +21,7 @@
       :src="pFileJson.url_path"
       controls
       preload="none"
+      class="wrap-extreme"
     />
 
     <img
@@ -33,7 +34,7 @@
 
     <a
       v-else
-      class="generic"
+      class="generic wrap-extreme"
       :href="pFileJson.url_path"
       :title="pFileJson.name_human"
       target="_blank"
@@ -41,7 +42,7 @@
         flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
       "
     >
-      <div class="text">{{ pFileJson.name_human }}</div>
+      <div class="text wrap-extreme">{{ pFileJson.name_human }}</div>
       <div class="icon">
         <b-icon
           v-if="UtilsFS.typePdf === pFileJson.fType"
@@ -62,6 +63,7 @@
         :download="
           flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
         "
+        class="wrap-extreme"
       >
         {{ pFileJson.name_human }}
       </a>
@@ -208,19 +210,18 @@ figure.file {
   margin: 0;
 
   & figcaption {
+    margin-top: 20px;
     & a,
     & a:hover {
       display: inline-block;
       text-decoration: none;
       color: white;
       background-color: #000000;
+      border-radius: 5px;
+      padding: 2px;
 
       text-align: left;
-      font-size: 0.8em;
-
-      overflow-wrap: break-word;
-      word-wrap: break-word; /* fallback */
-      white-space: normal;
+      font-size: 1.5em;
     }
   }
 
@@ -244,9 +245,10 @@ figure.file {
   & a.generic,
   & a.generic:hover {
     height: 100%;
-    width: 9cm;
+    width: 7cm;
     display: flex;
     flex-direction: column;
+    gap: 20px;
     align-items: stretch;
     text-decoration: none;
     color: white;
@@ -255,6 +257,8 @@ figure.file {
       flex: 1 0 auto;
 
       background-color: black;
+      border-radius: 5px;
+      padding: 2px;
     }
 
     & .icon {
