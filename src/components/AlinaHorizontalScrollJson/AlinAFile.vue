@@ -14,16 +14,15 @@
       :src="pFileJson.url_path"
       controls
       preload="none"
-    ></video>
+    />
 
     <audio
       v-else-if="UtilsFS.typeAudio === pFileJson.fType"
       :src="pFileJson.url_path"
       controls
       preload="none"
-    ></audio>
+    />
 
-    <!-- Image (now with popup) -->
     <img
       v-else-if="UtilsFS.typeImage === pFileJson.fType"
       :src="pFileJson.url_path"
@@ -51,9 +50,8 @@
       </div>
     </a>
 
-    <!-- <figcaption>
+    <figcaption v-if="UtilsFS.typeAudio === pFileJson.fType">
       <a
-        class="alina-file-name"
         :href="pFileJson.url_path"
         :title="pFileJson.name_human"
         target="_blank"
@@ -63,7 +61,7 @@
       >
         {{ pFileJson.name_human }}
       </a>
-    </figcaption> -->
+    </figcaption>
 
     <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
@@ -202,23 +200,23 @@ export default {
 figure.file {
   height: 40vh;
   min-width: 10vw;
-  padding:2px;
-  margin:0;
+  padding: 2px;
+  margin: 0;
 
   & figcaption {
-    & a {
+    & a,
+    & a:hover {
+      display: inline-block;
       text-decoration: none;
       color: white;
       background-color: #000000;
 
-      & .alina-file-name {
-        text-align: left;
-        font-size: 0.8em;
+      text-align: left;
+      font-size: 0.8em;
 
-        overflow-wrap: break-word;
-        word-wrap: break-word; /* fallback */
-        white-space: normal;
-      }
+      overflow-wrap: break-word;
+      word-wrap: break-word; /* fallback */
+      white-space: normal;
     }
   }
 
@@ -247,13 +245,12 @@ figure.file {
     flex-direction: column;
     align-items: stretch;
     text-decoration: none;
+    color: white;
 
     & .text {
       flex: 1 0 auto;
 
       background-color: black;
-      color: white;
-      
     }
 
     & .icon {
@@ -273,7 +270,7 @@ figure.file {
 }
 
 figure.audio {
-  width: 7cm;
+  width: 9cm;
 }
 
 figure {

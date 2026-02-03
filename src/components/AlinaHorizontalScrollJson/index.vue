@@ -119,7 +119,7 @@ export default {
 .scrolling-wrapper {
   display: flex;
   align-items: stretch;
-  gap: 5px;
+  gap: 10px;
   flex-wrap: nowrap;
   overflow-x: auto;
 
