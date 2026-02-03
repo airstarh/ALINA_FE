@@ -274,7 +274,7 @@ figure.file {
 }
 
 figure.audio {
-  width: 9cm;
+  width: 8cm;
 }
 
 figure {
@@ -287,7 +287,7 @@ figure {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #555555dd;
+    background-color: #000000cc;
     z-index: 1111;
     overflow: hidden;
   }
