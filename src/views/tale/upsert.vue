@@ -331,18 +331,13 @@
         <!--##################################################-->
 
         <!-- region FILES -->
-        <div
-          class="row no-gutters mb-3"
-          v-if="tale.count_files > 0 || dConf.modeEdit"
-        >
-          <div class="col">
-            <AlinaFileUploader
-              :entity_id="tale.id"
-              entity_table="tale"
-              :modeEdit="dConf.modeEdit"
-              :ownLength="tale.count_files"
-            ></AlinaFileUploader>
-          </div>
+        <div class="mt-3 mb-3">
+          <AlinaFileUploader
+            :entity_id="tale.id"
+            entity_table="tale"
+            :modeEdit="dConf.modeEdit"
+            :ownLength="tale.count_files"
+          />
         </div>
         <!-- endregion FILES -->
 
@@ -561,7 +556,7 @@ export default {
       handler(newVal, oldVal) {
         if (this.dConf.modeEdit) {
           this.taleLastTouchedRemember(newVal);
-          this.$emit('taleChanged', newVal);
+          this.$emit("taleChanged", newVal);
         }
       },
       deep: true,
