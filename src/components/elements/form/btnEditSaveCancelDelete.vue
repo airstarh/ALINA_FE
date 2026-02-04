@@ -6,7 +6,7 @@
     <!--Edit-->
     <button
       @click="onEdit"
-      class="col btn "
+      class="col btn btn-secondary"
       v-if="!modeEdit"
     >
       {{ $t("i_edit") }}
