@@ -31,7 +31,7 @@
       :src="pFileJson.url_path"
       :alt="pFileJson.name_human"
       :title="pFileJson.name_human"
-      @click="openPopup"
+      @click="popupOpen"
     />
 
     <a
@@ -77,14 +77,14 @@
     <div
       v-if="isPopupOpen"
       class="image-popup-overlay"
-      @click.self="closePopup"
+      @click.self="popupClose"
       role="dialog"
       aria-modal="true"
     >
       <div class="image-popup-content">
         <button
           class="image-popup-close"
-          @click="closePopup"
+          @click="popupClose"
           aria-label="Close image popup"
           tabindex="0"
         >
@@ -94,7 +94,7 @@
           :src="pFileJson.url_path"
           :alt="pFileJson.name_human"
           class="image-popup-img"
-          @click.self="closePopup"
+          @click.self="popupClose"
         />
       </div>
     </div>
@@ -138,7 +138,7 @@ export default {
       );
     },
 
-    openPopup() {
+    popupOpen() {
       // 1. Save current scroll position
       this.savedScrollPosition = window.scrollY;
 
@@ -155,11 +155,11 @@ export default {
       history.pushState({ popupKey: this.popupStateKey }, "");
 
       // 5. Listeners
-      window.addEventListener("popstate", this.handlePopState);
-      document.addEventListener("keydown", this.handleEscKey);
+      window.addEventListener("popstate", this.popupStateHandle);
+      document.addEventListener("keydown", this.popupHandleCloseByKeyboard);
     },
 
-    closePopup() {
+    popupClose() {
       if (!this.isPopupOpen) return;
 
       // 1. Close popup
@@ -175,31 +175,32 @@ export default {
       history.replaceState({}, document.title);
 
       // 4. Remove listeners
-      window.removeEventListener("popstate", this.handlePopState);
-      document.removeEventListener("keydown", this.handleEscKey);
+      window.removeEventListener("popstate", this.popupStateHandle);
+      document.removeEventListener("keydown", this.popupHandleCloseByKeyboard);
     },
 
-    handlePopState(event) {
+    popupStateHandle(event) {
       // Only close if our popup state is active
       if (event.state && event.state.popupKey === this.popupStateKey) {
-        this.closePopup();
+        this.popupClose();
       }
     },
 
-    handleEscKey(event) {
+    popupHandleCloseByKeyboard(event) {
       if (event.key === "Escape" || event.key === "Backspace") {
-        this.closePopup();
+        this.popupClose();
       }
     },
   },
+
   mounted() {
     // Early listener for popstate (catches back button before interaction)
-    window.addEventListener("popstate", this.handlePopState);
+    window.addEventListener("popstate", this.popupStateHandle);
   },
   beforeDestroy() {
     // Cleanup listeners
-    window.removeEventListener("popstate", this.handlePopState);
-    document.removeEventListener("keydown", this.handleEscKey);
+    window.removeEventListener("popstate", this.popupStateHandle);
+    document.removeEventListener("keydown", this.popupHandleCloseByKeyboard);
   },
 };
 </script>
