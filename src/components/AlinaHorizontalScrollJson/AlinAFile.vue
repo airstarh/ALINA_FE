@@ -221,7 +221,7 @@ figure.file {
       padding: 2px;
 
       text-align: left;
-      font-size: 1.5em;
+      font-size: 0.9em;
     }
   }
 
