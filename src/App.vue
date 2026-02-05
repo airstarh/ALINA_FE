@@ -1,10 +1,17 @@
 <template>
-  <div class="alina-flex-vertical-container" :class="{
-    'alina-vh-100': !pageIsInIframe
-  }" :style="{
-    'overflow': pageIsInIframe ? 'hidden' : ''
-  }">
-    <div class="alina-flex-vertical-header" v-if="!fullScreen">
+  <div
+    class="alina-flex-vertical-container"
+    :class="{
+      'alina-vh-100': !pageIsInIframe,
+    }"
+    :style="{
+      overflow: pageIsInIframe ? 'hidden' : '',
+    }"
+  >
+    <div
+      class="alina-flex-vertical-header"
+      v-if="!fullScreen"
+    >
       <MenuHorizontalMain></MenuHorizontalMain>
     </div>
     <div class="alina-flex-vertical-content">
@@ -12,7 +19,10 @@
       <Spinner></Spinner>
       <router-view></router-view>
     </div>
-    <div class="alina-flex-vertical-footer" v-if="!fullScreen">
+    <div
+      class="alina-flex-vertical-footer"
+      v-if="!fullScreen"
+    >
       <Footer></Footer>
     </div>
   </div>
@@ -34,22 +44,26 @@ export default {
     MenuHorizontalMain,
     Messages,
     Spinner,
-    'MenuHorizontalMain': () => import(`@/components/${process.env.VUE_APP_ALINA_FOLDER}MenuHorizontalMain`),
-    'Footer': () => import(`@/components/${process.env.VUE_APP_ALINA_FOLDER}Footer`),
+    MenuHorizontalMain: () =>
+      import(
+        `@/components/${process.env.VUE_APP_ALINA_FOLDER}MenuHorizontalMain`
+      ),
+    Footer: () =>
+      import(`@/components/${process.env.VUE_APP_ALINA_FOLDER}Footer`),
   },
   data() {
     return {
       PageSettings,
       AlinaStorage,
-      ConfigApi
-    }
+      ConfigApi,
+    };
   },
   mounted() {
     /**
      * Documentation:
      * https://bootstrap-vue.org/docs/components/collapse
      */
-    this.$root.$on('bv::collapse::state', (collapseId, isJustShown) => {
+    this.$root.$on("bv::collapse::state", (collapseId, isJustShown) => {
       // if (collapseId.startsWith('comment-collapse-')) {
       //   if (isJustShown) {
       //     UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId)
@@ -60,13 +74,12 @@ export default {
     });
   },
   created() {
-
     let _this = this;
 
     // region KEY PRESS
-    document.addEventListener('keyup', function (event) {
+    document.addEventListener("keyup", function (event) {
       if (event.ctrlKey && event.altKey) {
-        if (event.key == 'f') {
+        if (event.key == "f") {
           _this.toggleFullScreen();
         }
         //_this.log(event);
@@ -89,16 +102,14 @@ export default {
     },
   },
   watch: {
-    $route(to, from) {
-    }
+    $route(to, from) {},
   },
   methods: {
     toggleFullScreen() {
       PageSettings.showMainMenu = !PageSettings.showMainMenu;
     },
-    log() {
-    }
-  }
+    log() {},
+  },
 };
 </script>
 <style scoped></style>
