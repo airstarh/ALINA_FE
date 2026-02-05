@@ -1,10 +1,10 @@
 import UtilsArray from "@/Utils/UtilsArray";
-import UtilsData  from "@/Utils/UtilsData";
+import UtilsData from "@/Utils/UtilsData";
 
 const MessagesObj = {
-	store:         [],
-	item:          {
-		"text":   "",
+	store: [],
+	item: {
+		"text": "",
 		"status": 1,
 	},
 	statusClasses: [
@@ -15,15 +15,15 @@ const MessagesObj = {
 	],
 	set(item, status = null) {
 		let res = {
-			text:           '',
+			text: '',
 			templateString: '',
-			params:         [],
-			status:         0,
-			isShown:        0,
+			params: [],
+			status: 0,
+			isShown: 0,
 		};
-		res     = Object.assign(res, this.item);
+		res = Object.assign(res, this.item);
 		if (UtilsData.isString(item)) {
-			res.text           = item;
+			res.text = item;
 			res.templateString = item;
 		} else if (UtilsData.isObject(item)) {
 			Object.assign(res, item)
