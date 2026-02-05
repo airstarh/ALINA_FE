@@ -31,7 +31,7 @@
       :src="pFileJson.url_path"
       :alt="pFileJson.name_human"
       :title="pFileJson.name_human"
-      @click="openImagePopup"
+      @click="openPopup"
     />
 
     <a
@@ -75,16 +75,16 @@
 
     <!-- region POPUP -->
     <div
-      v-if="isImagePopupOpen"
+      v-if="isPopupOpen"
       class="image-popup-overlay"
-      @click.self="closeImagePopup"
+      @click.self="closePopup"
       role="dialog"
       aria-modal="true"
     >
       <div class="image-popup-content">
         <button
           class="image-popup-close"
-          @click="closeImagePopup"
+          @click="closePopup"
           aria-label="Close image popup"
           tabindex="0"
         >
@@ -94,7 +94,7 @@
           :src="pFileJson.url_path"
           :alt="pFileJson.name_human"
           class="image-popup-img"
-          @click.self="closeImagePopup"
+          @click.self="closePopup"
         />
       </div>
     </div>
@@ -121,7 +121,7 @@ export default {
   data() {
     return {
       UtilsFS,
-      isImagePopupOpen: false,
+      isPopupOpen: false,
       popupStateKey: null,
       savedScrollPosition: 0,
     };
@@ -138,7 +138,7 @@ export default {
       );
     },
 
-    openImagePopup() {
+    openPopup() {
       // 1. Save current scroll position
       this.savedScrollPosition = window.scrollY;
 
@@ -148,7 +148,7 @@ export default {
       document.body.style.top = `-${this.savedScrollPosition}px`;
 
       // 3. Open popup
-      this.isImagePopupOpen = true;
+      this.isPopupOpen = true;
 
       // 4. Create unique state key and push to history
       this.popupStateKey = `alinaPopup_${Date.now()}`;
@@ -159,11 +159,11 @@ export default {
       document.addEventListener("keydown", this.handleEscKey);
     },
 
-    closeImagePopup() {
-      if (!this.isImagePopupOpen) return;
+    closePopup() {
+      if (!this.isPopupOpen) return;
 
       // 1. Close popup
-      this.isImagePopupOpen = false;
+      this.isPopupOpen = false;
 
       // 2. Restore scrolling
       document.body.style.removeProperty("overflow");
@@ -182,13 +182,13 @@ export default {
     handlePopState(event) {
       // Only close if our popup state is active
       if (event.state && event.state.popupKey === this.popupStateKey) {
-        this.closeImagePopup();
+        this.closePopup();
       }
     },
 
     handleEscKey(event) {
       if (event.key === "Escape" || event.key === "Backspace") {
-        this.closeImagePopup();
+        this.closePopup();
       }
     },
   },
