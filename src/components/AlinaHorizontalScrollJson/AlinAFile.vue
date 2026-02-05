@@ -298,36 +298,36 @@ figure {
     background-color: #000000cc;
     z-index: 1111;
     overflow: hidden;
-  }
 
-  & .image-popup-content {
-    position: relative;
-    height: 99vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    & .image-popup-content {
+      position: relative;
+      height: 99vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-    & .image-popup-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: var(--corporate-bg);
-      border: none;
-      border-radius: 50%;
-      width: 36px;
-      height: 36px;
-      font-size: 24px;
-      line-height: 36px;
-      text-align: center;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-      z-index: 1111;
-    }
+      & .image-popup-close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--corporate-bg);
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        font-size: 24px;
+        line-height: 36px;
+        text-align: center;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        z-index: 1111;
+      }
 
-    & .image-popup-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+      & .image-popup-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
     }
   }
 }
