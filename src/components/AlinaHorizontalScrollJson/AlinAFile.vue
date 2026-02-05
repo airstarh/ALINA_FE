@@ -14,6 +14,7 @@
       :src="pFileJson.url_path"
       controls
       preload="none"
+      :title="pFileJson.name_human"
     />
 
     <audio
@@ -22,6 +23,7 @@
       controls
       preload="none"
       class="wrap-extreme"
+      :title="pFileJson.name_human"
     />
 
     <img
@@ -280,6 +282,8 @@ figure.file {
 figure.audio {
   width: 8cm;
 }
+
+/* # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  */
 
 figure {
   & .image-popup-overlay {
