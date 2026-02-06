@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="isPopupOpen"
+    v-if="PopupObj.isOn"
     class="popup-overlay"
     @click.self="popupClose"
     role="dialog"
@@ -36,8 +36,7 @@ export default {
 
   data() {
     return {
-      isPopupOpen: false,
-      PopupObj: PopupObj,
+      PopupObj,
       popupStateKey: null,
       savedScrollPosition: 0,
     };
@@ -56,7 +55,7 @@ export default {
       document.body.style.top = `-${this.savedScrollPosition}px`;
 
       // 3. Open popup
-      //   this.PopupObj.isOn = true;
+      //   this.P~opupObj.isOn = true;
 
       // 4. Create unique state key and push to history
       this.popupStateKey = `alinaPopup_${Date.now()}`;
@@ -104,7 +103,6 @@ export default {
   watch: {
     "PopupObj.isOn": {
       handler(newValue) {
-        this.isPopupOpen = newValue;
         if (newValue === true) {
           this.popupOpen();
         }
@@ -113,15 +111,7 @@ export default {
     },
   },
 
-  //   computed: {
-  //     isPopupOpen: {
-  //       get() {
-  //         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-  //         console.log(PopupObj);
-  //         return PopupObj.isOn;
-  //       },
-  //     },
-  //   },
+  computed: {},
 
   mounted() {
     // Early listener for popstate (catches back button before interaction)
