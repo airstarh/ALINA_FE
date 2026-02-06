@@ -17,8 +17,9 @@
       </button>
       <img
         class="popup-subject"
-        :src="pFileJson.url_path"
-        :alt="pFileJson.name_human"
+        :src="PopupObj.item.url"
+        :alt="PopupObj.item.title"
+        :title="PopupObj.item.title"
         @click.self="popupClose"
       />
     </div>
@@ -35,7 +36,7 @@ export default {
 
   data() {
     return {
-      PopupObj,
+      PopupObj: PopupObj,
       isPopupOpen: false,
       popupStateKey: null,
       savedScrollPosition: 0,
@@ -55,7 +56,7 @@ export default {
       document.body.style.top = `-${this.savedScrollPosition}px`;
 
       // 3. Open popup
-      this.isPopupOpen = true;
+      this.PopupObj.isOn = true;
 
       // 4. Create unique state key and push to history
       this.popupStateKey = `alinaPopup_${Date.now()}`;
@@ -67,10 +68,10 @@ export default {
     },
 
     popupClose() {
-      if (!this.isPopupOpen) return;
+      if (!this.PopupObj.isOn) return;
 
       // 1. Close popup
-      this.isPopupOpen = false;
+      this.PopupObj.isOn = false;
 
       // 2. Restore scrolling
       document.body.style.removeProperty("overflow");
@@ -97,6 +98,17 @@ export default {
       if (event.key === "Escape" || event.key === "Backspace") {
         this.popupClose();
       }
+    },
+  },
+
+  watch: {
+    "PopupObj.isOn": {
+      handler(newValue) {
+        this.isPopupOpen = newValue;
+        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        console.log(newValue);
+      },
+      immediate: true, // triggers on component mount
     },
   },
 

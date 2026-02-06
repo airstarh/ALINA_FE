@@ -111,7 +111,12 @@ export default {
       );
     },
 
-    popupOpen() {},
+    popupOpen() {
+      this.PopupObj.item.url = this.pFileJson.url_path;
+      this.PopupObj.item.title = this.pFileJson.name_human;
+      this.PopupObj.item.type = this.pFileJson.fType;
+      this.PopupObj.isOn = true;
+    },
   },
 };
 </script>
