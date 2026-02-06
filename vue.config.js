@@ -11,10 +11,12 @@ module.exports = {
     productionSourceMap: process.env.NODE_ENV === 'development',
 
     devServer: {
-        host: 'localhost',
+        host: '0.0.0.0',
+        public: '192.168.1.110:8082',
         port: 8082,
         https: true,
         clientLogLevel: 'error',
+        disableHostCheck: true,
         contentBase: path.join(
             __dirname,
             process.env.VUE_APP_PUBLIC_FOLDER || 'public'
