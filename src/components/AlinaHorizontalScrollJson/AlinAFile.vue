@@ -127,10 +127,10 @@ figure.file {
   padding: 2px;
   margin: 0;
 
-  & figcaption {
+  figcaption {
     margin-top: 20px;
-    & a,
-    & a:hover {
+    a,
+    a:hover {
       display: inline-block;
       text-decoration: none;
       color: white;
@@ -143,25 +143,25 @@ figure.file {
     }
   }
 
-  & img {
+  img {
     height: 100%;
     width: 100%;
     object-fit: contain;
   }
 
-  & audio {
+  audio {
     width: 100%;
     object-fit: contain;
   }
 
-  & video {
+  video {
     height: 100%;
     width: 100%;
     object-fit: contain;
   }
 
-  & a.generic,
-  & a.generic:hover {
+  a.generic,
+  a.generic:hover {
     height: 100%;
     width: 7cm;
     display: flex;
@@ -171,7 +171,7 @@ figure.file {
     text-decoration: none;
     color: white;
 
-    & .text {
+    .text {
       flex: 1 0 auto;
 
       background-color: black;
@@ -179,13 +179,13 @@ figure.file {
       padding: 2px;
     }
 
-    & .icon {
+    .icon {
       flex: 0 1 100%;
       display: flex;
       justify-content: center;
       align-items: center;
 
-      & svg {
+      svg {
         display: block;
         height: 100%;
         width: auto;
