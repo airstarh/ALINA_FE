@@ -38,7 +38,6 @@ export default {
     return {
       PopupObj,
       popupStateKey: null,
-      savedScrollPosition: 0,
     };
   },
 
@@ -46,47 +45,31 @@ export default {
 
   methods: {
     popupOpen() {
-      // 1. Save current scroll position
-      this.savedScrollPosition = window.scrollY;
-
-      // 2. Disable background scrolling
       document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${this.savedScrollPosition}px`;
 
-      // 3. Open popup
-      //   this.P~opupObj.isOn = true;
-
-      // 4. Create unique state key and push to history
       this.popupStateKey = `alinaPopup_${Date.now()}`;
       history.pushState({ popupKey: this.popupStateKey }, "");
 
-      // 5. Listeners
-      window.addEventListener("popstate", this.popupStateHandle);
+      window.addEventListener("popstate", this.popupHandleState);
       document.addEventListener("keydown", this.popupHandleCloseByKeyboard);
     },
 
     popupClose() {
       if (!this.PopupObj.isOn) return;
-
-      // 1. Close popup
       this.PopupObj.isOn = false;
 
       // 2. Restore scrolling
       document.body.style.removeProperty("overflow");
-      document.body.style.removeProperty("position");
-      document.body.style.removeProperty("top");
-      window.scrollTo(0, this.savedScrollPosition);
 
       // 3. Clean history (remove our entry)
       history.replaceState({}, document.title);
 
       // 4. Remove listeners
-      window.removeEventListener("popstate", this.popupStateHandle);
+      window.removeEventListener("popstate", this.popupHandleState);
       document.removeEventListener("keydown", this.popupHandleCloseByKeyboard);
     },
 
-    popupStateHandle(event) {
+    popupHandleState(event) {
       // Only close if our popup state is active
       if (event.state && event.state.popupKey === this.popupStateKey) {
         this.popupClose();
@@ -113,16 +96,20 @@ export default {
 
   computed: {},
 
+  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+  // region LIFECYCLE
   mounted() {
-    // Early listener for popstate (catches back button before interaction)
-    window.addEventListener("popstate", this.popupStateHandle);
+    // Early listener for p~opstate (catches back button before interaction)
+    window.addEventListener("popstate", this.popupHandleState);
   },
 
   beforeDestroy() {
     // Cleanup listeners
-    window.removeEventListener("popstate", this.popupStateHandle);
+    window.removeEventListener("popstate", this.popupHandleState);
     document.removeEventListener("keydown", this.popupHandleCloseByKeyboard);
   },
+  // region LIFECYCLE
+  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 };
 </script>
 
