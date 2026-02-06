@@ -58,13 +58,10 @@ export default {
       if (!this.PopupObj.isOn) return;
       this.PopupObj.isOn = false;
 
-      // 2. Restore scrolling
       document.body.style.removeProperty("overflow");
 
-      // 3. Clean history (remove our entry)
       history.replaceState({}, document.title);
 
-      // 4. Remove listeners
       window.removeEventListener("popstate", this.popupHandleState);
       document.removeEventListener("keydown", this.popupHandleCloseByKeyboard);
     },
