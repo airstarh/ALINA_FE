@@ -15,8 +15,9 @@
       <MenuHorizontalMain></MenuHorizontalMain>
     </div>
     <div class="alina-flex-vertical-content">
-      <Messages></Messages>
-      <Spinner></Spinner>
+      <Messages />
+      <Spinner />
+      <Popup />
       <router-view></router-view>
     </div>
     <div
@@ -30,8 +31,9 @@
 <script>
 import MenuHorizontalMain from "@/components/MenuHorizontalMain";
 // import Footer                  from `@/components/Footer`;
-import Messages from "@/components/global/Messages";
-import Spinner from "@/components/global/Spinner";
+import Messages from "@/components/global/Messages.vue";
+import Spinner from "@/components/global/Spinner.vue";
+import Popup from "@/components/global/Popup.vue";
 import AlinaStorage from "@/services/AlinaStorage";
 import UtilsArray from "@/Utils/UtilsArray";
 import PageSettings from "@/services/PageSettings";
@@ -44,6 +46,7 @@ export default {
     MenuHorizontalMain,
     Messages,
     Spinner,
+    Popup,
     MenuHorizontalMain: () =>
       import(
         `@/components/${process.env.VUE_APP_ALINA_FOLDER}MenuHorizontalMain`

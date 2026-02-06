@@ -30,14 +30,14 @@
 import PopupObj from "@/services/PopupObj";
 
 export default {
-  name: "Spinner",
+  name: "Popup",
 
   props: {},
 
   data() {
     return {
-      PopupObj: PopupObj,
       isPopupOpen: false,
+      PopupObj: PopupObj,
       popupStateKey: null,
       savedScrollPosition: 0,
     };
@@ -56,7 +56,7 @@ export default {
       document.body.style.top = `-${this.savedScrollPosition}px`;
 
       // 3. Open popup
-      this.PopupObj.isOn = true;
+      //   this.PopupObj.isOn = true;
 
       // 4. Create unique state key and push to history
       this.popupStateKey = `alinaPopup_${Date.now()}`;
@@ -105,12 +105,23 @@ export default {
     "PopupObj.isOn": {
       handler(newValue) {
         this.isPopupOpen = newValue;
-        console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-        console.log(newValue);
+        if (newValue === true) {
+          this.popupOpen();
+        }
       },
       immediate: true, // triggers on component mount
     },
   },
+
+  //   computed: {
+  //     isPopupOpen: {
+  //       get() {
+  //         console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+  //         console.log(PopupObj);
+  //         return PopupObj.isOn;
+  //       },
+  //     },
+  //   },
 
   mounted() {
     // Early listener for popstate (catches back button before interaction)
@@ -122,8 +133,6 @@ export default {
     window.removeEventListener("popstate", this.popupStateHandle);
     document.removeEventListener("keydown", this.popupHandleCloseByKeyboard);
   },
-
-  computed: {},
 };
 </script>
 

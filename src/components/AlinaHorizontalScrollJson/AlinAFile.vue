@@ -95,7 +95,6 @@ export default {
   data() {
     return {
       UtilsFS,
-      PopupObj,
     };
   },
 
@@ -112,10 +111,10 @@ export default {
     },
 
     popupOpen() {
-      this.PopupObj.item.url = this.pFileJson.url_path;
-      this.PopupObj.item.title = this.pFileJson.name_human;
-      this.PopupObj.item.type = this.pFileJson.fType;
-      this.PopupObj.isOn = true;
+      PopupObj.item.url = this.pFileJson.url_path;
+      PopupObj.item.title = this.pFileJson.name_human;
+      PopupObj.item.type = this.pFileJson.fType;
+      PopupObj.isOn = true;
     },
   },
 };
