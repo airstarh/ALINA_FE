@@ -102,6 +102,7 @@ export default {
     },
 
     popupOpen() {
+      PopupObj.item.id = this.pFileJson.id;
       PopupObj.item.url = this.pFileJson.url_path;
       PopupObj.item.title = this.pFileJson.name_human;
       PopupObj.item.type = this.pFileJson.fType;
@@ -156,7 +157,7 @@ figure.file {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 7cm;
+    width: min(35ch, 90vw);
     gap: 20px;
     align-items: stretch;
     text-decoration: none;
@@ -171,7 +172,6 @@ figure.file {
     }
 
     .icon {
-
       /* Takes remaining vertical space */
       flex: 1 0 auto;
       min-height: 0; /* Critical for shrinkage */
@@ -203,7 +203,8 @@ figure.file {
   }
 }
 
-figure.audio {
+figure.audio,
+figure.video {
   width: min(90vw, 15cm);
 }
 </style>
