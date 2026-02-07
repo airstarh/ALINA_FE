@@ -6,7 +6,6 @@
       controls
       preload="metadata"
       :title="pFileJson.name_human"
-      @click="popupOpen"
     />
 
     <audio
@@ -154,17 +153,17 @@ figure.file {
 
   a.generic,
   a.generic:hover {
-    height: 100%;
-    width: 7cm;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    width: 7cm;
     gap: 20px;
     align-items: stretch;
     text-decoration: none;
     color: white;
 
     .text {
-      flex: 1 0 auto;
+      flex: 0 1 auto;
 
       background-color: black;
       border-radius: 5px;
@@ -172,22 +171,40 @@ figure.file {
     }
 
     .icon {
-      flex: 0 1 100%;
+      border: #0a59da solid 1px;
+
+      /* Takes remaining vertical space */
+      flex: 1 0 auto;
+      min-height: 0; /* Critical for shrinkage */
+
+      /* Center the SVG */
       display: flex;
-      justify-content: center;
-      align-items: center;
+      align-items: center; /* Vertical centering */
+      justify-content: center; /* Horizontal centering */
 
       svg {
-        display: block;
+        /* Fill the container's height */
         height: 100%;
-        width: 100%;
+
+        /* Maintain aspect ratio while filling height */
+        width: auto;
+
+        /* Ensure it doesn't overflow */
+        max-width: 100%;
+        max-height: 100%;
+
+        /* Remove inline spacing */
+        display: block;
+
+        /* Optional: control scaling behavior */
         object-fit: contain;
+        object-position: center;
       }
     }
   }
 }
 
 figure.audio {
-  width: 8cm;
+  width: min(90vw, 15cm);
 }
 </style>
