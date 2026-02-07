@@ -17,7 +17,7 @@
       </button>
       <img
         v-if="UtilsFS.typeImage === PopupObj.item.type"
-        class="popup-subject"
+        :class="['popup-subject', PopupObj.item.type]"
         :src="PopupObj.item.url"
         :alt="PopupObj.item.title"
         :title="PopupObj.item.title"
@@ -25,9 +25,10 @@
       />
       <video
         v-else-if="UtilsFS.typeVideo === PopupObj.item.type"
-        class="popup-subject"
+        :class="['popup-subject', PopupObj.item.type]"
         :src="PopupObj.item.url"
-        :alt="PopupObj.item.title"
+        controls
+        preload="none"
         :title="PopupObj.item.title"
         @click.self="popupClose"
       />
@@ -160,8 +161,14 @@ export default {
     }
 
     .popup-subject {
-      width: 100vh;
-      height: 100vw;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+    }
+
+    .popup-subject.video {
+      width: 90vw;
+      height: 90vh;
       object-fit: contain;
     }
   }
