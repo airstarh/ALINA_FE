@@ -4,8 +4,9 @@
       v-if="UtilsFS.typeVideo === pFileJson.fType"
       :src="pFileJson.url_path"
       controls
-      preload="none"
+      preload="metadata"
       :title="pFileJson.name_human"
+      @click="popupOpen"
     />
 
     <audio
