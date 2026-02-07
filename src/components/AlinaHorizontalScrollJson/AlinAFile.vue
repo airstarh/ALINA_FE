@@ -171,7 +171,6 @@ figure.file {
     }
 
     .icon {
-      border: #0a59da solid 1px;
 
       /* Takes remaining vertical space */
       flex: 1 0 auto;
