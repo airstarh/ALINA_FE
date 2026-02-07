@@ -23,6 +23,14 @@
         :title="PopupObj.item.title"
         @click.self="popupClose"
       />
+      <video
+        v-else-if="UtilsFS.typeVideo === PopupObj.item.type"
+        class="popup-subject"
+        :src="PopupObj.item.url"
+        :alt="PopupObj.item.title"
+        :title="PopupObj.item.title"
+        @click.self="popupClose"
+      />
     </div>
   </div>
 </template>
