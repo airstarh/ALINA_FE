@@ -16,6 +16,7 @@
         {{ $t("i_close") }}
       </button>
       <img
+        v-if="UtilsFS.typeImage === PopupObj.item.type"
         class="popup-subject"
         :src="PopupObj.item.url"
         :alt="PopupObj.item.title"
@@ -28,6 +29,7 @@
 
 <script>
 import PopupObj from "@/services/PopupObj";
+import UtilsFS from "@/Utils/UtilsFS";
 
 export default {
   name: "Popup",
@@ -36,6 +38,7 @@ export default {
 
   data() {
     return {
+      UtilsFS,
       PopupObj,
       popupStateKey: null,
     };
