@@ -1,6 +1,7 @@
 @import "../../../node_modules/bootstrap/dist/css/bootstrap.css";
 @import "../../../node_modules/bootstrap-vue/dist/bootstrap-vue.css";
 
+// region BUTTONS
 .btn {
   filter: opacity(50%) !important;
 }
@@ -30,16 +31,79 @@
   outline-color: var(--corporate-bg);
 }
 
+// endregion BUTTONS
+// region MODAL
 .modal-dialog {
-  & .modal-content {
+  .modal-content {
     background-color: #444444;
   }
 }
-
+// endregion MODAL
+// region TEXT URILS
 .wrap-extreme {
   word-wrap: break-all;
   word-break: break-all;
   overflow-wrap: anywhere;
   hyphens: none;
   white-space: normal;
-}
+  // endregion TEXT URILS
+  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+  // region IMG VIDEO FILES
+  .alina-file,
+  .alina-file:hover,
+  .alina-file:focus,
+  a.alina-file,
+  a.alina-file:hover,
+  a.alina-file:focus {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: min(35ch, 90vw);
+    gap: 20px;
+    align-items: stretch;
+    text-decoration: none;
+    color: white;
+
+    .text {
+      flex: 0 1 auto;
+
+      background-color: black;
+      border-radius: 5px;
+      padding: 2px;
+    }
+
+    .icon {
+      /* Takes remaining vertical space */
+      flex: 1 0 auto;
+      min-height: 0; /* Critical for shrinkage */
+
+      /* Center the SVG */
+      display: flex;
+      align-items: center; /* Vertical centering */
+      justify-content: center; /* Horizontal centering */
+
+      subject,
+      svg,
+      img,
+      video {
+        /* Fill the container's height */
+        height: 100%;
+
+        /* Maintain aspect ratio while filling height */
+        width: auto;
+
+        /* Ensure it doesn't overflow */
+        max-width: 100%;
+        max-height: 100%;
+
+        /* Remove inline spacing */
+        display: block;
+
+        /* Optional: control scaling behavior */
+        object-fit: contain;
+        object-position: center;
+      }
+    }
+  }
+  // endregion IMG VIDEO FILES
+} // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
