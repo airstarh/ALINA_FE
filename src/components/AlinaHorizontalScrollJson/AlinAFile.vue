@@ -1,14 +1,5 @@
 <template>
-  <figure
-    :class="[
-      'file',
-      {
-        audio: UtilsFS.typeAudio === pFileJson.fType,
-        video: UtilsFS.typeVideo === pFileJson.fType,
-        image: UtilsFS.typeImage === pFileJson.fType,
-      },
-    ]"
-  >
+  <figure :class="['file', pFileJson.fType]">
     <video
       v-if="UtilsFS.typeVideo === pFileJson.fType"
       :src="pFileJson.url_path"
