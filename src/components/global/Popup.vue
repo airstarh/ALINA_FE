@@ -127,14 +127,14 @@ export default {
   z-index: 1111;
   overflow: hidden;
 
-  & .popup-content {
+  .popup-content {
     position: relative;
     height: 99vh;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    & .popup-close {
+    .popup-close {
       position: absolute;
       top: 15px;
       right: 15px;
@@ -151,9 +151,9 @@ export default {
       z-index: 1111;
     }
 
-    & .popup-subject {
-      width: 100%;
-      height: 100%;
+    .popup-subject {
+      width: 100vh;
+      height: 100vw;
       object-fit: contain;
     }
   }
