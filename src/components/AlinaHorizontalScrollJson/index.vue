@@ -6,7 +6,7 @@
         v-for="(row, index) in pJson"
       >
         <div
-          v-if="modeManage"
+          v-if="modeEdit"
           class="text-left"
         >
           <div v-if="isCurrentUserAllowedEdit(row)">
@@ -64,7 +64,7 @@ export default {
         return [];
       },
     },
-    modeManage: {
+    modeEdit: {
       default: false,
     },
     modeHideHeaders: {

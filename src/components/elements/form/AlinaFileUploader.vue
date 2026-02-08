@@ -38,7 +38,7 @@
         <AlinaHorizontalScrollJson
           :pJson="dArrFiles"
           :showOnly="['url']"
-          :modeManage="modeEdit"
+          :modeEdit="modeEdit"
           @onDelete="onDelete"
           @onChange="onChange"></AlinaHorizontalScrollJson>
       </b-collapse>
