@@ -36,7 +36,7 @@ export default class CurrentUser {
     /**
     * Returns a singleton instance of the current class.
     * 
-    * @returns {InstanceType<this>}
+    * @returns {CurrentUser}
     */
     static obj() {
         const _static = this;
