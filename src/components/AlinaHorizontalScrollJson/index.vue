@@ -39,7 +39,7 @@
           </div>
         </div>
 
-        <AlinAFile :p-file-json="row"/>
+        <AlinAFile :p-file-json="row" />
       </div>
     </div>
   </div>
