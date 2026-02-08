@@ -24,14 +24,21 @@
         :title="pFileJson.name_human"
         @click="popupOpen"
       />
-      <b-icon
-      v-else-if="UtilsFS.typePdf === pFileJson.fType"
-        icon="file-earmark-pdf"
-      ></b-icon>
-      <b-icon
+
+      <a
         v-else
-        icon="file-earmark-richtext"
-      ></b-icon>
+        class="thumbnail"
+        :href="pFileJson.url_path"
+      >
+        <b-icon
+          v-if="UtilsFS.typePdf === pFileJson.fType"
+          icon="file-earmark-pdf"
+        ></b-icon>
+        <b-icon
+          v-else
+          icon="file-earmark-richtext"
+        ></b-icon>
+      </a>
     </div>
 
     <div class="text wrap-extreme">
