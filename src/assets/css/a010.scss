@@ -52,24 +52,27 @@
 // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 // region IMG VIDEO FILES
-.alina-file,
-.alina-file:hover,
-.alina-file:focus,
-a.alina-file,
-a.alina-file:hover,
-a.alina-file:focus {
+.alina-file {
   display: flex;
   flex-direction: column;
   gap: 20px;
   align-items: stretch;
+  justify-content: flex-start;
   text-decoration: none;
   color: white;
+
+  a,
+  a:hover,
+  a:focus {
+    text-decoration: none;
+    color: white;
+  }
 
   .text {
     flex: 0 1 auto;
 
     background-color: black;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 2px;
   }
 
@@ -81,13 +84,14 @@ a.alina-file:focus {
 
     /* Center the SVG */
     display: flex;
-    align-items: start; /* Vertical centering */
-    justify-content: center; /* Horizontal centering */
+    align-items: flex-start; /* Vertical centering */
+    justify-content: flex-start; /* Horizontal centering */
 
     .thumbnail,
     svg,
     img,
     video {
+      border-radius: 10px;
       /* Fill the container's height */
       height: 100%;
 
@@ -103,7 +107,7 @@ a.alina-file:focus {
 
       /* Optional: control scaling behavior */
       object-fit: contain;
-      // object-position: center;
+      object-position: top;
     }
 
     audio {
