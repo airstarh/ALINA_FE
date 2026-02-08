@@ -7,39 +7,41 @@ export default class CurrentUser {
 
     constructor() {
         this.attributes = {
-            "id":                  null,
-            "mail":                null,
-            "password":            null,
-            "firstname":           null,
-            "lastname":            null,
-            "emblem":              null,
-            "birth":               null,
-            "language":            null,
-            "timezone":            null,
-            "is_verified":         null,
-            "banned_till":         null,
-            "created_at":          null,
-            "is_deleted":          null,
-            "last_time":           null,
-            "last_browser_enc":    null,
-            "last_ip":             null,
-            "fingerprint":         null,
-            "about_myself":        null,
-            "reset_code":          null,
-            "reset_required":      null,
+            "id": null,
+            "mail": null,
+            "password": null,
+            "firstname": null,
+            "lastname": null,
+            "emblem": null,
+            "birth": null,
+            "language": null,
+            "timezone": null,
+            "is_verified": null,
+            "banned_till": null,
+            "created_at": null,
+            "is_deleted": null,
+            "last_time": null,
+            "last_browser_enc": null,
+            "last_ip": null,
+            "fingerprint": null,
+            "about_myself": null,
+            "reset_code": null,
+            "reset_required": null,
             "count_notifications": 0,
-            "rbac_user_role":      [],
+            "rbac_user_role": [],
         }
     }
 
     //##################################################
     /**
-     * @return {this}
-     * */
+    * Returns a singleton instance of the current class.
+    * 
+    * @returns {InstanceType<this>}
+    */
     static obj() {
         const _static = this;
         if (null === _static.inst) {
-            _static.inst   = new _static();
+            _static.inst = new _static();
             let attributes = window.localStorage.getItem("CurrentUser");
             if (attributes) {
                 attributes = JSON.parse(attributes);
@@ -132,7 +134,7 @@ export default class CurrentUser {
     }
 
     name() {
-        const a  = this.attributes;
+        const a = this.attributes;
         let name = a.mail;
         if (UtilsData.empty(name)) {
             name = "Not logged in";
