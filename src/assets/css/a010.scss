@@ -85,7 +85,7 @@
     /* Center the SVG */
     display: flex;
     align-items: flex-start; /* Vertical centering */
-    justify-content: flex-start; /* Horizontal centering */
+    justify-content: center; /* Horizontal centering */
 
     .thumbnail,
     svg,
