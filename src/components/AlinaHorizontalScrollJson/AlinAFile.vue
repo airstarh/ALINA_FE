@@ -29,6 +29,11 @@
         v-else
         class="thumbnail"
         :href="pFileJson.url_path"
+        :title="pFileJson.name_human"
+        target="_blank"
+        :download="
+          flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
+        "
       >
         <b-icon
           v-if="UtilsFS.typePdf === pFileJson.fType"
