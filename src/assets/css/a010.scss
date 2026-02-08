@@ -39,71 +39,78 @@
   }
 }
 // endregion MODAL
-// region TEXT URILS
+// region TEXT UTILS
 .wrap-extreme {
   word-wrap: break-all;
   word-break: break-all;
   overflow-wrap: anywhere;
   hyphens: none;
   white-space: normal;
-  // endregion TEXT URILS
-  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-  // region IMG VIDEO FILES
-  .alina-file,
-  .alina-file:hover,
-  .alina-file:focus,
-  a.alina-file,
-  a.alina-file:hover,
-  a.alina-file:focus {
+}
+// endregion TEXT UTILS
+
+// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+// region IMG VIDEO FILES
+.alina-file,
+.alina-file:hover,
+.alina-file:focus,
+a.alina-file,
+a.alina-file:hover,
+a.alina-file:focus {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+  text-decoration: none;
+  color: white;
+
+  .text {
+    flex: 0 1 auto;
+
+    background-color: black;
+    border-radius: 5px;
+    padding: 2px;
+  }
+
+  .icon {
+    /* Takes remaining vertical space */
+    flex: 1 1 auto;
+
+    min-height: 0; /* Critical for shrinkage */
+
+    /* Center the SVG */
     display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: min(35ch, 90vw);
-    gap: 20px;
-    align-items: stretch;
-    text-decoration: none;
-    color: white;
+    align-items: center; /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
 
-    .text {
-      flex: 0 1 auto;
+    .thumbnail,
+    svg,
+    img,
+    video {
+      /* Fill the container's height */
+      height: 100%;
 
-      background-color: black;
-      border-radius: 5px;
-      padding: 2px;
+      /* Maintain aspect ratio while filling height */
+      width: 100%;
+
+      /* Ensure it doesn't overflow */
+      max-width: 100%;
+      max-height: 100%;
+
+      /* Remove inline spacing */
+      display: block;
+
+      /* Optional: control scaling behavior */
+      object-fit: contain;
+      // object-position: center;
     }
 
-    .icon {
-      /* Takes remaining vertical space */
-      flex: 1 0 auto;
-      min-height: 0; /* Critical for shrinkage */
-
-      /* Center the SVG */
-      display: flex;
-      align-items: center; /* Vertical centering */
-      justify-content: center; /* Horizontal centering */
-
-      subject,
-      svg,
-      img,
-      video {
-        /* Fill the container's height */
-        height: 100%;
-
-        /* Maintain aspect ratio while filling height */
-        width: auto;
-
-        /* Ensure it doesn't overflow */
-        max-width: 100%;
-        max-height: 100%;
-
-        /* Remove inline spacing */
-        display: block;
-
-        /* Optional: control scaling behavior */
-        object-fit: contain;
-        object-position: center;
-      }
+    audio {
+      display: block;
+      width: 100%;
     }
   }
-  // endregion IMG VIDEO FILES
-} // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+}
+// endregion IMG VIDEO FILES
+// # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #

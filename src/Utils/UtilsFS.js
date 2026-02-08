@@ -40,6 +40,7 @@ export default class UtilsFS {
 		jpeg: UtilsFS.typeImage,
 		gif: UtilsFS.typeImage,
 		webp: UtilsFS.typeImage,
+		svg: UtilsFS.typeImage,
 	}
 
 	static ext(strFileName) {

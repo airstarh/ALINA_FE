@@ -1,54 +1,40 @@
 <template>
-  <figure :class="['file', pFileJson.fType]">
-    <video
-      v-if="UtilsFS.typeVideo === pFileJson.fType"
-      :src="pFileJson.url_path"
-      controls
-      preload="metadata"
-      :title="pFileJson.name_human"
-    />
+  <div :class="['alina-file', pFileJson.fType]">
+    <div class="icon">
+      <video
+        v-if="UtilsFS.typeVideo === pFileJson.fType"
+        :src="pFileJson.url_path"
+        controls
+        preload="metadata"
+        :title="pFileJson.name_human"
+      />
 
-    <audio
-      v-else-if="UtilsFS.typeAudio === pFileJson.fType"
-      :src="pFileJson.url_path"
-      controls
-      preload="none"
-      class="wrap-extreme"
-      :title="pFileJson.name_human"
-    />
+      <audio
+        v-else-if="UtilsFS.typeAudio === pFileJson.fType"
+        :src="pFileJson.url_path"
+        controls
+        preload="none"
+        :title="pFileJson.name_human"
+      />
 
-    <img
-      v-else-if="UtilsFS.typeImage === pFileJson.fType"
-      :src="pFileJson.url_path"
-      :alt="pFileJson.name_human"
-      :title="pFileJson.name_human"
-      @click="popupOpen"
-    />
+      <img
+        v-else-if="UtilsFS.typeImage === pFileJson.fType"
+        :src="pFileJson.url_path"
+        :alt="pFileJson.name_human"
+        :title="pFileJson.name_human"
+        @click="popupOpen"
+      />
+      <b-icon
+      v-else-if="UtilsFS.typePdf === pFileJson.fType"
+        icon="file-earmark-pdf"
+      ></b-icon>
+      <b-icon
+        v-else
+        icon="file-earmark-richtext"
+      ></b-icon>
+    </div>
 
-    <a
-      v-else
-      class="generic wrap-extreme"
-      :href="pFileJson.url_path"
-      :title="pFileJson.name_human"
-      target="_blank"
-      :download="
-        flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
-      "
-    >
-      <div class="text wrap-extreme">{{ pFileJson.name_human }}</div>
-      <div class="icon">
-        <b-icon
-          v-if="UtilsFS.typePdf === pFileJson.fType"
-          icon="file-earmark-pdf"
-        ></b-icon>
-        <b-icon
-          v-else
-          icon="file-earmark-richtext"
-        ></b-icon>
-      </div>
-    </a>
-
-    <figcaption v-if="UtilsFS.typeAudio === pFileJson.fType">
+    <div class="text wrap-extreme">
       <a
         :href="pFileJson.url_path"
         :title="pFileJson.name_human"
@@ -56,12 +42,11 @@
         :download="
           flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
         "
-        class="wrap-extreme"
       >
         {{ pFileJson.name_human }}
       </a>
-    </figcaption>
-  </figure>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -113,98 +98,13 @@ export default {
 </script>
 
 <style scoped lang="css">
-figure.file {
+.alina-file {
   height: 40vh;
-  min-width: 10vw;
-  padding: 2px;
-  margin: 0;
-
-  figcaption {
-    margin-top: 20px;
-    a,
-    a:hover {
-      display: inline-block;
-      text-decoration: none;
-      color: white;
-      background-color: #000000;
-      border-radius: 5px;
-      padding: 2px;
-
-      text-align: left;
-      font-size: 0.9em;
-    }
-  }
-
-  img {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-  }
-
-  audio {
-    width: 100%;
-    object-fit: contain;
-  }
-
-  video {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
-  }
-
-  a.generic,
-  a.generic:hover {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: min(35ch, 90vw);
-    gap: 20px;
-    align-items: stretch;
-    text-decoration: none;
-    color: white;
-
-    .text {
-      flex: 0 1 auto;
-
-      background-color: black;
-      border-radius: 5px;
-      padding: 2px;
-    }
-
-    .icon {
-      /* Takes remaining vertical space */
-      flex: 1 0 auto;
-      min-height: 0; /* Critical for shrinkage */
-
-      /* Center the SVG */
-      display: flex;
-      align-items: center; /* Vertical centering */
-      justify-content: center; /* Horizontal centering */
-
-      svg {
-        /* Fill the container's height */
-        height: 100%;
-
-        /* Maintain aspect ratio while filling height */
-        width: auto;
-
-        /* Ensure it doesn't overflow */
-        max-width: 100%;
-        max-height: 100%;
-
-        /* Remove inline spacing */
-        display: block;
-
-        /* Optional: control scaling behavior */
-        object-fit: contain;
-        object-position: center;
-      }
-    }
-  }
+  width: min(35ch, 100vw);
 }
 
-figure.audio,
-figure.video {
+.alina-file.audio,
+.alina-file.video {
   width: min(90vw, 15cm);
 }
 </style>
