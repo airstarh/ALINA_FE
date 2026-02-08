@@ -9,18 +9,23 @@
           v-if="modeEdit"
           class="text-left"
         >
-          <div v-if="isCurrentUserAllowedEdit(row)" class="mt-2">
+          <div
+            v-if="isCurrentUserAllowedEdit(row)"
+            class="mt-2"
+          >
             <aInput
+              maxLength="200"
               v-model="row.name_human"
               :modeEdit="modeEdit"
               componentDisplay="block"
               :placeholder="$t('File Name')"
             />
             <aInput
+              type="number"
               v-model="row.order"
               :modeEdit="modeEdit"
-              componentDisplay="block"
               :placeholder="$t('File Order')"
+              componentDisplay="block"
             />
             <b-btn
               block

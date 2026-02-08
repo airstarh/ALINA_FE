@@ -35,7 +35,7 @@
             :name="idNameKey"
             :placeholder="placeholder"
             :style="{ textAlign: inputAlign, width: inputWidth ?? '100%' }"
-            :maxLength="maxLength"
+            :maxlength="maxLength"
             :size="size"
             :max="max"
             :min="min"
