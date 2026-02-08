@@ -102,7 +102,6 @@ export default {
     },
     isCurrentUserAllowedEdit(obj) {
       const isOwner = CurrentUser.obj().owns(obj.owner_id);
-      // return isOwner;
       return (
         isOwner || this.CurrentUser.isAdmin() || this.CurrentUser.isModerator()
       );
