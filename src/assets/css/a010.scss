@@ -81,7 +81,7 @@ a.alina-file:focus {
 
     /* Center the SVG */
     display: flex;
-    align-items: center; /* Vertical centering */
+    align-items: start; /* Vertical centering */
     justify-content: center; /* Horizontal centering */
 
     .thumbnail,
@@ -108,7 +108,7 @@ a.alina-file:focus {
 
     audio {
       display: block;
-      width: 100%;
+      width: 99%;
     }
   }
 }

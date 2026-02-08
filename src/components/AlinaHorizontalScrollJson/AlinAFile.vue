@@ -105,6 +105,6 @@ export default {
 
 .alina-file.audio,
 .alina-file.video {
-  width: min(90vw, 15cm);
+  width: min(90vw, 10cm);
 }
 </style>
