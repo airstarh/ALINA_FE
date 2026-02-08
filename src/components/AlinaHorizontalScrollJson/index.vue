@@ -9,17 +9,17 @@
           v-if="modeEdit"
           class="text-left"
         >
-          <div v-if="isCurrentUserAllowedEdit(row)">
-            <input
-              type="text"
+          <div v-if="isCurrentUserAllowedEdit(row)" class="mt-2">
+            <aInput
               v-model="row.name_human"
-              class="form-control form-control-sm"
+              :modeEdit="modeEdit"
+              componentDisplay="block"
               :placeholder="$t('File Name')"
             />
-            <input
-              type="text"
+            <aInput
               v-model="row.order"
-              class="form-control form-control-sm"
+              :modeEdit="modeEdit"
+              componentDisplay="block"
               :placeholder="$t('File Order')"
             />
             <b-btn
@@ -48,12 +48,14 @@
 <script>
 import CurrentUser from "@/services/CurrentUser";
 import AlinAFile from "@/components/AlinaHorizontalScrollJson/AlinAFile.vue";
+import aInput from "@/components/elements/form/aInput.vue";
 
 export default {
   name: "AlinaHorizontalScroll",
   emits: ["onDelete", "onChange"],
   components: {
     AlinAFile,
+    aInput,
   },
   props: {
     pJson: {
