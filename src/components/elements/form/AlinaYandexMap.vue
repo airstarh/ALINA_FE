@@ -192,7 +192,7 @@ export default {
           geo_latitude: 55.798324,
           geo_longitude: 37.618993,
           geo_map_type: "map",
-          geo_zoom: 14,
+          geo_zoom: 4,
           geo_is_map_shown: 0,
         };
       },

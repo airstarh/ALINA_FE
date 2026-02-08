@@ -472,7 +472,7 @@ export default {
         geo_latitude: 0,
         geo_longitude: 0,
         geo_map_type: "map",
-        geo_zoom: "11",
+        geo_zoom: "4",
         geo_is_map_shown: "0",
         count_files: 0,
       },

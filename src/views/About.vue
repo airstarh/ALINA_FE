@@ -555,7 +555,7 @@ export default {
         geo_latitude: 66,
         geo_longitude: 66,
         geo_map_type: "hybrid",
-        geo_zoom: 14,
+        geo_zoom: 2,
       },
       iconFb,
       iconVk,
