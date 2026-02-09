@@ -1,23 +1,29 @@
 <template>
-  <div class="p-1 mt-3 mb-3" v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0">
+  <div
+    class="p-1 mt-3 mb-3"
+    v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0"
+  >
     <div>
       <b-button
         v-b-toggle="[`f-${entity_id}`]"
-        variant="secondary">
-        <span
-          style="font-size: 2em;vertical-align: middle;">
-          <b-icon
-            icon="file-earmark-richtext"></b-icon>
+        variant="secondary"
+      >
+        <span style="font-size: 2em; vertical-align: middle">
+          <b-icon icon="file-earmark-richtext"></b-icon>
         </span>
-        <span>{{ $t('Attached files') }}</span>
+        <span>{{ $t("Attached files") }}</span>
         <span
           v-if="ownLength > 0"
-          style="font-size: 2em;vertical-align: middle;">&nbsp;{{ ownLength }}</span>
+          style="font-size: 2em; vertical-align: middle"
+          >&nbsp;{{ ownLength }}</span
+        >
       </b-button>
       <b-collapse
-        :id="`f-${entity_id}`" class="mt-3"
+        :id="`f-${entity_id}`"
+        class="mt-3"
         @show="onShow"
-        @hide="onHide">
+        @hide="onHide"
+      >
         <div class="row no-gutters">
           <div class="col">
             <aInput
@@ -27,12 +33,20 @@
               :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
               type="file"
               :label="$t('Select your files')"
-              @change="onChangeFileField" />
+              @change="onChangeFileField"
+            />
           </div>
           <div
             v-if="modeEdit && dArrFiles.length > 0"
-            class="col">
-            <b-btn block size="md" variant="success" @click="onChangeBulk(dArrFiles)">{{ $t('Bulk File Save') }}</b-btn>
+            class="col"
+          >
+            <b-btn
+              block
+              size="md"
+              variant="success"
+              @click="onChangeBulk(dArrFiles)"
+              >{{ $t("Bulk File Save") }}</b-btn
+            >
           </div>
         </div>
         <AlinaHorizontalScrollJson
@@ -40,7 +54,8 @@
           :showOnly="['url']"
           :modeEdit="modeEdit"
           @onDelete="onDelete"
-          @onChange="onChange"></AlinaHorizontalScrollJson>
+          @onChange="onChange"
+        ></AlinaHorizontalScrollJson>
       </b-collapse>
     </div>
   </div>
@@ -62,45 +77,45 @@ export default {
   props: {
     entity_id: {
       type: Number,
-      default: CurrentUser.obj().attributes.id
+      default: CurrentUser.obj().attributes.id,
     },
     entity_table: {
       type: String,
-      default: 'user'
+      default: "user",
     },
     container: {
       type: String,
-      default: 'FILE'
+      default: "FILE",
     },
     root_id: {
       type: Number,
-      default: null
+      default: null,
     },
     parent_id: {
       type: Number,
-      default: null
+      default: null,
     },
     level: {
       type: Number,
-      default: 1
+      default: 1,
     },
     order: {
-      default: 0
+      default: 0,
     },
     pArrFiles: {
       type: Array,
       default() {
         return [];
-      }
+      },
     },
     modeEdit: {
       type: Boolean,
-      default: true
+      default: true,
     },
     ownLength: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
     return {
@@ -114,7 +129,7 @@ export default {
       },
       ConfigApi,
       dArrFiles: [],
-    }
+    };
   },
   created() {
     this.mergePropsAndData();
@@ -124,10 +139,9 @@ export default {
     this.pageRecalcIframeHeight();
   },
   methods: {
-
     loopFiles() {
       for (let [i, model] of Object.entries(this.dArrFiles)) {
-        if (model.hasOwnProperty('name_fs')) {
+        if (model.hasOwnProperty("name_fs")) {
           model.fType = UtilsFS.getType(model.name_fs);
         }
       }
@@ -139,7 +153,7 @@ export default {
     },
     loadFileList() {
       AjaxAlina.newInst({
-        method: 'GET',
+        method: "GET",
         url: `${this.options.urlGetFiles}/${this.entity_table}/${this.entity_id}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
@@ -147,25 +161,24 @@ export default {
             UtilsArray.vueSensitiveConcat(this.dArrFiles, aja.respBody.data);
             this.loopFiles();
           }
-        }
-      })
-        .go();
+        },
+      }).go();
     },
-    onChangeFileField(fileList,) {
+    onChangeFileField(fileList) {
       AjaxAlina.newInst({
-        method: 'POST',
+        method: "POST",
         url: this.options.urlFileUpload,
-        enctype: 'multipart/form-data',
+        enctype: "multipart/form-data",
         postParams: {
           entity_id: this.entity_id,
           entity_table: this.entity_table,
-          container: 'FILE',
+          container: "FILE",
           root_id: null,
           parent_id: null,
           level: 1,
           order: 0,
-          "form_id": "actionIndex",
-          "userfile": fileList,
+          form_id: "actionIndex",
+          userfile: fileList,
         },
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
@@ -173,29 +186,29 @@ export default {
             UtilsArray.vueSensitiveConcat(this.dArrFiles, aja.respBody.data);
             this.loopFiles();
           }
-        }
-      })
-        .go();
+        },
+      }).go();
     },
     onDelete(obj, index) {
       // console.log(">>>>>>>>>>>>>>>>>>>>");
       // console.log("xxx");
       // console.log(index);
       // console.log(obj);
-      if (!confirm("Are you sure?")) { return; }
+      if (!confirm("Are you sure?")) {
+        return;
+      }
       const _t = this;
-      obj.form_id = 'actionDelete';
+      obj.form_id = "actionDelete";
       AjaxAlina.newInst({
-        method: 'DELETE',
+        method: "DELETE",
         url: `${this.options.urlFileDelete}/${obj.id}`,
         postParams: obj,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.elRemoveByIndex(_t.dArrFiles, index);
           }
-        }
-      })
-        .go();
+        },
+      }).go();
     },
     onChange(obj, index) {
       // console.log(">>>>>>>>>>>>>>>>>>>>");
@@ -205,35 +218,33 @@ export default {
       //return null;
       //if (!confirm("Are you sure?")) {return;}
       const _t = this;
-      obj.form_id = 'actionEditRow';
+      obj.form_id = "actionEditRow";
       AjaxAlina.newInst({
-        method: 'POST',
+        method: "POST",
         url: `${this.options.urlFileUpdate}/file/${obj.id}`,
         postParams: obj,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             _t.loadFileList();
           }
-        }
-      })
-        .go();
+        },
+      }).go();
     },
     onChangeBulk(dArrFiles) {
       const _t = this;
       const obj = {};
-      obj.form_id = 'actionUpdateBulk';
+      obj.form_id = "actionUpdateBulk";
       obj.list = dArrFiles;
       AjaxAlina.newInst({
-        method: 'POST',
+        method: "POST",
         url: `${this.options.urlFileUpdateBulk}/file`,
         postParams: obj,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             _t.loadFileList();
           }
-        }
-      })
-        .go();
+        },
+      }).go();
     },
     onShow() {
       this.loadFileList();
@@ -244,7 +255,10 @@ export default {
     pageRecalcIframeHeight() {
       const iframeClassName = `AlinaIframe-tale-${this.entity_id}`;
       const heightRefClassName = `alina-tale-id-${this.entity_id}`;
-      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(iframeClassName, heightRefClassName);
+      AlinaPageGlobalAnalyzer.pageRecalcIframeHeight(
+        iframeClassName,
+        heightRefClassName
+      );
     },
   },
   components: {
