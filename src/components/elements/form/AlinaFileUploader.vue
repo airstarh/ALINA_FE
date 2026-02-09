@@ -120,7 +120,7 @@ export default {
   data() {
     return {
       CurrentUser: CurrentUser.obj(),
-      options: {
+      dConf: {
         urlFileUpload: `${ConfigApi.url_base}/FileUpload`,
         urlFileDelete: `${ConfigApi.url_base}/FileUpload/delete`,
         urlFileUpdate: `${ConfigApi.url_base}/AdminDbManager/EditRow`,
@@ -154,7 +154,7 @@ export default {
     loadFileList() {
       AjaxAlina.newInst({
         method: "GET",
-        url: `${this.options.urlGetFiles}/${this.entity_table}/${this.entity_id}`,
+        url: `${this.dConf.urlGetFiles}/${this.entity_table}/${this.entity_id}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.clear(this.dArrFiles);
@@ -167,7 +167,7 @@ export default {
     onChangeFileField(fileList) {
       AjaxAlina.newInst({
         method: "POST",
-        url: this.options.urlFileUpload,
+        url: this.dConf.urlFileUpload,
         enctype: "multipart/form-data",
         postParams: {
           entity_id: this.entity_id,
@@ -201,7 +201,7 @@ export default {
       obj.form_id = "actionDelete";
       AjaxAlina.newInst({
         method: "DELETE",
-        url: `${this.options.urlFileDelete}/${obj.id}`,
+        url: `${this.dConf.urlFileDelete}/${obj.id}`,
         postParams: obj,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
@@ -221,7 +221,7 @@ export default {
       obj.form_id = "actionEditRow";
       AjaxAlina.newInst({
         method: "POST",
-        url: `${this.options.urlFileUpdate}/file/${obj.id}`,
+        url: `${this.dConf.urlFileUpdate}/file/${obj.id}`,
         postParams: obj,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
@@ -237,7 +237,7 @@ export default {
       obj.list = dArrFiles;
       AjaxAlina.newInst({
         method: "POST",
-        url: `${this.options.urlFileUpdateBulk}/file`,
+        url: `${this.dConf.urlFileUpdateBulk}/file`,
         postParams: obj,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
