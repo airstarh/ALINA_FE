@@ -14,7 +14,7 @@
             class="mt-2"
           >
             <aInput
-              maxLength="200"
+              :maxLength="200"
               v-model="row.name_human"
               :modeEdit="modeEdit"
               componentDisplay="block"
