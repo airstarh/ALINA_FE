@@ -335,6 +335,7 @@
           <AlinaFileUploader
             :entity_id="tale.id"
             entity_table="tale"
+            :owner_id="tale.owner_id"
             :modeEdit="dConf.modeEdit"
             :ownLength="tale.count_files"
           />

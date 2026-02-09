@@ -120,7 +120,12 @@ export default class CurrentUser {
     }
 
     owns(id) {
+        if (!id) {
+            return false;
+        }
+
         let res = false;
+
         if (this.isLoggedIn()) {
             if (this.attributes.id == id) {
                 res = true;

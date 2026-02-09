@@ -18,6 +18,13 @@
           >&nbsp;{{ ownLength }}</span
         >
       </b-button>
+      <button
+        v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id)"
+        class="btn btn-secondary btn-lg"
+        @click="dModeEdit = !dModeEdit"
+      >
+        {{ dModeEdit ? $t("i_ok") : $t("i_edit") }}
+      </button>
       <b-collapse
         :id="`f-${entity_id}`"
         class="mt-3"
@@ -27,17 +34,17 @@
         <div class="row no-gutters">
           <div class="col">
             <aInput
-              :modeEdit="modeEdit"
+              type="file"
+              :modeEdit="dModeEdit"
               accept="*/*"
               :multiple="true"
               :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-              type="file"
               :label="$t('Select your files')"
               @change="onChangeFileField"
             />
           </div>
           <div
-            v-if="modeEdit && dArrFiles.length > 0"
+            v-if="dModeEdit && dArrFiles.length > 0"
             class="col"
           >
             <b-btn
@@ -52,7 +59,7 @@
         <AlinaHorizontalScrollJson
           :pJson="dArrFiles"
           :showOnly="['url']"
-          :modeEdit="modeEdit"
+          :modeEdit="dModeEdit"
           @onDelete="onDelete"
           @onChange="onChange"
         ></AlinaHorizontalScrollJson>
@@ -82,6 +89,10 @@ export default {
     entity_table: {
       type: String,
       default: "user",
+    },
+    owner_id: {
+      type: Number,
+      default: null,
     },
     container: {
       type: String,
@@ -129,6 +140,7 @@ export default {
       },
       ConfigApi,
       dArrFiles: [],
+      dModeEdit: this.modeEdit,
     };
   },
   created() {
@@ -261,6 +273,13 @@ export default {
       );
     },
   },
+
+  watch: {
+    modeEdit(newValue) {
+      return (this.dModeEdit = newValue);
+    },
+  },
+
   components: {
     aInput,
     AlinaHorizontalScrollJson,
