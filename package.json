@@ -11,6 +11,7 @@
     "serve:sss": "vue-cli-service serve --port 8082 --mode sss",
     "serve:m45a": "vue-cli-service serve --port 8082 --mode m45a",
     "serve:vov": "vue-cli-service serve --port 8082 --mode vov",
+    "serve:stage": "vue-cli-service serve --port 8082 --mode stage",
     "serve:zero": "vue-cli-service serve --port 8082 --mode zero",
     "build": "vue-cli-service build",
     "build:sss": "vue-cli-service build --mode sss",
