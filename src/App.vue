@@ -29,8 +29,6 @@
   </div>
 </template>
 <script>
-import MenuHorizontalMain from "@/components/MenuHorizontalMain";
-// import Footer                  from `@/components/Footer`;
 import Messages from "@/components/global/Messages.vue";
 import Spinner from "@/components/global/Spinner.vue";
 import Popup from "@/components/global/Popup.vue";
@@ -43,7 +41,6 @@ import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 export default {
   name: "App",
   components: {
-    MenuHorizontalMain,
     Messages,
     Spinner,
     Popup,
