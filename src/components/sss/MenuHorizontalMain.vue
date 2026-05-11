@@ -11,10 +11,9 @@
         <b-nav-item to="/notification" v-if="CU.isLoggedIn()" class="m-2">
           <b-icon-info-circle-fill></b-icon-info-circle-fill>
           <sup
-              v-if="CU.attributes.count_notifications"
-              class="btn btn-small btn-warning rounded-circle p-0 m-0 pr-1 pl-1"
-              style="font-size: .8rem; line-height: 1.2rem; height:1.2rem; vertical-align: middle; left:-.3rem"
-          >&nbsp;{{ CU.attributes.count_notifications }}&nbsp;</sup>
+            v-if="CU.attributes.count_notifications"
+            class="btn btn-small btn-warning rounded-circle p-0 m-0 pr-1 pl-1"
+            style="font-size: .8rem; line-height: 1.2rem; height:1.2rem; vertical-align: middle; left:-.3rem">&nbsp;{{ CU.attributes.count_notifications }}&nbsp;</sup>
         </b-nav-item>
         <b-nav-item to="/auth/login" v-if="!CU.isLoggedIn()" class="m-2">
           <button class="btn-sm btn-dark">
@@ -48,10 +47,9 @@
 
           <b-nav-item class="m-2">
             <b-form-select
-                size="sm"
-                v-model="languageSelected"
-                :options="languageList"
-            >
+              size="sm"
+              v-model="languageSelected"
+              :options="languageList">
             </b-form-select>
           </b-nav-item>
         </b-navbar-nav>
@@ -84,6 +82,24 @@
       <!--endregion SMALL/BIG SCREEN-->
       <!--################################################## -->
     </b-navbar>
+
+    <div style="width:95vw; margin: 10px auto; background-color: #221111; padding:5px 10px; border-radius: 10px;">
+      <div class="row no-gutters align-items-center">
+
+        <div class="col-12 col-md-9">
+          Настоящим уведомляем, что данный сайт содержит информацию, доступ к которой ограничен для лиц младше 18 лет в соответствии с действующим законодательством РФ. Продолжая использование сайта, вы подтверждаете, что достигли возраста 18 лет и принимаете условия ограничения.
+          <br>
+          <br>
+          Этот сайт использует cookies. Продолжая просмотр, вы соглашаетесь с использованием файлов cookie.
+        </div>
+
+        <div class="col-12 col-md-3 text-center">
+          <img :src="`${ConfigApi.url_base}/kiss/alina.img/age18.png`" alt="18+" height="150">
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
