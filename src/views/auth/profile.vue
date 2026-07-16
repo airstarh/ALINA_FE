@@ -51,7 +51,7 @@
             </a>
           </div>
 
-          <div v-if="post.about_myself" class="col pl-2">
+          <div class="col pl-2">
             <BorgEditor :modeEdit="options.modeEdit" v-model="post.about_myself" />
           </div>
         </div>

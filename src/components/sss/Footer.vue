@@ -18,7 +18,7 @@
       <br>
       Муза куража: <a href="https://www.facebook.com/sllimrut">Slimrut</a>
       <br>
-      Ведущий проекта: <a href="https://vk.com/vsevolod.azovsky">Всеволод Азовский</a>
+      Ведущий проекта: <a href="https://voronezh.hh.ru/resume/6750c5ecff09d5137c0039ed1f7377696c6468">Всеволод Азовский</a>
       <br>
     </div>
   </div>
