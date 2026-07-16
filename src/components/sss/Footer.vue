@@ -16,7 +16,7 @@
       И прочие достойные персонажи.
       <br>
       <br>
-      Муза куража: <a href="https://www.facebook.com/sllimrut">Slimrut</a>
+      Муза куража: Slimrut
       <br>
       Ведущий проекта: <a href="https://voronezh.hh.ru/resume/6750c5ecff09d5137c0039ed1f7377696c6468">Всеволод Азовский</a>
       <br>
