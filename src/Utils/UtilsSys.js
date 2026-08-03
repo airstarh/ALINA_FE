@@ -1,4 +1,3 @@
-//import VueCookies          from 'vue-cookies';
 import MessagesObj from "@/services/MessagesObj";
 import ConfigApi from "@/configs/ConfigApi";
 import UtilsData from "@/Utils/UtilsData";
