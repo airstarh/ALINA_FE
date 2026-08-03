@@ -28,7 +28,7 @@
         </div>
 
         <div class="mb-4">
-          <aInput v-model="post.mail" type="email" />
+          <aInput v-model="post.mail" type="email" :formatter="UtilsStr.transformEmail"/>
         </div>
 
       </div>

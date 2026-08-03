@@ -1,5 +1,3 @@
-import UtilsSys from "@/Utils/UtilsSys";
-
 const ConfigApi = {
     "url_base":              process.env.VUE_APP_ALINA_DOMAIN,
     "ALINA_FILE_UPLOAD_KEY": "userfile[]",
@@ -19,7 +17,7 @@ const ConfigApi = {
         options: {
             headers:   {
                 "x-requested-with": "AlinaFetchApi",
-                "fgp":              UtilsSys.fgp(),
+                "fgp":              window?.navigator?.userAgent,
             },
             getParams: {
                 isAjax: 1
