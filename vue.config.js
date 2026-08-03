@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require('fs');
 
 process.env.VUE_APP_ALINA_INFO = "Служебная информация";
 
@@ -13,7 +14,10 @@ module.exports = {
   devServer: {
     host: "0.0.0.0",
     port: 8082,
-    https: true,
+    https: {
+      key: fs.readFileSync("./cert/030.byrobot.privkey.pem"),
+      cert: fs.readFileSync("./cert/040.byrobot.fullchain.pem"),
+    },
     clientLogLevel: "error",
     disableHostCheck: true,
     contentBase: path.join(
