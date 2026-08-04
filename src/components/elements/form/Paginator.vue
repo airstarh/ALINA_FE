@@ -2,19 +2,16 @@
   <div
     v-if="pagesTotal > 1"
     style=""
-    class="d-flex justify-content-between mt-3 mb-3"
-  >
+    class="d-flex justify-content-between mt-3 mb-3 alina-paginator">
     <div
       class="btn btn-sm"
       @click="onClickPage(pageSize, 1)"
-      :class="[{ 'btn-secondary': 1 == pageCurrentNumber }, 'rounded-circle']"
-    >
+      :class="[{ 'btn-secondary': 1 == pageCurrentNumber }, 'rounded-circle']">
       {{ $t("i_start") }}
     </div>
     <div
       class="btn btn-sm rounded-circle"
-      @click="onClickPage(pageSize, pageCurrentNumber - 1)"
-    >
+      @click="onClickPage(pageSize, pageCurrentNumber - 1)">
       {{ $t("i_previous") }}
     </div>
     <div
@@ -22,21 +19,18 @@
       :key="i"
       class="btn btn-sm"
       :class="[{ 'btn-secondary': v == pageCurrentNumber }, 'rounded-circle']"
-      @click="onClickPage(pageSize, v)"
-    >
+      @click="onClickPage(pageSize, v)">
       {{ v }}
     </div>
     <div
       class="btn btn-sm rounded-circle"
-      @click="onClickPage(pageSize, pageCurrentNumber + 1)"
-    >
+      @click="onClickPage(pageSize, pageCurrentNumber + 1)">
       {{ $t("i_next") }}
     </div>
     <div
       class="btn btn-sm"
       @click="onClickPage(pageSize, pagesTotal)"
-      :class="[{ 'btn-secondary': pagesTotal == pageCurrentNumber }, 'rounded-circle']"
-    >
+      :class="[{ 'btn-secondary': pagesTotal == pageCurrentNumber }, 'rounded-circle']">
       {{ $t("i_finish") }}
     </div>
     <div class="btn btn-sm d-none d-lg-inline-block">
@@ -45,15 +39,13 @@
     <div
       v-if="pageCurrentNumber < pagesTotal && onClickMore"
       class="btn btn-sm"
-      @click="onClickMore(pageSize, pageCurrentNumber + 1)"
-    >
+      @click="onClickMore(pageSize, pageCurrentNumber + 1)">
       <span>{{ $tc("More") }} +{{ pageSize }}</span>
     </div>
     <div
       v-if="rowsTotal > pageSize && onClickAll"
       class="btn btn-sm"
-      @click="onClickAll(rowsTotal, 1)"
-    >
+      @click="onClickAll(rowsTotal, 1)">
       <span>{{ $tc("TXT_FULL_LIST") }} {{ rowsTotal }} </span>
     </div>
   </div>
@@ -98,7 +90,7 @@ export default {
     },
     onClickPage: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
     onClickMore: {
       type: Function | null,
@@ -158,7 +150,26 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.alina-paginator {
+  align-items: center;
+  align-content: center;
+}
+
 .btn {
   color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  height: autro !important;
+  width: autro !important;
+  min-width: 7mm;
+  padding: 1mm 1mm;
+  font-size: 4mm;
+  text-align: center;
+  vertical-align: middle;
+  aspect-ratio: 1/1 !important;
+  text-rendering: optimizeLegibility;
+  margin: 0;
 }
 </style>
