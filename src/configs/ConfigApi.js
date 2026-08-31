@@ -1,5 +1,5 @@
 const ConfigApi = {
-    "url_base":              process.env.VUE_APP_ALINA_DOMAIN,
+    "url_base":              new URL(window.location.href).origin,
     "ALINA_FILE_UPLOAD_KEY": "userfile[]",
     "YandexMaps":            {
         apiKey:     process.env.VUE_APP_ALINA_API_KEY_YANDEX,

@@ -8,8 +8,6 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve --port 8082 --mode",
-    "serve:sss": "vue-cli-service serve --port 8082 --mode sss",
-    "serve:m45a": "vue-cli-service serve --port 8082 --mode m45a",
     "serve:vov": "vue-cli-service serve --port 8082 --mode vov",
     "serve:zero": "vue-cli-service serve --port 8082 --mode zero",
     "serve:stage": "vue-cli-service serve --port 8082 --mode stage",
@@ -19,7 +17,7 @@
     "build:vov": "vue-cli-service build --mode vov",
     "build:zero": "vue-cli-service build --mode zero",
     "build:stage": "vue-cli-service build --mode stage",
-    "build:all": "npm run build:sss && npm run build:vov && npm run build:m45a && npm run build:zero && npm run build:stage",
+    "build:all": "npm run build:vov && npm run build:zero",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
