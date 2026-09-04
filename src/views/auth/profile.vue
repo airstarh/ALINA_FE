@@ -2,12 +2,10 @@
   <div>
     <div class="container">
       <div class="row no-gutters mt-2 mb-2">
-        <div class="col">
-          <h5 class="text-break">
-            ID {{ post.id }}
-          </h5>
+        <div class="col-1">
+          <h5>ID {{ post.id }}</h5>
         </div>
-        <div class="col-auto text-right">
+        <div class="col text-right">
           <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
           <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-secondary">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
           <StandardButtons v-if="CU.ownsOrAdminOrModerator(post.id) && options.modeEdit" :onGo="runAJax"></StandardButtons>
