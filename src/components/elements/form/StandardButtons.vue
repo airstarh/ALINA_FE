@@ -2,15 +2,13 @@
   <div class="StandardButtons">
 
     <a
-        @click="() => {this.$router.go()}"
-        class="btn btn-danger text-white ml-1"
-    >{{ $t(resetTxt) }}</a>
+      @click="() => { this.$router.go() }"
+      class="btn btn-danger text-white ml-1">{{ $t(resetTxt) }}</a>
 
     <button
-        @click="event => {return this.onGo(event);}"
-        type="button"
-        class="btn btn-secondary ml-1"
-    >{{ $t(submitTxt) }}
+      @click="event => { return this.onGo(event); }"
+      type="button"
+      class="btn btn-secondary ml-1">{{ $t(submitTxt) }}
       <slot name="submitSuffix"></slot>
     </button>
   </div>
@@ -18,13 +16,13 @@
 
 <script>
 export default {
-  name:  "StandardButtons",
+  name: "StandardButtons",
   props: {
-    onGo:      Function,
+    onGo: Function,
     submitTxt: {
       default: "TXT_SUBMIT"
     },
-    resetTxt:  {
+    resetTxt: {
       default: "TXT_RESET"
     },
   }
@@ -32,7 +30,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .StandardButtons {
-    display: inline-block;
-  }
+.StandardButtons {
+  display: flex;
+}
 </style>
