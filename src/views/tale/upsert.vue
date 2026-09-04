@@ -5,7 +5,8 @@
     :class="[
       'p-0 alina-tale-wrapper',
       {
-        container: !pageIsInIframe,
+        'mt-5': !pFlagInFeed,
+        'container': !pageIsInIframe,
         'container-fluid': pageIsInIframe,
       },
     ]"
