@@ -494,6 +494,8 @@ export default {
   margin-bottom: 25vh;
 
   & .alina-feed-up-down {
+    z-index: 500;
+
     & div.btn {
       background-color: #222222ff;
       color: #dddddddd;
