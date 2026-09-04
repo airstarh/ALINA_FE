@@ -13,7 +13,7 @@
           v-if="label && flagLabelFirst"
           :class="[
             'a-item label-left',
-            { 'btn btn-secondary': type === 'file' }
+            { 'btn btn-a': type === 'file' }
           ]"
           :style="computedStyleLabel"
         >

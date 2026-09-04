@@ -6,7 +6,7 @@
     <!--Edit-->
     <button
       @click="onEdit"
-      class="col btn btn-secondary"
+      class="col btn btn-a"
       v-if="!modeEdit"
     >
       {{ $t("i_edit") }}
@@ -15,7 +15,7 @@
     <!--Save-->
     <button
       @click="onSave"
-      class="col btn btn-secondary"
+      class="col btn btn-a"
       v-if="modeEdit"
     >
       {{ $t("i_ok") }}
@@ -24,7 +24,7 @@
     <!--Cancel-->
     <button
       @click="onCancel"
-      class="col btn btn-secondary"
+      class="col btn btn-a"
       v-if="modeEdit"
     >
       {{ $t("i_undo") }}
@@ -33,7 +33,7 @@
     <!--Delete-->
     <button
       @click="onDelete"
-      class="col btn btn-danger"
+      class="col btn btn-a"
       v-if="modeEdit"
     >
       {{ $t("i_delete") }}

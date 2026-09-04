@@ -27,7 +27,7 @@
             &nbsp;
             <strong>{{ UtilsDate.fromUnixToDateTime(valueData) }}</strong>
             &nbsp;
-            <span @click="setNow" class="btn btn-xs btn-primary">{{ $t("Set now") }}</span>
+            <span @click="setNow" class="btn btn-xs btn-a">{{ $t("Set now") }}</span>
           </div>
 
         </div>

@@ -3,7 +3,7 @@
 
 // region BUTTONS
 .btn {
-  filter: opacity(50%) !important;
+
 }
 
 .btn:focus {
@@ -31,6 +31,44 @@
   outline-color: var(--corporate-bg);
 }
 
+.btn-a {
+  /* Background & Text */
+  background-color: #222 !important;
+  color: #ffffff !important;
+  outline: .5px solid #777 !important;
+
+  /* Rounded corners */
+  border-radius: 4px !important; /* or any value you prefer */
+
+  /* Font styling */
+  font-weight: normal !important;
+  font-style: normal !important;
+
+  /* Optional: remove default button styling */
+  border: none !important;
+  padding: 8px 16px !important;
+  cursor: pointer !important;
+
+  /* Hover state (keep same colors) */
+  &:hover {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  /* Active state (keep same colors) */
+  &:active {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+  }
+
+  /* Disabled state */
+  &:disabled {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+  }
+}
 // endregion BUTTONS
 // region MODAL
 .modal-dialog {

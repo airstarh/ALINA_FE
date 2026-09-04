@@ -8,8 +8,8 @@
         v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
         :class="[
           {
-            'btn-md': level == 1,
-            'btn-sm': level > 1,
+            'btn-md btn-a': level == 1,
+            'btn-sm btn-a': level > 1,
           },
         ]"
         >{{ $tc("COUNTER_COMMENTS", commentsTotal) }}
@@ -91,28 +91,28 @@
               >
                 <button
                   @click="ajaDeleteComment(feed[feedIndex], feedIndex)"
-                  class="btn btn-sm btn-danger"
+                  class="btn btn-sm btn-a"
                 >
                   {{ $t("i_delete") }}
                 </button>
                 <button
                   @click="toggleCommentEditMode(feed[feedIndex], feedIndex)"
                   v-if="!state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-secondary"
+                  class="btn btn-sm btn-a"
                 >
                   {{ $t("i_edit") }}
                 </button>
                 <button
                   @click="commentCancelEdit(feed[feedIndex], feedIndex)"
                   v-if="state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-secondary"
+                  class="btn btn-sm btn-a"
                 >
                   {{ $t("i_undo") }}
                 </button>
                 <button
                   @click="ajaCommentSave(feed[feedIndex], feedIndex)"
                   v-if="state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-secondary"
+                  class="btn btn-sm btn-a"
                 >
                   {{ $t("i_ok") }}
                 </button>
@@ -133,6 +133,8 @@
             <!--endregion Likes-->
           </div>
           <!--endregion Buttons, Likes-->
+          <!--##################################################-->
+          <div class="mt-5">&nbsp;</div>
           <!--##################################################-->
         </div>
         <Comment
@@ -163,6 +165,9 @@
 
         <!--endregion User Info-->
         <!--##################################################-->
+        <div class="mt-5">&nbsp</div>
+        <div class="mt-5">&nbsp</div>
+        <!--##################################################-->
         <!--region EDITOR-->
         <div :class="['alina-comment-editor', { 'mt-5': level == 1 }]">
           <BorgEditor
@@ -177,7 +182,7 @@
                     this.body = '';
                   }
                 "
-                class="btn btn-sm btn-warning"
+                class="btn btn-sm btn-a"
               >
                 {{ $t("i_clear") }}
               </button>
@@ -186,7 +191,7 @@
               <button
                 @click="ajaCommentAdd"
                 type="button"
-                class="btn btn-sm btn-success btn-block"
+                class="btn btn-lg btn-success btn-block"
               >
                 {{ $t("i_ok") }}
               </button>

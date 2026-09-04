@@ -6,7 +6,7 @@
     <div>
       <b-button
         v-b-toggle="[`f-${entity_id}`]"
-        variant="secondary"
+        class="btn-a"
       >
         <span style="font-size: 2em; vertical-align: middle">
           <b-icon icon="file-earmark-richtext"></b-icon>
@@ -20,7 +20,7 @@
       </b-button>
       <button
         v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id)"
-        class="btn btn-secondary btn-lg"
+        class="ml-3 btn btn-a"
         @click="dModeEdit = !dModeEdit"
       >
         {{ dModeEdit ? $t("i_ok") : $t("i_edit") }}
@@ -50,7 +50,7 @@
             <b-btn
               block
               size="md"
-              variant="success"
+              class="btn btn-a"
               @click="onChangeBulk(dArrFiles)"
               >{{ $t("Bulk File Save") }}</b-btn
             >

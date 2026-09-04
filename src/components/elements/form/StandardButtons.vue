@@ -3,12 +3,12 @@
 
     <a
       @click="() => { this.$router.go() }"
-      class="btn btn-danger text-white ml-1">{{ $t(resetTxt) }}</a>
+      class="btn btn-a">{{ $t(resetTxt) }}</a>
 
     <button
       @click="event => { return this.onGo(event); }"
       type="button"
-      class="btn btn-secondary ml-1">{{ $t(submitTxt) }}
+      class="btn btn-a">{{ $t(submitTxt) }}
       <slot name="submitSuffix"></slot>
     </button>
   </div>
@@ -20,10 +20,10 @@ export default {
   props: {
     onGo: Function,
     submitTxt: {
-      default: "TXT_SUBMIT"
+      default: "i_ok"
     },
     resetTxt: {
-      default: "TXT_RESET"
+      default: "i_undo"
     },
   }
 };
@@ -32,5 +32,10 @@ export default {
 <style scoped lang="scss">
 .StandardButtons {
   display: flex;
+  gap: 7mm;
+
+  & > * {
+    min-width: 8ch;
+  }
 }
 </style>

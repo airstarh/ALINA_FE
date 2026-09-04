@@ -3,44 +3,36 @@
     <div class="scrolling-wrapper">
       <div
         class="scrolling-item"
-        v-for="(row, index) in pJson"
-      >
+        v-for="(row, index) in pJson">
         <div
           v-if="modeEdit"
-          class="text-left"
-        >
+          class="text-left">
           <div
             v-if="isCurrentUserAllowedEdit(row)"
-            class="mt-2"
-          >
+            class="mt-2">
             <aInput
               :maxLength="200"
               v-model="row.name_human"
               :modeEdit="modeEdit"
               componentDisplay="block"
-              :placeholder="$t('File Name')"
-            />
+              :placeholder="$t('File Name')" />
             <aInput
               type="number"
               v-model="row.order"
               :modeEdit="modeEdit"
               :placeholder="$t('File Order')"
-              componentDisplay="block"
-            />
-            <b-btn
-              block
-              size="sm"
-              variant="success"
-              @click="$emit('onChange', row, index)"
-              >{{ $t("TXT_SUBMIT") }}
-            </b-btn>
-            <b-btn
-              block
-              size="sm"
-              variant="danger"
-              @click="$emit('onDelete', row, index)"
-              >{{ $t("Delete") }}</b-btn
-            >
+              componentDisplay="block" />
+            <div class="d-flex mt-3 mb-3" style="gap:5mm;">
+              <b-btn
+                size="sm"
+                class="btn btn-a"
+                @click="$emit('onChange', row, index)">{{ $t("TXT_SUBMIT") }}
+              </b-btn>
+              <b-btn
+                size="sm"
+                class="btn btn-a"
+                @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-btn>
+            </div>
           </div>
         </div>
 

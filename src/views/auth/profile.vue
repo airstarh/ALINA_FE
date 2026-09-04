@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="container">
+    <div class="container mt-3 mb-3">
       <div class="row no-gutters mt-2 mb-2">
-        <div class="col-1">
+        <div class="col">
           <h5>ID {{ post.id }}</h5>
         </div>
-        <div class="col text-right row justify-content-end">
-          <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-danger">{{ $t("TXT_DELETE_PROFILE") }}</button>
-          <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-secondary">{{ options.modeEdit ? $t("TXT_CANCEL") : $t("TXT_EDIT") }}</button>
+        <div class="col-10 row justify-content-end" style="gap:5mm;">
+          <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-a" style="min-width: 8ch;">{{ $t("i_delete") }}</button>
+          <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-a">{{ options.modeEdit ? $t("i_cancel") : $t("i_edit") }}</button>
           <StandardButtons v-if="CU.ownsOrAdminOrModerator(post.id) && options.modeEdit" :onGo="runAJax"></StandardButtons>
         </div>
       </div>

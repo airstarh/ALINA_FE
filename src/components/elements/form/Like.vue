@@ -16,7 +16,7 @@
       ></span></button
     ><button
       @click="ajaGetFeed"
-      class="btn btn-secondary btn-lg"
+      class="btn btn-lg btn-a"
     >
       {{ dAmountLikes }}
     </button>
