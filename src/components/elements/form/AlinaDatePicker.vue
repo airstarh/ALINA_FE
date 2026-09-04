@@ -109,13 +109,14 @@ export default {
     },
 
     valueDataCalculate: function () {
-      this.dateObj = new Date();
-      this.dateObj.setFullYear(this.year);
-      this.dateObj.setMonth(this.month - 1);
-      this.dateObj.setDate(this.day);
-      this.dateObj.setHours(this.hour);
-      this.dateObj.setMinutes(this.min);
-      this.dateObj.setSeconds(this.sec);
+      this.dateObj = UtilsDate.createLocalDate(
+        this.year,
+        this.month,
+        this.day,
+        this.hour,
+        this.min,
+        this.sec,
+      );
       this.valueData = Math.floor(this.dateObj.getTime() / 1000);
       return this.valueData;
     },

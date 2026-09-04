@@ -24,6 +24,14 @@ export default class UtilsDate {
 		return v;
 	}
 
+	/**
+	 * Creates a local Date atomically, avoiding intermediate invalid dates when
+	 * moving from a 29th, 30th, or 31st into a shorter month.
+	 */
+	static createLocalDate(year, month, day, hour, minute, second) {
+		return new Date(year, month - 1, day, hour, minute, second, 0);
+	}
+
 	static doExtractWeekNumber(dateObj) {
 		return UtilsDate.dateObjFormat(dateObj, 'w');
 	}
