@@ -165,8 +165,7 @@
 
         <!--endregion User Info-->
         <!--##################################################-->
-        <div class="mt-5">&nbsp</div>
-        <div class="mt-5">&nbsp</div>
+        <div class="mt-5">&nbsp;</div>
         <!--##################################################-->
         <!--region EDITOR-->
         <div :class="['alina-comment-editor', { 'mt-5': level == 1 }]">
