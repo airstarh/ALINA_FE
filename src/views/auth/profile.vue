@@ -15,19 +15,17 @@
     <div class="container-fluid container-bio">
       <div class="row row-bio" style="gap:7mm;">
         <div class="col item-bio item-photo">
-          <a :href="post.emblem">
-            <aInput
-              v-if="options.modeEdit"
-              type="file"
-              :modeEdit="options.modeEdit"
-              :label="$t('Select an image')"
-              accept="image/*"
-              :multiple="false"
-              :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-              @change="onChangeFileField" />
-            <img v-if="post.emblem" :src="post.emblem" class="avatar rounded">
-            <img v-if="!post.emblem" src="@/assets/anarki.png" class="avatar">
-          </a>
+          <aInput
+            v-if="options.modeEdit"
+            type="file"
+            :modeEdit="options.modeEdit"
+            :label="$t('Upload')"
+            accept="image/*"
+            :multiple="false"
+            :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+            @change="onChangeFileField" />
+          <img v-if="post.emblem" :src="post.emblem" class="avatar rounded">
+          <img v-if="!post.emblem" src="@/assets/anarki.png" class="avatar">
         </div>
         <div class="col item-bio item-about-info">
           <div class="item-about">
