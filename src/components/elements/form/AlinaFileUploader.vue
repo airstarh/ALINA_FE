@@ -1,36 +1,40 @@
 <template>
   <div
     class="mt-3 mb-3"
-    v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0"
-  >
+    v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0">
     <div>
-      <b-button
-        v-b-toggle="[`f-${entity_id}`]"
-        class="btn-a"
-      >
-        <span style="font-size: 2em; vertical-align: middle">
-          <b-icon icon="file-earmark-richtext"></b-icon>
-        </span>
-        <span>{{ $t("Attached files") }}</span>
-        <span
-          v-if="ownLength > 0"
-          style="font-size: 2em; vertical-align: middle"
-          >&nbsp;{{ ownLength }}</span
-        >
-      </b-button>
-      <button
-        v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id)"
-        class="ml-3 btn btn-a"
-        @click="dModeEdit = !dModeEdit"
-      >
-        {{ dModeEdit ? $t("i_ok") : $t("i_edit") }}
-      </button>
+      <div class="d-flex" style="gap:2mm;">
+        <b-button
+          v-b-toggle="[`f-${entity_id}`]"
+          class="btn-a">
+          <span style="font-size: 2em; vertical-align: middle">
+            <b-icon icon="file-earmark-richtext"></b-icon>
+          </span>
+          <span>{{ $t("Attached files") }}</span>
+          <span
+            v-if="ownLength > 0"
+            style="font-size: 2em; vertical-align: middle">&nbsp;{{ ownLength }}</span>
+        </b-button>
+
+        <button
+          v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id)"
+          class="btn btn-a"
+          @click="dModeEdit = !dModeEdit">
+          {{ dModeEdit ? $t("i_undo") : $t("i_edit") }}
+        </button>
+
+        <b-btn
+          v-if="dModeEdit && dArrFiles.length > 0"
+          size="md"
+          class="btn btn-a"
+          @click="onChangeBulk(dArrFiles)">{{ $t("i_ok") }}</b-btn>
+      </div>
       <b-collapse
         :id="`f-${entity_id}`"
         class="mt-3"
         @show="onShow"
-        @hide="onHide"
-      >
+        @hide="onHide">
+
         <div class="row no-gutters">
           <div class="col">
             <aInput
@@ -40,20 +44,12 @@
               :multiple="true"
               :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
               :label="$t('Select your files')"
-              @change="onChangeFileField"
-            />
+              @change="onChangeFileField" />
           </div>
           <div
             v-if="dModeEdit && dArrFiles.length > 0"
-            class="col"
-          >
-            <b-btn
-              block
-              size="md"
-              class="btn btn-a"
-              @click="onChangeBulk(dArrFiles)"
-              >{{ $t("Bulk File Save") }}</b-btn
-            >
+            class="col">
+
           </div>
         </div>
         <AlinaHorizontalScrollJson
@@ -61,8 +57,7 @@
           :showOnly="['url']"
           :modeEdit="dModeEdit"
           @onDelete="onDelete"
-          @onChange="onChange"
-        ></AlinaHorizontalScrollJson>
+          @onChange="onChange"></AlinaHorizontalScrollJson>
       </b-collapse>
     </div>
   </div>
