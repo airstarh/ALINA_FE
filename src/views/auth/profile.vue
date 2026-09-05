@@ -2,7 +2,8 @@
   <div>
     <div class="container mt-3 mb-3">
       <div class="row no-gutters mt-2 mb-2">
-        <div class="col row justify-content-end" style="gap:5mm;">
+        <div class="col"></div>
+        <div class="col-auto row no-gutters justify-content-end" style="gap:5mm;">
           <sup class="f-left text-sm">[ID {{ post.id }}]</sup>
           <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-a" style="min-width: 8ch;">{{ $t("i_delete") }}</button>
           <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-a">{{ options.modeEdit ? $t("i_cancel") : $t("i_edit") }}</button>
@@ -13,7 +14,7 @@
 
     <div class="container-fluid container-bio">
       <div class="row row-bio" style="gap:7mm;">
-        <dic class="item-bio item-photo">
+        <div class="col item-bio item-photo">
           <a :href="post.emblem">
             <aInput
               v-if="options.modeEdit"
@@ -27,8 +28,8 @@
             <img v-if="post.emblem" :src="post.emblem" class="avatar rounded">
             <img v-if="!post.emblem" src="@/assets/anarki.png" class="avatar">
           </a>
-        </dic>
-        <div class="item-bio item-about-info">
+        </div>
+        <div class="col item-bio item-about-info">
           <div class="item-about">
             <div class="text-center">
               <h1 class="notranslate font-weight-bold mb-4">
