@@ -2,6 +2,7 @@
   <div
     class="mt-3 mb-3"
     v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0">
+
     <div>
       <div class="d-flex" style="gap:2mm;">
         <b-button
@@ -17,7 +18,7 @@
         </b-button>
 
         <button
-          v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id)"
+          v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id) && dArrFiles.length > 0"
           class="btn btn-a"
           @click="dModeEdit = !dModeEdit">
           {{ dModeEdit ? $t("i_undo") : $t("i_edit") }}
