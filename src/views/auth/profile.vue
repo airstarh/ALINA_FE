@@ -11,60 +11,49 @@
       </div>
     </div>
 
+    <div class="container-fluid container-bio">
+      <div class="row row-bio" style="gap:7mm;">
+        <dic class="item-bio item-photo">
+          <a :href="post.emblem">
+            <aInput
+              v-if="options.modeEdit"
+              type="file"
+              :modeEdit="options.modeEdit"
+              :label="$t('Select an image')"
+              accept="image/*"
+              :multiple="false"
+              :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+              @change="onChangeFileField" />
+            <img v-if="post.emblem" :src="post.emblem" class="avatar rounded">
+            <img v-if="!post.emblem" src="@/assets/anarki.png" class="avatar">
+          </a>
+        </dic>
+        <div class="item-bio item-about-info">
+          <div class="item-about">
+            <div class="text-center">
+              <h1 class="notranslate font-weight-bold mb-4">
+                <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center" />
+                &ensp;
+                <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
+                &nbsp;
+              </h1>
 
+              <div class="mb-4">
+                <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate" format="dateTime" :modeEdit="options.modeEdit"></AlinaDatePicker>
+              </div>
 
-    <div class="container">
+              <div class="mb-4">
+                <aInput v-model="post.mail" type="email" :formatter="UtilsStr.transformEmail" />
+              </div>
 
-    </div>
-
-
-
-
-    <div :key="curId">
-      <div class="text-center">
-
-        <h1 class="notranslate font-weight-bold mb-4">
-          <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center" />
-          &ensp;
-          <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
-          &nbsp;
-        </h1>
-
-        <div class="mb-4">
-          <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate" format="dateTime" :modeEdit="options.modeEdit"></AlinaDatePicker>
-        </div>
-
-        <div class="mb-4">
-          <aInput v-model="post.mail" type="email" :formatter="UtilsStr.transformEmail" />
-        </div>
-
-      </div>
-
-      <div class="text-break">
-        <div class="row no-gutters justify-content-center">
-          <div class="col-md-4">
-            <a :href="post.emblem">
-              <aInput
-                v-if="options.modeEdit"
-                type="file"
-                :modeEdit="options.modeEdit"
-                :label="$t('Select an image')"
-                accept="image/*"
-                :multiple="false"
-                :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-                @change="onChangeFileField" />
-              <img v-if="post.emblem" :src="post.emblem" width="100%" class="rounded">
-              <img v-if="!post.emblem" src="@/assets/anarki.png" width="100%">
-            </a>
+            </div>
           </div>
-
-          <div class="col pl-2">
+          <div class="item-info">
             <BorgEditor :modeEdit="options.modeEdit" v-model="post.about_myself" />
           </div>
         </div>
 
       </div>
-
     </div>
 
     <StandardButtons v-if="options.modeEdit" :onGo="runAJax" class="mt-5"></StandardButtons>
@@ -214,3 +203,35 @@ export default {
   }
 };
 </script>
+
+<style>
+.container-bio {
+  & .row-bio {
+    justify-content: space-around;
+
+    & .item-bio {
+      /* border: 1px solid yellow; */
+    }
+
+    & .item-photo {
+      text-align: center;
+
+      & img {
+        height: min(50vw, 50vh);
+        width: min(99vw, 500px);
+        object-fit: cover;
+        background-color: red;
+      }
+    }
+
+    & .item-about-info {
+      /* border: 1px solid blue; */
+      flex: 1 1 50vw;
+
+      & .item-about {}
+
+      & .item-info {}
+    }
+  }
+}
+</style>
