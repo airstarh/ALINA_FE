@@ -1,8 +1,7 @@
 <template>
   <div
     :style="dConf.style"
-    class=""
-  >
+    class="">
     <div class="mb-2">
       <b-button
         v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
@@ -11,8 +10,7 @@
             'btn-md btn-a': level == 1,
             'btn-sm btn-a': level > 1,
           },
-        ]"
-        >{{ $tc("COUNTER_COMMENTS", commentsTotal) }}
+        ]">{{ $tc("COUNTER_COMMENTS", commentsTotal) }}
       </b-button>
     </div>
     <b-collapse
@@ -20,8 +18,7 @@
       @show="onExpandCommentList(`comment-collapse-${answer_to_tale_id}`)"
       @shown="pageRecalcIframeHeight"
       @hidden="pageRecalcIframeHeight"
-      :visible="level == 3"
-    >
+      :visible="level == 3">
       <!--##################################################-->
       <!--region SUBMITTED COMMENTS-->
       <div
@@ -31,14 +28,12 @@
         :data-id="tale.id"
         :data-to="tale.answer_to_tale_id"
         :data-root="root_tale_id"
-        :data-index="feedIndex"
-      >
+        :data-index="feedIndex">
         <div
           class="single-comment mt-5"
           :class="{
             highlight: $route.query.highlight == tale.id,
-          }"
-        >
+          }">
           <!--##################################################-->
           <!--region User Info-->
 
@@ -49,74 +44,67 @@
             :emblemUrl="tale.owner_emblem"
             emblemWidth="min(50px, 5vmax)"
             :someDate="tale.publish_at"
-            :isComment="true"
-          ></UserAvatar>
+            :isComment="true"></UserAvatar>
           <!--endregion User Info-->
           <!--##################################################-->
           <!--region Comment body          -->
+          <div class="mt-1">&nbsp;</div>
           <div
             class="row no-gutters"
-            v-if="!state.feedsInEdit.includes(tale.id)"
-          >
+            v-if="!state.feedsInEdit.includes(tale.id)">
             <div class="col">
               <div class="mt-1 mb-3">
                 <BorgEditor
                   :modeEdit="false"
-                  v-model="tale.body"
-                />
+                  v-model="tale.body" />
               </div>
             </div>
           </div>
           <!--################################################## -->
           <div
             v-else
-            class="row no-gutters"
-          >
+            class="row no-gutters">
             <div class="col">
               <BorgEditor
                 v-model="tale.body"
-                @ready="pageRecalcIframeHeight()"
-              />
+                @ready="pageRecalcIframeHeight()" />
             </div>
           </div>
+          <div class="mt-3">&nbsp;</div>
           <!--endregion Comment body          -->
           <!--##################################################-->
           <!--region Buttons, Likes-->
           <div class="row no-gutters m-buttons-1">
             <!--region Buttons EDIT CANCEL SUBMIT-->
             <div class="col">
-              <span
-                class=""
-                v-if="CU.ownsOrAdminOrModerator(tale.owner_id)"
-              >
+              <div
+                class="d-flex"
+                style="gap: 3mm;"
+                v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
                 <button
                   @click="ajaDeleteComment(feed[feedIndex], feedIndex)"
-                  class="btn btn-sm btn-a"
-                >
+                  class="btn btn-sm btn-a">
                   {{ $t("i_delete") }}
                 </button>
                 <button
                   @click="toggleCommentEditMode(feed[feedIndex], feedIndex)"
                   v-if="!state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-a"
-                >
+                  class="btn btn-sm btn-a">
                   {{ $t("i_edit") }}
                 </button>
                 <button
                   @click="commentCancelEdit(feed[feedIndex], feedIndex)"
                   v-if="state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-a"
-                >
+                  class="btn btn-sm btn-a">
                   {{ $t("i_undo") }}
                 </button>
                 <button
                   @click="ajaCommentSave(feed[feedIndex], feedIndex)"
                   v-if="state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-a"
-                >
+                  class="btn btn-sm btn-a">
                   {{ $t("i_ok") }}
                 </button>
-              </span>
+              </div>
             </div>
             <!--endregion Buttons EDIT CANCEL SUBMIT-->
             <!--region Likes-->
@@ -126,17 +114,15 @@
                   :pAmountLikes="tale.count_like"
                   :pCurrentUserLiked="tale.current_user_liked"
                   ref_table="tale"
-                  :ref_id="tale.id"
-                ></Like>
+                  :ref_id="tale.id"></Like>
               </div>
             </div>
             <!--endregion Likes-->
           </div>
           <!--endregion Buttons, Likes-->
           <!--##################################################-->
-          <div class="mt-5">&nbsp;</div>
-          <!--##################################################-->
         </div>
+        <div>XXX</div>
         <Comment
           v-if="tale.level < 2"
           :level="tale.level + 1"
@@ -144,8 +130,7 @@
           :root_tale_id="tale.root_tale_id"
           :answer_to_tale_id="tale.id"
           :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
-          :root_tale_object="root_tale_object"
-        ></Comment>
+          :root_tale_object="root_tale_object"></Comment>
       </div>
       <Paginator
         :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
@@ -154,8 +139,7 @@
         :pagesTotal="parseInt(feedPagination.pagesTotal)"
         :onClickPage="pageChange"
         :onClickMore="onClickMore"
-        :onClickAll="onClickAll"
-      ></Paginator>
+        :onClickAll="onClickAll"></Paginator>
       <!--endregion SUBMITTED COMMENTS-->
       <!--##################################################-->
       <!--region NEW COMMENT-->
@@ -165,14 +149,12 @@
 
         <!--endregion User Info-->
         <!--##################################################-->
-        <div class="mt-5">&nbsp;</div>
-        <!--##################################################-->
         <!--region EDITOR-->
+        <div class="mt-5">&nbsp;</div>
         <div :class="['alina-comment-editor', { 'mt-5': level == 1 }]">
           <BorgEditor
             v-model="body"
-            @ready="pageRecalcIframeHeight()"
-          />
+            @ready="pageRecalcIframeHeight()" />
           <div class="row no-gutters">
             <div class="col">
               <button
@@ -181,8 +163,7 @@
                     this.body = '';
                   }
                 "
-                class="btn btn-sm btn-a"
-              >
+                class="btn btn-sm btn-a">
                 {{ $t("i_clear") }}
               </button>
             </div>
@@ -190,8 +171,7 @@
               <button
                 @click="ajaCommentAdd"
                 type="button"
-                class="btn btn-lg btn-success btn-block"
-              >
+                class="btn btn-lg btn-success btn-block">
                 {{ $t("i_ok") }}
               </button>
             </div>
@@ -203,8 +183,7 @@
       <!--##################################################-->
       <div
         v-if="root_tale_object.is_comment_for_owner == 1"
-        class="m-3"
-      >
+        class="m-3">
         {{ $tc("Comments only for owner") }}
       </div>
       <!--##################################################-->
@@ -212,20 +191,17 @@
 
       <div
         v-if="!CU.isLoggedIn()"
-        class="col"
-      >
+        class="col">
         <a
           href="#/auth/login"
           class="btn btn-sm btn-primary"
-          target="_top"
-          >{{ $t("IMP_LOGIN") }}
+          target="_top">{{ $t("IMP_LOGIN") }}
         </a>
         {{ $t("i_ok") }}
         <a
           href="#/auth/register"
           class="btn btn-sm btn-primary"
-          target="_top"
-          >{{ $t("IMP_REGISTER") }}
+          target="_top">{{ $t("IMP_REGISTER") }}
         </a>
         {{ $t("to post comments") }}
       </div>
@@ -533,6 +509,9 @@ export default {
 
 <style scoped lang="scss">
 .single-comment {
+  background-color: #222;
+  border-radius: 5%;
+  padding: 10px 2px;
 }
 
 .highlight {
