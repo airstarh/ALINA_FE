@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container mt-3 mb-3">
+    <div class="container mt-3 mb-3 p-0">
       <div class="row no-gutters mt-2 mb-2">
         <div class="col"></div>
         <div class="col-auto row no-gutters justify-content-end" style="gap:5mm;">
@@ -13,29 +13,31 @@
     </div>
 
     <div class="container-fluid container-bio">
-      <div class="row row-bio" style="gap:7mm;">
+      <div class="row no-gutters row-bio" style="gap:7mm;">
         <div class="col item-bio item-photo">
           <aInput
             v-if="options.modeEdit"
             type="file"
+            display="block"
             :modeEdit="options.modeEdit"
             :label="$t('Upload')"
             accept="image/*"
             :multiple="false"
             :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
             @change="onChangeFileField" />
+          <div></div>
           <img v-if="post.emblem" :src="post.emblem" class="avatar rounded">
           <img v-if="!post.emblem" src="@/assets/anarki.png" class="avatar">
         </div>
         <div class="col item-bio item-about-info">
           <div class="item-about">
             <div class="text-center">
-              <h1 class="notranslate font-weight-bold mb-4">
+              <h2 class="notranslate font-weight-bold mb-4">
+                &ensp;
                 <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center" />
                 &ensp;
                 <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
-                &nbsp;
-              </h1>
+              </h2>
 
               <div class="mb-4">
                 <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate" format="dateTime" :modeEdit="options.modeEdit"></AlinaDatePicker>
@@ -217,7 +219,7 @@ export default {
 
       & img {
         height: min(50vw, 50vh);
-        width: min(99vw, 500px);
+        width: min(90vw, 500px);
         object-fit: cover;
         background-color: red;
       }

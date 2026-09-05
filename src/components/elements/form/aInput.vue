@@ -43,7 +43,7 @@
             :accept="accept"
             :multiple="multiple"
             :disabled="disabled"
-            :class="{ displayNone: computedFlagDisplayNone }"
+            :class="{ 'displayNone': computedFlagDisplayNone }"
             :aria-label="placeholder"
           />
           <div
