@@ -428,6 +428,15 @@ export default {
     }
   }
 
+  // region TEXT/NUMBER
+  & input[type="text"]
+  , & input[type="number"]
+  {
+    border: 0.5px solid #666;
+    border-radius: 8px;
+    padding: 2px 2mm;
+  }
+  // endregion TEXT/NUMBER
   // region CHECKBOX
   & input[type="checkbox"] {
     display: none;
