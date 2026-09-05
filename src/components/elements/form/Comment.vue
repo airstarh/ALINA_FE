@@ -122,7 +122,6 @@
           <!--endregion Buttons, Likes-->
           <!--##################################################-->
         </div>
-        <div>XXX</div>
         <Comment
           v-if="tale.level < 2"
           :level="tale.level + 1"
