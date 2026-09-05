@@ -2,10 +2,8 @@
   <div>
     <div class="container mt-3 mb-3">
       <div class="row no-gutters mt-2 mb-2">
-        <div class="col">
-          <h5>ID {{ post.id }}</h5>
-        </div>
-        <div class="col-10 row justify-content-end" style="gap:5mm;">
+        <div class="col row justify-content-end" style="gap:5mm;">
+          <sup class="f-left text-sm">[ID {{ post.id }}]</sup>
           <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-a" style="min-width: 8ch;">{{ $t("i_delete") }}</button>
           <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-a">{{ options.modeEdit ? $t("i_cancel") : $t("i_edit") }}</button>
           <StandardButtons v-if="CU.ownsOrAdminOrModerator(post.id) && options.modeEdit" :onGo="runAJax"></StandardButtons>
@@ -13,14 +11,23 @@
       </div>
     </div>
 
+
+
+    <div class="container">
+
+    </div>
+
+
+
+
     <div :key="curId">
       <div class="text-center">
 
         <h1 class="notranslate font-weight-bold mb-4">
-          &ensp;
           <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center" />
           &ensp;
           <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
+          &nbsp;
         </h1>
 
         <div class="mb-4">
