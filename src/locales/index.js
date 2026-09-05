@@ -221,7 +221,7 @@ const Translations = {
     "fuck you": "Пошёл нахуй",
     "ACCESS DENIED": "Доступ запрещён",
     "Attached files": "файлы",
-    "Select your files": "Выберите файлы",
+    "Upload": "Загрузить",
     "Unexpected error.": "Неразрешимая ошибка.",
     "Hide date": "Скрыть дату",
     "Response is not success": "Неожиданный ответ от сервера",

@@ -30,28 +30,22 @@
           class="btn btn-a"
           @click="onChangeBulk(dArrFiles)">{{ $t("i_ok") }}</b-btn>
       </div>
+
       <b-collapse
         :id="`f-${entity_id}`"
         class="mt-3"
         @show="onShow"
         @hide="onHide">
 
-        <div class="row no-gutters">
-          <div class="col">
-            <aInput
-              type="file"
-              :modeEdit="dModeEdit"
-              accept="*/*"
-              :multiple="true"
-              :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
-              :label="$t('Select your files')"
-              @change="onChangeFileField" />
-          </div>
-          <div
-            v-if="dModeEdit && dArrFiles.length > 0"
-            class="col">
-
-          </div>
+        <div class="d-flex justify-content-center">
+          <aInput
+            type="file"
+            :modeEdit="dModeEdit"
+            accept="*/*"
+            :multiple="true"
+            :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
+            :label="$t('Upload')"
+            @change="onChangeFileField" />
         </div>
         <AlinaHorizontalScrollJson
           :pJson="dArrFiles"
