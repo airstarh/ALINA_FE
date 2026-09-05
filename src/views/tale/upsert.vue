@@ -9,14 +9,12 @@
         'container': !pageIsInIframe,
         'container-fluid': pageIsInIframe,
       },
-    ]"
-  >
+    ]">
     <div :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]">
       <div class="col-12">
         <div
           v-if="!pageIsInIframe && tale.is_header_hidden != 1"
-          style="position: relative"
-        >
+          style="position: relative">
           <h1
             :class="[
               'notranslate m-0 p-2 text-left rounded-bottom alina-tale-header',
@@ -24,15 +22,13 @@
                 'bg-danger': tale.is_adult_denied == 1,
               },
             ]"
-            :lang="tale.lang"
-          >
+            :lang="tale.lang">
             <aInput
               v-model="tale.header"
               :placeholder="$t('Header').toString()"
               :modeEdit="dConf.modeEdit"
               componentDisplay="block"
-              :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')"
-            />
+              :href="UtilsSys.hrefToBackend(tale, 'tale/upsert')" />
           </h1>
           <div
             v-if="tale.is_date_hidden != 1"
@@ -42,13 +38,11 @@
               right: 1%;
               bottom: -1.5rem;
               padding: 1rem;
-            "
-          >
+            ">
             <router-link
               :to="'/tale/upsert/' + tale.id"
               class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
-              style="font-size: 2vmin"
-            >
+              style="font-size: 2vmin">
               {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
             </router-link>
           </div>
@@ -56,8 +50,7 @@
 
         <div
           v-if="!pageIsInIframe"
-          class="row no-gutters mt-2 mb-2 align-items-center justify-content-between mb-3 mt-3"
-        >
+          class="row no-gutters mt-2 mb-2 align-items-center justify-content-between mb-3 mt-3">
           <div class="col">
             <!-- region  AVATAR -->
             <UserAvatar
@@ -67,14 +60,12 @@
               :userLastName="tale.owner_lastname"
               :emblemUrl="tale.owner_emblem"
               emblemWidth="7vmax"
-              :someDate="null"
-            />
+              :someDate="null" />
             <!-- endregion  AVATAR -->
           </div>
           <div
             v-if="CU.ownsOrAdminOrModerator(tale.owner_id)"
-            class="col-2"
-          >
+            class="col-2">
             <!-- region BUTTONS -->
             <btnEditSaveCancelDelete
               :modeEdit="dConf.modeEdit"
@@ -83,8 +74,7 @@
               @onSave="ajaPostTale"
               @onEdit="onEdit"
               @onCancel="onCancel"
-              @onDelete="ajaDeleteTale"
-            />
+              @onDelete="ajaDeleteTale" />
             <!-- endregion BUTTONS -->
           </div>
         </div>
@@ -92,16 +82,14 @@
         <BorgEditor
           v-if="!pageIsInIframe"
           :modeEdit="dConf.modeEdit"
-          v-model="tale.body"
-        />
+          v-model="tale.body" />
 
         <div class="mb-3">&nbsp;</div>
 
         <!-- region BODY FREE -->
         <div
           v-if="!dConf.modeEdit && tale.body_free"
-          v-html="tale.body_free"
-        ></div>
+          v-html="tale.body_free"></div>
         <!-- endregion BODY FREE -->
 
         <!-- region iframe -->
@@ -112,19 +100,16 @@
             :label="$tc('iframe')"
             :placeholder="$tc('iframe').toString()"
             :modeEdit="dConf.modeEdit"
-            componentDisplay="block"
-          />
+            componentDisplay="block" />
 
           <div
             v-if="tale.iframe && dConf.modeEdit"
-            class="mt-3 mb-3"
-          >
+            class="mt-3 mb-3">
             <iframe
               :src="tale.iframe"
               frameborder="1"
               width="90%"
-              height="250px"
-            ></iframe>
+              height="250px"></iframe>
           </div>
         </div>
         <!-- endregion iframe -->
@@ -141,8 +126,7 @@
             label="Publish at"
             idq="publish_at"
             class="notranslate"
-            :modeEdit="dConf.modeEdit"
-          />
+            :modeEdit="dConf.modeEdit" />
           <!-- endregion DATE -->
 
           <div class="mb-3">&nbsp;</div>
@@ -160,8 +144,7 @@
                 class="form-control"
                 :placeholder="$tc('body_free').toString()"
                 v-model="tale.body_free"
-                rows="20"
-              ></textarea>
+                rows="20"></textarea>
             </div>
             <div class="mt-3 mb-3">
               <div v-html="tale.body_free"></div>
@@ -180,8 +163,7 @@
               :label="$tc('Page Alias').toString()"
               :placeholder="$tc('Page Alias').toString()"
               :modeEdit="dConf.modeEdit"
-              componentDisplay="block"
-            />
+              componentDisplay="block" />
           </div>
           <!-- endregion ALIAS -->
 
@@ -195,8 +177,7 @@
                   v-model="tale.is_header_hidden"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="true"
-                />
+                  :modeEdit="true" />
               </div>
               <div class="mb-3">
                 <!-- is_date_hidden -->
@@ -205,8 +186,7 @@
                   v-model="tale.is_date_hidden"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
               <div class="mb-3">
                 <!-- is_avatar_hidden -->
@@ -215,8 +195,7 @@
                   v-model="tale.is_avatar_hidden"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
               <div class="mb-3">
                 <!-- is_social_sharing_hidden -->
@@ -225,8 +204,7 @@
                   v-model="tale.is_social_sharing_hidden"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
               <div class="mb-3">
                 <!-- is_comment_denied -->
@@ -235,8 +213,7 @@
                   v-model="tale.is_comment_denied"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
               <div class="mb-3">
                 <!-- is_comment_for_owner -->
@@ -245,8 +222,7 @@
                   v-model="tale.is_comment_for_owner"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
             </div>
             <div class="col-md">
@@ -257,8 +233,7 @@
                   v-model="tale.is_sticked"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
               <div class="mb-3">
                 <!-- is_adult_denied -->
@@ -267,8 +242,7 @@
                   v-model="tale.is_adult_denied"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
               <div class="mb-3">
                 <!-- is_adv -->
@@ -277,8 +251,7 @@
                   v-model="tale.is_adv"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
               <div class="mb-3">
                 <!-- is_draft -->
@@ -287,8 +260,7 @@
                   v-model="tale.is_draft"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
               <div class="mb-3">
                 <!-- is_for_registered -->
@@ -297,8 +269,7 @@
                   v-model="tale.is_for_registered"
                   type="checkbox"
                   :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
 
               <!-- seo_index -->
@@ -307,8 +278,7 @@
                   v-model="tale.seo_index"
                   :label="$tc(' SEO Index')"
                   :placeholder="$tc('SEO Index')"
-                  :modeEdit="dConf.modeEdit"
-                />
+                  :modeEdit="dConf.modeEdit" />
               </div>
             </div>
           </div>
@@ -323,8 +293,7 @@
           <div class="col">
             <AlinaYandexMap
               :item="tale"
-              :mode-edit="dConf.modeEdit"
-            ></AlinaYandexMap>
+              :mode-edit="dConf.modeEdit"></AlinaYandexMap>
           </div>
         </div>
         <!-- endregion Yandex Map-->
@@ -338,18 +307,18 @@
             entity_table="tale"
             :owner_id="tale.owner_id"
             :modeEdit="dConf.modeEdit"
-            :ownLength="tale.count_files"
-          />
+            :ownLength="tale.count_files" />
         </div>
         <!-- endregion FILES -->
 
         <!--##################################################-->
+        <div class="mt-2">&nbsp;</div>
+        <!--##################################################-->
 
         <!-- region Share & Likes-->
         <div
-          class="row no-gutters mb-3"
-          v-if="tale.is_social_sharing_hidden != 1"
-        >
+          class="row no-gutters"
+          v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
             <div class="text-left m-buttons-1">
               <Share :tale="tale"></Share>
@@ -362,20 +331,20 @@
                 :pAmountLikes="tale.count_like"
                 :pCurrentUserLiked="tale.current_user_liked"
                 ref_table="tale"
-                :ref_id="tale.id"
-              ></Like>
+                :ref_id="tale.id"></Like>
             </div>
           </div>
         </div>
         <!-- endregion Share & Likes-->
 
         <!--##################################################-->
+        <div class="mt-2">&nbsp;</div>
+        <!--##################################################-->
 
         <!-- region COMMENTS -->
         <div
           v-if="tale.is_comment_denied != 1"
-          class="mb-5"
-        >
+          class="mb-5">
           <Comment
             v-if="tale.level < 2"
             :level="tale.level + 1"
@@ -383,8 +352,7 @@
             :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
             :answer_to_tale_id="tale.id"
             :count_by_answer_to_tale_id="tale.count_root_tale_id"
-            :root_tale_object="tale"
-          ></Comment>
+            :root_tale_object="tale"></Comment>
         </div>
         <!-- endregion COMMENTS -->
 

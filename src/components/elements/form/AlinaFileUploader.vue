@@ -1,6 +1,6 @@
 <template>
   <div
-    class="p-1 mt-3 mb-3"
+    class="mt-3 mb-3"
     v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0"
   >
     <div>
