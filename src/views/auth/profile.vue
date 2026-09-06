@@ -33,8 +33,8 @@
           <div class="item-about">
             <div class="text-center">
               <h1 class="notranslate font-weight-bold mb-4 d-flex flex-wrap" style="gap:2mm;">
-                <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center"/>
-                <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center"/>
+                <aInput v-model="post.firstname" class="profile-name-input" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center"/>
+                <aInput v-model="post.lastname" class="profile-name-input" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center"/>
               </h1>
 
               <div class="mb-4">
@@ -204,6 +204,11 @@ export default {
 </script>
 
 <style>
+.profile-name-input {
+  flex: 1 1 10rem;
+  min-width: 0;
+}
+
 .container-bio {
   & .row-bio {
     justify-content: space-around;
