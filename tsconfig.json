@@ -2,8 +2,7 @@
     "compilerOptions": {
         "target": "es2017",
         "module": "esnext",
-        "moduleResolution": "node",
-        "baseUrl": "./",
+        "moduleResolution": "bundler",
         "paths": {
             "@/*": [ "src/*" ]
         },
@@ -19,10 +18,11 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "sourceMap": true,
-        "allowJs": true
+        "allowJs": true,
+        "noEmit": true
     },
     "vueCompilerOptions": {
-        "target": 2.7, // or 3 for Vue 3
+        "target": "auto",
         "strictTemplates": true
     },
     "exclude": [
