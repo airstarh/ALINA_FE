@@ -32,12 +32,10 @@
         <div class="col item-bio item-about-info">
           <div class="item-about">
             <div class="text-center">
-              <h2 class="notranslate font-weight-bold mb-4">
-                &ensp;
-                <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center" />
-                &ensp;
-                <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center" />
-              </h2>
+              <h1 class="notranslate font-weight-bold mb-4 d-flex flex-wrap" style="gap:2mm;">
+                <aInput v-model="post.firstname" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center"/>
+                <aInput v-model="post.lastname" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center"/>
+              </h1>
 
               <div class="mb-4">
                 <AlinaDatePicker v-model="post.birth" label="Birth" idq="birth" class="notranslate" format="dateTime" :modeEdit="options.modeEdit"></AlinaDatePicker>
@@ -219,7 +217,7 @@ export default {
 
       & img {
         height: min(50vw, 50vh);
-        width: min(90vw, 500px);
+        width: min(95vw, 500px);
         object-fit: cover;
         background-color: red;
       }

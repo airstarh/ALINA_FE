@@ -1,30 +1,28 @@
 <template>
   <div
     class="aInput notranslate"
-    :style="{ display: componentDisplay }"
-  >
+    :style="{ display: componentDisplay }">
     <template v-if="modeEdit">
       <label
         class="a-flex"
-        :for="idNameKey"
-      >
+        :for="idNameKey">
+
         <!-- Label Left -->
         <div
-          v-if="label && flagLabelFirst"
+          v-if="label !== '' && flagLabelFirst"
           :class="[
             'a-item label-left',
             { 'btn btn-a': type === 'file' }
           ]"
-          :style="computedStyleLabel"
-        >
+          :style="computedStyleLabel">
           <span>{{ label }}<span v-if="type !== 'file'">:&nbsp;</span></span>
         </div>
 
         <!-- Input -->
         <div
           class="a-item a-input"
-          :style="computedStyleInput"
-        >
+          :style="computedStyleInput">
+
           <input
             :type="type"
             :value="value"
@@ -34,7 +32,7 @@
             :id="idNameKey"
             :name="idNameKey"
             :placeholder="placeholder"
-            :style="{ textAlign: inputAlign, width: inputWidth ?? '100%' }"
+            :style="{ textAlign: inputAlign, width: '100%' }"
             :maxlength="maxLength"
             :size="size"
             :max="max"
@@ -44,23 +42,20 @@
             :multiple="multiple"
             :disabled="disabled"
             :class="{ 'displayNone': computedFlagDisplayNone }"
-            :aria-label="placeholder"
-          />
+            :aria-label="placeholder" />
+
           <div
             v-if="type === 'checkbox'"
-            class="checkMark"
-          >
-            <span v-if="internalChecked">V</span
-            ><span v-if="!internalChecked">&nbsp;</span>
+            class="checkMark">
+            <span v-if="internalChecked">V</span><span v-if="!internalChecked">&nbsp;</span>
           </div>
         </div>
 
         <!-- Label Right -->
         <div
           class="a-item label-right"
-          v-if="label && !flagLabelFirst"
-          :style="computedStyleLabel"
-        >
+          v-if="label !== '' && !flagLabelFirst"
+          :style="computedStyleLabel">
           <span>{{ label }}</span>
         </div>
       </label>
@@ -70,17 +65,14 @@
       <template v-if="type === 'text'">
         <a
           v-if="href"
-          :href="href"
-          >{{ formatter(value) }}</a
-        >
+          :href="href">{{ formatter(value) }}</a>
 
         <iframe
           v-else-if="src"
           :src="src"
           frameborder="1"
           width="90%"
-          height="250px"
-        />
+          height="250px" />
 
         <span v-else>{{ formatter(value) }}</span>
       </template>
@@ -404,7 +396,7 @@ export default {
   max-width: 99%;
   margin: 0 auto;
 
-  & .a-flex {
+  & label.a-flex {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -412,6 +404,7 @@ export default {
     gap: 2px;
 
     & .a-item {
+      flex: 1 1 0;
       min-width: 0;
       word-break: normal;
       word-wrap: break-word;
@@ -424,25 +417,29 @@ export default {
     }
 
     & .a-item:last-child {
-      flex: 1 1 auto;
+      flex: 1 1 0;
+      min-width: 0;
     }
   }
 
   // region TEXT/NUMBER
-  & input[type="text"]
-  , & input[type="number"]
-  {
+  & input[type="text"],
+  & input[type="number"] {
+    display: block;
+    box-sizing: border-box;
     border: 0.5px solid #666;
     border-radius: 8px;
     padding: 2px 2mm;
   }
+
   // endregion TEXT/NUMBER
+
   // region CHECKBOX
   & input[type="checkbox"] {
     display: none;
   }
 
-  & input[type="checkbox"] + .checkMark {
+  & input[type="checkbox"]+.checkMark {
     display: inline-block;
     // position: relative;
     // top: 15px;
@@ -456,7 +453,7 @@ export default {
     background-color: #ff0000;
   }
 
-  & input[type="checkbox"]:checked + .checkMark {
+  & input[type="checkbox"]:checked+.checkMark {
     background-color: #00ff00;
   }
 
