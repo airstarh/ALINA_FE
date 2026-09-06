@@ -7,7 +7,7 @@
       </div>
       <div class="col">
         <div class="row no-gutters align-items-center justify-content-start">
-          <div class="col text-nowrap mb-1" v-if="['date', 'dateTime'].includes(format)">
+          <div class="col text-nowrap" v-if="['date', 'dateTime'].includes(format)">
             &nbsp;
             <aInput v-model="year" :label='$t("DT_Y")' :placeholder="$t('YEAR')" :modeEdit="true" :maxLength="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" inputWidth="7ch" labelWidth="3ch" labelAlign="right" />
             &nbsp;
@@ -15,7 +15,7 @@
             &nbsp;
             <aInput v-model="day" :label='$t("DT_D")' :placeholder="$t('DAY')" :modeEdit="true" :maxLength="2" :max="31" :min="1" type="number" :idNameKey="`day-${idq}`" inputWidth="5ch" labelWidth="3ch" labelAlign="right" />
           </div>
-          <div class="col text-nowrap mb-1" v-if="['time', 'dateTime'].includes(format)">
+          <div class="col text-nowrap" v-if="['time', 'dateTime'].includes(format)">
             &nbsp;
             <aInput v-model="hour" type="number" :placeholder="$t('HOUR')" :label='$t("DT_h")' :maxLength="2" :max="23" :min="0" :idNameKey="`hour-${idq}`" :modeEdit="true" inputWidth="7ch" labelWidth="3ch" labelAlign="right" />
             &nbsp;
@@ -23,7 +23,7 @@
             &nbsp;
             <aInput v-model="sec" type="number" :placeholder="$t('SECOND')" :label='$t("DT_s")' :maxLength="2" :max="59" :min="0" :idNameKey="`sec-${idq}`" :modeEdit="true" inputWidth="5ch" labelWidth="3ch" labelAlign="right" />
           </div>
-          <div class="col text-nowrap mb-1">
+          <div class="col text-nowrap">
             &nbsp;
             <strong>{{ UtilsDate.fromUnixToDateTime(valueData) }}</strong>
             &nbsp;
@@ -168,5 +168,9 @@ export default {
 <style lang="scss">
 .alina-date-picker {
   display: inline-block;
+
+  .a-flex {
+    margin-bottom: 0;
+  }
 }
 </style>
