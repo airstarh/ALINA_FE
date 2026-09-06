@@ -6,6 +6,7 @@
       <b-button
         v-b-toggle="`comment-collapse-${answer_to_tale_id}`"
         :class="[
+          'comment-collapse-toggle',
           {
             'btn-md btn-a': level == 1,
             'btn-sm btn-a': level > 1,
@@ -508,6 +509,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.comment-collapse-toggle {
+  outline: none !important;
+  border: .5px solid #777 !important;
+  border-left: 0 !important;
+  border-radius: 0 4px 4px 0 !important;
+}
+
 .single-comment {
   background-color: #222;
   border-radius: 5%;
