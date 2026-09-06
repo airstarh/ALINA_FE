@@ -1,6 +1,10 @@
 <template>
   <div
     class="aInput notranslate"
+    :class="{
+      'aInput-edit': modeEdit,
+      'aInput-fixed-width': inputWidth,
+    }"
     :style="{ display: componentDisplay }">
     <template v-if="modeEdit">
       <label
@@ -393,9 +397,14 @@ export default {
 </script>
 <style scoped lang="scss">
 .aInput {
+  flex: 0 1 auto;
   max-width: 99%;
   min-width: 0;
   margin: 0;
+
+  &.aInput-edit:not(.aInput-fixed-width) {
+    flex: 1 1 10rem;
+  }
 
   & label.a-flex {
     display: flex;
