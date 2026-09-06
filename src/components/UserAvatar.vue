@@ -6,24 +6,20 @@
           class="text-left text-nowrap p-2 alina-user-avatar-wrapper"
           :style="{
             'border-radius': isComment ? '0 25px 25px 0' : '25px',
-          }"
-        >
+          }">
           <span>&nbsp;</span>
           <router-link
             :to="'/auth/profile/' + userId"
-            class=""
-          >
+            class="">
             <img
               :src="emblemUrl || 'noimage.png'"
               class="rounded-circle"
-              :style="{ width: emblemWidth }"
-            />
+              :style="{ width: emblemWidth }" />
           </router-link>
           <span>&nbsp;</span>
           <router-link
             :to="'/auth/profile/' + userId"
-            class="text-light alina-user-avatar"
-          >
+            class="text-light alina-user-avatar">
             {{
               UtilsStr.firstName(
                 this.userFirstName,
@@ -44,13 +40,12 @@
       </div>
       <div class="col">
         <div
-      class="text-right"
-      v-if="!UtilsData.empty(someDate)"
-    >
-      <span style="font-size: min(4vmin, 0.7em)">{{
-        UtilsDate.fromUnixToDateTime(someDate)
-      }}</span>
-    </div>
+          class="text-right"
+          v-if="!UtilsData.empty(someDate)">
+          <span style="font-size: min(4vmin, 0.7em)">{{
+            UtilsDate.fromUnixToDateTime(someDate)
+            }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -118,6 +113,14 @@ export default {
 .alina-user-avatar-wrapper {
   background-color: #22222288;
   border-radius: 0 20px 20px 0;
+
+  & img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
 }
 
 a.alina-user-avatar {
