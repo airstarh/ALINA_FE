@@ -394,7 +394,8 @@ export default {
 <style scoped lang="scss">
 .aInput {
   max-width: 99%;
-  margin: 0 auto;
+  min-width: 0;
+  margin: 0;
 
   & label.a-flex {
     display: flex;

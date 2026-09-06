@@ -213,8 +213,6 @@ export default {
 
 h1.profile-name > .profile-name-input {
   flex: 0 1 auto;
-  min-width: 0;
-  margin: 0;
 }
 
 h1.profile-name-edit > .profile-name-input {
