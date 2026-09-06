@@ -13,7 +13,7 @@
             class="">
             <img
               :src="emblemUrl || 'noimage.png'"
-              class="rounded-circle"
+              class="a-circle"
               :style="{ width: emblemWidth }" />
           </router-link>
           <span>&nbsp;</span>
@@ -113,14 +113,6 @@ export default {
 .alina-user-avatar-wrapper {
   background-color: #22222288;
   border-radius: 0 20px 20px 0;
-
-  & img {
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 50%;
-    vertical-align: middle;
-  }
 }
 
 a.alina-user-avatar {
