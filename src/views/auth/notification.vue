@@ -31,8 +31,8 @@
         >
                         <span class="col-auto">
                             <a :href="`/#/auth/profile/${item.from_id}`">
-                                <img v-if="item.from_emblem" :src="item.from_emblem" width="50px" class="rounded-circle">
-                                <img v-if="!item.from_emblem" src="@/assets/anarki.png" width="50px" class="rounded-circle">
+                                <img v-if="item.from_emblem" :src="item.from_emblem" width="50px" class="a-circle">
+                                <img v-if="!item.from_emblem" src="@/assets/anarki.png" width="50px" class="a-circle">
                             </a>
                         </span>
           <span class="col pl-1">

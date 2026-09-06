@@ -44,6 +44,7 @@
             alt="Vue logo"
             src="@/assets/logo.png"
             height="50"
+            class="a-circle"
           />
         </div>
         <div class="clear">&nbsp;</div>
@@ -59,13 +60,13 @@
                 v-if="CurrentUser.emblem"
                 :src="CurrentUser.emblem"
                 width="100px"
-                class="rounded-circle"
+                class="a-circle"
               />
               <img
                 v-if="!CurrentUser.emblem"
                 src="@/assets/anarki.png"
                 width="100px"
-                class="rounded-circle"
+                class="a-circle"
               />
             </router-link>
             <router-link

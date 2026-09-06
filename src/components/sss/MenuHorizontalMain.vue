@@ -61,8 +61,8 @@
             <!-- Using 'button-content' slot -->
             <template slot="button-content">
               <!--<em>{{this.CU.name()}}</em>-->
-              <img :src="CU.attributes.emblem" :alt="CU.attributes.firstname" height="40px" v-if="CU.attributes.emblem">
-              <img v-if="!CU.isLoggedIn() || !CU.attributes.emblem" src="@/assets/anarki.png" height="40px">
+              <img :src="CU.attributes.emblem" :alt="CU.attributes.firstname" height="40px" v-if="CU.attributes.emblem" class="a-circle">
+              <img v-if="!CU.isLoggedIn() || !CU.attributes.emblem" src="@/assets/anarki.png" height="40px" class="a-circle">
               <span class="mr-1 ml-1">{{ CU.attributes.firstname || CU.attributes.mail || 'ツ' }}</span>
             </template>
             <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">{{ $t("TXT_LOGIN") }}</b-dropdown-item>

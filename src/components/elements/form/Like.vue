@@ -37,16 +37,18 @@
         <div class="row no-gutters">
           <div class="col-auto">
             <router-link :to="`/auth/profile/${item.user_id}`">
-              <img
+              >>
                 v-if="item.from_emblem"
                 :src="item.from_emblem"
                 :alt="item.from_firstname"
                 width="70px"
+                class="a-circle"
               />
               <img
                 v-if="!item.from_emblem"
                 src="@/assets/anarki.png"
                 width="70px"
+                class="a-circle"
               />
             </router-link>
           </div>
