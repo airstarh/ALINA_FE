@@ -32,7 +32,9 @@
         <div class="col item-bio item-about-info">
           <div class="item-about">
             <div class="text-center">
-              <h1 class="notranslate font-weight-bold mb-4 d-flex flex-wrap" style="gap:2mm;">
+              <h1
+                class="profile-name notranslate font-weight-bold mb-4 d-flex flex-wrap justify-content-center"
+                :class="{ 'profile-name-edit': options.modeEdit }">
                 <aInput v-model="post.firstname" class="profile-name-input" :modeEdit="options.modeEdit" :placeholder="$t('First name')" inputAlign="center"/>
                 <aInput v-model="post.lastname" class="profile-name-input" :modeEdit="options.modeEdit" :placeholder="$t('Last name')" inputAlign="center"/>
               </h1>
@@ -204,9 +206,19 @@ export default {
 </script>
 
 <style>
-.profile-name-input {
-  flex: 1 1 10rem;
+.profile-name {
+  column-gap: .25em;
+  row-gap: .1em;
+}
+
+h1.profile-name > .profile-name-input {
+  flex: 0 1 auto;
   min-width: 0;
+  margin: 0;
+}
+
+h1.profile-name-edit > .profile-name-input {
+  flex: 1 1 10rem;
 }
 
 .container-bio {
