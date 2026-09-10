@@ -172,7 +172,7 @@
               <button
                 @click="ajaCommentAdd"
                 type="button"
-                class="btn btn-lg btn-success btn-block">
+                class="btn btn-lg btn-block btn-a">
                 {{ $t("i_ok") }}
               </button>
             </div>
