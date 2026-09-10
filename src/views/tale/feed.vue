@@ -81,7 +81,7 @@
                   class="col btn btn-sm cursor-pointer"
                   @click="scrollToClassName('alina-feed-start')"
                 >
-                  {{ $t("i_up") }}{{ $t("i_up") }}
+                  {{ tale.is_sticked ? $t("i_pin") : $t("i_up")+$t("i_up") }}
                 </div>
                 &nbsp;
                 <div
@@ -89,6 +89,12 @@
                   @click="scrollToClassName('alina-feed-end')"
                 >
                   {{ $t("i_down") }}{{ $t("i_down") }}
+                </div>
+                &nbsp;
+                <div
+                  class="col btn btn-sm cursor-pointer"
+                >
+                  <router-link :to="'/tale/upsert/' + tale.id">{{ $t("i_link") }}</router-link>
                 </div>
                 &nbsp;
                 <div
@@ -486,8 +492,9 @@ export default {
 .alina-feed-tale {
   border-radius: 20px;
   background-color: #333333;
-  box-shadow: 0 0 50px 25px rgba(0, 0, 0, 0.9);
-  margin-bottom: 25vh;
+  box-shadow: 0 33px 50px 25px rgba(0, 0, 0, 0.7);
+  margin-top: 13vh;
+  margin-bottom: 13vh;
 
   & .alina-feed-up-down {
     z-index: 500;
