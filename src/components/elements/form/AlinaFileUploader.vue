@@ -244,6 +244,7 @@ export default {
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             _t.loadFileList();
+            _t.dModeEdit = false;
           }
         },
       }).go();

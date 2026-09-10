@@ -609,7 +609,7 @@ export default {
     onClickBadResponse() {
       AjaxAlina.newInst({
         method: "GET",
-        url: `${ConfigApi.url_base}/admintests/errors`,
+        url: `${ConfigApi.url_base}/at/errors`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             MessagesObj.set("SUCCESS");
@@ -622,7 +622,7 @@ export default {
     onTestPost() {
       AjaxAlina.newInst({
         method: "POST",
-        url: `${ConfigApi.url_base}/admintests/TestPost`,
+        url: `${ConfigApi.url_base}/at/TestPost`,
         postParams: {
           form_id: "lalala",
         },

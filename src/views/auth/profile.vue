@@ -224,7 +224,6 @@ export default {
         height: min(50vw, 50vh);
         width: min(95vw, 500px);
         object-fit: cover;
-        background-color: red;
       }
     }
 
