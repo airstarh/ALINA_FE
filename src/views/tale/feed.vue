@@ -41,21 +41,19 @@
     <!-- region FEED  -->
     <div
       v-if="feed.length"
-      class="alina-feed-paginator-tale"
     >
       <div class="row no-gutters">
         <div class="col mx-auto">
           <!--##################################################-->
           <!-- region PAGINATOR -->
-          <div class="text-center alina-feed-paginator">
-            <Paginator
-              :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-              :pageSize="parseInt(feedPagination.pageSize)"
-              :rowsTotal="parseInt(feedPagination.rowsTotal)"
-              :pagesTotal="parseInt(feedPagination.pagesTotal)"
-              :onClickPage="pageChange"
-            ></Paginator>
-          </div>
+          <Paginator
+            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+            :pageSize="parseInt(feedPagination.pageSize)"
+            :rowsTotal="parseInt(feedPagination.rowsTotal)"
+            :pagesTotal="parseInt(feedPagination.pagesTotal)"
+            :onClickPage="pageChange"
+            class='feed-paginator'
+          ></Paginator>
           <!-- endregion PAGINATOR -->
           <!--##################################################-->
 
@@ -217,15 +215,14 @@
 
           <!--##################################################-->
           <!-- region LAST PAGINATOR -->
-          <div class="mt-5 text-center alina-feed-paginator">
-            <Paginator
-              :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-              :pageSize="parseInt(feedPagination.pageSize)"
-              :rowsTotal="parseInt(feedPagination.rowsTotal)"
-              :pagesTotal="parseInt(feedPagination.pagesTotal)"
-              :onClickPage="pageChange"
-            ></Paginator>
-          </div>
+          <Paginator
+            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+            :pageSize="parseInt(feedPagination.pageSize)"
+            :rowsTotal="parseInt(feedPagination.rowsTotal)"
+            :pagesTotal="parseInt(feedPagination.pagesTotal)"
+            :onClickPage="pageChange"
+            class='feed-paginator'
+          ></Paginator>
           <!-- endregion LAST PAGINATOR -->
           <!--##################################################-->
         </div>
@@ -513,5 +510,12 @@ export default {
     overflow: hidden;
     max-height: 65vh;
   }
+}
+
+.feed-paginator {
+  margin: 15mm 0 !important;
+  padding: 1px 3px;
+  background-color: #333333;
+  border-radius: 20px;
 }
 </style>
