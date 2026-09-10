@@ -82,7 +82,9 @@
         <BorgEditor
           v-if="!pageIsInIframe"
           :modeEdit="dConf.modeEdit"
-          v-model="tale.body" />
+          v-model="tale.body"
+          class="pl-1 pr-1"
+          />
 
         <div class="mb-3">&nbsp;</div>
 
@@ -317,7 +319,7 @@
 
         <!-- region Share & Likes-->
         <div
-          class="row no-gutters"
+          class="row no-gutters pl-1 pr-1"
           v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
             <div class="text-left m-buttons-1">

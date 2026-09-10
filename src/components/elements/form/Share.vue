@@ -7,6 +7,7 @@
       <b-icon icon="share" v-if="!stateCopying"></b-icon>
       <b-icon icon="check" v-if="stateCopying"></b-icon>
     </button>
+
     <ShareNetwork
       network="VK"
       :url="hrefToBackend"
