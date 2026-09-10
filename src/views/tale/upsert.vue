@@ -119,7 +119,7 @@
         <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
         <!-- region EDIT -->
-        <div v-if="!pageIsInIframe && dConf.modeEdit">
+        <div v-if="!pageIsInIframe && dConf.modeEdit" class="pl-4 pr-4">
           <div class="mb-3">&nbsp;</div>
 
           <!-- region DATE -->
@@ -291,7 +291,7 @@
         <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
         <!-- region Yandex Map-->
-        <div class="row no-gutters m-1">
+        <div class="row no-gutters m-1 pl-2">
           <div class="col">
             <AlinaYandexMap
               :item="tale"
