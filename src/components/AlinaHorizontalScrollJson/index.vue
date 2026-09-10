@@ -116,13 +116,16 @@ export default {
 <style scoped lang="scss">
 .scrolling-wrapper {
   display: flex;
-  align-items: stretch;
+  align-items: stdart;
+  justify-content1: stdart;
+  align-content: stretch;
   gap: 10px;
   flex-wrap: nowrap;
   overflow-x: auto;
 
   & .scrolling-item {
-    flex: 1 0 auto;
+    min-width:0;
+    flex: 1 1 0;
     border: #777 solid 1px;
     border-radius: 10px;
   }

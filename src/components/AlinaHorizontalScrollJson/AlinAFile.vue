@@ -112,7 +112,6 @@ export default {
 <style scoped lang="css">
 .alina-file {
   height: 40vh;
-  width: min(35ch, 90vw);
 }
 
 .alina-file.audio,
