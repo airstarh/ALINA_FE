@@ -486,7 +486,7 @@ export default {
 .alina-feed-tale {
   border-radius: 20px;
   background-color: #333333;
-  box-shadow: 0 0 50px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 50px 25px rgba(0, 0, 0, 0.9);
   margin-bottom: 25vh;
 
   & .alina-feed-up-down {
