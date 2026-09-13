@@ -494,7 +494,7 @@ export default {
   background-color: #333333;
   box-shadow: 0 33px 50px 25px rgba(0, 0, 0, 0.7);
   margin-top: 13vh;
-  margin-bottom: 13vh;
+  margin-bottom: 25vh;
 
   & .alina-feed-up-down {
     z-index: 500;

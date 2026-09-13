@@ -2,10 +2,10 @@
   <div class="alina-widget-clock">
     <div class="clock" @click="PageSettings.showMainMenu = !PageSettings.showMainMenu">
       <div class="m-0 p-0 date">
-        {{ date }}
+        {{ formatDate(dateObj) }}
       </div>
       <div class="text">
-        {{ UtilsDate.doExtractDayOfWeekName(dateObj) }}
+        {{ formatWeekday(dateObj) }}
       </div>
       <div class="time-wrapper">
         <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
@@ -21,7 +21,7 @@
       <div class="text">
         <div class="row">
           <div class="col text-right">
-            Quarter
+            {{ $t('Quarter') }}
           </div>
           <div class="col text-left">
             {{ UtilsDate.doExtractQuarterNumber(dateObj) }}
@@ -29,7 +29,7 @@
         </div>
         <div class="row">
           <div class="col text-right">
-            Week
+            {{ $t('Week') }}
           </div>
           <div class="col text-left">
             {{ UtilsDate.doExtractWeekNumber(dateObj) }}
@@ -37,7 +37,7 @@
         </div>
         <div class="row">
           <div class="col text-right">
-            Day of year
+            {{ $t('Day of year') }}
           </div>
           <div class="col text-left">
             {{ UtilsDate.doExtractDayOfYearNumber(dateObj) }}
@@ -51,6 +51,7 @@
 import UtilsStr     from "@/Utils/UtilsStr";
 import UtilsDate    from "@/Utils/UtilsDate";
 import PageSettings from "@/services/PageSettings";
+import CurrentLocale from "@/services/CurrentLocale";
 export default {
   name: "Clock",
   data() {
@@ -63,7 +64,8 @@ export default {
       dayOfYear: '',
       week:      ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
       UtilsDate,
-      PageSettings
+      PageSettings,
+      CurrentLocale
     }
   },
   created() {
@@ -79,6 +81,25 @@ export default {
       this.time    = tzp(cd.getHours(), 2) + ':' + tzp(cd.getMinutes(), 2) + ':' + tzp(cd.getSeconds(), 2);
       this.date    = tzp(cd.getFullYear(), 4) + '-' + tzp(cd.getMonth() + 1, 2) + '-' + tzp(cd.getDate(), 2) + ' ' + week[cd.getDay()];
       this.date    = UtilsDate.dateObjFormat(cd, 'dd MMMM yyyy');
+    },
+    formatDate(dateObj) {
+      const monthKey = `Clock.months.${dateObj.getMonth()}`;
+
+      if (this.CurrentLocale.language === 'ru' && this.$te(monthKey, 'ru')) {
+        return `${this.zeroPadding(dateObj.getDate(), 2)} ${this.$t(monthKey)} ${dateObj.getFullYear()}`;
+      }
+
+      const month = new Intl.DateTimeFormat(this.CurrentLocale.language, {month: 'long'}).format(dateObj);
+      return `${this.zeroPadding(dateObj.getDate(), 2)} ${month} ${dateObj.getFullYear()}`;
+    },
+    formatWeekday(dateObj) {
+      const weekdayKey = `Clock.weekdays.${dateObj.getDay()}`;
+
+      if (this.CurrentLocale.language === 'ru' && this.$te(weekdayKey, 'ru')) {
+        return this.$t(weekdayKey);
+      }
+
+      return new Intl.DateTimeFormat(this.CurrentLocale.language, {weekday: 'long'}).format(dateObj);
     },
     zeroPadding(num, digit) {
       return UtilsStr.zeroPadding(num, digit)
