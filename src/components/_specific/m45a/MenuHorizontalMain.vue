@@ -25,10 +25,10 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right>
+        <b-navbar-nav class="ms-auto">
+          <b-nav-item-dropdown end toggle-class="corporate-bg-and-text text-decoration-none">
             <!-- Using 'button-content' slot -->
-            <template slot="button-content">
+            <template #button-content>
               <img :src="CU.attributes.emblem" :alt="CU.attributes.firstname" height="40px" v-if="CU.attributes.emblem">
               <img v-if="!CU.isLoggedIn() || !CU.attributes.emblem" src="@/assets/anarki.png" height="40px">
               <span class="me-1 ms-1">{{ CU.attributes.firstname || CU.attributes.mail || 'ツ' }}</span>
