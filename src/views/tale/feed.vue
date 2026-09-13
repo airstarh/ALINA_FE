@@ -488,6 +488,9 @@ export default {
 }
 
 .alina-feed-tale {
+  width: 100%;
+  max-width: 1000px;
+  margin-inline: auto;
   border-radius: 20px;
   background-color: #333333;
   box-shadow: 0 33px 50px 25px rgba(0, 0, 0, 0.7);
@@ -518,7 +521,9 @@ export default {
 }
 
 .alina-feed-wrapper {
-  max-width: 1140px;
+  width: 100%;
+  max-width: 1000px;
+  margin-inline: auto;
 }
 
 .feed-paginator {

@@ -35,8 +35,7 @@
             class="notranslate alina-tale-date">
             <router-link
               :to="'/tale/upsert/' + tale.id"
-              class="btn-sm text-start mb-1 corporate-bg-gradient no-decoration"
-              style="font-size: 2vmin">
+              class="btn-sm text-start mb-1 corporate-bg-gradient no-decoration alina-tale-date-link">
               {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
             </router-link>
           </div>
@@ -679,5 +678,18 @@ export default {
   bottom: 0;
   z-index: 1;
   transform: translateY(50%);
+}
+
+.alina-tale-date-link {
+  display: inline-block;
+  padding: 2px !important;
+  font-size: min(2vmin, .8rem);
+  line-height: 1.2;
+}
+
+.alina-tale-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin-inline: auto;
 }
 </style>
