@@ -1,9 +1,9 @@
 <template>
   <div class="UserAvatar">
-    <div class="row no-gutters align-items-center">
+    <div class="row g-0 align-items-center">
       <div class="col">
         <span
-          class="text-left text-nowrap p-2 alina-user-avatar-wrapper"
+          class="text-start text-nowrap p-2 alina-user-avatar-wrapper"
           :style="{
             'border-radius': isComment ? '0 25px 25px 0' : '25px',
           }">
@@ -40,7 +40,7 @@
       </div>
       <div class="col">
         <div
-          class="text-right"
+          class="text-end"
           v-if="!UtilsData.empty(someDate)">
           <span style="font-size: min(4vmin, 0.7em)">{{
             UtilsDate.fromUnixToDateTime(someDate)
@@ -68,7 +68,7 @@ export default {
   },
   props: {
     userId: {
-      type: String | Number,
+      type: [String, Number],
       default: "",
     },
     userFirstName: {
@@ -80,7 +80,7 @@ export default {
       default: "",
     },
     someDate: {
-      type: String | Number,
+      type: [String, Number],
       default: "",
     },
     emblemUrl: {

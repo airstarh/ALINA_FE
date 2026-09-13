@@ -35,14 +35,14 @@
           flagShowDownLoad(pFileJson.fType) ? pFileJson.name_human : null
         "
       >
-        <b-icon
+        <i
           v-if="UtilsFS.typePdf === pFileJson.fType"
-          icon="file-earmark-pdf"
-        ></b-icon>
-        <b-icon
+          class="bi bi-file-earmark-pdf"
+        ></i>
+        <i
           v-else
-          icon="file-earmark-richtext"
-        ></b-icon>
+          class="bi bi-file-earmark-richtext"
+        ></i>
       </a>
     </div>
 

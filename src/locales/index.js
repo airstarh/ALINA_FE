@@ -36,7 +36,7 @@ const Translations = {
     i_reconnect: "🗘",
     i_loading: "...",
     i_chat: "💬",
-    i_home: process.env.VUE_APP_ALINA_NAME_SHORT,
+    i_home: import.meta.env.VITE_APP_ALINA_NAME_SHORT,
     i_channel: "🎥",
     i_info: "i",
     i_pin: "📌",

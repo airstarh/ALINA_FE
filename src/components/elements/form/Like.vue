@@ -7,12 +7,12 @@
       <span
         v-if="dCurrentUserLiked"
         class="text-danger"
-        ><b-icon-heart-fill></b-icon-heart-fill
+        ><i class="bi bi-heart-fill"></i
       ></span>
       <span
         v-if="!dCurrentUserLiked"
         class="text-white"
-        ><b-icon-heart></b-icon-heart
+        ><i class="bi bi-heart"></i
       ></span></button
     ><button
       @click="ajaGetFeed"
@@ -34,7 +34,7 @@
         :key="item.id"
         class="mb-1"
       >
-        <div class="row no-gutters">
+        <div class="row g-0">
           <div class="col-auto">
             <router-link :to="`/auth/profile/${item.user_id}`">
               >>
@@ -52,7 +52,7 @@
               />
             </router-link>
           </div>
-          <div class="col pl-2">
+          <div class="col ps-2">
             <router-link
               :to="`/auth/profile/${item.user_id}`"
               class="btn btn-primary"
@@ -93,11 +93,11 @@ export default {
   },
   props: {
     pAmountLikes: {
-      type: Number | String,
+      type: [Number, String],
       default: 0,
     },
     pCurrentUserLiked: {
-      type: Number | String,
+      type: [Number, String],
       default: 0,
     },
     ref_table: {

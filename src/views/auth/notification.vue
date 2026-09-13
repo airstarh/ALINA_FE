@@ -1,7 +1,7 @@
 <template>
   <div class="container p-0">
     <div v-if="feed.length == 0">List is empty</div>
-    <div v-if="feed.length > 0" class="row no-gutters p-0">
+    <div v-if="feed.length > 0" class="row g-0 p-0">
       <div class="col mx-auto">
         <div class="mb-5 text-center">
           <Paginator
@@ -14,7 +14,7 @@
         </div>
         <!-- ##################################################-->
         <!-- region Feed -->
-        <div class="row no-gutters mb-5">
+        <div class="row g-0 mb-5">
           <div class="col">
             <button
                 @click="ajaDeleteAll"
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div v-for="(item, index) in feed" v-bind:key="item.id"
-             class="row no-gutters mb-3"
+             class="row g-0 mb-3"
              :class="{
                             'ishown': item.is_shown
                          }"
@@ -35,7 +35,7 @@
                                 <img v-if="!item.from_emblem" src="@/assets/anarki.png" width="50px" class="a-circle">
                             </a>
                         </span>
-          <span class="col pl-1">
+          <span class="col ps-1">
                             <span class="backend-text">
                               <router-link :to="txtUrl(item)" class="btn btn-primary">
                                 {{ $t(txtText(item)) }}

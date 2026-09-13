@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="container mt-3 mb-3 p-0">
-      <div class="row no-gutters mt-2 mb-2">
+      <div class="row g-0 mt-2 mb-2">
         <div class="col"></div>
-        <div class="col-auto row no-gutters justify-content-end" style="gap:5mm;">
+        <div class="col-auto row g-0 justify-content-end" style="gap:5mm;">
           <sup class="f-left text-sm">[ID {{ post.id }}]</sup>
           <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-a" style="min-width: 8ch;">{{ $t("i_delete") }}</button>
           <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-a">{{ options.modeEdit ? $t("i_cancel") : $t("i_edit") }}</button>
@@ -13,7 +13,7 @@
     </div>
 
     <div class="container-fluid container-bio">
-      <div class="row no-gutters row-bio" style="gap:7mm;">
+      <div class="row g-0 row-bio" style="gap:7mm;">
         <div class="col item-bio item-photo">
           <aInput
             v-if="options.modeEdit"

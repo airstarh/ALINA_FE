@@ -5,17 +5,15 @@
 
     <!--##################################################-->
     <!-- region SEARCH -->
-    <div class="row no-gutters">
+    <div class="row g-0">
       <div class="col">
-        <div class="input-group mb-3 btn btn-block btn-dark">
-          <div class="input-group-prepend">
-            <button
-              @click="search"
-              class="input-group-text btn btn-primary"
-            >
-              <b-icon icon="search"></b-icon>
-            </button>
-          </div>
+        <div class="input-group mb-3 btn w-100 btn-dark">
+          <button
+            @click="search"
+            class="input-group-text btn btn-primary"
+          >
+            <i class="bi bi-search"></i>
+          </button>
           <input
             type="text"
             class="form-control"
@@ -23,14 +21,12 @@
             v-model="dataGetParams.txt"
             placeholder=""
           />
-          <div class="input-group-append">
-            <button
-              @click="searchClear"
-              class="input-group-text btn btn-danger"
-            >
-              <b-icon icon="backspace-fill"></b-icon>
-            </button>
-          </div>
+          <button
+            @click="searchClear"
+            class="input-group-text btn btn-danger"
+          >
+            <i class="bi bi-backspace-fill"></i>
+          </button>
         </div>
       </div>
     </div>
@@ -42,7 +38,7 @@
     <div
       v-if="feed.length"
     >
-      <div class="row no-gutters">
+      <div class="row g-0">
         <div class="col mx-auto">
           <!--##################################################-->
           <!-- region PAGINATOR -->
@@ -59,24 +55,25 @@
 
           <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
           <!-- region WRAPPER TALE-->
-          <div
+          <template
             v-for="(tale, index) in feed"
-            :key="tale.id"
-            v-if="tale.id"
-            v-bind:key="tale.id"
-            :class="[
-              'alina-feed-tale',
-              `alina-feed-tale-order-${index}`,
-              `alina-feed-tale-id-${tale.id}`,
-            ]"
+            :key="tale?.id ?? index"
           >
+            <div
+              v-if="tale?.id"
+              :class="[
+                'alina-feed-tale',
+                `alina-feed-tale-order-${index}`,
+                `alina-feed-tale-id-${tale.id}`,
+              ]"
+            >
             <!--##################################################-->
             <!-- region UP DOWN EACH TALE -->
             <div
               v-if="tale.id"
               class="sticky-top"
             >
-              <div class="row no-gutters text-center alina-feed-up-down mt-3">
+              <div class="row g-0 text-center alina-feed-up-down mt-3">
                 <div
                   class="col btn btn-sm cursor-pointer"
                   @click="scrollToClassName('alina-feed-start')"
@@ -127,7 +124,7 @@
                   tale.is_adult_denied == 1 && !feedForceShow.includes(tale.id)
                 "
               >
-                <div class="row no-gutters mb-5">
+                <div class="row g-0 mb-5">
                   <div class="img-wrapper">
                     <img
                       class="img-responsive"
@@ -135,7 +132,7 @@
                     />
                     <div class="img-overlay">
                       <button
-                        class="btn btn-lg btn-block btn-primary"
+                        class="btn btn-lg w-100 btn-primary"
                         @click="feedForceShow.push(tale.id)"
                       >
                         I am ready to watch dangerous content
@@ -191,14 +188,15 @@
                 {{ expandedTales[tale.id] ? $t("i_collapse") : $t("i_expand") }}
               </button>
             </div>
-          </div>
+            </div>
+          </template>
           <!-- endregion WRAPPER TALE-->
           <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
           <!--##################################################-->
           <!-- region LAST UPDOWN -->
           <div class="sticky-top">
-            <div class="row no-gutters text-center mb-5 alina-feed-up-down">
+            <div class="row g-0 text-center mb-5 alina-feed-up-down">
               <div
                 class="col btn btn-secondary cursor-pointer"
                 @click="scrollToClassName('alina-feed-start')"
@@ -314,11 +312,11 @@ export default {
         val = forcedValue;
       }
 
-      this.$set(this.expandedTales, taleId, val);
+      this.expandedTales[taleId] = val;
     },
 
     modifyAddressBar(q = {}) {
-      const path = this.$router.currentRoute.path;
+      const path = this.$route.path;
       const query = {
         ...this.$route.query,
         ...q,
@@ -479,7 +477,7 @@ export default {
   max-height: 99999px;
 }
 
-.slide-fade-enter {
+.slide-fade-enter-from {
   max-height: 0;
   opacity: 0;
 }

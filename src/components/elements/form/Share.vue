@@ -4,33 +4,28 @@
       class="btn btn-sm btn-secondary rounded-circle"
       @click="copyToBuffer"
       :title="$t('Copy link')">
-      <b-icon icon="share" v-if="!stateCopying"></b-icon>
-      <b-icon icon="check" v-if="stateCopying"></b-icon>
+      <i class="bi bi-share" v-if="!stateCopying"></i>
+      <i class="bi bi-check" v-if="stateCopying"></i>
     </button>
 
-    <ShareNetwork
-      network="VK"
-      :url="hrefToBackend"
-      :title="`${tale.header}`"
-      :description="UtilsStr.truncate(tale.body_txt, 100)">
-      <button
-        class="btn p-1"
-        title="vkontakte">
+    <button
+      class="btn p-1"
+      title="vkontakte"
+      @click="shareToVk">
         <svg
           height="1.8rem"
           width="1.8rem"
           class="corporate-svg-fill">
-          <use :xlink:href="`${iconVk.url}`"></use>
+          <use :href="iconVk"></use>
         </svg>
-      </button>
-    </ShareNetwork>
+    </button>
   </span>
 </template>
 
 <script>
 import ConfigApi from "@/configs/ConfigApi";
 import UtilsStr from "@/Utils/UtilsStr";
-import iconVk from "@/assets/svg/socialnets/vk.svg";
+import iconVk from "@/assets/svg/socialnets/vk.svg?url&no-inline";
 import UtilsSys from "@/Utils/UtilsSys";
 export default {
   name: "Share",
@@ -59,6 +54,18 @@ export default {
     };
   },
   methods: {
+    shareToVk() {
+      const params = new URLSearchParams({
+        url: this.hrefToBackend,
+        title: this.tale.header || "",
+        description: UtilsStr.truncate(this.tale.body_txt || "", 100),
+      });
+      window.open(
+        `https://vk.com/share.php?${params.toString()}`,
+        "vk-share",
+        "width=640,height=480,noopener,noreferrer"
+      );
+    },
     copyToBuffer() {
       this.stateCopying = true;
       navigator.clipboard.writeText(this.hrefToBackend);

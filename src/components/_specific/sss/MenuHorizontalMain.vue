@@ -6,18 +6,18 @@
       <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
       <b-navbar-nav class="flex-row">
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="m-2">
-          <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
+          <i class="bi bi-plus-circle-fill"></i>
         </b-nav-item>
         <b-nav-item to="/notification" v-if="CU.isLoggedIn()" class="m-2">
-          <b-icon-info-circle-fill></b-icon-info-circle-fill>
+          <i class="bi bi-info-circle-fill"></i>
           <sup
             v-if="CU.attributes.count_notifications"
-            class="btn btn-small btn-warning rounded-circle p-0 m-0 pr-1 pl-1"
+            class="btn btn-small btn-warning rounded-circle p-0 m-0 pe-1 ps-1"
             style="font-size: .8rem; line-height: 1.2rem; height:1.2rem; vertical-align: middle; left:-.3rem">&nbsp;{{ CU.attributes.count_notifications }}&nbsp;</sup>
         </b-nav-item>
         <b-nav-item to="/auth/login" v-if="!CU.isLoggedIn()" class="m-2">
           <button class="btn-sm btn-dark">
-            <b-icon-check-square-fill></b-icon-check-square-fill>
+            <i class="bi bi-check-square-fill"></i>
             {{ $t("TXT_LOGIN") }}
           </button>
         </b-nav-item>
@@ -63,7 +63,7 @@
               <!--<em>{{this.CU.name()}}</em>-->
               <img :src="CU.attributes.emblem" :alt="CU.attributes.firstname" height="40px" v-if="CU.attributes.emblem" class="a-circle">
               <img v-if="!CU.isLoggedIn() || !CU.attributes.emblem" src="@/assets/anarki.png" height="40px" class="a-circle">
-              <span class="mr-1 ml-1">{{ CU.attributes.firstname || CU.attributes.mail || 'ツ' }}</span>
+              <span class="me-1 ms-1">{{ CU.attributes.firstname || CU.attributes.mail || 'ツ' }}</span>
             </template>
             <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">{{ $t("TXT_LOGIN") }}</b-dropdown-item>
             <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">{{ $t("TXT_REGISTER") }}</b-dropdown-item>
@@ -84,7 +84,7 @@
     </b-navbar>
 
     <div style="width:95vw; margin: 10px auto; background-color: #221111; padding:5px 10px; border-radius: 10px;">
-      <div class="row no-gutters align-items-center">
+      <div class="row g-0 align-items-center">
 
         <div class="col-12 col-md-9">
           Настоящим уведомляем, что данный сайт содержит информацию, доступ к которой ограничен для лиц младше 18 лет в соответствии с действующим законодательством РФ. Продолжая использование сайта, вы подтверждаете, что достигли возраста 18 лет и принимаете условия ограничения.
@@ -122,7 +122,7 @@ export default {
     setLocale(newVal) {
       this.languageSelected   = newVal;
       CurrentLocale.language  = newVal;
-      this.$root.$i18n.locale = newVal;
+      this.$i18n.locale = newVal;
     }
   },
   watch:   {

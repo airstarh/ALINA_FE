@@ -10,14 +10,14 @@
         'container-fluid': pageIsInIframe,
       },
     ]">
-    <div :class="['row', 'no-gutters', `alina-tale-id-${tale.id}`]">
+    <div :class="['row', 'g-0', `alina-tale-id-${tale.id}`]">
       <div class="col-12">
         <div
           v-if="!pageIsInIframe && tale.is_header_hidden != 1"
           style="position: relative">
           <h1
             :class="[
-              'notranslate m-0 p-2 text-left rounded-bottom alina-tale-header',
+              'notranslate m-0 p-2 text-start rounded-bottom alina-tale-header',
               {
                 'bg-danger': tale.is_adult_denied == 1,
               },
@@ -41,7 +41,7 @@
             ">
             <router-link
               :to="'/tale/upsert/' + tale.id"
-              class="btn-sm text-left mb-1 corporate-bg-gradient no-decoration"
+              class="btn-sm text-start mb-1 corporate-bg-gradient no-decoration"
               style="font-size: 2vmin">
               {{ UtilsDate.fromUnixToDateTime(tale.publish_at) }}
             </router-link>
@@ -50,7 +50,7 @@
 
         <div
           v-if="!pageIsInIframe"
-          class="row no-gutters mt-2 mb-2 align-items-center justify-content-between mb-3 mt-3">
+          class="row g-0 mt-2 mb-2 align-items-center justify-content-between mb-3 mt-3">
           <div class="col">
             <!-- region  AVATAR -->
             <UserAvatar
@@ -83,7 +83,7 @@
           v-if="!pageIsInIframe"
           :modeEdit="dConf.modeEdit"
           v-model="tale.body"
-          class="pl-1 pr-1"
+          class="ps-1 pe-1"
           />
 
         <div class="mb-3">&nbsp;</div>
@@ -99,8 +99,8 @@
           <aInput
             v-model="tale.iframe"
             :src="tale.iframe"
-            :label="$tc('iframe')"
-            :placeholder="$tc('iframe').toString()"
+            :label="$t('iframe')"
+            :placeholder="$t('iframe').toString()"
             :modeEdit="dConf.modeEdit"
             componentDisplay="block" />
 
@@ -119,7 +119,7 @@
         <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
         <!-- region EDIT -->
-        <div v-if="!pageIsInIframe && dConf.modeEdit" class="pl-4 pr-4">
+        <div v-if="!pageIsInIframe && dConf.modeEdit" class="ps-4 pe-4">
           <div class="mb-3">&nbsp;</div>
 
           <!-- region DATE -->
@@ -137,14 +137,12 @@
           <div v-if="CU.isAdmin()">
             <div class="input-group input-group mb-3">
               <!-- body_free -->
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">{{
-                  $tc("body_free")
-                }}</span>
-              </div>
+              <span class="input-group-text bg-dark text-light">{{
+                $t("body_free")
+              }}</span>
               <textarea
                 class="form-control"
-                :placeholder="$tc('body_free').toString()"
+                :placeholder="$t('body_free').toString()"
                 v-model="tale.body_free"
                 rows="20"></textarea>
             </div>
@@ -162,15 +160,15 @@
 
             <aInput
               v-model="tale.router_alias"
-              :label="$tc('Page Alias').toString()"
-              :placeholder="$tc('Page Alias').toString()"
+              :label="$t('Page Alias').toString()"
+              :placeholder="$t('Page Alias').toString()"
               :modeEdit="dConf.modeEdit"
               componentDisplay="block" />
           </div>
           <!-- endregion ALIAS -->
 
           <!-- region TALE VIEW SETTINGS -->
-          <div class="row no-gutters tale-view-settings">
+          <div class="row g-0 tale-view-settings">
             <div class="col-md">
               <div class="mb-3">
                 <!-- is_header_hidden -->
@@ -278,8 +276,8 @@
               <div class="mb-3">
                 <aInput
                   v-model="tale.seo_index"
-                  :label="$tc(' SEO Index')"
-                  :placeholder="$tc('SEO Index')"
+                  :label="$t(' SEO Index')"
+                  :placeholder="$t('SEO Index')"
                   :modeEdit="dConf.modeEdit" />
               </div>
             </div>
@@ -291,7 +289,7 @@
         <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
         <!-- region Yandex Map-->
-        <div class="row no-gutters m-1 pl-2">
+        <div class="row g-0 m-1 ps-2">
           <div class="col">
             <AlinaYandexMap
               :item="tale"
@@ -319,15 +317,15 @@
 
         <!-- region Share & Likes-->
         <div
-          class="row no-gutters pl-1 pr-1"
+          class="row g-0 ps-1 pe-1"
           v-if="tale.is_social_sharing_hidden != 1">
           <div class="col">
-            <div class="text-left m-buttons-1">
+            <div class="text-start m-buttons-1">
               <Share :tale="tale"></Share>
             </div>
           </div>
           <div class="col-auto">
-            <div class="text-right">
+            <div class="text-end">
               <Like
                 v-if="tale.is_comment_denied != 1"
                 :pAmountLikes="tale.count_like"

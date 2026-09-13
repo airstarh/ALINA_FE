@@ -1,4 +1,4 @@
-import {dateFilter} from "vue-date-fns";
+import {format as formatDate} from "date-fns";
 import UtilsData    from "@/Utils/UtilsData";
 export default class UtilsDate {
 	//##################################################
@@ -8,7 +8,7 @@ export default class UtilsDate {
 	static FORMAT_DB_TIME_NO_DATE = "H:m:s";
 
 	static dateObjFormat(dateObj, format = UtilsDate.FORMAT_DB_DATE_TIME) {
-		return dateFilter(dateObj, format);
+		return formatDate(dateObj, format);
 	}
 
 	static toDateObj(d, isUnixSecs = false) {

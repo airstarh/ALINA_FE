@@ -20,26 +20,26 @@
       </div>
       <div class="text">
         <div class="row">
-          <div class="col text-right">
+          <div class="col text-end">
             {{ $t('Quarter') }}
           </div>
-          <div class="col text-left">
+          <div class="col text-start">
             {{ UtilsDate.doExtractQuarterNumber(dateObj) }}
           </div>
         </div>
         <div class="row">
-          <div class="col text-right">
+          <div class="col text-end">
             {{ $t('Week') }}
           </div>
-          <div class="col text-left">
+          <div class="col text-start">
             {{ UtilsDate.doExtractWeekNumber(dateObj) }}
           </div>
         </div>
         <div class="row">
-          <div class="col text-right">
+          <div class="col text-end">
             {{ $t('Day of year') }}
           </div>
-          <div class="col text-left">
+          <div class="col text-start">
             {{ UtilsDate.doExtractDayOfYearNumber(dateObj) }}
           </div>
         </div>
@@ -57,6 +57,7 @@ export default {
   data() {
     return {
       dateObj:   new Date(),
+      intervalId: null,
       time:      '',
       date:      '',
       quarter:   '',
@@ -70,7 +71,10 @@ export default {
   },
   created() {
     const updateTime = this.updateTime;
-    setInterval(updateTime, 1000)
+    this.intervalId = setInterval(updateTime, 1000)
+  },
+  beforeUnmount() {
+    clearInterval(this.intervalId);
   },
   methods: {
     updateTime() {
@@ -157,7 +161,7 @@ export default {
   transition: all .8s ease;
 }
 
-.slide-fade-enter, .slide-fade-leave-to
+.slide-fade-enter-from, .slide-fade-leave-to
   /* .slide-fade-leave-active for <2.1.8 */
 {
   opacity: 0;

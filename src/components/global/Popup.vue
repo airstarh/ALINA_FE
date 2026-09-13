@@ -112,7 +112,7 @@ export default {
     window.addEventListener("popstate", this.popupHandleState);
   },
 
-  beforeDestroy() {
+  beforeUnmount() {
     // Cleanup listeners
     window.removeEventListener("popstate", this.popupHandleState);
     document.removeEventListener("keydown", this.popupHandleCloseByKeyboard);

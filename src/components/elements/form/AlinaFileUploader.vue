@@ -9,7 +9,7 @@
           v-b-toggle="[`f-${entity_id}`]"
           class="btn-a">
           <span style="font-size: 2em; vertical-align: middle">
-            <b-icon icon="file-earmark-richtext"></b-icon>
+            <i class="bi bi-file-earmark-richtext"></i>
           </span>
           <span>{{ $t("Attached files") }}</span>
           <span
@@ -24,11 +24,11 @@
           {{ dModeEdit ? $t("i_undo") : $t("i_edit") }}
         </button>
 
-        <b-btn
+        <b-button
           v-if="dModeEdit && dArrFiles.length > 0"
           size="md"
           class="btn btn-a"
-          @click="onChangeBulk(dArrFiles)">{{ $t("i_ok") }}</b-btn>
+          @click="onChangeBulk(dArrFiles)">{{ $t("i_ok") }}</b-button>
       </div>
 
       <b-collapse

@@ -9,14 +9,14 @@
         <span style="font-size: min(3vw, 1em)">официальный сайт</span>
       </b-navbar-brand>
       <b-navbar-nav class="flex-row">
-        <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="mr-3">
-          <b-icon-plus-circle-fill></b-icon-plus-circle-fill>
+        <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="me-3">
+          <i class="bi bi-plus-circle-fill"></i>
         </b-nav-item>
-        <b-nav-item to="/notification" v-if="CU.isLoggedIn()" class="mr-3">
-          <b-icon-info-circle-fill></b-icon-info-circle-fill>
+        <b-nav-item to="/notification" v-if="CU.isLoggedIn()" class="me-3">
+          <i class="bi bi-info-circle-fill"></i>
           <sup
               v-if="CU.attributes.count_notifications"
-              class="btn btn-small btn-warning rounded-circle p-0 m-0 pr-1 pl-1"
+              class="btn btn-small btn-warning rounded-circle p-0 m-0 pe-1 ps-1"
               style="font-size: .8rem; line-height: 1.2rem; height:1.2rem; vertical-align: middle; left:-.3rem"
           >&nbsp;{{ CU.attributes.count_notifications }}&nbsp;</sup>
         </b-nav-item>
@@ -31,7 +31,7 @@
             <template slot="button-content">
               <img :src="CU.attributes.emblem" :alt="CU.attributes.firstname" height="40px" v-if="CU.attributes.emblem">
               <img v-if="!CU.isLoggedIn() || !CU.attributes.emblem" src="@/assets/anarki.png" height="40px">
-              <span class="mr-1 ml-1">{{ CU.attributes.firstname || CU.attributes.mail || 'ツ' }}</span>
+              <span class="me-1 ms-1">{{ CU.attributes.firstname || CU.attributes.mail || 'ツ' }}</span>
             </template>
             <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">{{ $t("TXT_LOGIN") }}</b-dropdown-item>
             <b-dropdown-item to="/tale/upsert" v-if="CU.isLoggedIn()">{{ $t("TXT_ADD_TALE") }}</b-dropdown-item>
@@ -64,7 +64,7 @@ export default {
     setLocale(newVal) {
       this.languageSelected   = newVal;
       CurrentLocale.language  = newVal;
-      this.$root.$i18n.locale = newVal;
+      this.$i18n.locale = newVal;
     }
   },
   watch:   {

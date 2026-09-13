@@ -1,6 +1,6 @@
 <template>
   <div class="container p-0 alina-ui-test-wrapper">
-    <div class="row no-gutters">
+    <div class="row g-0">
       <div class="col">
         <div class="alina-ui-test-unit">
           <h1>Test</h1>
@@ -51,7 +51,7 @@
 
         <div class="alina-ui-test-unit">
           <h1>Avatar try</h1>
-          <span class="btn-secondary text-left text-nowrap badge-pill p-2">
+          <span class="btn-secondary text-start text-nowrap rounded-pill p-2">
             <router-link
               :to="'/auth/profile/' + CurrentUser.id"
               class="fixed-height-150px"
@@ -150,29 +150,29 @@
               class="icon--inline"
               color="currentColor"
             >
-              <use :xlink:href="`${iconFb.url}`"></use>
+              <use :href="iconFb"></use>
             </svg>
             <svg
               width="55"
               class="icon--inline"
               color="currentColor"
             >
-              <use :xlink:href="`${iconFb.url}`"></use>
+              <use :href="iconFb"></use>
             </svg>
             <svg
               width="55"
               class="icon--inline"
               color="currentColor"
             >
-              <use :xlink:href="`${iconSk.url}`"></use>
+              <use :href="iconSk"></use>
             </svg>
 
             <svg width="55">
-              <use :xlink:href="`${iconVk.url}`"></use>
+              <use :href="iconVk"></use>
             </svg>
 
             <svg width="55">
-              <use :xlink:href="`${iconWp.url}`"></use>
+              <use :href="iconWp"></use>
             </svg>
 
             <svg
@@ -180,15 +180,15 @@
               class="icon--inline"
               color="currentColor"
             >
-              <use :xlink:href="`${iconVi.url}`"></use>
+              <use :href="iconVi"></use>
             </svg>
 
             <svg width="55">
-              <use :xlink:href="`${iconTg.url}`"></use>
+              <use :href="iconTg"></use>
             </svg>
 
             <svg width="55">
-              <use :xlink:href="`${iconIn.url}`"></use>
+              <use :href="iconIn"></use>
             </svg>
           </span>
         </div>
@@ -271,11 +271,11 @@
           <h1>Date FNS</h1>
           <div>
             <!--<div>Now: {{ now }}</div>-->
-            <div>Now: {{ new Date() | date }}</div>
-            <div>Now: {{ $date(new Date()) }}</div>
-            <div>Now: {{ new Date() | date("dd MMMM yyyy") }}</div>
-            <div>Now: {{ $date(new Date(), "dd MMMM yyyy") }}</div>
-            <div>Now: {{ $date(new Date(), "X") }}</div>
+            <div>Now: {{ UtilsDate.dateObjFormat(new Date()) }}</div>
+            <div>Now: {{ UtilsDate.dateObjFormat(new Date()) }}</div>
+            <div>Now: {{ UtilsDate.dateObjFormat(new Date(), "dd MMMM yyyy") }}</div>
+            <div>Now: {{ UtilsDate.dateObjFormat(new Date(), "dd MMMM yyyy") }}</div>
+            <div>Now: {{ UtilsDate.dateObjFormat(new Date(), "X") }}</div>
             <br />
             {{ dateExample }}
           </div>
@@ -519,13 +519,13 @@ import AjaxAlina from "@/services/AjaxAlina";
 import ConfigApi from "@/configs/ConfigApi";
 import MessagesObj from "@/services/MessagesObj";
 import SpinnerObj from "@/services/SpinnerObj";
-import iconVk from "@/assets/svg/socialnets/vk.svg";
-import iconFb from "@/assets/svg/socialnets/fb.svg";
-import iconWp from "@/assets/svg/socialnets/whatsapp.svg";
-import iconTg from "@/assets/svg/socialnets/telgram.svg";
-import iconIn from "@/assets/svg/socialnets/linkedin.svg";
-import iconSk from "@/assets/svg/socialnets/skype.svg";
-import iconVi from "@/assets/svg/socialnets/viber.svg";
+import iconVk from "@/assets/svg/socialnets/vk.svg?url&no-inline";
+import iconFb from "@/assets/svg/socialnets/fb.svg?url&no-inline";
+import iconWp from "@/assets/svg/socialnets/whatsapp.svg?url&no-inline";
+import iconTg from "@/assets/svg/socialnets/telgram.svg?url&no-inline";
+import iconIn from "@/assets/svg/socialnets/linkedin.svg?url&no-inline";
+import iconSk from "@/assets/svg/socialnets/skype.svg?url&no-inline";
+import iconVi from "@/assets/svg/socialnets/viber.svg?url&no-inline";
 import BorgEditor from "@/components/BorgEditor/index.vue";
 import CurrentUser from "@/services/CurrentUser";
 import UtilsStr from "@/Utils/UtilsStr";

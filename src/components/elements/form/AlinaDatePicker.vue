@@ -1,12 +1,12 @@
 <template>
 
   <div class="alina-date-picker">
-    <div v-if="modeEdit" class="row no-gutters align-items-center justify-content-between date-picker-row">
+    <div v-if="modeEdit" class="row g-0 align-items-center justify-content-between date-picker-row">
       <div class="col-auto p-0 m-0" v-if="label.length">
         <div>{{ $t(label) }}</div>
       </div>
       <div class="col">
-        <div class="row no-gutters align-items-center justify-content-start date-picker-fields">
+        <div class="row g-0 align-items-center justify-content-start date-picker-fields">
           <div class="col-auto text-nowrap date-picker-group" v-if="['date', 'dateTime'].includes(format)">
             <aInput v-model="year" :label='$t("DT_Y")' :placeholder="$t('YEAR')" :modeEdit="true" :maxLength="4" :max="9999" :min="0" type="number" :idNameKey="`year-${idq}`" inputWidth="7ch" labelWidth="3ch" labelAlign="right" />
             <aInput v-model="month" :label='$t("DT_M")' :placeholder="$t('MONTH')" :modeEdit="true" :maxLength="2" :max="12" :min="1" type="number" :idNameKey="`month-${idq}`" inputWidth="7ch" labelWidth="3ch" labelAlign="right" />
@@ -26,7 +26,7 @@
       </div>
     </div>
     <template v-if="!modeEdit">
-      {{ doFormat(value) }}
+      {{ doFormat(modelValue) }}
     </template>
   </div>
 </template>
@@ -44,9 +44,9 @@ export default {
   updated() {
     this.valueToDateObj();
   },
-  emits: ['input'],
+  emits: ['update:modelValue'],
   props: {
-    value: {
+    modelValue: {
       /**idq - ID qualifier*/
       type: Number,
       default: Math.floor(new Date().getTime() / 1000),
@@ -89,7 +89,7 @@ export default {
   methods: {
 
     valueToDateObj(v = null) {
-      if (v === null) v = this.value;
+      if (v === null) v = this.modelValue;
 
       this.dateObj = new Date(v * 1000);
       this.year = this.dateObj.getFullYear();
@@ -119,13 +119,13 @@ export default {
 
       this.valueDataCalculate();
 
-      this.$emit('input', this.valueData);
+      this.$emit('update:modelValue', this.valueData);
     },
 
     setNow() {
       this.valueData = Math.floor((new Date()).getTime() / 1000);
       this.valueToDateObj(this.valueData);
-      this.$emit('input', this.valueData);
+      this.$emit('update:modelValue', this.valueData);
     },
 
     doFormat(value) {

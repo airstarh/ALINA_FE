@@ -29,7 +29,7 @@
 
           <input
             :type="type"
-            :value="value"
+            :value="type === 'radio' ? value : modelValue"
             :checked="internalChecked"
             @input="onInput"
             @change="onChange"
@@ -69,7 +69,7 @@
       <template v-if="type === 'text'">
         <a
           v-if="href"
-          :href="href">{{ formatter(value) }}</a>
+          :href="href">{{ formatter(modelValue) }}</a>
 
         <iframe
           v-else-if="src"
@@ -78,18 +78,18 @@
           width="90%"
           height="250px" />
 
-        <span v-else>{{ formatter(value) }}</span>
+        <span v-else>{{ formatter(modelValue) }}</span>
       </template>
 
       <template v-else-if="type === 'email'">
-        <a :href="`mailto:${value}`">
-          {{ formatter(value) }}
+        <a :href="`mailto:${modelValue}`">
+          {{ formatter(modelValue) }}
         </a>
       </template>
 
       <template v-else-if="type === 'tel'">
-        <a :href="`tel:${value}`">
-          {{ formatter(value) }}
+        <a :href="`tel:${modelValue}`">
+          {{ formatter(modelValue) }}
         </a>
       </template>
     </template>
@@ -98,7 +98,7 @@
 <script>
 export default {
   name: "aInput",
-  emits: ["input", "change", "update:modelValue"],
+  emits: ["change", "update:modelValue"],
   props: {
     // Common
     value: {
@@ -332,19 +332,19 @@ export default {
           this.valueData = event.target.checked
             ? this.trueValue
             : this.falseValue;
-          this.$emit("input", this.valueData);
+          this.$emit("update:modelValue", this.valueData);
           this.$emit("change", this.valueData);
           break;
         case "file":
           if (event.target.files.length > 0) {
             this.valueData = Array.from(event.target.files);
-            this.$emit("input", this.valueData);
+            this.$emit("update:modelValue", this.valueData);
             this.$emit("change", this.valueData);
           }
           break;
         default:
           this.valueData = event.target.value;
-          this.$emit("input", this.valueData);
+          this.$emit("update:modelValue", this.valueData);
           break;
       }
 
@@ -358,7 +358,7 @@ export default {
         return this.value === this.modelValue;
       }
       if (this.typeCheck.includes(this.type)) {
-        return this.value === this.trueValue;
+        return this.modelValue === this.trueValue;
       }
       return null;
     },

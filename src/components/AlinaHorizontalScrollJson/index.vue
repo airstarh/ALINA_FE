@@ -6,7 +6,7 @@
         v-for="(row, index) in pJson">
         <div
           v-if="modeEdit"
-          class="text-left">
+          class="text-start">
           <div
             v-if="isCurrentUserAllowedEdit(row)"
             class="mt-2">
@@ -23,15 +23,15 @@
               :placeholder="$t('File Order')"
               componentDisplay="block" />
             <div class="d-flex mt-3 mb-3" style="gap:5mm;">
-              <b-btn
+              <b-button
                 size="sm"
                 class="btn btn-a"
                 @click="$emit('onChange', row, index)">{{ $t("TXT_SUBMIT") }}
-              </b-btn>
-              <b-btn
+              </b-button>
+              <b-button
                 size="sm"
                 class="btn btn-a"
-                @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-btn>
+                @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-button>
             </div>
           </div>
         </div>

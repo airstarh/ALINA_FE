@@ -1,11 +1,11 @@
 <template>
     <div class="BorgEditor notranslate">
         <template v-if="Adjustment.editor && modeEdit">
-            <ckeditor :editor="Adjustment.editor" :config="Adjustment.tools" @input="borgEmit" :value="value" />
+            <ckeditor :editor="Adjustment.editor" :config="Adjustment.tools" @update:modelValue="borgEmit" :modelValue="modelValue" />
         </template>
         <template v-if="!modeEdit">
             <div class="ck ck-content">
-                <div v-html="UtilsStr.content(value)"></div>
+                <div v-html="UtilsStr.content(modelValue)"></div>
             </div>
         </template>
     </div>
@@ -17,8 +17,9 @@ import UtilsStr from "@/Utils/UtilsStr";
 
 export default {
     name: "BorgEditor",
+    emits: ["update:modelValue"],
     props: {
-        value: {
+        modelValue: {
             type: String,
             default: ''
         },
@@ -37,7 +38,7 @@ export default {
     methods: {
         borgEmit(val) {
             this.valueData = val;
-            this.$emit('input', this.valueData);
+            this.$emit('update:modelValue', this.valueData);
         },
     }
 }

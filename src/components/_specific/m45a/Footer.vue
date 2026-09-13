@@ -1,5 +1,5 @@
 <template>
-  <div class="row no-gutters mt-5 alina-form p-5">
+  <div class="row g-0 mt-5 alina-form p-5">
     <div class="col">
       <h3>
         Официальнй сайт TCH "ТСЖ Миронова 45А"

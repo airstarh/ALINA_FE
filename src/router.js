@@ -1,5 +1,4 @@
-import Vue                           from "vue";
-import Router                        from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import About                         from "@/views/About.vue";
 import RestCall                      from "@/views/RestCall.vue";
 import UrlParser                     from "@/views/UrlParser.vue";
@@ -18,24 +17,19 @@ import notification                  from "@/views/auth/notification";
 import AjaxAlina                     from "@/services/AjaxAlina";
 import ConfigApi                     from "@/configs/ConfigApi";
 
-Vue.use(Router);
-export default new Router({
+export default createRouter({
+	history: createWebHistory(import.meta.env.BASE_URL),
 	scrollBehavior(to, from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;
-		} else {
-			const position = {};
-			if (to.hash) {
-				position.selector = to.hash;
-				if (to.hash === '#experience') {
-					position.offset = {y: 220}
-				}
-				if (document.querySelector(to.hash)) {
-					return position;
-				}
-				return false;
-			}
 		}
+		if (to.hash) {
+			if (document.querySelector(to.hash)) {
+				return {el: to.hash, top: to.hash === '#experience' ? 220 : 0};
+			}
+			return false;
+		}
+		return {left: 0, top: 0};
 	},
 	routes: [
 		{

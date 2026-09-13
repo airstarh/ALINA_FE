@@ -11,7 +11,7 @@
             'btn-md btn-a': level == 1,
             'btn-sm btn-a': level > 1,
           },
-        ]">{{ $tc("COUNTER_COMMENTS", commentsTotal) }}
+        ]">{{ $t("COUNTER_COMMENTS", commentsTotal) }}
       </b-button>
     </div>
     <b-collapse
@@ -51,7 +51,7 @@
           <!--region Comment body          -->
           <div class="mt-1">&nbsp;</div>
           <div
-            class="row no-gutters"
+            class="row g-0"
             v-if="!state.feedsInEdit.includes(tale.id)">
             <div class="col">
               <div class="mt-1 mb-3">
@@ -64,7 +64,7 @@
           <!--################################################## -->
           <div
             v-else
-            class="row no-gutters">
+            class="row g-0">
             <div class="col">
               <BorgEditor
                 v-model="tale.body"
@@ -75,7 +75,7 @@
           <!--endregion Comment body          -->
           <!--##################################################-->
           <!--region Buttons, Likes-->
-          <div class="row no-gutters m-buttons-1">
+          <div class="row g-0 m-buttons-1">
             <!--region Buttons EDIT CANCEL SUBMIT-->
             <div class="col">
               <div
@@ -110,7 +110,7 @@
             <!--endregion Buttons EDIT CANCEL SUBMIT-->
             <!--region Likes-->
             <div class="col">
-              <div class="text-right">
+              <div class="text-end">
                 <Like
                   :pAmountLikes="tale.count_like"
                   :pCurrentUserLiked="tale.current_user_liked"
@@ -156,7 +156,7 @@
           <BorgEditor
             v-model="body"
             @ready="pageRecalcIframeHeight()" />
-          <div class="row no-gutters">
+          <div class="row g-0">
             <div class="col">
               <button
                 @click="
@@ -172,7 +172,7 @@
               <button
                 @click="ajaCommentAdd"
                 type="button"
-                class="btn btn-lg btn-block btn-a">
+                class="btn btn-lg w-100 btn-a">
                 {{ $t("i_ok") }}
               </button>
             </div>
@@ -185,7 +185,7 @@
       <div
         v-if="root_tale_object.is_comment_for_owner == 1"
         class="m-3">
-        {{ $tc("Comments only for owner") }}
+        {{ $t("Comments only for owner") }}
       </div>
       <!--##################################################-->
       <!--region Login or Register-->
@@ -217,7 +217,6 @@ import UtilsStr from "@/Utils/UtilsStr.js";
 import AjaxAlina from "@/services/AjaxAlina";
 import ConfigApi from "@/configs/ConfigApi";
 import UtilsArray from "@/Utils/UtilsArray";
-import Comment from "@/components/elements/form/Comment";
 import Like from "@/components/elements/form/Like";
 import Paginator from "@/components/elements/form/Paginator";
 import CurrentUser from "@/services/CurrentUser";
@@ -232,7 +231,6 @@ export default {
     UserAvatar,
     Paginator,
     Like,
-    Comment,
     BorgEditor,
   },
   data() {

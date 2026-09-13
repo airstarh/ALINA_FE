@@ -16,7 +16,7 @@
                     </div>
                     <StandardButtons :onGo="toDetails" submitTxt="Parse">
                         <template v-slot:submitSuffix>
-                            <span><b-icon-arrow-down></b-icon-arrow-down></span>
+                            <span><i class="bi bi-arrow-down"></i></span>
                         </template>
                     </StandardButtons>
                 </form>
@@ -37,7 +37,7 @@
                 <div class="bg-dark p-1 mt-3">
                     <StandardButtons :onGo="fromDetails" submitTxt="Un-Parse">
                         <template v-slot:submitSuffix>
-                            <span><b-icon-arrow-up></b-icon-arrow-up></span>
+                            <span><i class="bi bi-arrow-up"></i></span>
                         </template>
                     </StandardButtons>
 

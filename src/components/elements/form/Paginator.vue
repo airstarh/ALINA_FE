@@ -40,13 +40,13 @@
       v-if="pageCurrentNumber < pagesTotal && onClickMore"
       class="btn btn-sm"
       @click="onClickMore(pageSize, pageCurrentNumber + 1)">
-      <span>{{ $tc("More") }} +{{ pageSize }}</span>
+      <span>{{ $t("More") }} +{{ pageSize }}</span>
     </div>
     <div
       v-if="rowsTotal > pageSize && onClickAll"
       class="btn btn-sm"
       @click="onClickAll(rowsTotal, 1)">
-      <span>{{ $tc("TXT_FULL_LIST") }} {{ rowsTotal }} </span>
+      <span>{{ $t("TXT_FULL_LIST") }} {{ rowsTotal }} </span>
     </div>
   </div>
 </template>
@@ -93,11 +93,11 @@ export default {
       default: () => { },
     },
     onClickMore: {
-      type: Function | null,
+      type: Function,
       default: null,
     },
     onClickAll: {
-      type: Function | null,
+      type: Function,
       default: null,
     },
   },

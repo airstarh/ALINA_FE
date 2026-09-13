@@ -28,19 +28,20 @@ export default {
   data() {
     return {
       isOpen: false,
+      closeMenu: null,
     };
   },
   // Close menu on outside click
   mounted() {
-    const closeMenu = (e) => {
+    this.closeMenu = (e) => {
       if (!this.$el.contains(e.target)) {
         this.isOpen = false;
       }
     };
-    document.addEventListener("click", closeMenu);
-    this.$on("hook:beforeDestroy", () => {
-      document.removeEventListener("click", closeNewton);
-    });
+    document.addEventListener("click", this.closeMenu);
+  },
+  beforeUnmount() {
+    document.removeEventListener("click", this.closeMenu);
   },
 };
 </script>

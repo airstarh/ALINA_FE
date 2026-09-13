@@ -28,6 +28,7 @@
 
 <script>
 import MessagesObj from "@/services/MessagesObj";
+import {vsprintf} from "sprintf-js";
 
 export default {
   name: "Messages",
@@ -35,7 +36,6 @@ export default {
   data() {
     return {
       MessagesObj: MessagesObj,
-      vsprintf: require("sprintf-js").vsprintf,
     };
   },
   methods: {

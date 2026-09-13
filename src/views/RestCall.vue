@@ -8,7 +8,7 @@
           </h2>
           <StandardButtons :onGo="runAJax"></StandardButtons>
           <div class="m-3">
-            <b-btn @click="cleanUpPreDefinedSets" variant="primary">Clean-up Query Parameters</b-btn>
+            <b-button @click="cleanUpPreDefinedSets" variant="primary">Clean-up Query Parameters</b-button>
           </div>
           <div class="form-group mt-3">
             <BtstrpBadge title="URI" badge="reqUri"></BtstrpBadge>
@@ -79,9 +79,9 @@
               <div class="form-group mt-3">
                 <BtstrpBadge title="POST" badge="reqPost"></BtstrpBadge>
                 <textarea id="reqPost" v-model="reqPostTxt" class="form-control" rows="11"></textarea>
-                <div class="custom-control custom-checkbox">
-                  <input id="reqFlagPostRaw" v-model="reqFlagPostRaw" type="checkbox" class="custom-control-input" />
-                  <label class="btn btn-primary custom-control-label" for="reqFlagPostRaw">
+                <div class="form-check">
+                  <input id="reqFlagPostRaw" v-model="reqFlagPostRaw" type="checkbox" class="form-check-input" />
+                  <label class="btn btn-primary form-check-label" for="reqFlagPostRaw">
                     reqFlagPostRaw
                   </label>
                 </div>

@@ -19,7 +19,7 @@
         </td>
         <td v-if="modeManage">
           <div v-if="isCurrentUserAllowedEdit(row)">
-            <b-btn variant="danger" @click="$emit('onDelete', row, index)">{{ $t('Delete') }}</b-btn>
+            <b-button variant="danger" @click="$emit('onDelete', row, index)">{{ $t('Delete') }}</b-button>
           </div>
         </td>
       </tr>

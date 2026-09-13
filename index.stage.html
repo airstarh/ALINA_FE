@@ -26,7 +26,6 @@
       accurateTrackBounce:true
     });
   </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/91541356" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika counter -->
     <!--endregion 3rd PART-->
     <!--##################################################-->
@@ -41,11 +40,12 @@
     <!--endregion COMMON-->
     <!--##################################################-->
     <!--region SPECIFIC-->
-    <title><%= VUE_APP_ALINA_TITLE %></title>
+    <title>%VITE_APP_ALINA_TITLE%</title>
     <!--endregion SPECIFIC-->
     <!--##################################################-->
 </head>
 <body id="alina-real-body" class="alina-main-bg alina-main-txt">
+<noscript><div><img src="https://mc.yandex.ru/watch/91541356" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <noscript>
     <strong>¯\_(ツ)_/¯</strong>
 </noscript>
@@ -53,11 +53,12 @@
 <!-- built files will be auto injected -->
 <!-- #################################################################################################### -->
  <!-- region ALINA -->
- <link  href="<%= VUE_APP_ALINA_DOMAIN_CDN %>/kiss/their.ck/index.css" itemprop="url" rel="stylesheet"/>
-<script src="<%= VUE_APP_ALINA_DOMAIN_CDN %>/kiss/their.ck/js-001-main.js"></script>
-<link  href="<%= VUE_APP_ALINA_DOMAIN %>/kiss/alina.css/index.css" itemprop="url" rel="stylesheet"/>
-<link  href="<%= VUE_APP_ALINA_DOMAIN %>/kiss/alina.css.specific/index.css" itemprop="url" rel="stylesheet"/>
+ <link vite-ignore href="%VITE_APP_ALINA_DOMAIN_CDN%/kiss/their.ck/index.css" itemprop="url" rel="stylesheet"/>
+<script vite-ignore src="%VITE_APP_ALINA_DOMAIN_CDN%/kiss/their.ck/js-001-main.js"></script>
+<link vite-ignore href="%VITE_APP_ALINA_DOMAIN%/kiss/alina.css/index.css" itemprop="url" rel="stylesheet"/>
+<link vite-ignore href="%VITE_APP_ALINA_DOMAIN%/kiss/alina.css.specific/index.css" itemprop="url" rel="stylesheet"/>
  <!-- endregion ALINA -->
  <!-- #################################################################################################### -->
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

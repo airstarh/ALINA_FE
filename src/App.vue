@@ -29,14 +29,30 @@
   </div>
 </template>
 <script>
+import {defineAsyncComponent} from "vue";
 import Messages from "@/components/global/Messages.vue";
 import Spinner from "@/components/global/Spinner.vue";
 import Popup from "@/components/global/Popup.vue";
 import AlinaStorage from "@/services/AlinaStorage";
-import UtilsArray from "@/Utils/UtilsArray";
 import PageSettings from "@/services/PageSettings";
 import ConfigApi from "@/configs/ConfigApi";
 import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
+
+const menuModules = import.meta.glob("@/components/_specific/*/MenuHorizontalMain.vue");
+const footerModules = import.meta.glob("@/components/_specific/*/Footer.vue");
+const specificFolder = import.meta.env.VITE_APP_ALINA_FOLDER || "_specific/default";
+
+function loadSpecificComponent(modules, componentName) {
+  const configuredPath = `/src/components/${specificFolder}/${componentName}.vue`;
+  const fallbackPath = `/src/components/_specific/default/${componentName}.vue`;
+  const loader = modules[configuredPath] || modules[fallbackPath];
+
+  if (!loader) {
+    throw new Error(`${componentName} not found in ${specificFolder} or _specific/default`);
+  }
+
+  return defineAsyncComponent(loader);
+}
 
 export default {
   name: "App",
@@ -44,12 +60,8 @@ export default {
     Messages,
     Spinner,
     Popup,
-    MenuHorizontalMain: () =>
-      import(
-        `@/components/${process.env.VUE_APP_ALINA_FOLDER}MenuHorizontalMain`
-      ),
-    Footer: () =>
-      import(`@/components/${process.env.VUE_APP_ALINA_FOLDER}Footer`),
+    MenuHorizontalMain: loadSpecificComponent(menuModules, "MenuHorizontalMain"),
+    Footer: loadSpecificComponent(footerModules, "Footer"),
   },
   data() {
     return {
@@ -57,21 +69,6 @@ export default {
       AlinaStorage,
       ConfigApi,
     };
-  },
-  mounted() {
-    /**
-     * Documentation:
-     * https://bootstrap-vue.org/docs/components/collapse
-     */
-    this.$root.$on("bv::collapse::state", (collapseId, isJustShown) => {
-      // if (collapseId.startsWith('comment-collapse-')) {
-      //   if (isJustShown) {
-      //     UtilsArray.pushIfNotAlready(this.AlinaStorage.Comment.expanded, collapseId)
-      //   } else {
-      //     UtilsArray.elRemoveByValue(this.AlinaStorage.Comment.expanded, collapseId)
-      //   }
-      // }
-    });
   },
   created() {
     let _this = this;

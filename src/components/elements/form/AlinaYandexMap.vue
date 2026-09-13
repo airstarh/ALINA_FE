@@ -1,7 +1,7 @@
 <template>
   <div class="mt-1 mb-1">
     <div v-if="modeEdit">
-      <div class="row no-gutters">
+      <div class="row g-0">
         <div class="col">
           <aInput
             type="checkbox"
@@ -15,7 +15,7 @@
         </div>
       </div>
       <div
-        class="row no-gutters"
+        class="row g-0"
         v-if="item.geo_is_map_shown == 1"
       >
         <div class="col">
@@ -24,27 +24,25 @@
             target="_blank"
             class="btn btn-small btn-primary mt-2 mb-2"
           >
-            {{ $tc("Pick a point on Yandex Maps.") }}
+            {{ $t("Pick a point on Yandex Maps.") }}
           </a>
         </div>
       </div>
       <div
-        class="row no-gutters"
+        class="row g-0"
         v-if="item.geo_is_map_shown == 1"
       >
         <div class="col-lg">
           <div>
             <div class="input-group input-group mb-3">
               <!--dtLatLongCSV-->
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">{{
-                  $tc("dtLatLongCSV")
-                }}</span>
-              </div>
+              <span class="input-group-text bg-dark text-light">{{
+                $t("dtLatLongCSV")
+              }}</span>
               <input
                 type="text"
                 class="form-control"
-                :placeholder="$tc('dtLatLongCSV')"
+                :placeholder="$t('dtLatLongCSV')"
                 v-model="dtLatLongCSV"
               />
             </div>
@@ -52,22 +50,20 @@
         </div>
       </div>
       <div
-        class="row no-gutters"
+        class="row g-0"
         v-if="item.geo_is_map_shown == 1"
       >
         <div class="col-lg">
           <div>
             <div class="input-group input-group mb-3">
               <!-- item.geo_latitude -->
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">{{
-                  $tc("Latitude")
-                }}</span>
-              </div>
+              <span class="input-group-text bg-dark text-light">{{
+                $t("Latitude")
+              }}</span>
               <input
                 type="text"
                 class="form-control"
-                :placeholder="$tc('Latitude')"
+                :placeholder="$t('Latitude')"
                 v-model="item.geo_latitude"
               />
             </div>
@@ -77,15 +73,13 @@
           <div>
             <div class="input-group input-group mb-3">
               <!-- item.geo_longitude -->
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">{{
-                  $tc("Longitude")
-                }}</span>
-              </div>
+              <span class="input-group-text bg-dark text-light">{{
+                $t("Longitude")
+              }}</span>
               <input
                 type="text"
                 class="form-control"
-                :placeholder="$tc('Longitude')"
+                :placeholder="$t('Longitude')"
                 v-model="item.geo_longitude"
               />
             </div>
@@ -95,15 +89,13 @@
           <div>
             <div class="input-group input-group mb-3">
               <!-- item.geo_zoom -->
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">{{
-                  $tc("Zoom")
-                }}</span>
-              </div>
+              <span class="input-group-text bg-dark text-light">{{
+                $t("Zoom")
+              }}</span>
               <input
                 type="text"
                 class="form-control"
-                :placeholder="$tc('Zoom')"
+                :placeholder="$t('Zoom')"
                 v-model="item.geo_zoom"
               />
             </div>
@@ -113,11 +105,9 @@
           <div>
             <div class="input-group input-group mb-3">
               <!-- item.geo_map_type -->
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-dark text-light">{{
-                  $tc("Map type")
-                }}</span>
-              </div>
+              <span class="input-group-text bg-dark text-light">{{
+                $t("Map type")
+              }}</span>
               <select
                 class="form-control"
                 v-model="item.geo_map_type"

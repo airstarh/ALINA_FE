@@ -1,6 +1,4 @@
 // File: egStoreModule.js
-import Vue from "vue";
-
 const state = {
   sProp: 10
 };
@@ -13,7 +11,7 @@ const getters = {
 const mutations = {
   //generic(state, payload) {},
   mProp(state, v) {
-    Vue.set(state, "sProp", v);
+    state.sProp = v;
   }
 };
 const actions = {

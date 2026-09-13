@@ -1,7 +1,7 @@
 <template>
-  <div class="row no-gutters mt-5 alina-form p-5">
+  <div class="row g-0 mt-5 alina-form p-5">
     <div class="col">
-      (c) localhost
+      (c) STAGE
     </div>
   </div>
 </template>
