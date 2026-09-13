@@ -1,4 +1,6 @@
-const PopupObj = {
+import { reactive } from "vue";
+
+const PopupObj = reactive({
     isOn: false,
 
     item: {
@@ -7,6 +9,6 @@ const PopupObj = {
         title: '',
         type: 'generic',
     },
-};
+});
 
 export default PopupObj;

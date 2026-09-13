@@ -1,7 +1,8 @@
 import UtilsArray from "@/Utils/UtilsArray";
 import UtilsData from "@/Utils/UtilsData";
+import { reactive } from "vue";
 
-const MessagesObj = {
+const MessagesObj = reactive({
 	store: [],
 	item: {
 		"text": "",
@@ -39,5 +40,5 @@ const MessagesObj = {
 	deleteAll() {
 		UtilsArray.clear(this.store)
 	}
-};
+});
 export default MessagesObj;
