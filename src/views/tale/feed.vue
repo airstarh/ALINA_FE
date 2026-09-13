@@ -7,10 +7,10 @@
     <!-- region SEARCH -->
     <div class="row g-0">
       <div class="col">
-        <div class="input-group mb-3 btn w-100 btn-dark">
+        <div class="input-group mb-3">
           <button
             @click="search"
-            class="input-group-text btn btn-primary"
+            class="btn btn-primary"
           >
             <i class="bi bi-search"></i>
           </button>
@@ -23,7 +23,7 @@
           />
           <button
             @click="searchClear"
-            class="input-group-text btn btn-danger"
+            class="btn btn-danger"
           >
             <i class="bi bi-backspace-fill"></i>
           </button>
