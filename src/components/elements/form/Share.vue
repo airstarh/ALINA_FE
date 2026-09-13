@@ -12,12 +12,10 @@
       class="btn p-1"
       title="vkontakte"
       @click="shareToVk">
-        <svg
-          height="1.8rem"
-          width="1.8rem"
-          class="corporate-svg-fill">
-          <use :href="iconVk"></use>
-        </svg>
+      <span
+        class="share-vk-icon"
+        :style="{ '--share-icon-url': `url('${iconVk}')` }"
+        aria-hidden="true"></span>
     </button>
   </span>
 </template>
@@ -75,4 +73,13 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.share-vk-icon {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  background-color: var(--corporate-bg-a);
+  mask: var(--share-icon-url) center / contain no-repeat;
+  -webkit-mask: var(--share-icon-url) center / contain no-repeat;
+}
+</style>
