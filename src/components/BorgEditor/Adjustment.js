@@ -18,8 +18,12 @@ export default class Adjustment {
   constructor () {
     // this.setConfig(window.CKEDITOR);
     const _this = this
-    Expect(window, 'CKEDITOR', _this, 'ck').then(ck => {
+    this.ready = Expect(window, 'CKEDITOR', _this, 'ck').then(ck => {
       _this.setConfig(ck)
+      return {
+        editor: _this.editor,
+        tools: _this.tools
+      }
     })
   }
   

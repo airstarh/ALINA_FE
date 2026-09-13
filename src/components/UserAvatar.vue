@@ -19,7 +19,7 @@
           <span>&nbsp;</span>
           <router-link
             :to="'/auth/profile/' + userId"
-            class="text-light alina-user-avatar">
+            class="text-light alina-user-avatar no-decoration">
             {{
               UtilsStr.firstName(
                 this.userFirstName,

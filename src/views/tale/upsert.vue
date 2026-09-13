@@ -32,13 +32,7 @@
           </h1>
           <div
             v-if="tale.is_date_hidden != 1"
-            class="notranslate"
-            style="
-              position: absolute;
-              right: 1%;
-              bottom: -1.5rem;
-              padding: 1rem;
-            ">
+            class="notranslate alina-tale-date">
             <router-link
               :to="'/tale/upsert/' + tale.id"
               class="btn-sm text-start mb-1 corporate-bg-gradient no-decoration"
@@ -677,3 +671,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.alina-tale-date {
+  position: absolute;
+  right: 1%;
+  bottom: 0;
+  z-index: 1;
+  transform: translateY(50%);
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
     <div class="BorgEditor notranslate">
-        <template v-if="Adjustment.editor && modeEdit">
-            <ckeditor :editor="Adjustment.editor" :config="Adjustment.tools" @update:modelValue="borgEmit" :modelValue="modelValue" />
+        <template v-if="editor && modeEdit">
+            <ckeditor :editor="editor" :config="tools" @ready="$emit('ready', $event)" @update:modelValue="borgEmit" :modelValue="modelValue" />
         </template>
         <template v-if="!modeEdit">
             <div class="ck ck-content">
@@ -14,10 +14,11 @@
 
 import Adjustment from "./Adjustment";
 import UtilsStr from "@/Utils/UtilsStr";
+import { markRaw } from "vue";
 
 export default {
     name: "BorgEditor",
-    emits: ["update:modelValue"],
+    emits: ["ready", "update:modelValue"],
     props: {
         modelValue: {
             type: String,
@@ -32,8 +33,16 @@ export default {
         return {
             valueData: '',
             Adjustment: new Adjustment(),
+            editor: null,
+            tools: null,
             UtilsStr,
         }
+    },
+    created() {
+        this.Adjustment.ready.then(({ editor, tools }) => {
+            this.editor = markRaw(editor);
+            this.tools = markRaw(tools);
+        });
     },
     methods: {
         borgEmit(val) {

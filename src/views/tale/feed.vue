@@ -517,6 +517,10 @@ export default {
   }
 }
 
+.alina-feed-wrapper {
+  max-width: 1140px;
+}
+
 .feed-paginator {
   margin: 15mm 0 !important;
   padding: 1px 3px;
