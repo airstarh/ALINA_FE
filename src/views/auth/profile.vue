@@ -26,7 +26,7 @@
             :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
             @change="onChangeFileField" />
           <div></div>
-          <img v-if="post.emblem" :src="post.emblem" class="avatar rounded">
+          <img v-if="post.emblem" :src="emblemUrl" class="avatar rounded">
           <img v-if="!post.emblem" src="@/assets/anarki.png" class="avatar">
         </div>
         <div class="col item-bio item-about-info">
@@ -182,6 +182,21 @@ export default {
     },
   },
   computed: {
+    emblemUrl() {
+      const path = this.post.emblem;
+
+      if (!path || /^https?:\/\//i.test(path)) {
+        return path;
+      }
+
+      const baseUrl = import.meta.env.VITE_APP_ALINA_DOMAIN || window.location.origin;
+
+      try {
+        return new URL(path, baseUrl).href;
+      } catch {
+        return path;
+      }
+    },
     UtilsDate() {
       return UtilsDate
     },

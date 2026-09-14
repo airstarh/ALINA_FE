@@ -54,6 +54,11 @@ export default {
   components: {
     StandardButtons
   },
+  created() {
+    if (CurrentUser.obj().isLoggedIn()) {
+      this.$router.replace({path: '/auth/profile'});
+    }
+  },
   methods:    {
     runAJax() {
       AjaxAlina.newInst({
