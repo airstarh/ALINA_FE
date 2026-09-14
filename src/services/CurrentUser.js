@@ -1,4 +1,5 @@
 import UtilsData from "@/Utils/UtilsData";
+import { reactive } from "vue";
 
 export default class CurrentUser {
   //##################################################
@@ -41,7 +42,7 @@ export default class CurrentUser {
   static obj() {
     const _static = this;
     if (null === _static.inst) {
-      _static.inst = new _static();
+      _static.inst = reactive(new _static());
       let attributes = window.localStorage.getItem("CurrentUser");
       if (attributes) {
         attributes = JSON.parse(attributes);
