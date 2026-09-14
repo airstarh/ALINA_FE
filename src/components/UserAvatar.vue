@@ -19,7 +19,7 @@
           <span>&nbsp;</span>
           <router-link
             :to="'/auth/profile/' + userId"
-            class="text-light alina-user-avatar no-decoration">
+            class="text-light alina-user-avatar">
             {{
               UtilsStr.firstName(
                 this.userFirstName,
@@ -115,12 +115,17 @@ export default {
   border-radius: 0 20px 20px 0;
 }
 
-a.alina-user-avatar {
+a.alina-user-avatar,
+a.alina-user-avatar:hover,
+a.alina-user-avatar:focus,
+a.alina-user-avatar:visited,
+a.alina-user-avatar:active {
   display: inline-block;
   max-width: 24ch;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   vertical-align: middle;
+  text-decoration: none !important;
 }
 </style>
