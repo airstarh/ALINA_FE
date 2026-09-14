@@ -37,7 +37,7 @@
         <div class="row g-0">
           <div class="col-auto">
             <router-link :to="`/auth/profile/${item.user_id}`">
-              >>
+              <img
                 v-if="item.from_emblem"
                 :src="item.from_emblem"
                 :alt="item.from_firstname"
