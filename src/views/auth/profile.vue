@@ -156,7 +156,16 @@ export default {
         postParams: this.post,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
+            const savedUser = aja.respBody.data.user;
+            this.post = UtilsObject.mergeRecursively(this.post, savedUser);
+
+            if (this.CU.owns(savedUser.id ?? this.post.id)) {
+              this.CU.applyAttributes({
+                ...this.CU.attributes,
+                ...savedUser,
+              });
+            }
+
             this.options.modeEdit = false;
           }
         }
