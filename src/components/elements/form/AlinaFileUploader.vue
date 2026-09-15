@@ -151,7 +151,7 @@ export default {
       ConfigApi,
       dArrFiles: [],
       dModeEdit: this.modeEdit,
-      viewMode: "horizontal",
+      viewMode: "vertical",
     };
   },
   created() {
