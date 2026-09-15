@@ -157,10 +157,11 @@ export default {
 }
 
 .alina-file.vertical {
-  width: 15mm;
-  height: 15mm;
-  min-width: 15mm;
-  padding: 0;
+  box-sizing: border-box;
+  width: 17mm;
+  height: 17mm;
+  min-width: 17mm;
+  padding: 1mm;
   gap: 0;
 }
 
@@ -178,6 +179,12 @@ export default {
 .alina-file.vertical.audio .icon,
 .alina-file.vertical.video .icon {
   flex-basis: auto;
+}
+
+.alina-file.vertical audio,
+.alina-file.vertical video {
+  width: 100%;
+  height: 100%;
 }
 
 .thumbnail {

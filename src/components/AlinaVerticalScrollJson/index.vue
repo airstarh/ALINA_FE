@@ -136,17 +136,23 @@ export default {
 
 .vertical-file-preview {
   flex: 0 0 auto;
-  min-height: 15mm;
-  padding: 1mm;
+  min-height: 17mm;
 }
 
 .vertical-file-details {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 2mm;
   flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.vertical-file-details :deep(.aInput) {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 .vertical-file-details :deep(a),
