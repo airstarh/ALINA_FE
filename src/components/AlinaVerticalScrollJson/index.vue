@@ -126,6 +126,7 @@ export default {
 
 .vertical-file-item {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 3mm;
   width: 100%;
@@ -143,8 +144,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   gap: 2mm;
-  flex: 1 1 auto;
-  min-width: 0;
+  flex: 1 1 50mm;
+  min-width: min(90vw, 50mm);
   overflow-wrap: anywhere;
 }
 

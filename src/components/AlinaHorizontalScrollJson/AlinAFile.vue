@@ -165,8 +165,9 @@ export default {
 }
 
 .alina-file.vertical.audio,
-.alina-file.vertical.video {
-  width: min(55vw, 10cm);
+.alina-file.vertical.video,
+.alina-file.vertical.image {
+  width: min(90vw, 70mm);
 }
 
 .alina-file.vertical .icon {
@@ -175,10 +176,20 @@ export default {
   flex: 0 0 auto;
 }
 
-.alina-file.vertical audio,
-.alina-file.vertical video {
+.alina-file.vertical.image .icon,
+.alina-file.vertical.video .icon {
+  height: auto;
+}
+
+.alina-file.vertical audio {
   width: 100%;
   height: 100%;
+}
+
+.alina-file.vertical.image img,
+.alina-file.vertical video {
+  width: 100%;
+  height: auto;
 }
 
 .thumbnail {
