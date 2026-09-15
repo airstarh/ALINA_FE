@@ -126,7 +126,7 @@ export default {
 
 .vertical-file-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 3mm;
   width: 100%;
   padding: 2mm;
@@ -137,11 +137,24 @@ export default {
 .vertical-file-preview {
   flex: 0 0 auto;
   min-height: 15mm;
+  padding: 1mm;
 }
 
 .vertical-file-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: anywhere;
+}
+
+.vertical-file-details :deep(a),
+.vertical-file-details :deep(a:link),
+.vertical-file-details :deep(a:visited),
+.vertical-file-details :deep(a:hover),
+.vertical-file-details :deep(a:active) {
+  color: inherit;
+  text-decoration: none;
 }
 </style>
