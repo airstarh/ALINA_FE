@@ -136,7 +136,6 @@ export default {
 
 .vertical-file-preview {
   flex: 0 0 auto;
-  min-height: 17mm;
 }
 
 .vertical-file-details {
