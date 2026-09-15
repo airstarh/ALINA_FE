@@ -155,6 +155,10 @@ export default {
   max-width: 100%;
 }
 
+.vertical-file-details :deep(.aInput.aInput-edit:not(.aInput-fixed-width)) {
+  flex: 0 0 auto;
+}
+
 .vertical-file-details :deep(a),
 .vertical-file-details :deep(a:link),
 .vertical-file-details :deep(a:visited),
