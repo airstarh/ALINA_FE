@@ -121,7 +121,8 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 2mm;
-  width: 100%;
+  width: 99%;
+  margin: 0 auto;
 }
 
 .vertical-file-item {
