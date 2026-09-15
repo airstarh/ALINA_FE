@@ -32,6 +32,7 @@
 
         <button
           type="button"
+          v-if="ownLength && dArrFiles.length > 0"
           class="btn btn-a"
           :title="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
           :aria-label="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
