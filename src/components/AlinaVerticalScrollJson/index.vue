@@ -131,8 +131,8 @@ export default {
   gap: 3mm;
   width: 100%;
   padding: 2mm;
-  border: 1px solid #777;
   border-radius: 10px;
+  background-color: #111;
 }
 
 .vertical-file-preview {

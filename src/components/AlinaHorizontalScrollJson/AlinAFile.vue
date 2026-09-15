@@ -162,6 +162,7 @@ export default {
   min-width: 17mm;
   padding: 1mm;
   gap: 0;
+  background-color: transparent;
 }
 
 .alina-file.vertical.audio,
