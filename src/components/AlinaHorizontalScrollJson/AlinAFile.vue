@@ -1,5 +1,5 @@
 <template>
-  <div :class="['alina-file', pFileJson.fType]">
+  <div :class="['alina-file', pFileJson.fType, displayMode]">
     <div class="icon">
       <video
         v-if="UtilsFS.typeVideo === pFileJson.fType"
@@ -50,7 +50,9 @@
       </a>
     </div>
 
-    <div class="text wrap-extreme">
+    <div
+      v-if="showCaption"
+      class="text wrap-extreme">
       <a
         :href="fileUrl"
         :title="pFileJson.name_human"
@@ -75,6 +77,15 @@ export default {
   name: "AlinAFile",
 
   props: {
+    displayMode: {
+      type: String,
+      default: "horizontal",
+      validator: (value) => ["horizontal", "vertical"].includes(value),
+    },
+    showCaption: {
+      type: Boolean,
+      default: true,
+    },
     pFileJson: {
       type: Object,
       required: true,
@@ -136,13 +147,37 @@ export default {
 </script>
 
 <style scoped lang="css">
-.alina-file {
+.alina-file.horizontal {
   height: 40vh;
 }
 
-.alina-file.audio,
-.alina-file.video {
+.alina-file.horizontal.audio,
+.alina-file.horizontal.video {
   width: min(90vw, 10cm);
+}
+
+.alina-file.vertical {
+  width: 15mm;
+  height: 15mm;
+  min-width: 15mm;
+  padding: 0;
+  gap: 0;
+}
+
+.alina-file.vertical.audio,
+.alina-file.vertical.video {
+  width: min(55vw, 10cm);
+}
+
+.alina-file.vertical .icon {
+  width: 100%;
+  height: 15mm;
+  flex: 0 0 15mm;
+}
+
+.alina-file.vertical.audio .icon,
+.alina-file.vertical.video .icon {
+  flex-basis: auto;
 }
 
 .thumbnail {

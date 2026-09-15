@@ -69,7 +69,9 @@
       <template v-if="type === 'text'">
         <a
           v-if="href"
-          :href="href">{{ formatter(modelValue) }}</a>
+          :href="href"
+          :target="target"
+          :download="download">{{ formatter(modelValue) }}</a>
 
         <iframe
           v-else-if="src"
@@ -233,6 +235,16 @@ export default {
     },
 
     href: {
+      type: String,
+      default: null,
+    },
+
+    target: {
+      type: String,
+      default: null,
+    },
+
+    download: {
       type: String,
       default: null,
     },

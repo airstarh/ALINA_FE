@@ -46,6 +46,7 @@
 import CurrentUser from "@/services/CurrentUser";
 import AlinAFile from "@/components/AlinaHorizontalScrollJson/AlinAFile.vue";
 import aInput from "@/components/elements/form/aInput.vue";
+import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name: "AlinaHorizontalScroll",

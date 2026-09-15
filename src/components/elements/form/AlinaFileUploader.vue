@@ -29,6 +29,17 @@
           size="md"
           class="btn btn-a"
           @click="onChangeBulk(dArrFiles)">{{ $t("i_ok") }}</b-button>
+
+        <button
+          type="button"
+          class="btn btn-a"
+          :title="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
+          :aria-label="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
+          @click="toggleViewMode">
+          <i :class="viewMode === 'horizontal' ? 'bi bi-list-ul' : 'bi bi-layout-three-columns'"></i>
+        </button>
+
+
       </div>
 
       <b-collapse
@@ -48,11 +59,18 @@
             @change="onChangeFileField" />
         </div>
         <AlinaHorizontalScrollJson
+          v-if="viewMode === 'horizontal'"
           :pJson="dArrFiles"
           :showOnly="['url']"
           :modeEdit="dModeEdit"
           @onDelete="onDelete"
           @onChange="onChange"></AlinaHorizontalScrollJson>
+        <AlinaVerticalScrollJson
+          v-else
+          :pJson="dArrFiles"
+          :modeEdit="dModeEdit"
+          @onDelete="onDelete"
+          @onChange="onChange"></AlinaVerticalScrollJson>
       </b-collapse>
     </div>
   </div>
@@ -60,6 +78,7 @@
 
 <script>
 import AlinaHorizontalScrollJson from "@/components/AlinaHorizontalScrollJson/index.vue";
+import AlinaVerticalScrollJson from "@/components/AlinaVerticalScrollJson/index.vue";
 import ConfigApi from "@/configs/ConfigApi";
 import AjaxAlina from "@/services/AjaxAlina";
 import UtilsArray from "@/Utils/UtilsArray";
@@ -131,6 +150,7 @@ export default {
       ConfigApi,
       dArrFiles: [],
       dModeEdit: this.modeEdit,
+      viewMode: "horizontal",
     };
   },
   created() {
@@ -141,6 +161,10 @@ export default {
     this.pageRecalcIframeHeight();
   },
   methods: {
+    toggleViewMode() {
+      this.viewMode = this.viewMode === "horizontal" ? "vertical" : "horizontal";
+      this.$nextTick(this.pageRecalcIframeHeight);
+    },
     loopFiles() {
       for (let [i, model] of Object.entries(this.dArrFiles)) {
         if (model.hasOwnProperty("name_fs")) {
@@ -274,6 +298,7 @@ export default {
   components: {
     aInput,
     AlinaHorizontalScrollJson,
+    AlinaVerticalScrollJson,
   },
 };
 </script>
