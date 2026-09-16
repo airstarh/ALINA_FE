@@ -1,12 +1,12 @@
 # ALINA_FE Vue 3 migration handoff
 
-Updated: 2026-09-14 (Europe/Moscow)
+Updated: 2026-09-16 (Europe/Moscow)
 
 ## Repository
 
 - Path: `/home/qqq/_A001/rep/ALINA_FE`
 - Active branch at handoff: `migrate`
-- Latest commit observed: `54019b8 dev`
+- Latest commit observed: `afb4f41 dev` (2026-09-16 handoff).
 - Stack: Vue `^3.5.42`, Vite `^8.0.16`, Bootstrap `^5.3.8`, BootstrapVueNext `^1.1.0`, Vue I18n `11.4.2`.
 
 ## User's standing rules
@@ -81,6 +81,29 @@ Useful manual flows already checked by the user during the session include the f
 
 ## How to continue
 
+## Latest conversation: vertical file viewer and editor warnings
+
+- Added `src/components/AlinaVerticalScrollJson/index.vue`, reused by `src/components/elements/form/AlinaFileUploader.vue` alongside the horizontal viewer.
+- Vertical view is now the default (`viewMode: "vertical"`); the toggle switches between both views. The user implemented toggle visibility themselves: current condition is `ownLength && dArrFiles.length > 0`. Preserve their changes.
+- Vertical viewer reuses `AlinAFile.vue` with `displayMode="vertical"` and `showCaption=false`. Names are rendered with `aInput`, editable for authorized users, otherwise captions/links. Save/delete/order fields and original playback, image popup, URL resolution and download behavior are preserved.
+- `aInput.vue` now supports link `target` and `download` props. Caption link styling is scoped to the vertical list: inherited color, no underline in all states.
+- Important CSS bug: `aInput` edit mode has `flex: 1 1 10rem`. Inside a flex-column details block this becomes a huge vertical basis. The vertical list overrides the exact selector `.aInput.aInput-edit:not(.aInput-fixed-width)` with `flex: 0 0 auto`; retain its specificity.
+- Rows wrap naturally with `flex-wrap: wrap`, vertically center contents, and details use a `50mm` flex basis/minimum width so fields move below media on narrow displays. No media queries.
+- Images/videos use proportional automatic height, NOT fixed `25vh` (that experiment was superseded). Generic file content height remains `15mm`; audio fills its compact control area.
+- Current user-tuned CSS observed at handoff: media width `min(98vw, 100mm)`; preview wrapper padding `2px 2px`, transparent background; images/video radius `30px`. Vertical list gap `13mm`, width `99%`, centered. Rows have no border, background `#111`, radius `30px`, padding `0.5mm 1mm 8mm 1mm`. These differ from earlier assistant defaults intentionally—do not revert them.
+- Added missing `AlinaPageGlobalAnalyzer` import to the horizontal viewer (existing updated hook used it).
+- Latest fix: `vite.config.js` helper `normalizeHtmlOutputName` has JSDoc parameter types: `isCustomMode: boolean`, `mode: string`, `outputDirectory: string`. Resolves strict editor implicit-any warnings without disabling strict checking or changing behavior.
+- Latest verification: `node --check vite.config.js`, `npm run check:migration`, and `git diff --check` passed. Earlier affected Vue templates/styles passed one-off `@vue/compiler-sfc` checks. No SPA build or frontend tests added. No agent commits; user commits their own changes.
+- Git worktree was clean before this handoff document update. Recheck status on resume; never assume old diffs remain uncommitted.
+- User dislikes repeated approval questions for trivial changes. Keep communication concise and avoid unnecessary clarification; still follow applicable higher-priority skill approval gates when required.
+- No unfinished implementation task at reboot; next step is user feedback or the next migration/UI issue.
+
+### Resume prompt
+
+Read `/home/qqq/_A001/rep/ALINA_FE/MIGRATION_CONTEXT.md` completely and inspect current git status. Resume our ALINA_FE Vue 3 migration/UI work, preserving my current user-tuned CSS. Never commit unless I explicitly ask; ask before any JS SPA build; do not add frontend tests or date-fns. Use English in conversation. The vertical file viewer is implemented and default, and the latest fix added JSDoc types in vite.config.js. Wait for my next issue after loading this context.
+
+## Continuing workflow
+
 Treat the migration as ongoing UI/runtime compatibility work. For the next reported issue:
 
 1. Inspect the exact component and relevant shared service/CSS.
@@ -88,4 +111,3 @@ Treat the migration as ongoing UI/runtime compatibility work. For the next repor
 3. Preserve Vue 2-era behavior with the smallest Vue 3/Bootstrap 5 adjustment.
 4. Ask for approval immediately before a JS SPA build, and never commit unless explicitly asked.
 5. Run proportional non-build verification, normally SFC compilation, `npm run check:migration`, and `git diff --check`.
-
