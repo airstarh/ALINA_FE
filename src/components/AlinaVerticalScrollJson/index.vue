@@ -131,7 +131,7 @@ export default {
   align-items: center;
   gap: 3mm;
   width: 100%;
-  padding: 0.5mm 1mm 8mm 1mm;
+  padding: 8mm 1mm 8mm 1mm;
   border-radius: 30px;
   background-color: #111;
 }
