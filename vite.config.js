@@ -6,6 +6,11 @@ import vue from "@vitejs/plugin-vue";
 
 const projectDirectory = fileURLToPath(new URL(".", import.meta.url));
 
+/**
+ * @param {boolean} isCustomMode
+ * @param {string} mode
+ * @param {string} outputDirectory
+ */
 const normalizeHtmlOutputName = (isCustomMode, mode, outputDirectory) => ({
   name: "normalize-html-output-name",
   closeBundle() {
