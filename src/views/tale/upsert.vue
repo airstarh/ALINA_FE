@@ -104,7 +104,7 @@
               :src="tale.iframe"
               frameborder="1"
               width="98%"
-              height="50vh"></iframe>
+              height="300px"></iframe>
           </div>
         </div>
         <!-- endregion iframe -->
