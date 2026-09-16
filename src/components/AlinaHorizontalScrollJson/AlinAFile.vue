@@ -160,7 +160,7 @@ export default {
   box-sizing: border-box;
   width: 17mm;
   min-width: 17mm;
-  padding: 1mm;
+  padding: 2px 2px;
   gap: 0;
   background-color: transparent;
 }
@@ -168,7 +168,7 @@ export default {
 .alina-file.vertical.audio,
 .alina-file.vertical.video,
 .alina-file.vertical.image {
-  width: min(90vw, 90mm);
+  width: min(98vw, 100mm);
 }
 
 .alina-file.vertical .icon {
@@ -191,6 +191,7 @@ export default {
 .alina-file.vertical video {
   width: 100%;
   height: auto;
+  border-radius: 30px;
 }
 
 .thumbnail {

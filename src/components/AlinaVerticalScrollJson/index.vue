@@ -120,7 +120,7 @@ export default {
 .vertical-file-list {
   display: flex;
   flex-direction: column;
-  gap: 2mm;
+  gap: 13mm;
   width: 99%;
   margin: 0 auto;
 }
@@ -131,8 +131,8 @@ export default {
   align-items: center;
   gap: 3mm;
   width: 100%;
-  padding: 2mm;
-  border-radius: 10px;
+  padding: 0.5mm 1mm 8mm 1mm;
+  border-radius: 30px;
   background-color: #111;
 }
 
