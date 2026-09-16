@@ -77,8 +77,8 @@
           v-else-if="src"
           :src="src"
           frameborder="1"
-          width="90%"
-          height="250px" />
+          width="98%"
+          height="800px" />
 
         <span v-else>{{ formatter(modelValue) }}</span>
       </template>
