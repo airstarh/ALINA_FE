@@ -149,6 +149,7 @@ export default {
 <style scoped lang="css">
 .alina-file.horizontal {
   height: 40vh;
+  max-height: 400px;
 }
 
 .alina-file.horizontal.audio,
