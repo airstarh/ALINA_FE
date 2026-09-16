@@ -169,7 +169,7 @@ export default {
 .alina-file.vertical.audio,
 .alina-file.vertical.video,
 .alina-file.vertical.image {
-  width: min(98vw, 100mm);
+  width: min(98vw, 150mm);
 }
 
 .alina-file.vertical .icon {
