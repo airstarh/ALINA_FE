@@ -74,7 +74,7 @@ const AlinaPageGlobalAnalyzer = {
             height = height + 'px';
             iframe.style.height = height;
         }
-    }, 200),
+    }, 1000),
     //endregion iFrame
     /**##################################################*/
     // region AUDIO

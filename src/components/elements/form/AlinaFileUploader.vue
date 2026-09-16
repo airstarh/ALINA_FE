@@ -179,26 +179,29 @@ export default {
       }
     },
     loadFileList() {
+      const _t = this;
       AjaxAlina.newInst({
         method: "GET",
-        url: `${this.dConf.urlGetFiles}/${this.entity_table}/${this.entity_id}`,
+        url: `${_t.dConf.urlGetFiles}/${_t.entity_table}/${_t.entity_id}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            UtilsArray.clear(this.dArrFiles);
-            UtilsArray.vueSensitiveConcat(this.dArrFiles, aja.respBody.data);
-            this.loopFiles();
+            UtilsArray.clear(_t.dArrFiles);
+            UtilsArray.vueSensitiveConcat(_t.dArrFiles, aja.respBody.data);
+            _t.loopFiles();
+            _t.pageRecalcIframeHeight();
           }
         },
       }).go();
     },
     onChangeFileField(fileList) {
+      const _t = this;
       AjaxAlina.newInst({
         method: "POST",
-        url: this.dConf.urlFileUpload,
+        url: _t.dConf.urlFileUpload,
         enctype: "multipart/form-data",
         postParams: {
-          entity_id: this.entity_id,
-          entity_table: this.entity_table,
+          entity_id: _t.entity_id,
+          entity_table: _t.entity_table,
           container: "FILE",
           root_id: null,
           parent_id: null,
@@ -209,10 +212,11 @@ export default {
         },
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            //this.dArrFiles = aja.respBody.data;
-            UtilsArray.vueSensitiveConcat(this.dArrFiles, aja.respBody.data);
-            this.loopFiles();
+            //_t.dArrFiles = aja.respBody.data;
+            UtilsArray.vueSensitiveConcat(_t.dArrFiles, aja.respBody.data);
+            _t.loopFiles();
           }
+          _t.pageRecalcIframeHeight();
         },
       }).go();
     },
@@ -234,6 +238,7 @@ export default {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.elRemoveByIndex(_t.dArrFiles, index);
           }
+          _t.pageRecalcIframeHeight();
         },
       }).go();
     },
@@ -254,6 +259,7 @@ export default {
           if (aja.respBody.meta.alina_response_success == 1) {
             _t.loadFileList();
           }
+          _t.pageRecalcIframeHeight();
         },
       }).go();
     },
@@ -271,6 +277,7 @@ export default {
             _t.loadFileList();
             _t.dModeEdit = false;
           }
+          _t.pageRecalcIframeHeight();
         },
       }).go();
     },
