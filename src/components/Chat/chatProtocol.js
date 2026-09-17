@@ -40,11 +40,19 @@ export function messageParts(text) {
       continue;
     }
     const type = /\.(png|jpe?g|gif|webp|svg|bmp)$/i.test(pathname) ? 'image'
-      : /\.(mp4|webm|mov|avi|m4v)$/i.test(pathname) ? 'video' : 'link';
+      : /\.(mp4|webm|mov|avi|m4v)$/i.test(pathname) ? 'video'
+      : /\.(mp3|wav|ogg|oga|m4a|aac|flac)$/i.test(pathname) ? 'audio' : 'link';
     parts.push({type, url});
     if (url.length < match[0].length) parts.push({type: 'text', text: match[0].slice(url.length)});
     cursor = match.index + match[0].length;
   }
   if (cursor < String(text || '').length) parts.push({type: 'text', text: text.slice(cursor)});
   return parts;
+}
+
+// Uploaded paths belong to the sender's website, even when sockets are shared.
+export function uploadedFileUrl(path, origin) {
+  if (typeof path !== 'string' || !path.startsWith('/') || path.startsWith('//')) return '';
+  const url = safeHttpUrl(path, origin);
+  return url && new URL(url).origin === new URL(origin).origin ? url : '';
 }

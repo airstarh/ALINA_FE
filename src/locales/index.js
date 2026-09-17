@@ -1,5 +1,10 @@
 const Translations = {
   en: {
+    "Attach files": "Attach files",
+    "Sign in to upload files": "Sign in to upload files",
+    "Uploading files…": "Uploading files…",
+    "Could not upload files. Please try again.": "Could not upload files. Please try again.",
+
     "Show menu and footer": "Show menu and footer",
     "Hide menu and footer": "Hide menu and footer",
     "Chat": "Chat",
@@ -123,6 +128,11 @@ const Translations = {
     dtLatLongCSV: "Lat, Long",
   },
   ru: {
+    "Attach files": "Прикрепить файлы",
+    "Sign in to upload files": "Войдите, чтобы загрузить файлы",
+    "Uploading files…": "Загрузка файлов…",
+    "Could not upload files. Please try again.": "Не удалось загрузить файлы. Попробуйте ещё раз.",
+
     "Show menu and footer": "Показать меню и подвал",
     "Hide menu and footer": "Скрыть меню и подвал",
     "Chat": "Чат",

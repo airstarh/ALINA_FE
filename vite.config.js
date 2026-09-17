@@ -54,6 +54,14 @@ export default defineConfig(({mode}) => {
         key: fs.readFileSync(path.resolve(projectDirectory, "cert/030.byrobot.privkey.pem")),
         cert: fs.readFileSync(path.resolve(projectDirectory, "cert/040.byrobot.fullchain.pem")),
       },
+      // Uploaded links use the sender's window origin, including in development.
+      proxy: env.VITE_APP_ALINA_DOMAIN ? {
+        "/uploads": {
+          target: env.VITE_APP_ALINA_DOMAIN,
+          changeOrigin: true,
+          secure: false,
+        },
+      } : undefined,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",

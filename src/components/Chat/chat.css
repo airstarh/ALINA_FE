@@ -65,3 +65,10 @@
   .alina-chat .chat-composer textarea { font-size: 16px; resize: none; }
   .alina-chat .chat-send { padding: 8px 12px; }
 }
+
+.alina-chat .chat-shared-audio { display: block; width: min(100%, 500px); margin: 8px 0; }
+.alina-chat .chat-composer { grid-template-columns: auto 1fr auto; }
+.alina-chat .chat-composer textarea { grid-column: 2; grid-row: 1; }
+.alina-chat .chat-attach { grid-column: 1; grid-row: 1; font-size: 24px; }
+.alina-chat .chat-send { grid-column: 3; grid-row: 1; }
+.alina-chat .chat-attach:disabled { opacity: .5; cursor: default; }

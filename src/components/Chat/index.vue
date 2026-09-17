@@ -32,7 +32,13 @@
           <label class="chat-sr-only" :for="inputId">{{ $t('Message') }}</label>
           <textarea :id="inputId" ref="input" v-model="draft" :placeholder="$t('Type a message…')" rows="2" maxlength="16000"
                     @input="onInput" @keydown="onKeydown" @blur="connection?.typing(false)"></textarea>
-          <button type="submit" class="chat-send" :disabled="!connected || !draft.trim()">{{ $t('Send') }}</button>
+          <input ref="fileInput" type="file" multiple class="chat-sr-only" :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id" @change="uploadFiles" />
+          <button type="button" class="chat-button chat-attach" :title="$t(user.attributes.id ? 'Attach files' : 'Sign in to upload files')"
+                  :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id" @click="fileInput?.click()">
+            <i class="bi bi-paperclip" aria-hidden="true"></i>
+          </button>
+          <small v-if="uploading" class="chat-composer-hint" role="status">{{ $t('Uploading files…') }}</small>
+          <button type="submit" class="chat-send" :disabled="uploading || !connected || !draft.trim()">{{ $t('Send') }}</button>
           <small class="chat-composer-hint">{{ $t('Ctrl+Enter to send · Enter for a new line') }}</small>
         </form>
       </div>
@@ -44,11 +50,12 @@ import {computed, nextTick, onBeforeUnmount, reactive, ref, useId, watch} from '
 import {useI18n} from 'vue-i18n';
 import CurrentUser from '@/services/CurrentUser';
 import ConfigApi from '@/configs/ConfigApi';
+import AjaxAlina from '@/services/AjaxAlina';
 import PageSettings from '@/services/PageSettings';
 import ChatMessage from './ChatMessage.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import {createChatConnection} from './chatConnection.js';
-import {displayName, websocketUrl} from './chatProtocol.js';
+import {displayName, uploadedFileUrl, websocketUrl} from './chatProtocol.js';
 import './chat.css';
 
 const props = defineProps({channel: {type: String, default: '1'}, title: {type: String, default: ''}, apiBaseUrl: {type: String, default: () => ConfigApi.url_base}});
@@ -69,6 +76,8 @@ const status = ref({state: 'connecting'});
 const connected = computed(() => status.value.state === 'connected');
 const messageList = ref(null);
 const input = ref(null);
+const fileInput = ref(null);
+const uploading = ref(false);
 const following = ref(true);
 const unread = ref(0);
 const user = CurrentUser.obj();
@@ -186,7 +195,44 @@ function onKeydown(event) {
     sendMessage();
   }
 }
+async function uploadFiles(event) {
+  const files = event.target.files;
+  if (!files?.length || uploading.value) return;
+  const channel = normalizedChannel.value;
+  const current = generation;
+  uploading.value = true;
+  error.value = '';
+  try {
+    const ajax = await AjaxAlina.newInst({
+      method: 'POST', url: new URL('/FileUpload', props.apiBaseUrl).href,
+      enctype: 'multipart/form-data',
+      postParams: {
+        entity_id: user.attributes.id, entity_table: 'user', container: 'FILE',
+        root_id: null, parent_id: null, level: 1, order: 0,
+        form_id: 'actionIndex', userfile: files,
+      },
+    }).go();
+    const data = ajax?.respBody?.data;
+    const links = (Array.isArray(data) ? data : Object.values(data || {}))
+      .map(file => uploadedFileUrl(file.url_path, window.location.origin)).filter(Boolean);
+    if (!links.length) throw new Error('No uploaded files');
+    const existing = current === generation ? draft.value : drafts.get(channel) || '';
+    const updated = [existing.trimEnd(), ...links].filter(Boolean).join('\n');
+    if (current === generation) {
+      draft.value = updated;
+      input.value?.focus();
+    } else {
+      drafts.set(channel, updated);
+    }
+  } catch {
+    if (current === generation) error.value = t('Could not upload files. Please try again.');
+  } finally {
+    uploading.value = false;
+    if (fileInput.value) fileInput.value.value = '';
+  }
+}
 function sendMessage() {
+  if (uploading.value) return;
   const text = draft.value.trim();
   if (!text) return;
   if (new TextEncoder().encode(text).length > 16000) {
