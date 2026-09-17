@@ -10,7 +10,7 @@
         'container-fluid': pageIsInIframe,
       },
     ]">
-    <div :class="['row', 'g-0', `alina-tale-id-${tale.id}`, 'divine-shadow']">
+    <div :class="['row', 'g-0', `alina-tale-id-${tale.id}`, pageIsInIframe ? '' : 'divine-shadow']">
       <div class="col-12">
         <div
           v-if="!pageIsInIframe && tale.is_header_hidden != 1"
