@@ -3,6 +3,8 @@
     <header class="chat-header">
       <div class="chat-title"><h1>{{ title || $t('Chat') }}</h1><span>{{ $t('Channel') }} {{ normalizedChannel }}</span></div>
       <div class="chat-header-actions">
+        <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
+               :placeholder="$t('Your nickname')" :aria-label="$t('Your nickname')" @input="changeGuestNickname" />
         <span class="chat-connection-status" :class="{'is-connected': connected}" role="status">{{ statusText }}</span>
         <button type="button" class="chat-button chat-people-toggle" :aria-expanded="peopleOpen" :aria-controls="peopleId" @click="peopleOpen = !peopleOpen">
           {{ $t('People') }} ({{ participants.length }})
@@ -81,6 +83,20 @@ const uploading = ref(false);
 const following = ref(true);
 const unread = ref(0);
 const user = CurrentUser.obj();
+const guestNicknameKey = 'alina.chat.guestNickname';
+const guestNickname = ref('');
+try { guestNickname.value = Array.from(localStorage.getItem(guestNicknameKey) || '').slice(0, 25).join(''); } catch { /* Storage may be unavailable. */ }
+let nicknameTimer;
+function chatUser() {
+  return user.attributes.id ? user.attributes : {...user.attributes, firstname: '', lastname: '', nickname: guestNickname.value.trim()};
+}
+function changeGuestNickname(event) {
+  guestNickname.value = Array.from(event.target.value).slice(0, 25).join('');
+  event.target.value = guestNickname.value;
+  try { localStorage.setItem(guestNicknameKey, guestNickname.value); } catch { /* Keep working for this session. */ }
+  clearTimeout(nicknameTimer);
+  nicknameTimer = setTimeout(() => connection?.updateUser(), 400);
+}
 const drafts = new Map();
 let connection = null;
 let generation = 0;
@@ -168,7 +184,7 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   identityAbort = null;
   try {
     connection = createChatConnection({
-      url: websocketUrl(props.apiBaseUrl), channel, getUser: () => user.attributes,
+      url: websocketUrl(props.apiBaseUrl), channel, getUser: chatUser,
       onEvent: receive,
       onStatus: value => {
         status.value = value;
@@ -250,6 +266,7 @@ function sendMessage() {
   input.value?.focus();
 }
 onBeforeUnmount(() => {
+  clearTimeout(nicknameTimer);
   pageSettings.showMainMenu = previousShowMainMenu;
   generation++;
   identityAbort?.abort();

@@ -1,5 +1,6 @@
 const Translations = {
   en: {
+    "Your nickname": "Your nickname",
     "Attach files": "Attach files",
     "Sign in to upload files": "Sign in to upload files",
     "Uploading files…": "Uploading files…",
@@ -128,6 +129,7 @@ const Translations = {
     dtLatLongCSV: "Lat, Long",
   },
   ru: {
+    "Your nickname": "Ваш ник",
     "Attach files": "Прикрепить файлы",
     "Sign in to upload files": "Войдите, чтобы загрузить файлы",
     "Uploading files…": "Загрузка файлов…",

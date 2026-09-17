@@ -85,3 +85,7 @@
   word-break: normal;
 }
 .alina-chat .chat-message-body pre { max-width: 100%; }
+
+.alina-chat .chat-guest-nickname { width: 120px; min-width: 0; padding: 5px 7px; border: 1px solid #53637a; border-radius: 6px; background: #151c27; color: #edf2f8; font: inherit; font-size: 12px; }
+.alina-chat .chat-header-actions { flex-wrap: wrap; max-width: 100%; }
+.alina-chat .chat-guest-nickname:focus-visible { outline: 2px solid #86b8ff; outline-offset: 3px; }

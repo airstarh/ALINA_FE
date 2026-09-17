@@ -8,6 +8,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
   let stopped = true;
   let attempts = 0;
   let lastTypingAt = 0;
+  let historyRequests = [];
 
   function status(state, extra = {}) {
     onStatus({state, ...extra});
@@ -48,6 +49,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
     active.onopen = () => {
       if (stopped || socket !== active) return;
       if (send({type: 'join', CurrentUser: publicChatUser(getUser())})) {
+        historyRequests.push('initial');
         attempts = 0;
         status('connected');
       } else {
@@ -58,6 +60,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       if (stopped || socket !== active) return;
       let data;
       try { data = JSON.parse(event.data); } catch { return; }
+      if (data?.version === 2 && data.channel === channel && data.type === 'history' && historyRequests.shift() === 'identity') return;
       if (data?.version === 2 && (data.channel === channel || data.type === 'error')) onEvent(data);
     };
     active.onerror = () => {
@@ -67,6 +70,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       if (stopped || socket !== active) return;
       active.onopen = active.onmessage = active.onerror = active.onclose = null;
       socket = null;
+      historyRequests = [];
       clearTimeout(typingTimer);
       typingTimer = null;
       lastTypingAt = 0;
@@ -91,6 +95,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
 
   function disconnect() {
     stopped = true;
+    historyRequests = [];
     clearTimeout(retryTimer);
     clearTimeout(typingTimer);
     retryTimer = typingTimer = null;
@@ -106,6 +111,12 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
     start() { if (stopped) { stopped = false; connect(); } },
     stop: disconnect,
     reconnect() { disconnect(); attempts = 0; stopped = false; connect(); },
+    updateUser() {
+      // Reuse join to update presence without replacing the current message list.
+      if (!send({type: 'join', CurrentUser: publicChatUser(getUser())})) return false;
+      historyRequests.push('identity');
+      return true;
+    },
     sendMessage(text) {
       if (!send({type: 'message', msg: text, CurrentUser: publicChatUser(getUser())})) return false;
       typing(false);
