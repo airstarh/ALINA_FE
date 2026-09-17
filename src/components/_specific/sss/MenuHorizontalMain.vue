@@ -5,6 +5,9 @@
       <!--region ALWAYS-->
       <b-navbar-brand to="/">¯\_(ツ)_/¯</b-navbar-brand>
       <b-navbar-nav class="flex-row">
+        <b-nav-item to="/chat" class="m-2" :title="$t('Chat')" :aria-label="$t('Chat')">
+          <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+        </b-nav-item>
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="m-2">
           <i class="bi bi-plus-circle-fill"></i>
         </b-nav-item>

@@ -3,6 +3,7 @@
     class="alina-flex-vertical-container"
     :class="{
       'alina-vh-100': !pageIsInIframe,
+      'alina-chat-page-layout': $route.meta.chat,
     }"
     :style="{
       overflow: pageIsInIframe ? 'hidden' : '',
@@ -14,7 +15,7 @@
     >
       <MenuHorizontalMain></MenuHorizontalMain>
     </div>
-    <div class="alina-flex-vertical-content">
+    <div class="alina-flex-vertical-content" :class="{'alina-chat-page-content': $route.meta.chat}">
       <Messages />
       <Spinner />
       <Popup />
@@ -109,4 +110,7 @@ export default {
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.alina-chat-page-layout { height: 100dvh; min-height: 0; overflow: hidden; }
+.alina-chat-page-content { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; overflow: hidden; }
+</style>

@@ -1,0 +1,53 @@
+<template>
+  <article class="chat-message" :class="{'chat-message-own': own}">
+    <div class="chat-message-heading">
+      <img v-if="avatar && !avatarFailed" :src="avatar" alt="" class="chat-avatar chat-message-avatar" @error="avatarFailed = true" />
+      <span v-else class="chat-avatar chat-avatar-fallback chat-message-avatar" aria-hidden="true">{{ name.slice(0, 1).toUpperCase() }}</span>
+      <strong>{{ name }}</strong>
+      <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
+    </div>
+    <div class="chat-message-body">
+      <template v-for="(part, index) in parts" :key="index">
+        <span v-if="part.type === 'text'">{{ part.text }}</span>
+        <span v-else class="chat-message-link-block">
+          <a v-if="part.type === 'image' && !failedMedia[index]" :href="part.url" target="_blank" rel="noopener noreferrer">
+            <img :src="part.url" alt="Shared image" loading="lazy" class="chat-shared-image" @load="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')" />
+          </a>
+          <video v-else-if="part.type === 'video' && !failedMedia[index]" :src="part.url" controls playsinline preload="metadata"
+                 class="chat-shared-video" @loadedmetadata="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')"></video>
+          <a :href="part.url" target="_blank" rel="noopener noreferrer" class="chat-shared-link">{{ part.url }}</a>
+          <button type="button" class="chat-copy-button" :title="$t('Copy URL')" :aria-label="$t('Copy URL')" @click="copyUrl(part.url, index)">
+            {{ copied === index ? '✓' : '⧉' }}
+          </button>
+        </span>
+      </template>
+    </div>
+  </article>
+</template>
+<script setup>
+import {computed, onBeforeUnmount, reactive, ref} from 'vue';
+import {displayName, messageParts, safeHttpUrl} from './chatProtocol.js';
+const props = defineProps({message: {type: Object, required: true}, own: Boolean, baseUrl: {type: String, required: true}});
+const emit = defineEmits(['media-load', 'copy-error']);
+const avatarFailed = ref(false);
+const failedMedia = reactive({});
+const copied = ref(null);
+let copyTimer;
+const name = computed(() => displayName(props.message.CurrentUser));
+const avatar = computed(() => safeHttpUrl(props.message.CurrentUser?.emblem, props.baseUrl));
+const parts = computed(() => messageParts(props.message.msg));
+const date = computed(() => new Date(props.message.timestamp));
+const fullTime = computed(() => Number.isNaN(date.value.getTime()) ? '' : date.value.toLocaleString());
+const time = computed(() => Number.isNaN(date.value.getTime()) ? '' : date.value.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+async function copyUrl(url, index) {
+  try {
+    await navigator.clipboard.writeText(url);
+    copied.value = index;
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => { copied.value = null; }, 2000);
+  } catch {
+    emit('copy-error');
+  }
+}
+onBeforeUnmount(() => clearTimeout(copyTimer));
+</script>

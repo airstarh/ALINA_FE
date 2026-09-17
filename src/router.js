@@ -33,6 +33,12 @@ export default createRouter({
 	},
 	routes: [
 		{
+			path: "/chat",
+			name: "Chat",
+			component: () => import("@/views/Chat/index.vue"),
+			meta: {chat: true},
+		},
+		{
 			path:      "/",
 			name:      "feed",
 			component: tale_feed
