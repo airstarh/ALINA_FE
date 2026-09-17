@@ -3,7 +3,7 @@
     <b-navbar toggleable="lg" type="light" class="corporate-bg-and-text">
       <b-navbar-brand to="/"><b>Осетровский плацдарм</b></b-navbar-brand>
       <b-navbar-nav class="flex-row">
-        <b-nav-item to="/chat" class="m-2" :title="$t('Chat')" :aria-label="$t('Chat')">
+        <b-nav-item v-if="CU.isLoggedIn()" to="/chat" class="m-2" :title="$t('Chat')" :aria-label="$t('Chat')">
           <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
         </b-nav-item>
         <b-nav-item to="/tale/upsert" v-if="CU.isLoggedIn()" class="me-3">
