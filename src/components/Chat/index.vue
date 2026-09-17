@@ -1,13 +1,14 @@
 <template>
   <section class="alina-chat" :aria-label="$t('Chat')">
     <header class="chat-header">
-      <div class="chat-title"><h1>{{ title || $t('Chat') }}</h1><span>{{ $t('Channel') }} {{ normalizedChannel }}</span></div>
+      <div class="chat-title">
+        <span>{{ $t('Channel') }} {{ normalizedChannel }} <span class="chat-connection-status" :class="{'is-connected': connected}" role="status">{{ statusText }}</span></span>
+      </div>
       <div class="chat-header-actions">
         <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
                :placeholder="$t('Your nickname')" :aria-label="$t('Your nickname')" @input="changeGuestNickname" />
-        <span class="chat-connection-status" :class="{'is-connected': connected}" role="status">{{ statusText }}</span>
         <button type="button" class="chat-button chat-people-toggle" :aria-expanded="peopleOpen" :aria-controls="peopleId" @click="peopleOpen = !peopleOpen">
-          {{ $t('People') }} ({{ participants.length }})
+          {{ $t('i_people') }} ({{ participants.length }})
         </button>
         <button type="button" class="chat-button" :title="$t('Reconnect')" :aria-label="$t('Reconnect')" @click="reconnect">↻</button>
         <button type="button" class="chat-button chat-page-toggle"
@@ -107,10 +108,10 @@ let generation = 0;
 let identityAbort = null;
 let identityTimeout = null;
 const statusText = computed(() => {
-  if (status.value.state === 'connected') return t('Connected');
-  if (status.value.state === 'reconnecting') return `${t('Reconnecting in')} ${Math.ceil(status.value.delay / 1000)}s`;
-  if (status.value.state === 'error') return t('Connection interrupted');
-  return t('Connecting…');
+  if (status.value.state === 'connected') return t("i_ok");
+  if (status.value.state === 'reconnecting') return `${t('i_reconnect')} ${Math.ceil(status.value.delay / 1000)}s`;
+  if (status.value.state === 'error') return t('i_fail');
+  return t('...');
 });
 const typingNames = computed(() => participants.value.filter(person => person.typing && person.id !== selfId.value).map(person => displayName(person.user, person.id)).join(', '));
 function isOwn(message) {

@@ -76,6 +76,8 @@ const Translations = {
     i_channel: "🎥",
     i_info: "i",
     i_pin: "📌",
+    i_fail: "💥",
+    i_people: "👥",
     // ###########################################################################################
     TXT_LOGIN: "Log-in",
     TXT_REGISTER: "Register",
