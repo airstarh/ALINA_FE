@@ -1,5 +1,7 @@
 const Translations = {
   en: {
+    "Show menu and footer": "Show menu and footer",
+    "Hide menu and footer": "Hide menu and footer",
     "Chat": "Chat",
     "People": "People",
     "you": "you",
@@ -121,6 +123,8 @@ const Translations = {
     dtLatLongCSV: "Lat, Long",
   },
   ru: {
+    "Show menu and footer": "Показать меню и подвал",
+    "Hide menu and footer": "Скрыть меню и подвал",
     "Chat": "Чат",
     "People": "Участники",
     "you": "вы",

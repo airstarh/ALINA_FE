@@ -8,6 +8,13 @@
           {{ $t('People') }} ({{ participants.length }})
         </button>
         <button type="button" class="chat-button" :title="$t('Reconnect')" :aria-label="$t('Reconnect')" @click="reconnect">↻</button>
+        <button type="button" class="chat-button chat-page-toggle"
+                :title="$t(pageSettings.showMainMenu ? 'Hide menu and footer' : 'Show menu and footer')"
+                :aria-label="$t(pageSettings.showMainMenu ? 'Hide menu and footer' : 'Show menu and footer')"
+                :aria-pressed="!pageSettings.showMainMenu"
+                @click="pageSettings.showMainMenu = !pageSettings.showMainMenu">
+          <i class="bi" :class="pageSettings.showMainMenu ? 'bi-fullscreen' : 'bi-fullscreen-exit'" aria-hidden="true"></i>
+        </button>
       </div>
     </header>
     <div class="chat-layout" :class="{'chat-people-open': peopleOpen}">
@@ -33,10 +40,11 @@
   </section>
 </template>
 <script setup>
-import {computed, nextTick, onBeforeUnmount, ref, useId, watch} from 'vue';
+import {computed, nextTick, onBeforeUnmount, reactive, ref, useId, watch} from 'vue';
 import {useI18n} from 'vue-i18n';
 import CurrentUser from '@/services/CurrentUser';
 import ConfigApi from '@/configs/ConfigApi';
+import PageSettings from '@/services/PageSettings';
 import ChatMessage from './ChatMessage.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import {createChatConnection} from './chatConnection.js';
@@ -45,6 +53,9 @@ import './chat.css';
 
 const props = defineProps({channel: {type: String, default: '1'}, title: {type: String, default: ''}, apiBaseUrl: {type: String, default: () => ConfigApi.url_base}});
 const {t} = useI18n();
+const pageSettings = reactive(PageSettings);
+const previousShowMainMenu = pageSettings.showMainMenu;
+pageSettings.showMainMenu = false;
 const inputId = `chat-input-${useId()}`;
 const peopleId = `chat-people-${useId()}`;
 const normalizedChannel = computed(() => props.channel.trim() || '1');
@@ -193,6 +204,7 @@ function sendMessage() {
   input.value?.focus();
 }
 onBeforeUnmount(() => {
+  pageSettings.showMainMenu = previousShowMainMenu;
   generation++;
   identityAbort?.abort();
   clearTimeout(identityTimeout);

@@ -93,7 +93,7 @@ export default {
       if (this.pageIsInIframe) {
         return true;
       }
-      if (PageSettings.showMainMenu === false) {
+      if (this.PageSettings.showMainMenu === false) {
         return true;
       }
       return false;
@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     toggleFullScreen() {
-      PageSettings.showMainMenu = !PageSettings.showMainMenu;
+      this.PageSettings.showMainMenu = !this.PageSettings.showMainMenu;
     },
     log() {},
   },
