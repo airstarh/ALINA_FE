@@ -1,8 +1,16 @@
 export function publicChatUser(user = {}) {
-  return Object.fromEntries(['id', 'firstname', 'lastname', 'nickname', 'emblem'].map(key => [key, user?.[key] ?? null]));
+  return Object.fromEntries(['id', 'guestId', 'firstname', 'lastname', 'nickname', 'emblem'].map(key => [key, user?.[key] ?? null]));
 }
 
-export function displayName(user = {}) {
+export function displayName(user = {}, participantId = '') {
+  if (!user?.id) {
+    const identifier = user?.guestId || (participantId.startsWith('guest:') ? participantId.slice(6) : '');
+    if (identifier) {
+      const base = `Guest ${identifier.slice(0, 8)}`;
+      const nickname = user?.nickname?.trim() || [user?.firstname, user?.lastname].filter(Boolean).join(' ').trim();
+      return nickname && nickname !== base ? `${nickname} (${base})` : base;
+    }
+  }
   return user?.name || user?.nickname || [user?.firstname, user?.lastname].filter(Boolean).join(' ') || 'Guest';
 }
 
@@ -70,4 +78,22 @@ export function uploadedFileUrl(path, origin) {
   if (typeof path !== 'string' || !path.startsWith('/') || path.startsWith('//')) return '';
   const url = safeHttpUrl(path, origin);
   return url && new URL(url).origin === new URL(origin).origin ? url : '';
+}
+
+// Canonical ordering is independent of display names and socket resource IDs.
+export function privateChannel(first, second) {
+  if (!first || !second || first === second) return '';
+  const token = id => {
+    if (/^user:[1-9][0-9]*$/.test(id)) return {guest: false, value: id.slice(5)};
+    if (/^guest:(?:[0-9a-f]{8}-[0-9a-f-]{27}|[0-9]+)$/.test(id)) return {guest: true, value: id.slice(6)};
+    return null;
+  };
+  const a = token(first), b = token(second);
+  if (!a || !b) return '';
+  const sorted = [a, b].sort((x, y) => {
+    if (x.guest !== y.guest) return x.guest ? 1 : -1;
+    if (!x.guest && x.value.length !== y.value.length) return x.value.length - y.value.length;
+    return x.value < y.value ? -1 : x.value > y.value ? 1 : 0;
+  });
+  return sorted.map(x => `${x.guest ? 'guest_' : ''}${x.value}`).join('_');
 }

@@ -1,5 +1,6 @@
 const Translations = {
   en: {
+    "Open a separate chat": "Open a separate chat",
     "Your nickname": "Your nickname",
     "Attach files": "Attach files",
     "Sign in to upload files": "Sign in to upload files",
@@ -129,6 +130,7 @@ const Translations = {
     dtLatLongCSV: "Lat, Long",
   },
   ru: {
+    "Open a separate chat": "Открыть отдельный чат",
     "Your nickname": "Ваш ник",
     "Attach files": "Прикрепить файлы",
     "Sign in to upload files": "Войдите, чтобы загрузить файлы",

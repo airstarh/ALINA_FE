@@ -50,6 +50,7 @@
 <script setup>
 import {computed, nextTick, onBeforeUnmount, reactive, ref, useId, watch} from 'vue';
 import {useI18n} from 'vue-i18n';
+import {guestNickname as storedGuestNickname, saveGuestNickname, guestNicknameStorageKey} from '@/services/GuestIdentity';
 import CurrentUser from '@/services/CurrentUser';
 import ConfigApi from '@/configs/ConfigApi';
 import AjaxAlina from '@/services/AjaxAlina';
@@ -83,20 +84,23 @@ const uploading = ref(false);
 const following = ref(true);
 const unread = ref(0);
 const user = CurrentUser.obj();
-const guestNicknameKey = 'alina.chat.guestNickname';
-const guestNickname = ref('');
-try { guestNickname.value = Array.from(localStorage.getItem(guestNicknameKey) || '').slice(0, 25).join(''); } catch { /* Storage may be unavailable. */ }
+const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
 function chatUser() {
   return user.attributes.id ? user.attributes : {...user.attributes, firstname: '', lastname: '', nickname: guestNickname.value.trim()};
 }
 function changeGuestNickname(event) {
-  guestNickname.value = Array.from(event.target.value).slice(0, 25).join('');
+  guestNickname.value = saveGuestNickname(event.target.value);
   event.target.value = guestNickname.value;
-  try { localStorage.setItem(guestNicknameKey, guestNickname.value); } catch { /* Keep working for this session. */ }
   clearTimeout(nicknameTimer);
   nicknameTimer = setTimeout(() => connection?.updateUser(), 400);
 }
+function syncGuestNickname(event) {
+  if (event.key !== guestNicknameStorageKey || user.attributes.id) return;
+  guestNickname.value = storedGuestNickname();
+  connection?.updateUser();
+}
+window.addEventListener('storage', syncGuestNickname);
 const drafts = new Map();
 let connection = null;
 let generation = 0;
@@ -108,7 +112,7 @@ const statusText = computed(() => {
   if (status.value.state === 'error') return t('Connection interrupted');
   return t('Connecting…');
 });
-const typingNames = computed(() => participants.value.filter(person => person.typing && person.id !== selfId.value).map(person => displayName(person.user)).join(', '));
+const typingNames = computed(() => participants.value.filter(person => person.typing && person.id !== selfId.value).map(person => displayName(person.user, person.id)).join(', '));
 function isOwn(message) {
   return !!selfId.value && message.participantId === selfId.value;
 }
@@ -266,6 +270,7 @@ function sendMessage() {
   input.value?.focus();
 }
 onBeforeUnmount(() => {
+  window.removeEventListener('storage', syncGuestNickname);
   clearTimeout(nicknameTimer);
   pageSettings.showMainMenu = previousShowMainMenu;
   generation++;

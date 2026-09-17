@@ -1,3 +1,4 @@
+import {guestId} from "./GuestIdentity.js";
 import UtilsData from "@/Utils/UtilsData";
 import { reactive } from "vue";
 
@@ -8,7 +9,8 @@ export default class CurrentUser {
 
   constructor() {
     this.attributes = {
-      id: null,
+      id: 0,
+      guestId: guestId(),
       mail: null,
       password: null,
       firstname: null,
@@ -57,6 +59,12 @@ export default class CurrentUser {
     this.attributes = {}; // :-)
     for (let [key, value] of Object.entries(obj)) {
       this.attributes[key] = value;
+    }
+    if (!this.attributes.id) {
+      this.attributes.id = 0;
+      this.attributes.guestId = guestId();
+    } else {
+      delete this.attributes.guestId;
     }
     window.localStorage.setItem("CurrentUser", JSON.stringify(this.attributes));
   }

@@ -36,7 +36,7 @@ const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);
 let copyTimer;
-const name = computed(() => displayName(props.message.CurrentUser));
+const name = computed(() => displayName(props.message.CurrentUser, props.message.participantId));
 const avatar = computed(() => safeHttpUrl(props.message.CurrentUser?.emblem, props.baseUrl));
 const parts = computed(() => messageParts(props.message.msg));
 const date = computed(() => new Date(props.message.timestamp));
