@@ -9,6 +9,7 @@
     <div class="chat-message-body">
       <template v-for="(part, index) in parts" :key="index">
         <span v-if="part.type === 'text'">{{ part.text }}</span>
+        <pre v-else-if="part.type === 'code'"><code>{{ part.text }}</code></pre>
         <span v-else class="chat-message-link-block">
           <a v-if="part.type === 'image' && !failedMedia[index]" :href="part.url" target="_blank" rel="noopener noreferrer">
             <img :src="part.url" alt="Shared image" loading="lazy" class="chat-shared-image" @load="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')" />

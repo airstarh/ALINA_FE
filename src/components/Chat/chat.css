@@ -72,3 +72,16 @@
 .alina-chat .chat-attach { grid-column: 1; grid-row: 1; font-size: 24px; }
 .alina-chat .chat-send { grid-column: 3; grid-row: 1; }
 .alina-chat .chat-attach:disabled { opacity: .5; cursor: default; }
+
+.alina-chat .chat-message-body pre,
+.alina-chat .chat-message-body code {
+  white-space: pre;
+  overflow-x: auto;
+  overflow-y: auto;
+  background-color: #000;
+  color: #70ff70;
+  font-family: monospace, monospace;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.alina-chat .chat-message-body pre { max-width: 100%; }

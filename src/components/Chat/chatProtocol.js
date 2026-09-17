@@ -26,6 +26,21 @@ export function websocketUrl(baseUrl) {
 }
 
 export function messageParts(text) {
+  const source = String(text || '');
+  const parts = [];
+  // Only complete, line-delimited fences are rendered as code.
+  const fences = /^[ \t]*```[^`\r\n]*\r?\n([\s\S]*?)^[ \t]*```[ \t]*(?:\r?\n|$)/gm;
+  let cursor = 0;
+  for (const match of source.matchAll(fences)) {
+    parts.push(...linkedMessageParts(source.slice(cursor, match.index)));
+    parts.push({type: 'code', text: match[1]});
+    cursor = match.index + match[0].length;
+  }
+  parts.push(...linkedMessageParts(source.slice(cursor)));
+  return parts;
+}
+
+function linkedMessageParts(text) {
   const parts = [];
   const pattern = /https?:\/\/[^\s"'<>()]+/gi;
   let cursor = 0;
