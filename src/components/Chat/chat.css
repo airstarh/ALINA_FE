@@ -6,7 +6,7 @@
 .alina-chat .chat-title > span { color: var(--chat-muted); font-size: 12px; overflow-wrap: anywhere; }
 .alina-chat .chat-header-actions { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
 .alina-chat .chat-connection-status { color: #ffd38a; font-size: 12px; }
-.alina-chat .chat-connection-status.is-connected { color: #75ddb0; }
+.alina-chat .chat-connection-status.is-connected { color: #00ff00; }
 .alina-chat button { font: inherit; cursor: pointer; }
 .alina-chat button:focus-visible, .alina-chat a:focus-visible, .alina-chat textarea:focus-visible { outline: 2px solid #86b8ff; outline-offset: 3px; }
 .alina-chat .chat-button { border: 1px solid #53637a; background: transparent; color: #edf2f8; border-radius: 6px; padding: 6px 10px; }

@@ -10,20 +10,20 @@
         <div class="input-group mb-3">
           <button
             @click="search"
-            class="btn btn-primary"
+            class="btn btn-secondary"
           >
             <i class="bi bi-search"></i>
           </button>
           <input
             type="text"
-            class="form-control"
+            class="form-control border-0"
             aria-label="Search"
             v-model="dataGetParams.txt"
             placeholder=""
           />
           <button
             @click="searchClear"
-            class="btn btn-danger"
+            class="btn btn-secondary"
           >
             <i class="bi bi-backspace-fill"></i>
           </button>

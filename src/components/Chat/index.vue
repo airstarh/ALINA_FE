@@ -2,9 +2,8 @@
   <section class="alina-chat" :aria-label="$t('Chat')">
     <header class="chat-header">
       <div class="chat-title">
-        <span>{{ $t('i_chat') }}</span>
-        <span class="channel-name">{{ normalizedChannel }}</span>
         <span class="chat-connection-status" :class="{'text-success': connected}" role="status">{{ statusText }}</span>
+        <span class="channel-name">{{ normalizedChannel }}</span>
       </div>
       <div class="chat-header-actions">
         <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
