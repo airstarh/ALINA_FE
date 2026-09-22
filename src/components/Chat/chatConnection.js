@@ -66,8 +66,11 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
     active.onerror = () => {
       if (!stopped && socket === active) status('error', {error: 'Connection interrupted. Waiting to reconnect…'});
     };
-    active.onclose = () => {
+    active.onclose = event => {
       if (stopped || socket !== active) return;
+      console.info('[ALINA Chat] WebSocket closed', {
+        code: event?.code, reason: event?.reason || '', wasClean: event?.wasClean,
+      });
       active.onopen = active.onmessage = active.onerror = active.onclose = null;
       socket = null;
       historyRequests = [];
