@@ -56,6 +56,7 @@
             <div
               v-if="tale?.id"
               :class="[
+                'position-relative',
                 'alina-feed-tale',
                 `alina-feed-tale-order-${index}`,
                 `alina-feed-tale-id-${tale.id}`,
@@ -155,21 +156,19 @@
                 </div>
                 <!-- endregion TALE -->
               </transition>
-              <div class="text-center position-relative">
-                <button
-                  v-if="!taleMustBeExpanded(tale)"
-                  class="btn btn-sm btn-secondary position-relative rounded-pill"
-                  @click="
-                    toggleExpand(tale.id);
-                  expandedTales[tale.id]
-                    ? () => { }
-                    : scrollToClassName(`alina-feed-tale-order-${index}`);
-                  "
-                  style="top: 20px; width: 20vw">
+              <div v-if="!taleMustBeExpanded(tale)" class="text-center position-absolute" style="bottom: -15px; width:100%;">
+                <button class="btn btn-sm btn-secondary position-relative rounded-pill divine-shadow" @click="
+                  toggleExpand(tale.id);
+                expandedTales[tale.id]
+                  ? () => { }
+                  : scrollToClassName(`alina-feed-tale-order-${index}`);
+                " style="width: 20vw">
                   {{ expandedTales[tale.id] ? $t("i_collapse") : $t("i_expand") }}
                 </button>
               </div>
             </div>
+
+
           </template>
           <!-- endregion WRAPPER TALE-->
           <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
