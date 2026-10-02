@@ -10,8 +10,7 @@
         <div class="input-group mb-3">
           <button
             @click="search"
-            class="btn btn-secondary"
-          >
+            class="btn btn-secondary">
             <i class="bi bi-search"></i>
           </button>
           <input
@@ -19,12 +18,10 @@
             class="form-control border-0"
             aria-label="Search"
             v-model="dataGetParams.txt"
-            placeholder=""
-          />
+            placeholder="" />
           <button
             @click="searchClear"
-            class="btn btn-secondary"
-          >
+            class="btn btn-secondary">
             <i class="bi bi-backspace-fill"></i>
           </button>
         </div>
@@ -36,8 +33,7 @@
     <!--##################################################-->
     <!-- region FEED  -->
     <div
-      v-if="feed.length"
-    >
+      v-if="feed.length">
       <div class="row g-0">
         <div class="col mx-auto">
           <!--##################################################-->
@@ -48,8 +44,7 @@
             :rowsTotal="parseInt(feedPagination.rowsTotal)"
             :pagesTotal="parseInt(feedPagination.pagesTotal)"
             :onClickPage="pageChange"
-            class='feed-paginator'
-          ></Paginator>
+            class='feed-paginator'></Paginator>
           <!-- endregion PAGINATOR -->
           <!--##################################################-->
 
@@ -57,137 +52,123 @@
           <!-- region WRAPPER TALE-->
           <template
             v-for="(tale, index) in feed"
-            :key="tale?.id ?? index"
-          >
+            :key="tale?.id ?? index">
             <div
               v-if="tale?.id"
               :class="[
                 'alina-feed-tale',
                 `alina-feed-tale-order-${index}`,
                 `alina-feed-tale-id-${tale.id}`,
-              ]"
-            >
-            <!--##################################################-->
-            <!-- region UP DOWN EACH TALE -->
-            <div
-              v-if="tale.id"
-              class="sticky-top"
-            >
-              <div class="row g-0 text-center alina-feed-up-down mt-3">
-                <div
-                  class="col btn btn-sm cursor-pointer"
-                  @click="scrollToClassName('alina-feed-start')"
-                >
-                  {{ tale.is_sticked ? $t("i_pin") : $t("i_up")+$t("i_up") }}
-                </div>
-                &nbsp;
-                <div
-                  class="col btn btn-sm cursor-pointer"
-                  @click="scrollToClassName('alina-feed-end')"
-                >
-                  {{ $t("i_down") }}{{ $t("i_down") }}
-                </div>
-                &nbsp;
-                <div
-                  class="col btn btn-sm cursor-pointer"
-                >
-                  <router-link :to="'/tale/upsert/' + tale.id">{{ $t("i_link") }}</router-link>
-                </div>
-                &nbsp;
-                <div
-                  class="col btn btn-sm cursor-pointer"
-                  @click="
-                    scrollToClassName(`alina-feed-tale-order-${index - 1}`)
-                  "
-                >
-                  {{ $t("i_up") }}
-                </div>
-                &nbsp;
-                <div
-                  class="col btn btn-sm cursor-pointer"
-                  @click="
-                    scrollToClassName(`alina-feed-tale-order-${index + 1}`)
-                  "
-                >
-                  {{ $t("i_down") }}
-                </div>
-              </div>
-            </div>
-            <!-- endregion UP DOWN EACH TALE -->
-            <!--##################################################-->
-
-            <transition name="slide-fade">
-              <!-- region ADULT -->
+              ]">
+              <!--##################################################-->
+              <!-- region UP DOWN EACH TALE -->
               <div
-                :key="`${tale.id}_1`"
-                v-if="
-                  tale.is_adult_denied == 1 && !feedForceShow.includes(tale.id)
-                "
-              >
-                <div class="row g-0 mb-5">
-                  <div class="img-wrapper">
-                    <img
-                      class="img-responsive"
-                      src="@/assets/adult.png"
-                    />
-                    <div class="img-overlay">
-                      <button
-                        class="btn btn-lg w-100 btn-primary"
-                        @click="feedForceShow.push(tale.id)"
-                      >
-                        I am ready to watch dangerous content
-                      </button>
-                    </div>
+                v-if="tale.id"
+                class="sticky-top">
+                <div class="row g-0 text-center alina-feed-up-down mt-3">
+                  <div
+                    class="col btn btn-sm cursor-pointer"
+                    @click="scrollToClassName('alina-feed-start')">
+                    {{ tale.is_sticked ? $t("i_pin") : $t("i_up") + $t("i_up") }}
+                  </div>
+                  &nbsp;
+                  <div
+                    class="col btn btn-sm cursor-pointer"
+                    @click="scrollToClassName('alina-feed-end')">
+                    {{ $t("i_down") }}{{ $t("i_down") }}
+                  </div>
+                  &nbsp;
+                  <div
+                    class="col btn btn-sm cursor-pointer">
+                    <router-link :to="'/tale/upsert/' + tale.id">{{ $t("i_link") }}</router-link>
+                  </div>
+                  &nbsp;
+                  <div
+                    class="col btn btn-sm cursor-pointer"
+                    @click="
+                      scrollToClassName(`alina-feed-tale-order-${index - 1}`)
+                      ">
+                    {{ $t("i_up") }}
+                  </div>
+                  &nbsp;
+                  <div
+                    class="col btn btn-sm cursor-pointer"
+                    @click="
+                      scrollToClassName(`alina-feed-tale-order-${index + 1}`)
+                      ">
+                    {{ $t("i_down") }}
                   </div>
                 </div>
               </div>
-              <!-- endregion ADULT -->
-              <!-- region TALE -->
-              <div
-                v-else
-                :key="`${tale.id}_2`"
-                :class="[
-                  {
-                    is_draft: tale.is_draft,
-                    is_sticked: tale.is_sticked,
-                  },
-                  'corporate-border-color',
-                  !expandedTales[tale.id] ? 'collapsed' : '',
-                ]"
-              >
-                <tale_upsert
-                  :p-flag-in-feed="true"
-                  :p-tale="tale"
-                  @deleted="ajaGetFeed"
-                  @taleChanged="
-                    (newTale) => {
-                      handleTaleChanged(newTale, index);
-                    }
-                  "
-                  @modeEditChanged="
-                    ({ taleId, modeEdit }) => {
-                      handleModeEditChanged(taleId, modeEdit, index);
-                    }
-                  "
-                ></tale_upsert>
-              </div>
-              <!-- endregion TALE -->
-            </transition>
-            <div class="text-center position-relative">
-              <button
-                v-if="!taleMustBeExpanded(tale)"
-                class="btn btn-sm btn-secondary position-relative rounded-pill"
-                @click="
-                  toggleExpand(tale.id);
+              <!-- endregion UP DOWN EACH TALE -->
+              <!--##################################################-->
+
+              <transition name="slide-fade">
+                <!-- region ADULT -->
+                <div
+                  :key="`${tale.id}_1`"
+                  v-if="
+                    tale.is_adult_denied == 1 && !feedForceShow.includes(tale.id)
+                  ">
+                  <div class="row g-0 mb-5">
+                    <div class="img-wrapper">
+                      <img
+                        class="img-responsive"
+                        src="@/assets/adult.png" />
+                      <div class="img-overlay">
+                        <button
+                          class="btn btn-lg w-100 btn-primary"
+                          @click="feedForceShow.push(tale.id)">
+                          I am ready to watch dangerous content
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- endregion ADULT -->
+                <!-- region TALE -->
+                <div
+                  v-else
+                  :key="`${tale.id}_2`"
+                  :class="[
+                    {
+                      is_draft: tale.is_draft,
+                      is_sticked: tale.is_sticked,
+                    },
+                    'corporate-border-color',
+                    !expandedTales[tale.id] ? 'collapsed' : '',
+                  ]">
+                  <tale_upsert
+                    :p-flag-in-feed="true"
+                    :p-tale="tale"
+                    @deleted="ajaGetFeed"
+                    @taleChanged="
+                      (newTale) => {
+                        handleTaleChanged(newTale, index);
+                      }
+                    "
+                    @modeEditChanged="
+                      ({ taleId, modeEdit }) => {
+                        handleModeEditChanged(taleId, modeEdit, index);
+                      }
+                    "></tale_upsert>
+                </div>
+                <!-- endregion TALE -->
+              </transition>
+              <div class="text-center position-relative">
+                <button
+                  v-if="!taleMustBeExpanded(tale)"
+                  class="btn btn-sm btn-secondary position-relative rounded-pill"
+                  @click="
+                    toggleExpand(tale.id);
                   expandedTales[tale.id]
-                    ? () => {}
+                    ? () => { }
                     : scrollToClassName(`alina-feed-tale-order-${index}`);
-                "
-                style="top: 20px; width: 20vw"
-              >
-                {{ expandedTales[tale.id] ? $t("i_collapse") : $t("i_expand") }}
-              </button>
-            </div>
+                  "
+                  style="top: 20px; width: 20vw">
+                  {{ expandedTales[tale.id] ? $t("i_collapse") : $t("i_expand") }}
+                </button>
+              </div>
             </div>
           </template>
           <!-- endregion WRAPPER TALE-->
@@ -197,19 +178,13 @@
           <!-- region LAST UPDOWN -->
           <div class="sticky-top">
             <div class="row g-0 text-center mb-5 alina-feed-up-down">
-              <div
-                class="col btn btn-secondary cursor-pointer"
-                @click="scrollToClassName('alina-feed-start')"
-              >
+              <div class="col btn btn-secondary cursor-pointer" @click="scrollToClassName('alina-feed-start')">
                 {{ $t("i_up") }}{{ $t("i_up") }}
               </div>
               &nbsp;
-              <div
-                class="col btn btn-secondary cursor-pointer"
-                @click="
-                  scrollToClassName(`alina-feed-tale-order-${feed.length - 1}`)
-                "
-              >
+              <div class="col btn btn-secondary cursor-pointer" @click="
+                scrollToClassName(`alina-feed-tale-order-${feed.length - 1}`)
+                ">
                 {{ $t("i_up") }}
               </div>
             </div>
@@ -219,14 +194,7 @@
 
           <!--##################################################-->
           <!-- region LAST PAGINATOR -->
-          <Paginator
-            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-            :pageSize="parseInt(feedPagination.pageSize)"
-            :rowsTotal="parseInt(feedPagination.rowsTotal)"
-            :pagesTotal="parseInt(feedPagination.pagesTotal)"
-            :onClickPage="pageChange"
-            class='feed-paginator'
-          ></Paginator>
+          <Paginator :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)" :pageSize="parseInt(feedPagination.pageSize)" :rowsTotal="parseInt(feedPagination.rowsTotal)" :pagesTotal="parseInt(feedPagination.pagesTotal)" :onClickPage="pageChange" class='feed-paginator'></Paginator>
           <!-- endregion LAST PAGINATOR -->
           <!--##################################################-->
         </div>
@@ -326,7 +294,7 @@ export default {
           path: path,
           query: query,
         })
-        .catch(() => {});
+        .catch(() => { });
       //this.ajaGetFeed();
     },
 
