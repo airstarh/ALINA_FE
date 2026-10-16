@@ -1,6 +1,7 @@
 import Expect from './Expect'
 import CurrentLocale                 from "@/services/CurrentLocale";
 import { MyCustomUploadAdapterPlugin } from "@/Utils/AlinaCustomUploader";
+import { videoEmbedProvider } from "./videoEmbed";
 
 export default class Adjustment {
   ck = null
@@ -147,34 +148,7 @@ export default class Adjustment {
       mediaEmbed: {
         previewsInData: true,
         extraProviders: [
-          {
-            name: 'allVideo',
-            url: [
-              /^https?:\/\/(.+)\.(mp4)/,
-              /^https?:\/\/(.+)\.(mpa)/,
-              /^https?:\/\/(.+)\.(ogv)/,
-              /^https?:\/\/(.+)\.(ogg)/,
-              /^https?:\/\/(.+)\.(webm)/
-            ],
-            html: match => {
-              const vocTypes = {
-                ogv: 'ogg',
-                ogg: 'ogg',
-                mp4: 'mp4',
-                mpa: 'mp4',
-                webm: 'webm'
-              }
-              const id = match[0]
-              const type = vocTypes[match[2]]
-              return (
-                '<figure class="alina-figure-content">' +
-                '<video controls style="width: 100%; min-height: 45vh; margin: 0 auto; text-align: center;" preload="none">' +
-                `<source src="${id}" type="video/${type}">` +
-                '</video>' +
-                '</figure>'
-              )
-            }
-          },
+          videoEmbedProvider,
           {
             name: 'allAudio',
             url: [
