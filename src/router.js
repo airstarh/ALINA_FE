@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 import About                         from "@/views/About.vue";
 import RestCall                      from "@/views/RestCall.vue";
 import UrlParser                     from "@/views/UrlParser.vue";
@@ -18,7 +18,7 @@ import AjaxAlina                     from "@/services/AjaxAlina";
 import ConfigApi                     from "@/configs/ConfigApi";
 
 export default createRouter({
-	history: createWebHistory(import.meta.env.BASE_URL),
+	history: createWebHashHistory(import.meta.env.BASE_URL),
 	scrollBehavior(to, from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;

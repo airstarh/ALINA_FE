@@ -21,8 +21,10 @@ const normalizeHtmlOutputName = (isCustomMode, mode, outputDirectory) => ({
   },
 });
 
-export default defineConfig(({mode}) => {
+export default defineConfig(({command, mode}) => {
   const env = loadEnv(mode, process.cwd(), "");
+  const assetBase = env.VITE_APP_PUBLIC_PATH || "/apps/vue/";
+  const isDevServer = command === "serve";
   const publicFolder = env.VITE_APP_PUBLIC_FOLDER || "public";
   const outputDirectory = env.VITE_APP_ALINA_DIST
     ? path.resolve(env.VITE_APP_ALINA_DIST)
@@ -31,7 +33,12 @@ export default defineConfig(({mode}) => {
   const htmlInput = isCustomMode ? `index.${mode}.html` : "index.html";
 
   return {
-    base: env.VITE_APP_PUBLIC_PATH || "/apps/vue/",
+    base: isDevServer ? assetBase : "/",
+    experimental: isDevServer ? undefined : {
+      renderBuiltUrl(filename) {
+        return `${assetBase}${filename}`;
+      },
+    },
     publicDir: path.resolve(projectDirectory, publicFolder),
     plugins: [vue(), normalizeHtmlOutputName(isCustomMode, mode, outputDirectory)],
     build: {
