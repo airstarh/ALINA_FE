@@ -1,4 +1,4 @@
-import {publicChatUser} from './chatProtocol.js';
+import {createClientMessageId, publicChatUser} from './chatProtocol.js';
 
 // Framework-independent transport. All timers and handlers belong to this instance.
 export function createChatConnection({url, channel, getUser, onEvent, onStatus, WebSocketClass = WebSocket}) {
@@ -9,6 +9,9 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
   let attempts = 0;
   let lastTypingAt = 0;
   let historyRequests = [];
+  let selfParticipantId = '';
+  let kicked = false;
+  const failedMessageIds = new Map();
 
   function status(state, extra = {}) {
     onStatus({state, ...extra});
@@ -51,7 +54,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       if (send({type: 'join', CurrentUser: publicChatUser(getUser())})) {
         historyRequests.push('initial');
         attempts = 0;
-        status('connected');
+        status('joining');
       } else {
         active.close();
       }
@@ -60,8 +63,28 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       if (stopped || socket !== active) return;
       let data;
       try { data = JSON.parse(event.data); } catch { return; }
+      if (!data || typeof data !== 'object' || Array.isArray(data) || data.version !== 2) return;
       if (data?.version === 2 && data.channel === channel && data.type === 'history' && historyRequests.shift() === 'identity') return;
-      if (data?.version === 2 && (data.channel === channel || data.type === 'error')) onEvent(data);
+      if (data.channel !== channel && data.type !== 'error') return;
+
+      if (['joined', 'join_approved', 'join_pending'].includes(data.type) && typeof data.participantId === 'string') {
+        selfParticipantId = data.participantId;
+      }
+      if (data.type === 'presence' && typeof data.selfId === 'string') selfParticipantId = data.selfId;
+
+      if (data.type === 'joined' || data.type === 'join_approved') {
+        kicked = false;
+        status('connected');
+      } else if (data.type === 'join_pending') {
+        status('pending');
+      } else if (data.type === 'participant_kicked' && data.participantId === selfParticipantId) {
+        kicked = true;
+        status('kicked');
+      } else if (data.type === 'error') {
+        status('error', {error: data.error || 'Chat request failed.'});
+      }
+
+      onEvent(data);
     };
     active.onerror = () => {
       if (!stopped && socket === active) status('error', {error: 'Connection interrupted. Waiting to reconnect…'});
@@ -77,6 +100,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       clearTimeout(typingTimer);
       typingTimer = null;
       lastTypingAt = 0;
+      if (kicked) return;
       retry();
     };
   }
@@ -98,6 +122,8 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
 
   function disconnect() {
     stopped = true;
+    kicked = false;
+    selfParticipantId = '';
     historyRequests = [];
     clearTimeout(retryTimer);
     clearTimeout(typingTimer);
@@ -120,11 +146,20 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       historyRequests.push('identity');
       return true;
     },
-    sendMessage(text) {
-      if (!send({type: 'message', msg: text, CurrentUser: publicChatUser(getUser())})) return false;
+    sendMessage(text, requestedMessageId = '') {
+      const key = String(text);
+      const clientMessageId = requestedMessageId || failedMessageIds.get(key) || createClientMessageId();
+      if (!send({type: 'message', msg: text, clientMessageId, CurrentUser: publicChatUser(getUser())})) {
+        failedMessageIds.set(key, clientMessageId);
+        return false;
+      }
+      if (failedMessageIds.get(key) === clientMessageId) failedMessageIds.delete(key);
       typing(false);
-      return true;
+      return clientMessageId;
     },
+    renameChat(name) { return send({type: 'rename', name}); },
+    approve(participantId) { return send({type: 'approve', participantId}); },
+    kick(participantId) { return send({type: 'kick', participantId}); },
     typing,
   };
 }

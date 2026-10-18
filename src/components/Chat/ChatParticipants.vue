@@ -5,6 +5,15 @@
     </div>
     <p v-if="!connected" class="chat-muted">{{ $t('Waiting for connection…') }}</p>
     <p v-else-if="!participants.length" class="chat-muted">{{ $t('Loading participants…') }}</p>
+    <section v-if="connected && joinRequests.length" class="chat-join-requests" :aria-label="$t('Join requests')">
+      <h3>{{ $t('Join requests') }}</h3>
+      <ul>
+        <li v-for="request in joinRequests" :key="request.id">
+          <span>{{ displayName(request.user, request.id) }}</span>
+          <button type="button" class="chat-button chat-approve" @click="$emit('approve', request.id)">{{ $t('Approve') }}</button>
+        </li>
+      </ul>
+    </section>
     <ul class="chat-people-list">
       <li v-for="person in participants" :key="person.id" class="chat-person">
         <component :is="privateHref(person) ? 'a' : 'span'" :href="privateHref(person) || undefined"
@@ -21,6 +30,9 @@
             <span class="chat-online-dot" aria-hidden="true"></span>{{ person.typing ? $t('Typing…') : $t('Online') }}
           </span>
         </div>
+        <button v-if="canKick && person.id !== selfId" type="button" class="chat-button chat-kick"
+                :title="$t('Remove from chat')" :aria-label="`${$t('Remove from chat')}: ${displayName(person.user, person.id)}`"
+                @click="$emit('kick', person.id)">×</button>
       </li>
     </ul>
   </aside>
@@ -29,7 +41,15 @@
 import {reactive} from 'vue';
 import {useRouter} from 'vue-router';
 import {displayName, privateChannel, safeHttpUrl} from './chatProtocol.js';
-const props = defineProps({participants: {type: Array, default: () => []}, selfId: {type: String, default: ''}, baseUrl: {type: String, required: true}, connected: Boolean});
+const props = defineProps({
+  participants: {type: Array, default: () => []},
+  joinRequests: {type: Array, default: () => []},
+  selfId: {type: String, default: ''},
+  baseUrl: {type: String, required: true},
+  connected: Boolean,
+  canKick: Boolean,
+});
+defineEmits(['approve', 'kick']);
 const router = useRouter();
 function privateHref(person) {
   const channel = privateChannel(props.selfId, person.id);

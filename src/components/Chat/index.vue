@@ -3,11 +3,20 @@
     <header class="chat-header">
       <div class="chat-title">
         <span class="chat-connection-status" :class="{'text-success': connected}" role="status">{{ statusText }}</span>
+        <label class="chat-sr-only" :for="chatNameId">{{ $t('Chat name') }}</label>
+        <input :id="chatNameId" v-model="chatName" class="chat-name-input" maxlength="200" :disabled="!connected"
+               :aria-label="$t('Chat name')" @keydown.enter.prevent="saveChatName" @blur="saveChatName" />
         <span class="channel-name">{{ normalizedChannel }}</span>
       </div>
       <div class="chat-header-actions">
         <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
                :placeholder="$t('Your nickname')" :aria-label="$t('Your nickname')" @input="changeGuestNickname" />
+        <button type="button" class="chat-button chat-copy-link" :title="$t('Copy chat link')" :aria-label="$t('Copy chat link')" @click="copyChatLink">
+          <i class="bi bi-link-45deg" aria-hidden="true"></i>
+        </button>
+        <button type="button" class="chat-button chat-video-link" :title="$t('Open video chat')" :aria-label="$t('Open video chat')" @click="openVideoChat">
+          <i class="bi bi-camera-video" aria-hidden="true"></i>
+        </button>
         <button type="button" class="chat-button chat-people-toggle" :aria-expanded="peopleOpen" :aria-controls="peopleId" @click="peopleOpen = !peopleOpen">
           {{ $t('i_people') }} ({{ participants.length }})
         </button>
@@ -21,8 +30,11 @@
         </button>
       </div>
     </header>
+    <p v-if="feedback" class="chat-feedback" role="status">{{ feedback }}</p>
+    <p v-if="status.state === 'pending'" class="chat-pending" role="status">{{ $t('Waiting for a participant to approve your request.') }}</p>
     <div class="chat-layout" :class="{'chat-people-open': peopleOpen}">
-      <ChatParticipants :id="peopleId" :participants="participants" :self-id="selfId" :base-url="apiBaseUrl" :connected="connected" />
+      <ChatParticipants :id="peopleId" :participants="participants" :self-id="selfId" :base-url="apiBaseUrl" :connected="connected"
+                        :can-kick="canKick" :join-requests="joinRequests" @approve="approveParticipant" @kick="kickParticipant" />
       <div class="chat-conversation">
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions" @scroll="trackScroll">
           <p v-if="!messages.length" class="chat-empty">{{ connected ? $t('No messages yet. Start the conversation.') : $t('Connecting to chat…') }}</p>
@@ -34,11 +46,11 @@
         <p v-if="error" class="chat-error" role="alert">{{ error }} <button type="button" :aria-label="$t('Dismiss')" @click="error = ''">×</button></p>
         <form class="chat-composer" @submit.prevent="sendMessage">
           <label class="chat-sr-only" :for="inputId">{{ $t('Message') }}</label>
-          <textarea :id="inputId" ref="input" v-model="draft" :placeholder="$t('Type a message…')" rows="2" maxlength="16000"
+          <textarea :id="inputId" ref="input" v-model="draft" class="chat-composer-input" :placeholder="$t('Type a message…')" rows="2" maxlength="16000" :disabled="!connected"
                     @input="onInput" @keydown="onKeydown" @blur="connection?.typing(false)"></textarea>
-          <input ref="fileInput" type="file" multiple class="chat-sr-only" :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id" @change="uploadFiles" />
+          <input ref="fileInput" type="file" multiple class="chat-sr-only" :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id || !connected" @change="uploadFiles" />
           <button type="button" class="chat-button chat-attach" :title="$t(user.attributes.id ? 'Attach files' : 'Sign in to upload files')"
-                  :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id" @click="fileInput?.click()">
+                  :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id || !connected" @click="fileInput?.click()">
             <i class="bi bi-paperclip" aria-hidden="true"></i>
           </button>
           <small v-if="uploading" class="chat-composer-hint" role="status">{{ $t('Uploading files…') }}</small>
@@ -60,7 +72,15 @@ import PageSettings from '@/services/PageSettings';
 import ChatMessage from './ChatMessage.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import {createChatConnection} from './chatConnection.js';
-import {displayName, uploadedFileUrl, websocketUrl} from './chatProtocol.js';
+import {
+  canKickParticipants,
+  canonicalChatUrl,
+  displayName,
+  uploadedFileUrl,
+  videoChatUrl,
+  websocketUrl,
+  withoutParticipantMessages,
+} from './chatProtocol.js';
 import './chat.css';
 
 const props = defineProps({channel: {type: String, default: '1'}, title: {type: String, default: ''}, apiBaseUrl: {type: String, default: () => ConfigApi.url_base}});
@@ -69,6 +89,7 @@ const pageSettings = reactive(PageSettings);
 const previousShowMainMenu = pageSettings.showMainMenu;
 pageSettings.showMainMenu = false;
 const inputId = `chat-input-${useId()}`;
+const chatNameId = `chat-name-${useId()}`;
 const peopleId = `chat-people-${useId()}`;
 const normalizedChannel = computed(() => props.channel.trim() || '1');
 const messages = ref([]);
@@ -76,9 +97,11 @@ const participants = ref([]);
 const selfId = ref('');
 const draft = ref('');
 const error = ref('');
+const feedback = ref('');
 const peopleOpen = ref(false);
 const status = ref({state: 'connecting'});
-const connected = computed(() => status.value.state === 'connected');
+const admitted = ref(false);
+const connected = computed(() => admitted.value);
 const messageList = ref(null);
 const input = ref(null);
 const fileInput = ref(null);
@@ -86,6 +109,11 @@ const uploading = ref(false);
 const following = ref(true);
 const unread = ref(0);
 const user = CurrentUser.obj();
+const canKick = computed(() => canKickParticipants(user));
+const chatState = ref({name: props.title || normalizedChannel.value, isAnionAllowed: true, isConfirmationRequired: false});
+const chatName = ref(chatState.value.name);
+const joinRequests = ref([]);
+let pendingChatName = '';
 const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
 function chatUser() {
@@ -110,6 +138,9 @@ let identityAbort = null;
 let identityTimeout = null;
 const statusText = computed(() => {
   if (status.value.state === 'connected') return t("i_ok");
+  if (status.value.state === 'joining') return t('Joining chat…');
+  if (status.value.state === 'pending') return t('Approval required');
+  if (status.value.state === 'kicked') return t('Removed from chat');
   if (status.value.state === 'reconnecting') return `${t('i_reconnect')} ${Math.ceil(status.value.delay / 1000)}s`;
   if (status.value.state === 'error') return t('i_fail');
   return t('...');
@@ -149,6 +180,23 @@ function receive(event) {
   } else if (event.type === 'presence' && Array.isArray(event.participants)) {
     selfId.value = event.selfId;
     participants.value = event.participants;
+  } else if (event.type === 'chat_state' && event.chat?.name) {
+    chatState.value = event.chat;
+    chatName.value = event.chat.name;
+    if (pendingChatName === event.chat.name) {
+      feedback.value = t('Chat name saved.');
+      pendingChatName = '';
+    }
+  } else if (event.type === 'join_request' && event.participant?.id) {
+    const index = joinRequests.value.findIndex(request => request.id === event.participant.id);
+    if (index === -1) joinRequests.value.push(event.participant);
+    else joinRequests.value[index] = event.participant;
+  } else if (event.type === 'participant_kicked' && event.participantId) {
+    messages.value = withoutParticipantMessages(messages.value, event.participantId);
+    if (event.message?.id && !messages.value.some(message => message.id === event.message.id)) messages.value.push(event.message);
+    participants.value = participants.value.filter(person => person.id !== event.participantId);
+    joinRequests.value = joinRequests.value.filter(request => request.id !== event.participantId);
+    scrollIfFollowing();
   } else if (event.type === 'error') {
     error.value = event.error || t('Could not send the message.');
   }
@@ -175,11 +223,17 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   clearTimeout(identityTimeout);
   messages.value = [];
   participants.value = [];
+  joinRequests.value = [];
   selfId.value = '';
+  admitted.value = false;
   unread.value = 0;
   following.value = true;
   draft.value = drafts.get(channel) || '';
   error.value = '';
+  feedback.value = '';
+  pendingChatName = '';
+  chatState.value = {name: props.title || channel, isAnionAllowed: true, isConfirmationRequired: false};
+  chatName.value = chatState.value.name;
   status.value = {state: 'connecting'};
   const controller = new AbortController();
   identityAbort = controller;
@@ -194,7 +248,9 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
       onEvent: receive,
       onStatus: value => {
         status.value = value;
-        if (value.state !== 'connected') { participants.value = []; selfId.value = ''; }
+        if (value.state === 'connected') admitted.value = true;
+        if (['connecting', 'joining', 'pending', 'kicked', 'reconnecting'].includes(value.state)) admitted.value = false;
+        if (!admitted.value) { participants.value = []; selfId.value = ''; }
       },
     });
     connection.start();
@@ -205,11 +261,52 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
 }, {immediate: true});
 function reconnect() {
   error.value = '';
+  feedback.value = '';
   connection?.reconnect();
+}
+async function copyChatLink() {
+  try {
+    await navigator.clipboard.writeText(canonicalChatUrl(window.location.origin, normalizedChannel.value));
+    feedback.value = t('Chat link copied.');
+    error.value = '';
+  } catch {
+    error.value = t('Could not copy the chat link. Please copy it from the address bar.');
+  }
+}
+function openVideoChat() {
+  window.open(videoChatUrl(window.location.origin, normalizedChannel.value), '_blank', 'noopener,noreferrer');
+}
+function saveChatName() {
+  const name = chatName.value.trim();
+  chatName.value = name;
+  if (!name || [...name].length > 200) {
+    error.value = t('Chat name must contain 1–200 characters.');
+    return;
+  }
+  if (name === chatState.value.name) return;
+  if (!connected.value || !connection?.renameChat(name)) {
+    error.value = t('Could not save the chat name. Reconnect and try again.');
+    return;
+  }
+  pendingChatName = name;
+  feedback.value = t('Saving chat name…');
+  error.value = '';
+}
+function approveParticipant(participantId) {
+  if (!connected.value || !connection?.approve(participantId)) {
+    error.value = t('Could not approve the participant. Reconnect and try again.');
+    return;
+  }
+  joinRequests.value = joinRequests.value.filter(request => request.id !== participantId);
+}
+function kickParticipant(participantId) {
+  if (!connected.value || !connection?.kick(participantId)) {
+    error.value = t('Could not remove the participant. Reconnect and try again.');
+  }
 }
 function onInput() {
   error.value = '';
-  connection?.typing(!!draft.value.trim());
+  if (connected.value) connection?.typing(!!draft.value.trim());
 }
 function onKeydown(event) {
   if (event.ctrlKey && event.key === 'Enter' && !event.isComposing) {
@@ -219,7 +316,7 @@ function onKeydown(event) {
 }
 async function uploadFiles(event) {
   const files = event.target.files;
-  if (!files?.length || uploading.value) return;
+  if (!files?.length || uploading.value || !connected.value) return;
   const channel = normalizedChannel.value;
   const current = generation;
   uploading.value = true;

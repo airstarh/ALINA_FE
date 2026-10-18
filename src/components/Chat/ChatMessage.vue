@@ -1,7 +1,8 @@
 <template>
-  <article class="chat-message" :class="{'chat-message-own': own}">
+  <article class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop}">
     <div class="chat-message-heading">
-      <img v-if="avatar && !avatarFailed" :src="avatar" alt="" class="chat-avatar chat-message-avatar" @error="avatarFailed = true" />
+      <span v-if="isRobocop" class="chat-avatar chat-avatar-robocop chat-message-avatar" aria-hidden="true">🤖</span>
+      <img v-else-if="avatar && !avatarFailed" :src="avatar" alt="" class="chat-avatar chat-message-avatar" @error="avatarFailed = true" />
       <span v-else class="chat-avatar chat-avatar-fallback chat-message-avatar" aria-hidden="true">{{ name.slice(0, 1).toUpperCase() }}</span>
       <strong>{{ name }}</strong>
       <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
@@ -37,6 +38,7 @@ const failedMedia = reactive({});
 const copied = ref(null);
 let copyTimer;
 const name = computed(() => displayName(props.message.CurrentUser, props.message.participantId));
+const isRobocop = computed(() => props.message.participantId === 'bot:robocop');
 const avatar = computed(() => safeHttpUrl(props.message.CurrentUser?.emblem, props.baseUrl));
 const parts = computed(() => messageParts(props.message.msg));
 const date = computed(() => new Date(props.message.timestamp));

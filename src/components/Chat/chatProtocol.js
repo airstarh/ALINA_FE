@@ -2,6 +2,26 @@ export function publicChatUser(user = {}) {
   return Object.fromEntries(['id', 'guestId', 'firstname', 'lastname', 'nickname', 'emblem'].map(key => [key, user?.[key] ?? null]));
 }
 
+let fallbackMessageSequence = 0;
+
+export function createClientMessageId() {
+  if (typeof globalThis.crypto?.randomUUID === 'function') {
+    return globalThis.crypto.randomUUID();
+  }
+
+  const sequence = (fallbackMessageSequence++).toString(36);
+  let random = '';
+  if (typeof globalThis.crypto?.getRandomValues === 'function') {
+    const values = new Uint32Array(4);
+    globalThis.crypto.getRandomValues(values);
+    random = Array.from(values, value => value.toString(36)).join('');
+  } else {
+    random = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  }
+
+  return `m-${Date.now().toString(36)}-${sequence}-${random}`.slice(0, 64);
+}
+
 export function displayName(user = {}, participantId = '') {
   if (!user?.id) {
     const identifier = user?.guestId || (participantId.startsWith('guest:') ? participantId.slice(6) : '');
@@ -31,6 +51,25 @@ export function websocketUrl(baseUrl) {
   url.search = '';
   url.hash = '';
   return url.href;
+}
+
+export function canonicalChatUrl(baseUrl, channel) {
+  const origin = new URL(baseUrl).origin;
+  return `${origin}/#/chat?channel=${encodeURIComponent(channel)}`;
+}
+
+export function videoChatUrl(baseUrl, channel) {
+  const url = new URL('/apps/vue3video/call', baseUrl);
+  url.searchParams.set('cRoomId', channel);
+  return url.href;
+}
+
+export function canKickParticipants(currentUser) {
+  return currentUser?.isAdmin?.() === true || currentUser?.isModerator?.() === true;
+}
+
+export function withoutParticipantMessages(messages, participantId) {
+  return messages.filter(message => message?.participantId !== participantId);
 }
 
 export function messageParts(text) {

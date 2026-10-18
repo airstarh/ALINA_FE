@@ -1,14 +1,18 @@
 .alina-chat { --chat-bg: #171d27; --chat-panel: #1e2633; --chat-line: #344052; --chat-muted: #a8b7c9; color: #edf2f8; background: var(--chat-bg); display: flex; flex-direction: column; height: 100%; min-height: 0; overflow: hidden; border: 1px solid var(--chat-line); border-radius: 12px; font-size: 14px; }
 .alina-chat * { box-sizing: border-box; }
 .alina-chat .chat-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; flex: 0 0 auto; border-bottom: 1px solid var(--chat-line); background: var(--chat-panel); }
-.alina-chat .chat-title { min-width: 0; }
+.alina-chat .chat-title { min-width: 180px; flex: 1 1 280px; display: grid; grid-template-columns: auto minmax(120px, 1fr); align-items: center; gap: 4px 10px; }
 .alina-chat .chat-title h1 { color: inherit; font-size: 18px; margin: 0 0 2px; overflow-wrap: anywhere; }
 .alina-chat .chat-title > span { color: var(--chat-muted); font-size: 12px; overflow-wrap: anywhere; }
 .alina-chat .chat-header-actions { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
 .alina-chat .chat-connection-status { color: #ffd38a; font-size: 12px; }
 .alina-chat .chat-connection-status.is-connected { color: #00ff00; }
+.alina-chat .chat-name-input { grid-column: 2; grid-row: 1 / span 2; width: 100%; min-width: 0; padding: 6px 9px; color: #edf2f8; background: #151c27; border: 1px solid #53637a; border-radius: 6px; font: inherit; font-size: 16px; }
+.alina-chat .chat-name-input:disabled { opacity: .7; }
+.alina-chat .chat-feedback, .alina-chat .chat-pending { flex: 0 0 auto; margin: 0; padding: 7px 16px; border-bottom: 1px solid var(--chat-line); color: #b9f6d4; background: #1b382d; font-size: 12px; }
+.alina-chat .chat-pending { color: #ffe0a6; background: #44351d; }
 .alina-chat button { font: inherit; cursor: pointer; }
-.alina-chat button:focus-visible, .alina-chat a:focus-visible, .alina-chat textarea:focus-visible { outline: 2px solid #86b8ff; outline-offset: 3px; }
+.alina-chat button:focus-visible, .alina-chat a:focus-visible, .alina-chat input:focus-visible, .alina-chat textarea:focus-visible { outline: 2px solid #86b8ff; outline-offset: 3px; }
 .alina-chat .chat-button { border: 1px solid #53637a; background: transparent; color: #edf2f8; border-radius: 6px; padding: 6px 10px; }
 .alina-chat .chat-people-toggle { display: none; }
 .alina-chat .chat-layout { display: flex; flex: 1 1 0; min-height: 0; }
@@ -21,6 +25,13 @@
 .alina-chat .chat-avatar { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 50%; object-fit: cover; background: #344c6a; }
 .alina-chat .chat-avatar-fallback { display: inline-flex; align-items: center; justify-content: center; color: #dce9fa; font-weight: 600; }
 .alina-chat .chat-person-details { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.alina-chat .chat-kick { margin-left: auto; flex: 0 0 auto; padding: 2px 8px; color: #ffd3c8; border-color: #895b56; }
+.alina-chat .chat-join-requests { margin: 0 0 18px; padding: 10px; border: 1px solid #6f613d; border-radius: 8px; background: #372f1e; }
+.alina-chat .chat-join-requests h3 { margin: 0 0 8px; font-size: 13px; }
+.alina-chat .chat-join-requests ul { margin: 0; padding: 0; list-style: none; }
+.alina-chat .chat-join-requests li { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.alina-chat .chat-join-requests li span { min-width: 0; flex: 1; overflow-wrap: anywhere; }
+.alina-chat .chat-approve { padding: 3px 8px; }
 .alina-chat .chat-person-name { overflow-wrap: anywhere; }
 .alina-chat .chat-person-name small, .alina-chat .chat-muted { color: var(--chat-muted); }
 .alina-chat .chat-person-status { color: var(--chat-muted); font-size: 12px; display: flex; align-items: center; gap: 6px; }
@@ -31,8 +42,10 @@
 .alina-chat .chat-empty { color: var(--chat-muted); text-align: center; padding: 30px 12px; }
 .alina-chat .chat-message { margin: 0 0 16px; border: 1px solid #344052; border-radius: 10px; padding: 12px; background: #232c3a; }
 .alina-chat .chat-message-own { border-color: #4776b3; background: #203d62; }
+.alina-chat .chat-message-bot { border-color: #89743c; background: #3b3422; }
 .alina-chat .chat-message-heading { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .alina-chat .chat-message-avatar { width: 30px; height: 30px; flex-basis: 30px; }
+.alina-chat .chat-avatar-robocop { display: inline-flex; align-items: center; justify-content: center; font-size: 20px; background: #4f5867; }
 .alina-chat .chat-message-heading strong { overflow-wrap: anywhere; }
 .alina-chat .chat-message-heading time { margin-left: auto; color: #b7c5d6; font-size: 11px; white-space: nowrap; }
 .alina-chat .chat-message-body { margin-top: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -54,7 +67,8 @@
 @media (max-width: 700px) {
   .alina-chat { border-radius: 0; }
   .alina-chat .chat-header { padding: 10px; flex-wrap: wrap; gap: 8px; }
-  .alina-chat .chat-title h1 { font-size: 16px; }
+  .alina-chat .chat-title { flex-basis: 100%; }
+  .alina-chat .chat-name-input { font-size: 16px; }
   .alina-chat .chat-header-actions { gap: 6px; }
   .alina-chat .chat-people-toggle { display: inline-block; }
   .alina-chat .chat-layout { position: relative; }
@@ -94,5 +108,5 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 10ch;
+  max-width: 20ch;
 }
