@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {parse} from '@vue/compiler-sfc';
+import {nextTick, reactive} from 'vue';
 
 import {createChatConnection} from '../src/components/Chat/chatConnection.js';
 import {
@@ -10,6 +11,13 @@ import {
   videoChatUrl,
   withoutParticipantMessages,
 } from '../src/components/Chat/chatProtocol.js';
+
+let watchChatIdentity;
+try {
+  ({watchChatIdentity} = await import('../src/components/Chat/chatIdentity.js'));
+} catch {
+  // The assertion below reports the missing behavior as a contract failure.
+}
 
 function componentDescriptor(relativePath) {
   const source = readFileSync(new URL(`../${relativePath}`, import.meta.url), 'utf8');
@@ -91,6 +99,16 @@ globalThis.setTimeout = (callback, delay) => {
 globalThis.clearTimeout = id => timers.delete(id);
 
 try {
+  assert.equal(typeof watchChatIdentity, 'function', 'chat identity synchronization must be available');
+  const observedIdentity = reactive({attributes: {id: 17, nickname: 'Alice', emblem: ''}});
+  const synchronized = [];
+  const stopIdentityWatch = watchChatIdentity(observedIdentity, identity => synchronized.push(identity));
+  observedIdentity.attributes = {id: 17, nickname: 'Alice', emblem: '/uploads/alice.webp'};
+  await nextTick();
+  assert.equal(synchronized.length, 1, 'identity refresh must notify the active chat without a message');
+  assert.equal(synchronized[0].emblem, '/uploads/alice.webp', 'identity synchronization must include the refreshed avatar');
+  stopIdentityWatch();
+
   assert.equal(
     canonicalChatUrl('https://zero.home:50443/apps/vue/', 'room_1'),
     'https://zero.home:50443/#/chat?channel=room_1',

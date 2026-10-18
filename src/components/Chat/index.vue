@@ -72,6 +72,7 @@ import PageSettings from '@/services/PageSettings';
 import ChatMessage from './ChatMessage.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import {createChatConnection} from './chatConnection.js';
+import {watchChatIdentity} from './chatIdentity.js';
 import {
   canKickParticipants,
   canonicalChatUrl,
@@ -109,6 +110,7 @@ const uploading = ref(false);
 const following = ref(true);
 const unread = ref(0);
 const user = CurrentUser.obj();
+const stopIdentityWatch = watchChatIdentity(user, () => connection?.updateUser());
 const canKick = computed(() => canKickParticipants(user));
 const chatState = ref({name: props.title || normalizedChannel.value, isAnionAllowed: true, isConfirmationRequired: false});
 const chatName = ref(chatState.value.name);
@@ -369,6 +371,7 @@ function sendMessage() {
   input.value?.focus();
 }
 onBeforeUnmount(() => {
+  stopIdentityWatch();
   window.removeEventListener('storage', syncGuestNickname);
   clearTimeout(nicknameTimer);
   pageSettings.showMainMenu = previousShowMainMenu;
