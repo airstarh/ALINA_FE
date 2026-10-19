@@ -2,11 +2,22 @@
   <section class="alina-chat" :aria-label="$t('Chat')">
     <header class="chat-header">
       <div class="chat-title">
-        <span class="chat-connection-status" :class="{'text-success': connected}" role="status">{{ statusText }}</span>
+        <span class="chat-connection-status" :class="{'is-connected': connected}" role="status" :title="statusText" :aria-label="statusText">
+          <i class="bi" :class="statusIcon" aria-hidden="true"></i>
+        </span>
         <label class="chat-sr-only" :for="chatNameId">{{ $t('Chat name') }}</label>
         <input :id="chatNameId" v-model="chatName" class="chat-name-input" maxlength="200" :disabled="!connected"
                :aria-label="$t('Chat name')" @keydown.enter.prevent="saveChatName" @blur="saveChatName" />
-        <span class="channel-name">{{ normalizedChannel }}</span>
+        <button type="button" class="chat-button chat-anonymous-control"
+                :class="chatState.isAnionAllowed ? 'is-allowed' : 'is-denied'"
+                :aria-pressed="chatState.isAnionAllowed" :disabled="!connected"
+                @click="setAnonymousAllowed(!chatState.isAnionAllowed)">ANON</button>
+        <button type="button" class="chat-button chat-confirmation-control"
+                :class="chatState.isConfirmationRequired ? 'is-closed' : 'is-opened'"
+                :aria-pressed="chatState.isConfirmationRequired" :disabled="!connected"
+                @click="setConfirmationRequired(!chatState.isConfirmationRequired)">
+          {{ chatState.isConfirmationRequired ? 'CLOSED' : 'OPENED' }}
+        </button>
       </div>
       <div class="chat-header-actions">
         <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
@@ -146,6 +157,13 @@ const statusText = computed(() => {
   if (status.value.state === 'reconnecting') return `${t('i_reconnect')} ${Math.ceil(status.value.delay / 1000)}s`;
   if (status.value.state === 'error') return t('i_fail');
   return t('...');
+});
+const statusIcon = computed(() => {
+  if (status.value.state === 'connected') return 'bi-check-circle-fill';
+  if (status.value.state === 'pending') return 'bi-hourglass-split';
+  if (status.value.state === 'reconnecting') return 'bi-arrow-repeat';
+  if (['error', 'kicked'].includes(status.value.state)) return 'bi-exclamation-triangle-fill';
+  return 'bi-circle';
 });
 const typingNames = computed(() => participants.value.filter(person => person.typing && person.id !== selfId.value).map(person => displayName(person.user, person.id)).join(', '));
 function isOwn(message) {
@@ -292,6 +310,20 @@ function saveChatName() {
   }
   pendingChatName = name;
   feedback.value = t('Saving chat name…');
+  error.value = '';
+}
+function setAnonymousAllowed(allowed) {
+  if (!connected.value || !connection?.setAnonymousAllowed(allowed)) {
+    error.value = t('Could not save anonymous access. Reconnect and try again.');
+    return;
+  }
+  error.value = '';
+}
+function setConfirmationRequired(required) {
+  if (!connected.value || !connection?.setConfirmationRequired(required)) {
+    error.value = t('Could not save confirmation policy. Reconnect and try again.');
+    return;
+  }
   error.value = '';
 }
 function approveParticipant(participantId) {

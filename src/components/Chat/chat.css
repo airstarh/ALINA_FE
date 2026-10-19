@@ -1,14 +1,20 @@
 .alina-chat { --chat-bg: #171d27; --chat-panel: #1e2633; --chat-line: #344052; --chat-muted: #a8b7c9; color: #edf2f8; background: var(--chat-bg); display: flex; flex-direction: column; height: 100%; min-height: 0; overflow: hidden; border: 1px solid var(--chat-line); border-radius: 12px; font-size: 14px; }
 .alina-chat * { box-sizing: border-box; }
 .alina-chat .chat-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; flex: 0 0 auto; border-bottom: 1px solid var(--chat-line); background: var(--chat-panel); }
-.alina-chat .chat-title { min-width: 180px; flex: 1 1 280px; display: grid; grid-template-columns: auto minmax(120px, 1fr); align-items: center; gap: 4px 10px; }
+.alina-chat .chat-title { min-width: 180px; flex: 1 1 280px; display: grid; grid-template-columns: auto minmax(120px, 1fr) auto auto; align-items: center; gap: 10px; }
 .alina-chat .chat-title h1 { color: inherit; font-size: 18px; margin: 0 0 2px; overflow-wrap: anywhere; }
 .alina-chat .chat-title > span { color: var(--chat-muted); font-size: 12px; overflow-wrap: anywhere; }
 .alina-chat .chat-header-actions { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
 .alina-chat .chat-connection-status { color: #ffd38a; font-size: 12px; }
 .alina-chat .chat-connection-status.is-connected { color: #00ff00; }
-.alina-chat .chat-name-input { grid-column: 2; grid-row: 1 / span 2; width: 100%; min-width: 0; padding: 6px 9px; color: #edf2f8; background: #151c27; border: 1px solid #53637a; border-radius: 6px; font: inherit; font-size: 16px; }
+.alina-chat .chat-name-input { grid-column: 2; width: 100%; min-width: 0; padding: 6px 9px; color: #edf2f8; background: #151c27; border: 1px solid #53637a; border-radius: 6px; font: inherit; font-size: 16px; }
 .alina-chat .chat-name-input:disabled { opacity: .7; }
+.alina-chat .chat-anonymous-control { color: #fff; font-size: 12px; font-weight: 600; }
+.alina-chat .chat-anonymous-control.is-allowed { background: #267a4b; border-color: #43ad73; }
+.alina-chat .chat-anonymous-control.is-denied { background: #8a3333; border-color: #c45a5a; }
+.alina-chat .chat-confirmation-control { color: #fff; font-size: 12px; font-weight: 600; }
+.alina-chat .chat-confirmation-control.is-opened { background: #267a4b; border-color: #43ad73; }
+.alina-chat .chat-confirmation-control.is-closed { background: #8a3333; border-color: #c45a5a; }
 .alina-chat .chat-feedback, .alina-chat .chat-pending { flex: 0 0 auto; margin: 0; padding: 7px 16px; border-bottom: 1px solid var(--chat-line); color: #b9f6d4; background: #1b382d; font-size: 12px; }
 .alina-chat .chat-pending { color: #ffe0a6; background: #44351d; }
 .alina-chat button { font: inherit; cursor: pointer; }

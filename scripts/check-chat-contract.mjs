@@ -138,6 +138,19 @@ try {
   assert.equal(staticAttribute(nameInput, 'maxlength'), '200');
   assert.equal(directive(nameInput, 'if'), undefined, 'chat name input must not be conditional');
   assert.ok(directive(nameInput, 'on', 'blur'), 'chat name must save on blur');
+  assert.equal(elementWithClass(indexComponent, 'channel-name'), null, 'internal chat channel ID must not be displayed');
+  const anonymousControl = elementWithClass(indexComponent, 'chat-anonymous-control');
+  assert.ok(anonymousControl, 'chat header must expose the anonymous-access control');
+  assert.equal(anonymousControl.tag, 'button', 'anonymous-access control must be a button');
+  assert.equal(directive(anonymousControl, 'if'), undefined, 'ANON button must be visible to every participant');
+  assert.ok(directive(anonymousControl, 'bind', 'class')?.exp?.content.includes('isAnionAllowed'), 'ANON button color must reflect the persisted anonymous-access flag');
+  assert.ok(directive(anonymousControl, 'on', 'click'), 'every participant must be able to toggle anonymous access');
+  const confirmationControl = elementWithClass(indexComponent, 'chat-confirmation-control');
+  assert.ok(confirmationControl, 'chat header must expose the confirmation policy control');
+  assert.equal(confirmationControl.tag, 'button', 'confirmation policy control must be a button');
+  assert.equal(directive(confirmationControl, 'if'), undefined, 'OPENED/CLOSED button must be visible to every participant');
+  assert.ok(directive(confirmationControl, 'bind', 'class')?.exp?.content.includes('isConfirmationRequired'), 'OPENED/CLOSED color must reflect the persisted confirmation flag');
+  assert.ok(directive(confirmationControl, 'on', 'click'), 'every participant must be able to toggle confirmation policy');
   assert.ok(elementWithClass(indexComponent, 'chat-copy-link'), 'chat header must expose copy-link action');
   assert.ok(elementWithClass(indexComponent, 'chat-video-link'), 'chat header must expose video-chat action');
   const composer = elementWithClass(indexComponent, 'chat-composer-input');
@@ -210,16 +223,20 @@ try {
   assert.equal(retriedId, failedId, 'retry must reuse the failed message identity');
 
   assert.equal(connection.renameChat('Renamed'), true);
+  assert.equal(connection.setAnonymousAllowed(false), true);
+  assert.equal(connection.setConfirmationRequired(true), true);
   assert.equal(connection.approve('user:22'), true);
   assert.equal(connection.kick('user:23'), true);
   connection.typing(true);
   assert.deepEqual(
-    socket.sent.slice(-4).map(({type, name, participantId, typing}) => ({type, name, participantId, typing})),
+    socket.sent.slice(-6).map(({type, name, allowed, required, participantId, typing}) => ({type, name, allowed, required, participantId, typing})),
     [
-      {type: 'rename', name: 'Renamed', participantId: undefined, typing: undefined},
-      {type: 'approve', name: undefined, participantId: 'user:22', typing: undefined},
-      {type: 'kick', name: undefined, participantId: 'user:23', typing: undefined},
-      {type: 'typing', name: undefined, participantId: undefined, typing: true},
+      {type: 'rename', name: 'Renamed', allowed: undefined, required: undefined, participantId: undefined, typing: undefined},
+      {type: 'set_anonymous', name: undefined, allowed: false, required: undefined, participantId: undefined, typing: undefined},
+      {type: 'set_confirmation', name: undefined, allowed: undefined, required: true, participantId: undefined, typing: undefined},
+      {type: 'approve', name: undefined, allowed: undefined, required: undefined, participantId: 'user:22', typing: undefined},
+      {type: 'kick', name: undefined, allowed: undefined, required: undefined, participantId: 'user:23', typing: undefined},
+      {type: 'typing', name: undefined, allowed: undefined, required: undefined, participantId: undefined, typing: true},
     ],
   );
 

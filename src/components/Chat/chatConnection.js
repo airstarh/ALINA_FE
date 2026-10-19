@@ -158,6 +158,8 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       return clientMessageId;
     },
     renameChat(name) { return send({type: 'rename', name}); },
+    setAnonymousAllowed(allowed) { return send({type: 'set_anonymous', allowed}); },
+    setConfirmationRequired(required) { return send({type: 'set_confirmation', required}); },
     approve(participantId) { return send({type: 'approve', participantId}); },
     kick(participantId) { return send({type: 'kick', participantId}); },
     typing,
