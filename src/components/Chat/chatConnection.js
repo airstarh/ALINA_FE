@@ -157,6 +157,8 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       typing(false);
       return clientMessageId;
     },
+    editMessage(messageId, text) { return send({type: 'edit_message', messageId: String(messageId), text}); },
+    deleteMessage(messageId) { return send({type: 'delete_message', messageId: String(messageId)}); },
     renameChat(name) { return send({type: 'rename', name}); },
     setAnonymousAllowed(allowed) { return send({type: 'set_anonymous', allowed}); },
     setConfirmationRequired(required) { return send({type: 'set_confirmation', required}); },

@@ -49,7 +49,9 @@
       <div class="chat-conversation">
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions" @scroll="trackScroll">
           <p v-if="!messages.length" class="chat-empty">{{ connected ? $t('No messages yet. Start the conversation.') : $t('Connecting to chat…') }}</p>
-          <ChatMessage v-for="message in messages" :key="message.id" :message="message" :own="isOwn(message)" :base-url="apiBaseUrl"
+          <ChatMessage v-for="message in messages" :key="message.id" :message="message" :own="isOwn(message)"
+                       :can-manage="canManageMessage(message)" :editing="editingMessageId === message.id" :base-url="apiBaseUrl"
+                       @edit="startEditingMessage" @delete="deleteMessage"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
         </div>
         <button v-if="unread" type="button" class="chat-new-messages" @click="jumpToLatest">{{ $t('New messages') }} ({{ unread }}) ↓</button>
@@ -64,6 +66,8 @@
                   :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id || !connected" @click="fileInput?.click()">
             <i class="bi bi-paperclip" aria-hidden="true"></i>
           </button>
+          <button v-if="editingMessageId" type="button" class="chat-button chat-edit-cancel"
+                  :title="$t('Cancel editing')" :aria-label="$t('Cancel editing')" @click="cancelEditingMessage">{{ $t('i_cancel') }}</button>
           <small v-if="uploading" class="chat-composer-hint" role="status">{{ $t('Uploading files…') }}</small>
           <button type="submit" class="chat-send" :disabled="uploading || !connected || !draft.trim()">{{ $t('Send') }}</button>
           <small class="chat-composer-hint">{{ $t('Ctrl+Enter to send · Enter for a new line') }}</small>
@@ -108,6 +112,7 @@ const messages = ref([]);
 const participants = ref([]);
 const selfId = ref('');
 const draft = ref('');
+const editingMessageId = ref('');
 const error = ref('');
 const feedback = ref('');
 const peopleOpen = ref(false);
@@ -169,6 +174,9 @@ const typingNames = computed(() => participants.value.filter(person => person.ty
 function isOwn(message) {
   return !!selfId.value && message.participantId === selfId.value;
 }
+function canManageMessage(message) {
+  return isOwn(message) || user.isAdmin() || user.isModerator();
+}
 function trackScroll() {
   const el = messageList.value;
   if (!el) return;
@@ -197,6 +205,12 @@ function receive(event) {
     if (messages.value.length > 500) messages.value.shift();
     if (!following.value) unread.value++;
     scrollIfFollowing();
+  } else if (event.type === 'message_edited' && event.message?.id) {
+    const index = messages.value.findIndex(message => message.id === event.message.id);
+    if (index !== -1) messages.value[index] = event.message;
+  } else if (event.type === 'message_deleted' && event.messageId) {
+    messages.value = messages.value.filter(message => message.id !== event.messageId);
+    if (editingMessageId.value === event.messageId) editingMessageId.value = '';
   } else if (event.type === 'presence' && Array.isArray(event.participants)) {
     selfId.value = event.selfId;
     participants.value = event.participants;
@@ -229,6 +243,7 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   identityAbort?.abort();
   clearTimeout(identityTimeout);
   messages.value = [];
+  editingMessageId.value = '';
   participants.value = [];
   joinRequests.value = [];
   selfId.value = '';
@@ -379,15 +394,35 @@ function sendMessage() {
     error.value = t('Message is too long (maximum 16000 bytes).');
     return;
   }
-  if (!connected.value || !connection?.sendMessage(text)) {
+  const sent = editingMessageId.value
+    ? connection?.editMessage(editingMessageId.value, text)
+    : connection?.sendMessage(text);
+  if (!connected.value || !sent) {
     error.value = t('No active connection. Your draft is preserved.');
     return;
   }
   error.value = '';
   draft.value = '';
+  editingMessageId.value = '';
   drafts.delete(normalizedChannel.value);
   jumpToLatest();
   input.value?.focus();
+}
+function startEditingMessage(message) {
+  editingMessageId.value = message.id;
+  draft.value = message.msg;
+  error.value = '';
+  nextTick(() => input.value?.focus());
+}
+function cancelEditingMessage() {
+  editingMessageId.value = '';
+  input.value?.focus();
+}
+function deleteMessage(message) {
+  if (!window.confirm(t('Delete this message?'))) return;
+  if (!connected.value || !connection?.deleteMessage(message.id)) {
+    error.value = t('No active connection. Your draft is preserved.');
+  }
 }
 onBeforeUnmount(() => {
   stopIdentityWatch();

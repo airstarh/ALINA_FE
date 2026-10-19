@@ -1,11 +1,10 @@
 <template>
-  <article class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop}">
+  <article class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing}">
     <div class="chat-message-heading">
       <span v-if="isRobocop" class="chat-avatar chat-avatar-robocop chat-message-avatar" aria-hidden="true">🤖</span>
       <img v-else-if="avatar && !avatarFailed" :src="avatar" alt="" class="chat-avatar chat-message-avatar" @error="avatarFailed = true" />
       <span v-else class="chat-avatar chat-avatar-fallback chat-message-avatar" aria-hidden="true">{{ name.slice(0, 1).toUpperCase() }}</span>
       <strong>{{ name }}</strong>
-      <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
     </div>
     <div class="chat-message-body">
       <template v-for="(part, index) in parts" :key="index">
@@ -26,13 +25,22 @@
         </span>
       </template>
     </div>
+    <footer class="chat-message-footer">
+      <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
+      <span class="chat-message-actions">
+        <button v-if="canManage" type="button" class="chat-copy-button chat-message-edit"
+                :title="$t('Edit message')" :aria-label="$t('Edit message')" @click="$emit('edit', message)">{{ $t('i_edit') }}</button>
+        <button v-if="canManage" type="button" class="chat-copy-button chat-message-delete"
+                :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
+      </span>
+    </footer>
   </article>
 </template>
 <script setup>
 import {computed, onBeforeUnmount, reactive, ref} from 'vue';
 import {displayName, messageParts, safeHttpUrl} from './chatProtocol.js';
-const props = defineProps({message: {type: Object, required: true}, own: Boolean, baseUrl: {type: String, required: true}});
-const emit = defineEmits(['media-load', 'copy-error']);
+const props = defineProps({message: {type: Object, required: true}, own: Boolean, canManage: Boolean, editing: Boolean, baseUrl: {type: String, required: true}});
+const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);

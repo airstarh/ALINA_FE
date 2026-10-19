@@ -162,6 +162,20 @@ try {
 
   const messageComponent = componentDescriptor('src/components/Chat/ChatMessage.vue');
   assert.ok(elementWithClass(messageComponent, 'chat-avatar-robocop'), 'Robocop message must have a robot avatar treatment');
+  const editControl = elementWithClass(messageComponent, 'chat-message-edit');
+  const deleteControl = elementWithClass(messageComponent, 'chat-message-delete');
+  assert.ok(editControl && deleteControl, 'manageable messages must expose edit and delete footer controls');
+  assert.ok(directive(editControl, 'if')?.exp?.content.includes('canManage'), 'edit visibility must be supplied by the parent UI');
+  assert.ok(messageComponent.template.content.includes("$t('i_edit')"), 'edit control must use the existing locale icon');
+  assert.ok(messageComponent.template.content.includes("$t('i_delete')"), 'delete control must use the existing locale icon');
+  assert.ok(messageComponent.template.content.includes('chat-message-editing'), 'active edit target must receive a gray-state class');
+  assert.match(indexComponent.scriptSetup.content, /editingMessageId/, 'chat page must track the edited message');
+  assert.match(indexComponent.scriptSetup.content, /window\.confirm/, 'message deletion must use native browser confirmation');
+  assert.match(indexComponent.scriptSetup.content, /message_edited/, 'chat page must apply incoming edits');
+  assert.match(indexComponent.scriptSetup.content, /message_deleted/, 'chat page must apply incoming deletions');
+  assert.match(indexComponent.scriptSetup.content, /return isOwn\(message\) \|\| user\.isAdmin\(\) \|\| user\.isModerator\(\)/, 'only owners, admins and moderators must see message controls');
+  const chatCss = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
+  assert.match(chatCss, /\.chat-message-editing\s*\{[^}]*background:\s*#4f5867/s, 'the active edit target must have a gray background');
 
   const ids = Array.from({length: 100}, () => createClientMessageId());
   assert.equal(new Set(ids).size, ids.length, 'message IDs must be unique');
@@ -215,6 +229,13 @@ try {
   const sentMessages = socket.sent.filter(payload => payload.type === 'message');
   assert.equal(sentMessages[0].clientMessageId, firstId);
   assert.equal(sentMessages[0].CurrentUser.nickname, 'Alice');
+
+  assert.equal(connection.editMessage('41', 'corrected'), true);
+  assert.deepEqual(socket.sent.at(-1), {version: 2, channel: 'general', type: 'edit_message', messageId: '41', text: 'corrected'});
+  assert.equal(connection.deleteMessage('41'), true);
+  assert.deepEqual(socket.sent.at(-1), {version: 2, channel: 'general', type: 'delete_message', messageId: '41'});
+  socket.throwForType = 'edit_message';
+  assert.equal(connection.editMessage('41', 'retry'), false, 'failed edit send must preserve UI state for retry');
 
   socket.throwForType = 'message';
   assert.equal(connection.sendMessage('retry me'), false, 'failed send must preserve the draft');
