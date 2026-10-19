@@ -5,6 +5,11 @@ const root = process.cwd();
 const modes = ["default", "sss", "m45a", "vov", "zero", "stage"];
 const ignoredDirectories = new Set([".git", "node_modules", "dist", "_GITOUT"]);
 const violations = [];
+const viteConfig = fs.readFileSync(path.join(root, "vite.config.js"), "utf8");
+
+if (!/chunkFileNames:\s*["']\[hash\]\.js["']/.test(viteConfig)) {
+  violations.push("vite.config.js must use hash-only chunk filenames that cannot collide with protected URL prefixes");
+}
 
 function walk(directory) {
   return fs.readdirSync(directory, {withFileTypes: true}).flatMap((entry) => {

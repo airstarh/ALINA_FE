@@ -48,7 +48,9 @@ export default defineConfig(({command, mode}) => {
       rolldownOptions: {
         input: path.resolve(projectDirectory, htmlInput),
         output: {
-          chunkFileNames: "[name].[hash].js",
+          // Nginx protects path prefixes such as /run; dependency-derived
+          // names like runtime-core.* therefore cannot safely become URLs.
+          chunkFileNames: "[hash].js",
           entryFileNames: "[name].[hash].js",
           assetFileNames: "[name].[hash].[ext]",
         },

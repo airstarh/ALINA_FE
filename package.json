@@ -24,7 +24,8 @@
     "check:vue3": "node scripts/check-vue3-contract.mjs",
     "check:bootstrap5": "node scripts/check-bootstrap5-contract.mjs",
     "check:media-embed": "node scripts/check-video-embed-contract.mjs",
-    "check:migration": "npm run check:vite && npm run check:vue3 && npm run check:bootstrap5 && npm run check:media-embed"
+    "check:chat-rooms": "node scripts/check-chat-rooms-contract.mjs",
+    "check:migration": "npm run check:vite && npm run check:vue3 && npm run check:bootstrap5 && npm run check:media-embed && npm run check:chat-rooms"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-vue": "^8.2.0",

@@ -83,7 +83,7 @@ import PageSettings from '@/services/PageSettings';
 import ChatMessage from './ChatMessage.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import {createChatConnection} from './chatConnection.js';
-import {watchChatIdentity} from './chatIdentity.js';
+import {refreshChatIdentity, watchChatIdentity} from './chatIdentity.js';
 import {
   canKickParticipants,
   canonicalChatUrl,
@@ -221,19 +221,6 @@ function receive(event) {
     error.value = event.error || t('Could not send the message.');
   }
 }
-async function refreshIdentity(signal) {
-  const url = new URL('/root/status', props.apiBaseUrl);
-  url.searchParams.set('isAjax', '1');
-  const headers = {...ConfigApi.AjaxAlina.options.headers};
-  if (user.attributes.id && user.attributes.token) {
-    headers.uid = String(user.attributes.id);
-    headers.token = user.attributes.token;
-  }
-  const response = await fetch(url, {credentials: 'include', headers, signal});
-  if (!response.ok) throw new Error('Identity refresh failed');
-  const body = await response.json();
-  if (body.CurrentUser) user.applyAttributes(body.CurrentUser);
-}
 watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) => {
   const current = ++generation;
   if (previous) drafts.set(previous[0], draft.value);
@@ -258,7 +245,7 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   const controller = new AbortController();
   identityAbort = controller;
   identityTimeout = setTimeout(() => controller.abort(), 8000);
-  try { await refreshIdentity(controller.signal); } catch { /* Connect using the app's current identity if HTTP is temporarily unavailable. */ }
+  try { await refreshChatIdentity(user, props.apiBaseUrl, controller.signal); } catch { /* Connect using the app's current identity if HTTP is temporarily unavailable. */ }
   if (current !== generation) return;
   clearTimeout(identityTimeout);
   identityAbort = null;
