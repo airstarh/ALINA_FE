@@ -169,6 +169,21 @@ try {
   assert.ok(messageComponent.template.content.includes("$t('i_edit')"), 'edit control must use the existing locale icon');
   assert.ok(messageComponent.template.content.includes("$t('i_delete')"), 'delete control must use the existing locale icon');
   assert.ok(messageComponent.template.content.includes('chat-message-editing'), 'active edit target must receive a gray-state class');
+  const messageHeading = elementWithClass(messageComponent, 'chat-message-heading');
+  const messageFooter = elementWithClass(messageComponent, 'chat-message-footer');
+  const authorLink = elementWithClass(messageComponent, 'chat-message-author');
+  assert.ok(authorLink, 'registered message authors must expose a profile link');
+  assert.equal(authorLink.tag, 'router-link', 'registered message authors must link through the current-origin Vue router');
+  assert.ok(directive(authorLink, 'if')?.exp?.content.includes('profilePath'), 'guest and bot authors must remain unlinked');
+  assert.ok(directive(authorLink, 'bind', 'to')?.exp?.content.includes('profilePath'), 'author link must use the message author profile path');
+  assert.equal(staticAttribute(authorLink, 'target'), '_blank', 'author profile links must open in a new tab');
+  assert.equal(staticAttribute(authorLink, 'rel'), 'noopener noreferrer', 'new-tab author links must isolate the opener');
+  assert.match(messageComponent.scriptSetup.content, /props\.message\.CurrentUser\?\.id/, 'profile link must use the message author ID');
+  assert.ok(messageHeading.children.some(child => child.tag === 'time'), 'message timestamp must appear in the nickname row');
+  assert.equal(messageFooter.children.some(child => child.tag === 'time'), false, 'message timestamp must not remain in the action footer');
+  assert.match(messageComponent.scriptSetup.content, /hourCycle:\s*'h23'/, 'message timestamp must always use the 24-hour clock');
+  assert.match(messageComponent.scriptSetup.content, /isToday/, 'today messages must omit the calendar date');
+  assert.doesNotMatch(messageComponent.scriptSetup.content, /date\.value\.toLocaleString\(\)/, 'message timestamp tooltip must not fall back to locale AM/PM formatting');
   assert.match(indexComponent.scriptSetup.content, /editingMessageId/, 'chat page must track the edited message');
   assert.match(indexComponent.scriptSetup.content, /window\.confirm/, 'message deletion must use native browser confirmation');
   assert.match(indexComponent.scriptSetup.content, /message_edited/, 'chat page must apply incoming edits');
@@ -176,6 +191,7 @@ try {
   assert.match(indexComponent.scriptSetup.content, /return isOwn\(message\) \|\| user\.isAdmin\(\) \|\| user\.isModerator\(\)/, 'only owners, admins and moderators must see message controls');
   const chatCss = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
   assert.match(chatCss, /\.chat-message-editing\s*\{[^}]*background:\s*#4f5867/s, 'the active edit target must have a gray background');
+  assert.match(chatCss, /\.alina-chat \.chat-message\s*\{[^}]*margin:\s*0 0 20px/s, 'messages must have 20px vertical spacing');
 
   const ids = Array.from({length: 100}, () => createClientMessageId());
   assert.equal(new Set(ids).size, ids.length, 'message IDs must be unique');

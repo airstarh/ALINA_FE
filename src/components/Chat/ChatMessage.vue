@@ -4,7 +4,9 @@
       <span v-if="isRobocop" class="chat-avatar chat-avatar-robocop chat-message-avatar" aria-hidden="true">🤖</span>
       <img v-else-if="avatar && !avatarFailed" :src="avatar" alt="" class="chat-avatar chat-message-avatar" @error="avatarFailed = true" />
       <span v-else class="chat-avatar chat-avatar-fallback chat-message-avatar" aria-hidden="true">{{ name.slice(0, 1).toUpperCase() }}</span>
-      <strong>{{ name }}</strong>
+      <router-link v-if="profilePath" :to="profilePath" target="_blank" rel="noopener noreferrer" class="chat-message-author"><strong>{{ name }}</strong></router-link>
+      <strong v-else>{{ name }}</strong>
+      <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
     </div>
     <div class="chat-message-body">
       <template v-for="(part, index) in parts" :key="index">
@@ -26,7 +28,6 @@
       </template>
     </div>
     <footer class="chat-message-footer">
-      <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
       <span class="chat-message-actions">
         <button v-if="canManage" type="button" class="chat-copy-button chat-message-edit"
                 :title="$t('Edit message')" :aria-label="$t('Edit message')" @click="$emit('edit', message)">{{ $t('i_edit') }}</button>
@@ -47,11 +48,31 @@ const copied = ref(null);
 let copyTimer;
 const name = computed(() => displayName(props.message.CurrentUser, props.message.participantId));
 const isRobocop = computed(() => props.message.participantId === 'bot:robocop');
+const profilePath = computed(() => {
+  const authorId = Number(props.message.CurrentUser?.id);
+  return !isRobocop.value && Number.isInteger(authorId) && authorId > 0 ? `/auth/profile/${authorId}` : '';
+});
 const avatar = computed(() => safeHttpUrl(props.message.CurrentUser?.emblem, props.baseUrl));
 const parts = computed(() => messageParts(props.message.msg));
 const date = computed(() => new Date(props.message.timestamp));
-const fullTime = computed(() => Number.isNaN(date.value.getTime()) ? '' : date.value.toLocaleString());
-const time = computed(() => Number.isNaN(date.value.getTime()) ? '' : date.value.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}));
+const pad = value => String(value).padStart(2, '0');
+const clock = computed(() => Number.isNaN(date.value.getTime())
+  ? ''
+  : date.value.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', hourCycle: 'h23'}));
+const fullTime = computed(() => Number.isNaN(date.value.getTime())
+  ? ''
+  : `${date.value.getFullYear()}-${pad(date.value.getMonth() + 1)}-${pad(date.value.getDate())} ${clock.value}`);
+const isToday = computed(() => {
+  if (Number.isNaN(date.value.getTime())) return false;
+  const today = new Date();
+  return date.value.getFullYear() === today.getFullYear()
+    && date.value.getMonth() === today.getMonth()
+    && date.value.getDate() === today.getDate();
+});
+const time = computed(() => {
+  if (!clock.value) return '';
+  return isToday.value ? clock.value : fullTime.value;
+});
 async function copyUrl(url, index) {
   try {
     await navigator.clipboard.writeText(url);
