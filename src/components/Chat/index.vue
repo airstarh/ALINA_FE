@@ -65,13 +65,20 @@
                     @input="onInput" @keydown="onKeydown" @blur="connection?.typing(false)"></textarea>
           <input ref="fileInput" type="file" multiple class="chat-sr-only" :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id || !connected" @change="uploadFiles" />
           <button type="button" class="chat-button chat-attach" :title="$t(user.attributes.id ? 'Attach files' : 'Sign in to upload files')"
-                  :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id || !connected" @click="fileInput?.click()">
+                  :aria-label="$t('Attach files')" :disabled="uploading || recordingVoice || processingVoice || !user.attributes.id || !connected" @click="fileInput?.click()">
             <i class="bi bi-paperclip" aria-hidden="true"></i>
           </button>
+          <button type="button" class="chat-button chat-voice" :class="{'is-recording': recordingVoice}"
+                  :title="$t(recordingVoice ? 'Stop and send voice recording' : 'Start voice recording')"
+                  :aria-label="$t(recordingVoice ? 'Stop and send voice recording' : 'Start voice recording')"
+                  :aria-pressed="recordingVoice"
+                  :disabled="processingVoice || (!recordingVoice && (uploading || !user.attributes.id || !connected))"
+                  @click="toggleVoiceRecording">{{ $t(recordingVoice ? 'i_mic_off' : 'i_mic') }}</button>
           <button v-if="editingMessageId" type="button" class="chat-button chat-edit-cancel"
                   :title="$t('Cancel editing')" :aria-label="$t('Cancel editing')" @click="cancelEditingMessage">{{ $t('i_cancel') }}</button>
-          <small v-if="uploading" class="chat-composer-hint" role="status">{{ $t('Uploading files…') }}</small>
-          <button type="submit" class="chat-send" :disabled="uploading || !connected || !draft.trim()">{{ $t('i_save') }}</button>
+          <small v-if="recordingVoice" class="chat-composer-hint" role="status">{{ $t('Recording voice… Press again to send.') }}</small>
+          <small v-else-if="uploading" class="chat-composer-hint" role="status">{{ $t('Uploading files…') }}</small>
+          <button type="submit" class="chat-send" :disabled="uploading || recordingVoice || processingVoice || !connected || !draft.trim()">{{ $t('i_save') }}</button>
           <small class="chat-composer-hint">{{ $t('Ctrl+Enter to send · Enter for a new line') }}</small>
         </form>
       </div>
@@ -89,6 +96,7 @@ import PageSettings from '@/services/PageSettings';
 import ChatMessage from './ChatMessage.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import {createChatConnection} from './chatConnection.js';
+import {createVoiceRecorder} from './chatVoiceRecorder.js';
 import {refreshChatIdentity, watchChatIdentity} from './chatIdentity.js';
 import {
   canKickParticipants,
@@ -129,6 +137,8 @@ const messageList = ref(null);
 const input = ref(null);
 const fileInput = ref(null);
 const uploading = ref(false);
+const recordingVoice = ref(false);
+const processingVoice = ref(false);
 const following = ref(true);
 const unread = ref(0);
 const user = CurrentUser.obj();
@@ -160,6 +170,19 @@ let connection = null;
 let generation = 0;
 let identityAbort = null;
 let identityTimeout = null;
+const voiceRecorder = createVoiceRecorder({
+  onState: state => {
+    recordingVoice.value = state === 'recording';
+    processingVoice.value = state === 'processing';
+  },
+  onComplete: file => sendVoiceFile(file),
+  onError: cause => {
+    if (cause?.message === 'unsupported') error.value = t('Voice recording is not supported by this browser.');
+    else if (cause?.message === 'empty') error.value = t('Voice recording was empty.');
+    else if (cause?.name === 'NotAllowedError' || cause?.name === 'SecurityError') error.value = t('Microphone access was denied.');
+    else error.value = t('Could not record voice message.');
+  },
+});
 const statusText = computed(() => {
   if (status.value.state === 'connected') return t("i_ok");
   if (status.value.state === 'joining') return t('Joining chat…');
@@ -263,6 +286,7 @@ function receive(event) {
   }
 }
 watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) => {
+  cancelVoiceRecording();
   const current = ++generation;
   if (previous) drafts.set(previous[0], draft.value);
   connection?.stop();
@@ -380,27 +404,31 @@ function onKeydown(event) {
     sendMessage();
   }
 }
+async function uploadChatFiles(files) {
+  const ajax = await AjaxAlina.newInst({
+    method: 'POST', url: new URL('/FileUpload', props.apiBaseUrl).href,
+    enctype: 'multipart/form-data',
+    postParams: {
+      entity_id: user.attributes.id, entity_table: 'user', container: 'FILE',
+      root_id: null, parent_id: null, level: 1, order: 0,
+      form_id: 'actionIndex', userfile: files,
+    },
+  }).go();
+  const data = ajax?.respBody?.data;
+  const links = (Array.isArray(data) ? data : Object.values(data || {}))
+    .map(file => uploadedFileUrl(file.url_path, window.location.origin)).filter(Boolean);
+  if (!links.length) throw new Error('No uploaded files');
+  return links;
+}
 async function uploadFiles(event) {
   const files = event.target.files;
-  if (!files?.length || uploading.value || !connected.value) return;
+  if (!files?.length || uploading.value || recordingVoice.value || processingVoice.value || !connected.value) return;
   const channel = normalizedChannel.value;
   const current = generation;
   uploading.value = true;
   error.value = '';
   try {
-    const ajax = await AjaxAlina.newInst({
-      method: 'POST', url: new URL('/FileUpload', props.apiBaseUrl).href,
-      enctype: 'multipart/form-data',
-      postParams: {
-        entity_id: user.attributes.id, entity_table: 'user', container: 'FILE',
-        root_id: null, parent_id: null, level: 1, order: 0,
-        form_id: 'actionIndex', userfile: files,
-      },
-    }).go();
-    const data = ajax?.respBody?.data;
-    const links = (Array.isArray(data) ? data : Object.values(data || {}))
-      .map(file => uploadedFileUrl(file.url_path, window.location.origin)).filter(Boolean);
-    if (!links.length) throw new Error('No uploaded files');
+    const links = await uploadChatFiles(files);
     const existing = current === generation ? draft.value : drafts.get(channel) || '';
     const updated = [existing.trimEnd(), ...links].filter(Boolean).join('\n');
     if (current === generation) {
@@ -416,8 +444,38 @@ async function uploadFiles(event) {
     if (fileInput.value) fileInput.value.value = '';
   }
 }
+async function sendVoiceFile(file) {
+  const current = generation;
+  uploading.value = true;
+  error.value = '';
+  try {
+    const [url] = await uploadChatFiles([file]);
+    if (current !== generation) return;
+    if (!connected.value || !connection?.sendMessage(`VOICE:${url}`)) {
+      error.value = t('Could not send voice message.');
+    } else {
+      jumpToLatest();
+    }
+  } catch {
+    if (current === generation) error.value = t('Could not upload voice message. Please try again.');
+  } finally {
+    if (current === generation) uploading.value = false;
+  }
+}
+async function toggleVoiceRecording() {
+  error.value = '';
+  if (recordingVoice.value) {
+    voiceRecorder.stop();
+    return;
+  }
+  if (uploading.value || processingVoice.value || !user.attributes.id || !connected.value) return;
+  await voiceRecorder.start();
+}
+function cancelVoiceRecording() {
+  voiceRecorder.cancel();
+}
 function sendMessage() {
-  if (uploading.value) return;
+  if (uploading.value || recordingVoice.value || processingVoice.value) return;
   const text = draft.value.trim();
   if (!text) return;
   if (new TextEncoder().encode(text).length > 16000) {
@@ -464,6 +522,7 @@ function deleteMessage(message) {
   }
 }
 onBeforeUnmount(() => {
+  cancelVoiceRecording();
   stopIdentityWatch();
   window.removeEventListener('storage', syncGuestNickname);
   clearTimeout(nicknameTimer);

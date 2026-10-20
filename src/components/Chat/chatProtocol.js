@@ -120,10 +120,16 @@ export function messageParts(text) {
 }
 
 function linkedMessageParts(text) {
+  const source = String(text || '');
+  const voice = source.match(/^VOICE:(https?:\/\/[^\s"'<>()]+)$/i);
+  if (voice) {
+    const url = safeHttpUrl(voice[1]);
+    if (url) return [{type: 'voice', url}];
+  }
   const parts = [];
   const pattern = /https?:\/\/[^\s"'<>()]+/gi;
   let cursor = 0;
-  for (const match of String(text || '').matchAll(pattern)) {
+  for (const match of source.matchAll(pattern)) {
     if (match.index > cursor) parts.push({type: 'text', text: text.slice(cursor, match.index)});
     // Sentence punctuation should remain outside the hyperlink.
     const url = match[0].replace(/[.,!?;:]+$/, '');
@@ -140,7 +146,7 @@ function linkedMessageParts(text) {
     if (url.length < match[0].length) parts.push({type: 'text', text: match[0].slice(url.length)});
     cursor = match.index + match[0].length;
   }
-  if (cursor < String(text || '').length) parts.push({type: 'text', text: text.slice(cursor)});
+  if (cursor < source.length) parts.push({type: 'text', text: source.slice(cursor)});
   return parts;
 }
 

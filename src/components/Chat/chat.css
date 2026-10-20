@@ -101,12 +101,15 @@
 }
 
 .alina-chat .chat-shared-audio { display: block; width: min(100%, 500px); margin: 8px 0; }
-.alina-chat .chat-composer { grid-template-columns: auto 1fr auto auto; }
-.alina-chat .chat-composer textarea { grid-column: 2; grid-row: 1; }
+.alina-chat .chat-composer { grid-template-columns: auto auto 1fr auto auto; }
+.alina-chat .chat-composer textarea { grid-column: 3; grid-row: 1; }
 .alina-chat .chat-attach { grid-column: 1; grid-row: 1; font-size: 24px; }
-.alina-chat .chat-edit-cancel { grid-column: 3; grid-row: 1; }
-.alina-chat .chat-send { grid-column: 4; grid-row: 1; }
-.alina-chat .chat-attach:disabled { opacity: .5; cursor: default; }
+.alina-chat .chat-voice { grid-column: 2; grid-row: 1; font-size: 20px; }
+.alina-chat .chat-voice.is-recording { background: #9f2929; animation: chat-voice-pulse 1.2s ease-in-out infinite; }
+.alina-chat .chat-edit-cancel { grid-column: 4; grid-row: 1; }
+.alina-chat .chat-send { grid-column: 5; grid-row: 1; }
+.alina-chat .chat-attach:disabled, .alina-chat .chat-voice:disabled { opacity: .5; cursor: default; }
+@keyframes chat-voice-pulse { 50% { box-shadow: 0 0 0 4px #ff777744; } }
 
 .alina-chat .chat-message-body pre,
 .alina-chat .chat-message-body code {

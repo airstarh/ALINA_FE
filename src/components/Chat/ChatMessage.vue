@@ -22,7 +22,7 @@
           </a>
           <video v-else-if="part.type === 'video' && !failedMedia[index]" :src="part.url" controls playsinline preload="metadata"
                  class="chat-shared-video" @loadedmetadata="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')"></video>
-          <audio v-else-if="part.type === 'audio' && !failedMedia[index]" :src="part.url" controls preload="none"
+          <audio v-else-if="(part.type === 'voice' || part.type === 'audio') && !failedMedia[index]" :src="part.url" controls preload="none"
                  class="chat-shared-audio" @loadedmetadata="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')"></audio>
           <a :href="part.url" target="_blank" rel="noopener noreferrer" class="chat-shared-link">{{ part.url }}</a>
           <button type="button" class="chat-copy-button" :title="$t('Copy URL')" :aria-label="$t('Copy URL')" @click="copyUrl(part.url, index)">

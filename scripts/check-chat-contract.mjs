@@ -9,6 +9,7 @@ import {
   canonicalChatUrl,
   createClientMessageId,
   formatChatTimestamp,
+  messageParts,
   parseReplyMessage,
   videoChatUrl,
   withoutParticipantMessages,
@@ -143,6 +144,9 @@ try {
   const localToday = new Date(2026, 9, 20, 13, 5);
   assert.equal(formatChatTimestamp(localToday, new Date(2026, 9, 20, 20, 0)), '13:05', 'today timestamp must show only 24-hour time');
   assert.equal(formatChatTimestamp(localToday, new Date(2026, 9, 21, 1, 0)), '2026-10-20 13:05', 'older timestamp must use the wide 24-hour format');
+  assert.deepEqual(messageParts('VOICE:https://zero.home/audio/voice.webm'), [{type: 'voice', url: 'https://zero.home/audio/voice.webm'}], 'explicit voice marker must produce an audio-only part');
+  assert.equal(messageParts('https://zero.home/video.webm')[0].type, 'video', 'ordinary WebM links must remain video');
+  assert.equal(messageParts('VOICE:javascript:alert(1)')[0].type, 'text', 'unsafe voice markers must remain text');
 
   const indexComponent = componentDescriptor('src/components/Chat/index.vue');
   const nameInput = elementWithClass(indexComponent, 'chat-name-input');
@@ -176,6 +180,7 @@ try {
   assert.ok(elementWithClass(participantsComponent, 'chat-kick'), 'participant rows must expose role-controlled kick action');
 
   const messageComponent = componentDescriptor('src/components/Chat/ChatMessage.vue');
+  assert.match(messageComponent.template.content, /part\.type === 'voice'/, 'voice parts must render through a dedicated audio branch');
   assert.ok(elementWithClass(messageComponent, 'chat-avatar-robocop'), 'Robocop message must have a robot avatar treatment');
   const editControl = elementWithClass(messageComponent, 'chat-message-edit');
   const deleteControl = elementWithClass(messageComponent, 'chat-message-delete');
