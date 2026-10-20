@@ -49,12 +49,12 @@
       <div class="chat-conversation">
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions" @scroll="trackScroll">
           <p v-if="!messages.length" class="chat-empty">{{ connected ? $t('No messages yet. Start the conversation.') : $t('Connecting to chat…') }}</p>
-          <ChatMessage v-for="message in messages" :key="message.id" :message="message" :own="isOwn(message)"
+          <ChatMessage v-for="(message, messageIndex) in messages" :key="message.id" :message="message" :first-message="messageIndex === 0" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(message)"
                        :can-manage="canManageMessage(message)" :editing="editingMessageId === message.id"
                        :can-tag="canTagMessage(message)" :private-href="privateMessageHref(message)" :can-rename-guest="canRenameGuestAuthor(message)"
                        :edited="editedMessageIds.has(message.id)" :edited-blinking="blinkingMessageIds.has(message.id)" :base-url="apiBaseUrl"
                        :replying="replyingMessageId === message.id" :reply-disabled="!!editingMessageId"
-                       @reply="toggleReplyMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor"
+                       @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
         </div>
         <button v-if="unread" type="button" class="chat-new-messages" @click="jumpToLatest">{{ $t('New messages') }} ({{ unread }}) ↓</button>
@@ -164,6 +164,7 @@ const chatState = ref({name: props.title || normalizedChannel.value, isAnionAllo
 const chatName = ref(chatState.value.name);
 const joinRequests = ref([]);
 let pendingChatName = '';
+const pendingDiscussionWindows = new Map();
 const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
 let mentionSearchTimer;
@@ -295,6 +296,12 @@ function receive(event) {
     blinkingMessageIds.delete(event.messageId);
     if (editingMessageId.value === event.messageId) editingMessageId.value = '';
     if (replyingMessageId.value === event.messageId) replyingMessageId.value = '';
+  } else if (event.type === 'discussion_ready' && event.sourceMessageId && event.discussion) {
+    const index = messages.value.findIndex(message => message.id === event.sourceMessageId);
+    if (index !== -1) messages.value[index] = {...messages.value[index], discussion: event.discussion};
+    const pendingWindow = pendingDiscussionWindows.get(event.sourceMessageId);
+    if (pendingWindow && !pendingWindow.closed) pendingWindow.location.href = `${window.location.origin}/#/chat?channel=${encodeURIComponent(event.discussion.channel)}`;
+    pendingDiscussionWindows.delete(event.sourceMessageId);
   } else if (event.type === 'presence' && Array.isArray(event.participants)) {
     selfId.value = event.selfId;
     participants.value = event.participants;
@@ -329,6 +336,8 @@ function receive(event) {
     joinRequests.value = joinRequests.value.filter(request => request.id !== event.participantId);
     scrollIfFollowing();
   } else if (event.type === 'error') {
+    pendingDiscussionWindows.forEach(pendingWindow => pendingWindow?.close());
+    pendingDiscussionWindows.clear();
     error.value = event.error || t('Could not send the message.');
   } else if (['mentions_directory', 'mentions_search'].includes(event.type) && Array.isArray(event.candidates)) {
     const merged = new Map(mentionCandidates.value.map(candidate => [`${candidate.senderType}:${candidate.senderId}`, candidate]));
@@ -446,6 +455,15 @@ function approveParticipant(participantId) {
 function kickParticipant(participantId) {
   if (!connected.value || !connection?.kick(participantId)) {
     error.value = t('Could not remove the participant. Reconnect and try again.');
+  }
+}
+function discussMessage(message) {
+  const discussionWindow = window.open('about:blank', '_blank');
+  if (discussionWindow) pendingDiscussionWindows.set(message.id, discussionWindow);
+  if (!connected.value || !connection?.discussMessage(message.id)) {
+    discussionWindow?.close();
+    pendingDiscussionWindows.delete(message.id);
+    error.value = t('Could not open discussion. Reconnect and try again.');
   }
 }
 function onInput() {

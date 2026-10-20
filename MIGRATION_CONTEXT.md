@@ -1,5 +1,10 @@
 # ALINA_FE Vue 3 migration handoff
 
+> **Newer recovery reference (2026-10-21):** For the implemented SPA routing,
+> BorgEditor video embedding, and current text-chat state, read
+> `/home/qqq/_A001/rep/ALINA_BE/docs/superpowers/alina-conversation-current-state.md`.
+> This file remains the broader historical Vue 3 migration handoff.
+
 Updated: 2026-09-16 (Europe/Moscow)
 
 ## Repository

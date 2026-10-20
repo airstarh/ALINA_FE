@@ -1,6 +1,9 @@
 const Translations = {
   en: {
     "Open a separate chat": "Open a separate chat",
+    "Discuss": "Discuss",
+    "...in discussion": "...in discussion",
+    "Could not open discussion. Reconnect and try again.": "Could not open discussion. Reconnect and try again.",
     "Your nickname": "Your nickname",
     "Attach files": "Attach files",
     "Sign in to upload files": "Sign in to upload files",
@@ -185,6 +188,9 @@ const Translations = {
   },
   ru: {
     "Open a separate chat": "Открыть отдельный чат",
+    "Discuss": "Обсудить",
+    "...in discussion": "...на обсуждении",
+    "Could not open discussion. Reconnect and try again.": "Не удалось открыть обсуждение. Переподключитесь и попробуйте снова.",
     "Your nickname": "Ваш ник",
     "Attach files": "Прикрепить файлы",
     "Sign in to upload files": "Войдите, чтобы загрузить файлы",

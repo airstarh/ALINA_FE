@@ -220,6 +220,8 @@ try {
   assert.match(participantsComponent.template.content, /person\.typing[^]*Typing…[^]*person\.inChat[^]*In chat[^]*Not in chat/, 'participant words must distinguish typing, in-chat and not-in-chat states');
 
   const messageComponent = componentDescriptor('src/components/Chat/ChatMessage.vue');
+  assert.match(messageComponent.source, /discussion/, 'message card must expose discussion controls');
+  assert.match(messageComponent.source, /discussionResponseCount/, 'discussion button must show response count');
   assert.ok(elementWithClass(messageComponent, 'chat-mention-target'), 'structured mention recipient must have dedicated emphasis');
   assert.match(messageComponent.template.content, /mentionNotification[^]*calls you!/, 'structured mention must render localized call wording');
   assert.match(messageComponent.template.content, /part\.type === 'voice'/, 'voice parts must render through a dedicated audio branch');

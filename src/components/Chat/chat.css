@@ -72,6 +72,9 @@
 .alina-chat .chat-message-body { margin-top: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .alina-chat .chat-message-footer { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-top: 6px; color: #b7c5d6; font-size: 11px; }
 .alina-chat .chat-message-actions { display: inline-flex; gap: 3px; }
+.alina-chat .chat-message-secondary-actions { display: inline-flex; align-items: center; gap: 3px; }
+.alina-chat .chat-message-discussion { text-decoration: none; }
+.alina-chat .chat-message-discussion.is-active { background: #c49a00; border-color: #d6ad19; color: #000; }
 .alina-chat .reply-quote { margin-top: 10px; padding: 5px 8px; border-left: 3px solid purple; color: #a9a9a9; font-size: 0.7rem; white-space: pre-wrap; overflow-wrap: anywhere; }
 .alina-chat .reply-quote-heading { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 3px; }
 .alina-chat .chat-message-link-block { display: inline; }

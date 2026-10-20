@@ -49,12 +49,18 @@
       </template>
     </div>
     <footer class="chat-message-footer">
-      <button type="button" class="chat-copy-button chat-message-reply" :disabled="replyDisabled"
-              :title="$t('Reply')" :aria-label="$t('Reply')" @click="$emit('reply', message)">{{ $t('Reply') }}</button>
+      <span class="chat-message-secondary-actions">
+        <button type="button" class="chat-copy-button chat-message-reply" :disabled="replyDisabled"
+                :title="$t('Reply')" :aria-label="$t('Reply')" @click="$emit('reply', message)">{{ $t('Reply') }}</button>
+        <a v-if="message.discussion" :href="discussionHref" target="_blank" rel="noopener noreferrer"
+           class="chat-copy-button chat-message-discussion is-active">{{ $t('...in discussion') }} ({{ discussionResponseCount }})</a>
+        <button v-else-if="!firstMessage" type="button" class="chat-copy-button chat-message-discussion"
+                @click="$emit('discuss', message)">{{ $t('Discuss') }}</button>
+      </span>
       <span class="chat-message-actions">
         <button v-if="canManage" type="button" class="chat-copy-button chat-message-edit"
                 :title="$t('Edit message')" :aria-label="$t('Edit message')" @click="$emit('edit', message)">{{ $t('i_edit') }}</button>
-        <button v-if="canManage" type="button" class="chat-copy-button chat-message-delete"
+        <button v-if="canManage && !message.discussion && !(discussionRoom && firstMessage)" type="button" class="chat-copy-button chat-message-delete"
                 :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
       </span>
     </footer>
@@ -63,8 +69,8 @@
 <script setup>
 import {computed, onBeforeUnmount, reactive, ref} from 'vue';
 import {displayName, formatChatTimestamp, messageParts, parseMentionNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
-const props = defineProps({message: {type: Object, required: true}, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
-const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'tag', 'rename-guest']);
+const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
+const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'discuss', 'tag', 'rename-guest']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);
@@ -87,6 +93,9 @@ const fullTime = computed(() => Number.isNaN(date.value.getTime())
   ? ''
   : `${date.value.getFullYear()}-${pad(date.value.getMonth() + 1)}-${pad(date.value.getDate())} ${pad(date.value.getHours())}:${pad(date.value.getMinutes())}`);
 const time = computed(() => formatChatTimestamp(date.value));
+const discussionResponseCount = computed(() => Number(props.message.discussion?.responseCount || 0));
+const discussionChannel = computed(() => props.message.discussion?.channel || `discussion_${props.message.id}`);
+const discussionHref = computed(() => `${window.location.origin}/#/chat?channel=${encodeURIComponent(discussionChannel.value)}`);
 function renameGuest(event) {
   const nickname = event.target.value.trim();
   event.target.value = guestNickname.value;
