@@ -8,6 +8,8 @@ import {
   canKickParticipants,
   canonicalChatUrl,
   createClientMessageId,
+  formatChatTimestamp,
+  parseReplyMessage,
   videoChatUrl,
   withoutParticipantMessages,
 } from '../src/components/Chat/chatProtocol.js';
@@ -131,6 +133,16 @@ try {
     ['1', '3'],
     'kick event must remove only the target messages already displayed',
   );
+  const canonicalReply = '<div class="reply-quote" data-timestamp="1760958300000"><div class="reply-quote-author">Alice &amp; Bob</div><div class="reply-quote-text">&lt;hello&gt; &quot;world&quot; &#039;ok&#039;</div></div>\nReply body';
+  assert.deepEqual(parseReplyMessage(canonicalReply), {
+    quote: {author: 'Alice & Bob', timestamp: 1760958300000, text: '<hello> "world" \'ok\''},
+    body: 'Reply body',
+  }, 'canonical reply must parse into escaped quote metadata and own body');
+  const lookalikeReply = '<div class="reply-quote">fake</div>\nbody';
+  assert.deepEqual(parseReplyMessage(lookalikeReply), {quote: null, body: lookalikeReply}, 'malformed reply markup must remain ordinary text');
+  const localToday = new Date(2026, 9, 20, 13, 5);
+  assert.equal(formatChatTimestamp(localToday, new Date(2026, 9, 20, 20, 0)), '13:05', 'today timestamp must show only 24-hour time');
+  assert.equal(formatChatTimestamp(localToday, new Date(2026, 9, 21, 1, 0)), '2026-10-20 13:05', 'older timestamp must use the wide 24-hour format');
 
   const indexComponent = componentDescriptor('src/components/Chat/index.vue');
   const nameInput = elementWithClass(indexComponent, 'chat-name-input');
@@ -164,11 +176,19 @@ try {
   assert.ok(elementWithClass(messageComponent, 'chat-avatar-robocop'), 'Robocop message must have a robot avatar treatment');
   const editControl = elementWithClass(messageComponent, 'chat-message-edit');
   const deleteControl = elementWithClass(messageComponent, 'chat-message-delete');
+  const replyControl = elementWithClass(messageComponent, 'chat-message-reply');
+  assert.ok(replyControl, 'every message must expose a Reply control');
+  assert.ok(directive(replyControl, 'bind', 'disabled')?.exp?.content.includes('replyDisabled'), 'Reply must remain visible but disabled during editing');
+  assert.ok(messageComponent.template.content.indexOf('chat-message-reply') < messageComponent.template.content.indexOf('chat-message-actions'), 'Reply must appear left of Edit/Delete controls');
   assert.ok(editControl && deleteControl, 'manageable messages must expose edit and delete footer controls');
   assert.ok(directive(editControl, 'if')?.exp?.content.includes('canManage'), 'edit visibility must be supplied by the parent UI');
   assert.ok(messageComponent.template.content.includes("$t('i_edit')"), 'edit control must use the existing locale icon');
   assert.ok(messageComponent.template.content.includes("$t('i_delete')"), 'delete control must use the existing locale icon');
   assert.ok(messageComponent.template.content.includes('chat-message-editing'), 'active edit target must receive a gray-state class');
+  assert.ok(messageComponent.template.content.includes('chat-message-edited'), 'messages edited during this session must receive a persistent state class');
+  assert.ok(messageComponent.template.content.includes('chat-message-edited-blinking'), 'fresh edits must receive a temporary blinking class');
+  assert.ok(messageComponent.template.content.includes('chat-message-replying'), 'selected reply parent must receive an orange-state class');
+  assert.ok(messageComponent.template.content.includes('reply-quote'), 'canonical reply metadata must render as a quote block');
   const messageHeading = elementWithClass(messageComponent, 'chat-message-heading');
   const messageFooter = elementWithClass(messageComponent, 'chat-message-footer');
   const authorLink = elementWithClass(messageComponent, 'chat-message-author');
@@ -181,16 +201,24 @@ try {
   assert.match(messageComponent.scriptSetup.content, /props\.message\.CurrentUser\?\.id/, 'profile link must use the message author ID');
   assert.ok(messageHeading.children.some(child => child.tag === 'time'), 'message timestamp must appear in the nickname row');
   assert.equal(messageFooter.children.some(child => child.tag === 'time'), false, 'message timestamp must not remain in the action footer');
-  assert.match(messageComponent.scriptSetup.content, /hourCycle:\s*'h23'/, 'message timestamp must always use the 24-hour clock');
-  assert.match(messageComponent.scriptSetup.content, /isToday/, 'today messages must omit the calendar date');
+  assert.match(messageComponent.scriptSetup.content, /formatChatTimestamp/, 'message and quote timestamps must share the 24-hour formatter');
   assert.doesNotMatch(messageComponent.scriptSetup.content, /date\.value\.toLocaleString\(\)/, 'message timestamp tooltip must not fall back to locale AM/PM formatting');
   assert.match(indexComponent.scriptSetup.content, /editingMessageId/, 'chat page must track the edited message');
+  assert.match(indexComponent.scriptSetup.content, /replyingMessageId/, 'chat page must track exactly one reply parent');
+  assert.match(indexComponent.scriptSetup.content, /clearMissingReplySelection/, 'reply mode must clear when its parent leaves the visible message list');
+  assert.match(indexComponent.scriptSetup.content, /parseReplyMessage\(message\.msg\)\.body/, 'editing a reply must load only its own body');
   assert.match(indexComponent.scriptSetup.content, /window\.confirm/, 'message deletion must use native browser confirmation');
   assert.match(indexComponent.scriptSetup.content, /message_edited/, 'chat page must apply incoming edits');
+  assert.match(indexComponent.scriptSetup.content, /editedMessageIds/, 'chat page must remember edited messages for the current session');
+  assert.match(indexComponent.scriptSetup.content, /blinkingMessageIds/, 'chat page must retrigger edit blinking locally');
   assert.match(indexComponent.scriptSetup.content, /message_deleted/, 'chat page must apply incoming deletions');
   assert.match(indexComponent.scriptSetup.content, /return isOwn\(message\) \|\| user\.isAdmin\(\) \|\| user\.isModerator\(\)/, 'only owners, admins and moderators must see message controls');
   const chatCss = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
   assert.match(chatCss, /\.chat-message-editing\s*\{[^}]*background:\s*#4f5867/s, 'the active edit target must have a gray background');
+  assert.match(chatCss, /\.chat-message-edited\s*\{[^}]*background:\s*#[0-9a-f]{6}/si, 'session-edited messages must retain a dark-green background');
+  assert.match(chatCss, /\.chat-message-edited-blinking\s*\{[^}]*animation:[^;}]+\s3\s*;/s, 'fresh edits must blink exactly three times');
+  assert.match(chatCss, /\.chat-message-replying\s*\{[^}]*background:\s*#[0-9a-f]{6}/si, 'selected reply parent must have a dark-orange background');
+  assert.match(chatCss, /\.reply-quote\s*\{[^}]*border-left:\s*3px[^;]*purple[^}]*color:\s*#[0-9a-f]{6}[^}]*font-size:\s*0\.7rem/s, 'reply quote must have the agreed purple border, gray text and size');
   assert.match(chatCss, /\.alina-chat \.chat-message\s*\{[^}]*margin:\s*0 0 20px/s, 'messages must have 20px vertical spacing');
 
   const ids = Array.from({length: 100}, () => createClientMessageId());
@@ -252,6 +280,17 @@ try {
   assert.deepEqual(socket.sent.at(-1), {version: 2, channel: 'general', type: 'delete_message', messageId: '41'});
   socket.throwForType = 'edit_message';
   assert.equal(connection.editMessage('41', 'retry'), false, 'failed edit send must preserve UI state for retry');
+
+  assert.ok(connection.replyMessage('41', 'reply body'), 'reply send must return its retry-safe client ID');
+  const replyPayload = socket.sent.at(-1);
+  assert.equal(replyPayload.type, 'reply_message');
+  assert.equal(replyPayload.replyToMessageId, '41');
+  assert.equal(replyPayload.msg, 'reply body');
+  assert.equal(typeof replyPayload.clientMessageId, 'string');
+  socket.throwForType = 'reply_message';
+  assert.equal(connection.replyMessage('41', 'retry reply'), false, 'failed reply send must preserve selection and draft for retry');
+  const failedReplyId = socket.attempted.at(-1).clientMessageId;
+  assert.equal(connection.replyMessage('41', 'retry reply'), failedReplyId, 'reply retry must reuse the failed client ID');
 
   socket.throwForType = 'message';
   assert.equal(connection.sendMessage('retry me'), false, 'failed send must preserve the draft');

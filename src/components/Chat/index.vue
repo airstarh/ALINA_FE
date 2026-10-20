@@ -50,8 +50,10 @@
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions" @scroll="trackScroll">
           <p v-if="!messages.length" class="chat-empty">{{ connected ? $t('No messages yet. Start the conversation.') : $t('Connecting to chat…') }}</p>
           <ChatMessage v-for="message in messages" :key="message.id" :message="message" :own="isOwn(message)"
-                       :can-manage="canManageMessage(message)" :editing="editingMessageId === message.id" :base-url="apiBaseUrl"
-                       @edit="startEditingMessage" @delete="deleteMessage"
+                       :can-manage="canManageMessage(message)" :editing="editingMessageId === message.id"
+                       :edited="editedMessageIds.has(message.id)" :edited-blinking="blinkingMessageIds.has(message.id)" :base-url="apiBaseUrl"
+                       :replying="replyingMessageId === message.id" :reply-disabled="!!editingMessageId"
+                       @reply="toggleReplyMessage" @edit="startEditingMessage" @delete="deleteMessage"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
         </div>
         <button v-if="unread" type="button" class="chat-new-messages" @click="jumpToLatest">{{ $t('New messages') }} ({{ unread }}) ↓</button>
@@ -92,6 +94,7 @@ import {
   canKickParticipants,
   canonicalChatUrl,
   displayName,
+  parseReplyMessage,
   uploadedFileUrl,
   videoChatUrl,
   websocketUrl,
@@ -113,6 +116,9 @@ const participants = ref([]);
 const selfId = ref('');
 const draft = ref('');
 const editingMessageId = ref('');
+const replyingMessageId = ref('');
+const editedMessageIds = reactive(new Set());
+const blinkingMessageIds = reactive(new Set());
 const error = ref('');
 const feedback = ref('');
 const peopleOpen = ref(false);
@@ -192,9 +198,20 @@ function jumpToLatest() {
   unread.value = 0;
   scrollIfFollowing();
 }
+function markMessageEdited(messageId) {
+  editedMessageIds.add(messageId);
+  blinkingMessageIds.delete(messageId);
+  nextTick(() => blinkingMessageIds.add(messageId));
+}
+function clearMissingReplySelection() {
+  if (replyingMessageId.value && !messages.value.some(message => message.id === replyingMessageId.value)) {
+    replyingMessageId.value = '';
+  }
+}
 function receive(event) {
   if (event.type === 'history' && Array.isArray(event.messages)) {
     messages.value = event.messages;
+    clearMissingReplySelection();
     unread.value = 0;
     following.value = true;
     scrollIfFollowing();
@@ -202,15 +219,24 @@ function receive(event) {
     if (messages.value.some(message => message.id === event.message.id)) return;
     messages.value.push(event.message);
     // Bound DOM growth during long-lived sessions.
-    if (messages.value.length > 500) messages.value.shift();
+    if (messages.value.length > 500) {
+      messages.value.shift();
+      clearMissingReplySelection();
+    }
     if (!following.value) unread.value++;
     scrollIfFollowing();
   } else if (event.type === 'message_edited' && event.message?.id) {
     const index = messages.value.findIndex(message => message.id === event.message.id);
-    if (index !== -1) messages.value[index] = event.message;
+    if (index !== -1) {
+      messages.value[index] = event.message;
+      markMessageEdited(event.message.id);
+    }
   } else if (event.type === 'message_deleted' && event.messageId) {
     messages.value = messages.value.filter(message => message.id !== event.messageId);
+    editedMessageIds.delete(event.messageId);
+    blinkingMessageIds.delete(event.messageId);
     if (editingMessageId.value === event.messageId) editingMessageId.value = '';
+    if (replyingMessageId.value === event.messageId) replyingMessageId.value = '';
   } else if (event.type === 'presence' && Array.isArray(event.participants)) {
     selfId.value = event.selfId;
     participants.value = event.participants;
@@ -228,6 +254,7 @@ function receive(event) {
   } else if (event.type === 'participant_kicked' && event.participantId) {
     messages.value = withoutParticipantMessages(messages.value, event.participantId);
     if (event.message?.id && !messages.value.some(message => message.id === event.message.id)) messages.value.push(event.message);
+    clearMissingReplySelection();
     participants.value = participants.value.filter(person => person.id !== event.participantId);
     joinRequests.value = joinRequests.value.filter(request => request.id !== event.participantId);
     scrollIfFollowing();
@@ -244,6 +271,9 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   clearTimeout(identityTimeout);
   messages.value = [];
   editingMessageId.value = '';
+  replyingMessageId.value = '';
+  editedMessageIds.clear();
+  blinkingMessageIds.clear();
   participants.value = [];
   joinRequests.value = [];
   selfId.value = '';
@@ -396,7 +426,9 @@ function sendMessage() {
   }
   const sent = editingMessageId.value
     ? connection?.editMessage(editingMessageId.value, text)
-    : connection?.sendMessage(text);
+    : replyingMessageId.value
+      ? connection?.replyMessage(replyingMessageId.value, text)
+      : connection?.sendMessage(text);
   if (!connected.value || !sent) {
     error.value = t('No active connection. Your draft is preserved.');
     return;
@@ -404,15 +436,22 @@ function sendMessage() {
   error.value = '';
   draft.value = '';
   editingMessageId.value = '';
+  replyingMessageId.value = '';
   drafts.delete(normalizedChannel.value);
   jumpToLatest();
   input.value?.focus();
 }
 function startEditingMessage(message) {
+  replyingMessageId.value = '';
   editingMessageId.value = message.id;
-  draft.value = message.msg;
+  draft.value = parseReplyMessage(message.msg).body;
   error.value = '';
   nextTick(() => input.value?.focus());
+}
+function toggleReplyMessage(message) {
+  if (editingMessageId.value) return;
+  replyingMessageId.value = replyingMessageId.value === message.id ? '' : message.id;
+  input.value?.focus();
 }
 function cancelEditingMessage() {
   editingMessageId.value = '';

@@ -34,6 +34,38 @@ export function displayName(user = {}, participantId = '') {
   return user?.name || user?.nickname || [user?.firstname, user?.lastname].filter(Boolean).join(' ') || 'Guest';
 }
 
+function decodeReplyText(value) {
+  return String(value)
+    .replaceAll('&lt;', '<')
+    .replaceAll('&gt;', '>')
+    .replaceAll('&quot;', '"')
+    .replaceAll('&#039;', "'")
+    .replaceAll('&amp;', '&');
+}
+
+export function parseReplyMessage(text) {
+  const source = String(text || '');
+  const match = source.match(/^<div class="reply-quote" data-timestamp="([0-9]+)"><div class="reply-quote-author">([\s\S]*?)<\/div><div class="reply-quote-text">([\s\S]*?)<\/div><\/div>\n([\s\S]*)$/);
+  if (!match) return {quote: null, body: source};
+  const timestamp = Number(match[1]);
+  if (!Number.isSafeInteger(timestamp)) return {quote: null, body: source};
+  return {
+    quote: {author: decodeReplyText(match[2]), timestamp, text: decodeReplyText(match[3])},
+    body: match[4],
+  };
+}
+
+export function formatChatTimestamp(value, now = new Date()) {
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  const pad = part => String(part).padStart(2, '0');
+  const clock = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  const isToday = date.getFullYear() === now.getFullYear()
+    && date.getMonth() === now.getMonth()
+    && date.getDate() === now.getDate();
+  return isToday ? clock : `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${clock}`;
+}
+
 export function safeHttpUrl(value, baseUrl) {
   if (typeof value !== 'string' || !value.trim()) return '';
   try {

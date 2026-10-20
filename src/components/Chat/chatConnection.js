@@ -157,6 +157,17 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       typing(false);
       return clientMessageId;
     },
+    replyMessage(replyToMessageId, text, requestedMessageId = '') {
+      const key = `reply:${String(replyToMessageId)}\0${String(text)}`;
+      const clientMessageId = requestedMessageId || failedMessageIds.get(key) || createClientMessageId();
+      if (!send({type: 'reply_message', replyToMessageId: String(replyToMessageId), msg: text, clientMessageId, CurrentUser: publicChatUser(getUser())})) {
+        failedMessageIds.set(key, clientMessageId);
+        return false;
+      }
+      if (failedMessageIds.get(key) === clientMessageId) failedMessageIds.delete(key);
+      typing(false);
+      return clientMessageId;
+    },
     editMessage(messageId, text) { return send({type: 'edit_message', messageId: String(messageId), text}); },
     deleteMessage(messageId) { return send({type: 'delete_message', messageId: String(messageId)}); },
     renameChat(name) { return send({type: 'rename', name}); },
