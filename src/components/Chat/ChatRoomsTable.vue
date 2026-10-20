@@ -8,7 +8,7 @@
             <th scope="col">#</th>
             <th scope="col">{{ $t('Chat name') }}</th>
             <th scope="col" :title="$t('Participants')" :aria-label="$t('Participants')">{{ $t('i_people') }}</th>
-            <th scope="col" class="text-nowrap">{{ $t('Latest message') }}</th>
+            <th scope="col" class="text-nowrap" :title="$t('Latest message')" :aria-label="$t('Latest message')">🕒</th>
             <th v-if="canDelete" scope="col"></th>
           </tr>
         </thead>
