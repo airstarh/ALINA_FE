@@ -103,6 +103,12 @@ for (const relativePath of ['../src/views/Chat/rooms.vue', '../src/components/Ch
 }
 
 const tableSource = readFileSync(new URL('../src/components/Chat/ChatRoomsTable.vue', import.meta.url), 'utf8');
+assert.match(tableSource, /\$t\(['"]i_people['"]\)/, 'participant-count heading must use the existing people icon');
+assert.match(tableSource, /text-nowrap/, 'latest-message date must not wrap');
+const roomPageSource = readFileSync(new URL('../src/views/Chat/rooms.vue', import.meta.url), 'utf8');
+assert.match(roomPageSource, /chat-rooms-page/, 'room directory must expose its compact page wrapper');
+const chatPageSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');
+assert.match(chatPageSource, /padding:\s*2px/, 'chat page must use two-pixel page padding');
 assert.match(tableSource, /class="table-responsive"/, 'room tables must use the existing responsive-table class');
 assert.match(tableSource, /class="table table-dark table-striped table-hover table-sm"/, 'room tables must use the established ALINA table treatment');
 assert.match(tableSource, /target="_blank"/, 'room links must open in a new tab');

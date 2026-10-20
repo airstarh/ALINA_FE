@@ -7,8 +7,8 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">{{ $t('Chat name') }}</th>
-            <th scope="col">{{ $t('Participants') }}</th>
-            <th scope="col">{{ $t('Latest message') }}</th>
+            <th scope="col" :title="$t('Participants')" :aria-label="$t('Participants')">{{ $t('i_people') }}</th>
+            <th scope="col" class="text-nowrap">{{ $t('Latest message') }}</th>
             <th v-if="canDelete" scope="col"></th>
           </tr>
         </thead>
@@ -17,7 +17,7 @@
             <td>{{ offset + index + 1 }}</td>
             <td><a :href="roomHref(room.channel)" target="_blank" rel="noopener">{{ room.chatName }}</a></td>
             <td>{{ room.participantCount }}</td>
-            <td>{{ formatDate(room.latestMessageAt) }}</td>
+            <td class="text-nowrap">{{ formatDate(room.latestMessageAt) }}</td>
             <td v-if="canDelete"><button type="button" class="btn btn-danger btn-sm" @click="$emit('delete', room)">X</button></td>
           </tr>
           <tr v-if="!rows.length">
@@ -27,7 +27,7 @@
             <td></td>
             <th scope="row">{{ $t('TOTAL') }}</th>
             <td>{{ participantTotal }}</td>
-            <td>{{ formatDate(latestMessageAt) }}</td>
+            <td class="text-nowrap">{{ formatDate(latestMessageAt) }}</td>
             <td v-if="canDelete"></td>
           </tr>
         </tbody>

@@ -274,6 +274,12 @@ try {
   assert.match(indexComponent.scriptSetup.content, /appendMention/, 'TAG must reuse structured mention machinery');
   assert.match(indexComponent.scriptSetup.content, /guest_renamed/, 'chat page must apply socket guest renames');
   const chatCss = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
+  assert.match(chatCss, /grid-template-columns:\s*auto auto minmax\(0,\s*1fr\) auto auto/, 'composer textarea column must be allowed to shrink fluidly');
+  assert.match(chatCss, /clamp\(40px,\s*12vw,\s*56px\)/, 'composer controls must use fluid mobile dimensions');
+  assert.match(chatCss, /gap:\s*min\(6px,\s*1vw\)\s+min\(6px,\s*1vw\)/, 'composer gaps must remain compact and fluid');
+  assert.match(chatCss, /padding:\s*min\(8px,\s*1\.5vw\)\s+min\(8px,\s*1\.5vw\)/, 'composer outer padding must remain compact and fluid');
+  assert.match(chatCss, /\.chat-title\s*\{[^}]*min-width:\s*0[^}]*grid-template-columns:\s*auto auto minmax\(80px,\s*1fr\) auto auto/s, 'chat title row must reserve a shrinkable title column');
+  assert.match(chatCss, /\.chat-name-input\s*\{[^}]*grid-column:\s*3/s, 'chat name must occupy the shrinkable third column');
   assert.match(chatCss, /\.chat-message-editing\s*\{[^}]*background:\s*#4f5867/s, 'the active edit target must have a gray background');
   assert.match(chatCss, /\.chat-message-edited\s*\{[^}]*background:\s*#[0-9a-f]{6}/si, 'session-edited messages must retain a dark-green background');
   assert.match(chatCss, /\.chat-message-edited-blinking\s*\{[^}]*animation:[^;}]+\s3\s*;/s, 'fresh edits must blink exactly three times');

@@ -1,5 +1,5 @@
 <template>
-  <main class="container py-3">
+  <main class="container-fluid chat-rooms-page">
     <header class="mb-4">
       <h1 class="mb-3">{{ $t('Chat rooms') }}</h1>
       <p v-if="['connecting', 'loading', 'reconnecting'].includes(status.state)" class="alert alert-info" role="status">
@@ -91,3 +91,6 @@ onBeforeUnmount(() => {
   connection?.stop();
 });
 </script>
+<style scoped>
+.chat-rooms-page { padding: 2px; }
+</style>
