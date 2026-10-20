@@ -1,7 +1,11 @@
 <template>
   <article v-if="isUserService" class="chat-message chat-message-service">
     <div class="chat-service-heading"><time :datetime="message.timestamp" :title="fullTime">{{ time }}</time></div>
-    <div class="chat-message-body">{{ message.msg }}</div>
+    <div v-if="mentionNotification" class="chat-message-body">
+      <strong class="chat-mention-target">{{ mentionNotification.target }}!!!</strong>
+      {{ mentionNotification.caller }} {{ $t('calls you!') }}
+    </div>
+    <div v-else class="chat-message-body">{{ message.msg }}</div>
     <footer v-if="canManage" class="chat-message-footer chat-service-footer">
       <span></span><button type="button" class="chat-copy-button chat-message-delete" :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
     </footer>
@@ -58,7 +62,7 @@
 </template>
 <script setup>
 import {computed, onBeforeUnmount, reactive, ref} from 'vue';
-import {displayName, formatChatTimestamp, messageParts, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
+import {displayName, formatChatTimestamp, messageParts, parseMentionNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
 const props = defineProps({message: {type: Object, required: true}, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
 const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'tag', 'rename-guest']);
 const avatarFailed = ref(false);
@@ -69,6 +73,7 @@ const name = computed(() => displayName(props.message.CurrentUser, props.message
 const guestNickname = computed(() => String(props.message.CurrentUser?.nickname || name.value).replace(/ \(Guest [^)]+\)$/, ''));
 const isRobocop = computed(() => props.message.participantId === 'bot:robocop');
 const isUserService = computed(() => props.message.senderType === 'user_service');
+const mentionNotification = computed(() => isUserService.value ? parseMentionNotification(props.message.msg) : null);
 const profilePath = computed(() => {
   const authorId = Number(props.message.CurrentUser?.id);
   return !isRobocop.value && Number.isInteger(authorId) && authorId > 0 ? `/auth/profile/${authorId}` : '';

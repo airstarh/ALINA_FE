@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {activeMentionQuery, appendMention, filterMentionCandidates, insertMention, synchronizeSelectedMentions} from '../src/components/Chat/chatMentions.js';
+import {parseMentionNotification} from '../src/components/Chat/chatProtocol.js';
 
 assert.deepEqual(activeMentionQuery('@de', 3), {start: 0, query: 'de'});
 assert.deepEqual(activeMentionQuery('hello @de', 9), {start: 6, query: 'de'});
@@ -26,5 +27,10 @@ assert.equal(tagged.text, 'hello @Codex ');
 assert.equal(tagged.caret, 13);
 assert.deepEqual(tagged.mentions, [candidates[0]]);
 assert.deepEqual(appendMention(tagged.text, tagged.caret, candidates[0], tagged.mentions), tagged, 'TAG must not duplicate an existing structured mention');
+
+const notification = `MENTION:${encodeURIComponent(JSON.stringify({target: 'Web Administrator', caller: 'CHROMIUM ccc (Guest b7c8ea87)'}))}`;
+assert.deepEqual(parseMentionNotification(notification), {target: 'Web Administrator', caller: 'CHROMIUM ccc (Guest b7c8ea87)'});
+assert.equal(parseMentionNotification('CHROMIUM ccc mentions Web Administrator'), null, 'legacy notification text remains plain text');
+assert.equal(parseMentionNotification('MENTION:%7Bbad'), null, 'malformed structured notifications remain plain text');
 
 console.log('Chat mentions contract passed.');

@@ -56,6 +56,19 @@ export function parseReplyMessage(text) {
   };
 }
 
+export function parseMentionNotification(text) {
+  const source = String(text || '');
+  if (!source.startsWith('MENTION:')) return null;
+  try {
+    const payload = JSON.parse(decodeURIComponent(source.slice('MENTION:'.length)));
+    if (!payload || typeof payload.target !== 'string' || !payload.target.trim()
+      || typeof payload.caller !== 'string' || !payload.caller.trim()) return null;
+    return {target: payload.target, caller: payload.caller};
+  } catch {
+    return null;
+  }
+}
+
 export function formatChatTimestamp(value, now = new Date()) {
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return '';

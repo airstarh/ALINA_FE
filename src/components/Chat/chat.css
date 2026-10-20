@@ -55,6 +55,7 @@
 .alina-chat .chat-message-editing { background: #4f5867; }
 .alina-chat .chat-message-edited-blinking { animation: chat-message-edited-blink 0.5s ease-in-out 3; }
 .alina-chat .chat-message-service { padding: 8px 12px; border-left: 3px solid #8b5cf6; background: #252c38; color: #c9d1dc; font-size: .9rem; }
+.alina-chat .chat-mention-target { color: #f7f9fc; font-weight: 700; }
 .alina-chat .chat-service-heading { display: flex; justify-content: flex-end; color: var(--chat-muted); font-size: 11px; }
 .alina-chat .chat-service-footer { margin-top: 4px; }
 @keyframes chat-message-edited-blink {
