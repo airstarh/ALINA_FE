@@ -2,6 +2,7 @@
   <section class="alina-chat" :aria-label="$t('Chat')">
     <header class="chat-header">
       <div class="chat-title">
+        <router-link to="/chat/rooms" class="chat-button chat-rooms-back" :title="$t('Chat rooms')" :aria-label="$t('Chat rooms')">←</router-link>
         <span class="chat-connection-status" :class="{'is-connected': connected}" role="status" :title="statusText" :aria-label="statusText">
           <i class="bi" :class="statusIcon" aria-hidden="true"></i>
         </span>
@@ -32,6 +33,7 @@
           {{ $t('i_people') }} ({{ participants.length }})
         </button>
         <button type="button" class="chat-button" :title="$t('Reconnect')" :aria-label="$t('Reconnect')" @click="reconnect">↻</button>
+        <button v-if="canKick" type="button" class="chat-button chat-delete-room" :title="$t('Delete chat')" :aria-label="$t('Delete chat')" @click="deleteCurrentChat">X</button>
         <button type="button" class="chat-button chat-page-toggle"
                 :title="$t(pageSettings.showMainMenu ? 'Hide menu and footer' : 'Show menu and footer')"
                 :aria-label="$t(pageSettings.showMainMenu ? 'Hide menu and footer' : 'Show menu and footer')"
@@ -302,6 +304,11 @@ function receive(event) {
     const pendingWindow = pendingDiscussionWindows.get(event.sourceMessageId);
     if (pendingWindow && !pendingWindow.closed) pendingWindow.location.href = `${window.location.origin}/#/chat?channel=${encodeURIComponent(event.discussion.channel)}`;
     pendingDiscussionWindows.delete(event.sourceMessageId);
+  } else if (event.type === 'chat_deleted') {
+    router.push('/chat/rooms');
+  } else if (event.type === 'discussion_removed' && event.sourceMessageId) {
+    const index = messages.value.findIndex(message => message.id === event.sourceMessageId);
+    if (index !== -1) messages.value[index] = {...messages.value[index], discussion: null};
   } else if (event.type === 'presence' && Array.isArray(event.participants)) {
     selfId.value = event.selfId;
     participants.value = event.participants;
@@ -456,6 +463,9 @@ function kickParticipant(participantId) {
   if (!connected.value || !connection?.kick(participantId)) {
     error.value = t('Could not remove the participant. Reconnect and try again.');
   }
+}
+function deleteCurrentChat() {
+  if (window.confirm(`${t('Delete chat')} “${chatName.value}”?`)) connection?.deleteChat();
 }
 function discussMessage(message) {
   const discussionWindow = window.open('about:blank', '_blank');

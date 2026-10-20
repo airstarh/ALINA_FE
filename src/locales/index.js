@@ -2,6 +2,7 @@ const Translations = {
   en: {
     "Open a separate chat": "Open a separate chat",
     "Discuss": "Discuss",
+    "Delete chat": "Delete chat",
     "...in discussion": "...in discussion",
     "Could not open discussion. Reconnect and try again.": "Could not open discussion. Reconnect and try again.",
     "Your nickname": "Your nickname",
@@ -189,6 +190,7 @@ const Translations = {
   ru: {
     "Open a separate chat": "Открыть отдельный чат",
     "Discuss": "Обсудить",
+    "Delete chat": "Удалить чат",
     "...in discussion": "...на обсуждении",
     "Could not open discussion. Reconnect and try again.": "Не удалось открыть обсуждение. Переподключитесь и попробуйте снова.",
     "Your nickname": "Ваш ник",

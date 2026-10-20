@@ -10,21 +10,25 @@
         <button type="button" class="btn btn-danger btn-sm ms-2" @click="retry">{{ $t('Retry') }}</button>
       </p>
     </header>
-    <ChatRoomsTable :title="$t('My chats')" :section="rooms.mine" />
-    <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" />
+    <ChatRoomsTable :title="$t('My chats')" :section="rooms.mine" :can-delete="canDelete" @delete="deleteRoom" />
+    <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" :can-delete="canDelete" @delete="deleteRoom" />
   </main>
 </template>
 
 <script setup>
-import {onBeforeUnmount, onMounted, reactive, ref} from 'vue';
+import {computed, onBeforeUnmount, onMounted, reactive, ref} from 'vue';
+import {useI18n} from 'vue-i18n';
 import ConfigApi from '@/configs/ConfigApi';
 import CurrentUser from '@/services/CurrentUser';
 import ChatRoomsTable from '@/components/Chat/ChatRoomsTable.vue';
 import {refreshChatIdentity} from '@/components/Chat/chatIdentity.js';
 import {createChatRoomsConnection} from '@/components/Chat/chatRoomsConnection.js';
 import {websocketUrl} from '@/components/Chat/chatProtocol.js';
+import {canKickParticipants} from '@/components/Chat/chatProtocol.js';
 
 const user = CurrentUser.obj();
+const {t} = useI18n();
+const canDelete = computed(() => canKickParticipants(user));
 const status = ref({state: 'connecting'});
 const rooms = reactive({
   mine: {rows: [], total: 0, limit: 1000, offset: 0},
@@ -61,9 +65,18 @@ async function start() {
       others: {...pagination.others},
     }),
     onRooms: applyRooms,
+    onDeleted: event => {
+      const deleted = new Set(event.deletedChannels || []);
+      rooms.mine = {...rooms.mine, rows: rooms.mine.rows.filter(room => !deleted.has(room.channel))};
+      rooms.others = {...rooms.others, rows: rooms.others.rows.filter(room => !deleted.has(room.channel))};
+    },
     onStatus: value => { status.value = value; },
   });
   connection.start();
+}
+
+function deleteRoom(room) {
+  if (window.confirm(`${t('Delete chat')} “${room.chatName}”?`)) connection?.deleteChat(room.channel);
 }
 
 function retry() {
