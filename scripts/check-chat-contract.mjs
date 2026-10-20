@@ -231,7 +231,9 @@ try {
   const privateControl = elementWithClass(messageComponent, 'chat-message-private');
   assert.ok(replyControl, 'every message must expose a Reply control');
   assert.ok(tagControl, 'ordinary message authors must expose a TAG action');
+  assert.match(tagControl?.children?.[0]?.content?.content || '', /\$t\(['"]i_tag['"]\)/, 'mention action must use the localized i_tag icon');
   assert.ok(privateControl, 'ordinary message authors must expose a PRIVATE action');
+  assert.match(privateControl?.children?.[0]?.content?.content || '', /\$t\(['"]i_private['"]\)/, 'private-chat action must use the localized i_private icon');
   assert.equal(staticAttribute(privateControl, 'target'), '_blank', 'PRIVATE must open a new tab');
   assert.ok(directive(replyControl, 'bind', 'disabled')?.exp?.content.includes('replyDisabled'), 'Reply must remain visible but disabled during editing');
   assert.ok(messageComponent.template.content.indexOf('chat-message-reply') < messageComponent.template.content.indexOf('chat-message-actions'), 'Reply must appear left of Edit/Delete controls');

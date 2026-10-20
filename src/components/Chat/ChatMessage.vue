@@ -20,9 +20,9 @@
       <router-link v-else-if="profilePath" :to="profilePath" target="_blank" rel="noopener noreferrer" class="chat-message-author"><strong>{{ name }}</strong></router-link>
       <strong v-else>{{ name }}</strong>
       <button v-if="canTag" type="button" class="chat-copy-button chat-message-tag" :disabled="replyDisabled"
-              :title="$t('Mention a creature')" :aria-label="$t('Mention a creature')" @click="$emit('tag', message)">TAG</button>
+              :title="$t('Mention a creature')" :aria-label="$t('Mention a creature')" @click="$emit('tag', message)">{{ $t('i_tag') }}</button>
       <a v-if="privateHref" :href="privateHref" target="_blank" rel="noopener noreferrer" class="chat-copy-button chat-message-private"
-         :title="$t('Open a separate chat')" :aria-label="$t('Open a separate chat')">PRIVATE</a>
+         :title="$t('Open a separate chat')" :aria-label="$t('Open a separate chat')">{{ $t('i_private') }}</a>
       <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
     </div>
     <div v-if="parsed.quote" class="reply-quote">
