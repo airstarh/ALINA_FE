@@ -27,7 +27,7 @@
         <div class="chat-person-details">
           <span class="chat-person-name">{{ displayName(person.user, person.id) }} <small v-if="person.id === selfId">({{ $t('you') }})</small></span>
           <span class="chat-person-status" :class="{'is-typing': person.typing}">
-            <span class="chat-online-dot" aria-hidden="true"></span>{{ person.typing ? $t('Typing…') : $t('Online') }}
+            <span class="chat-online-dot" :class="{'is-online': person.online}" aria-hidden="true"></span>{{ person.typing ? $t('Typing…') : person.inChat ? $t('In chat') : $t('Not in chat') }}
           </span>
         </div>
         <button v-if="canKick && person.id !== selfId" type="button" class="chat-button chat-kick"

@@ -41,7 +41,8 @@
 .alina-chat .chat-person-name { overflow-wrap: anywhere; }
 .alina-chat .chat-person-name small, .alina-chat .chat-muted { color: var(--chat-muted); }
 .alina-chat .chat-person-status { color: var(--chat-muted); font-size: 12px; display: flex; align-items: center; gap: 6px; }
-.alina-chat .chat-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #75ddb0; }
+.alina-chat .chat-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #6f7b89; }
+.alina-chat .chat-online-dot.is-online { background: #75ddb0; }
 .alina-chat .is-typing { color: #91bcff; }
 .alina-chat .chat-conversation { position: relative; min-width: 0; min-height: 0; flex: 1; display: flex; flex-direction: column; }
 .alina-chat .chat-messages { overflow-y: auto; overscroll-behavior: contain; flex: 1 1 0; min-height: 0; padding: 18px; scrollbar-width: thin; scrollbar-color: #53637a transparent; }

@@ -215,6 +215,9 @@ try {
   const participantsComponent = componentDescriptor('src/components/Chat/ChatParticipants.vue');
   assert.ok(elementWithClass(participantsComponent, 'chat-approve'), 'join requests must expose approval action');
   assert.ok(elementWithClass(participantsComponent, 'chat-kick'), 'participant rows must expose role-controlled kick action');
+  const onlineDot = elementWithClass(participantsComponent, 'chat-online-dot');
+  assert.ok(directive(onlineDot, 'bind', 'class')?.exp?.content.includes('person.online'), 'participant icon must reflect origin-wide online state');
+  assert.match(participantsComponent.template.content, /person\.typing[^]*Typing…[^]*person\.inChat[^]*In chat[^]*Not in chat/, 'participant words must distinguish typing, in-chat and not-in-chat states');
 
   const messageComponent = componentDescriptor('src/components/Chat/ChatMessage.vue');
   assert.match(messageComponent.template.content, /part\.type === 'voice'/, 'voice parts must render through a dedicated audio branch');

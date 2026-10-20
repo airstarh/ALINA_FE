@@ -16,6 +16,8 @@ const Translations = {
     "Could not upload voice message. Please try again.": "Could not upload voice message. Please try again.",
     "Could not send voice message.": "Could not send voice message.",
     "Mention a creature": "Mention a creature",
+    "In chat": "In chat",
+    "Not in chat": "Not in chat",
     "A message may mention at most 22 creatures.": "A message may mention at most 22 creatures.",
 
     "Show menu and footer":                                               "Show menu and footer",
@@ -195,6 +197,8 @@ const Translations = {
     "Could not upload voice message. Please try again.": "Не удалось загрузить голосовое сообщение. Попробуйте ещё раз.",
     "Could not send voice message.": "Не удалось отправить голосовое сообщение.",
     "Mention a creature": "Упомянуть существо",
+    "In chat": "В чате",
+    "Not in chat": "Не в чате",
     "A message may mention at most 22 creatures.": "В одном сообщении можно упомянуть не более 22 существ.",
 
     "Show menu and footer": "Показать меню и подвал",
