@@ -146,10 +146,11 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       historyRequests.push('identity');
       return true;
     },
-    sendMessage(text, requestedMessageId = '') {
-      const key = String(text);
+    sendMessage(text, mentions = [], requestedMessageId = '') {
+      const normalizedMentions = mentions.map(({senderType, senderId}) => ({senderType, senderId: String(senderId)}));
+      const key = `${String(text)}\0${JSON.stringify(normalizedMentions)}`;
       const clientMessageId = requestedMessageId || failedMessageIds.get(key) || createClientMessageId();
-      if (!send({type: 'message', msg: text, clientMessageId, CurrentUser: publicChatUser(getUser())})) {
+      if (!send({type: 'message', msg: text, mentions: normalizedMentions, clientMessageId, CurrentUser: publicChatUser(getUser())})) {
         failedMessageIds.set(key, clientMessageId);
         return false;
       }
@@ -157,6 +158,8 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
       typing(false);
       return clientMessageId;
     },
+    loadMentionDirectory() { return send({type: 'mentions_directory'}); },
+    searchMentions(query) { return send({type: 'mentions_search', query: String(query)}); },
     replyMessage(replyToMessageId, text, requestedMessageId = '') {
       const key = `reply:${String(replyToMessageId)}\0${String(text)}`;
       const clientMessageId = requestedMessageId || failedMessageIds.get(key) || createClientMessageId();
@@ -171,6 +174,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
     editMessage(messageId, text) { return send({type: 'edit_message', messageId: String(messageId), text}); },
     deleteMessage(messageId) { return send({type: 'delete_message', messageId: String(messageId)}); },
     renameChat(name) { return send({type: 'rename', name}); },
+    renameGuest(guestId, name) { return send({type: 'rename_guest', guestId: String(guestId), name: String(name)}); },
     setAnonymousAllowed(allowed) { return send({type: 'set_anonymous', allowed}); },
     setConfirmationRequired(required) { return send({type: 'set_confirmation', required}); },
     approve(participantId) { return send({type: 'approve', participantId}); },

@@ -6,13 +6,13 @@
           <i class="bi" :class="statusIcon" aria-hidden="true"></i>
         </span>
         <label class="chat-sr-only" :for="chatNameId">{{ $t('Chat name') }}</label>
-        <input :id="chatNameId" v-model="chatName" class="chat-name-input" maxlength="200" :disabled="!connected"
+        <input :id="chatNameId" v-model="chatName" class="chat-name-input" maxlength="200" :disabled="!connected || !canManageChatRoom"
                :aria-label="$t('Chat name')" @keydown.enter.prevent="saveChatName" @blur="saveChatName" />
-        <button type="button" class="chat-button chat-anonymous-control"
+        <button v-if="canManageChatRoom" type="button" class="chat-button chat-anonymous-control"
                 :class="chatState.isAnionAllowed ? 'is-allowed' : 'is-denied'"
                 :aria-pressed="chatState.isAnionAllowed" :disabled="!connected"
                 @click="setAnonymousAllowed(!chatState.isAnionAllowed)">ANON</button>
-        <button type="button" class="chat-button chat-confirmation-control"
+        <button v-if="canManageChatRoom" type="button" class="chat-button chat-confirmation-control"
                 :class="chatState.isConfirmationRequired ? 'is-closed' : 'is-opened'"
                 :aria-pressed="chatState.isConfirmationRequired" :disabled="!connected"
                 @click="setConfirmationRequired(!chatState.isConfirmationRequired)">
@@ -51,18 +51,24 @@
           <p v-if="!messages.length" class="chat-empty">{{ connected ? $t('No messages yet. Start the conversation.') : $t('Connecting to chat…') }}</p>
           <ChatMessage v-for="message in messages" :key="message.id" :message="message" :own="isOwn(message)"
                        :can-manage="canManageMessage(message)" :editing="editingMessageId === message.id"
+                       :can-tag="canTagMessage(message)" :private-href="privateMessageHref(message)" :can-rename-guest="canRenameGuestAuthor(message)"
                        :edited="editedMessageIds.has(message.id)" :edited-blinking="blinkingMessageIds.has(message.id)" :base-url="apiBaseUrl"
                        :replying="replyingMessageId === message.id" :reply-disabled="!!editingMessageId"
-                       @reply="toggleReplyMessage" @edit="startEditingMessage" @delete="deleteMessage"
+                       @reply="toggleReplyMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
         </div>
         <button v-if="unread" type="button" class="chat-new-messages" @click="jumpToLatest">{{ $t('New messages') }} ({{ unread }}) ↓</button>
         <p v-if="typingNames" class="chat-typing-summary" role="status">{{ typingNames }} — {{ $t('Typing…') }}</p>
         <p v-if="error" class="chat-error" role="alert">{{ error }} <button type="button" :aria-label="$t('Dismiss')" @click="error = ''">×</button></p>
         <form class="chat-composer" @submit.prevent="sendMessage">
+          <div v-if="mentionSuggestions.length" class="chat-mention-selector" role="listbox" :aria-label="$t('Mention a creature')">
+            <button v-for="(candidate, index) in mentionSuggestions" :key="`${candidate.senderType}:${candidate.senderId}`" type="button"
+                    class="chat-mention-option" :class="{'is-active': index === mentionOptionIndex}" role="option"
+                    @mousedown.prevent="selectMention(candidate)">{{ candidate.senderName }}</button>
+          </div>
           <label class="chat-sr-only" :for="inputId">{{ $t('Message') }}</label>
           <textarea :id="inputId" ref="input" v-model="draft" class="chat-composer-input" :placeholder="$t('Type a message…')" rows="2" maxlength="16000" :disabled="!connected"
-                    @input="onInput" @keydown="onKeydown" @blur="connection?.typing(false)"></textarea>
+                    @input="onInput" @click="updateMentionQuery" @keyup="updateMentionQuery" @keydown="onKeydown" @blur="connection?.typing(false)"></textarea>
           <input ref="fileInput" type="file" multiple class="chat-sr-only" :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id || !connected" @change="uploadFiles" />
           <button type="button" class="chat-button chat-attach" :title="$t(user.attributes.id ? 'Attach files' : 'Sign in to upload files')"
                   :aria-label="$t('Attach files')" :disabled="uploading || recordingVoice || processingVoice || !user.attributes.id || !connected" @click="fileInput?.click()">
@@ -87,6 +93,7 @@
 </template>
 <script setup>
 import {computed, nextTick, onBeforeUnmount, reactive, ref, useId, watch} from 'vue';
+import {useRouter} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import {guestNickname as storedGuestNickname, saveGuestNickname, guestNicknameStorageKey} from '@/services/GuestIdentity';
 import CurrentUser from '@/services/CurrentUser';
@@ -97,12 +104,15 @@ import ChatMessage from './ChatMessage.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import {createChatConnection} from './chatConnection.js';
 import {createVoiceRecorder} from './chatVoiceRecorder.js';
-import {refreshChatIdentity, watchChatIdentity} from './chatIdentity.js';
+import {activeMentionQuery, appendMention, filterMentionCandidates, insertMention, synchronizeSelectedMentions} from './chatMentions.js';
+import {canManageChat, canManageMessage as mayManageMessage, canRenameGuest} from './chatPermissions.js';
+import {acceptGuestRename, refreshChatIdentity, watchChatIdentity} from './chatIdentity.js';
 import {
   canKickParticipants,
   canonicalChatUrl,
   displayName,
   parseReplyMessage,
+  privateChannel,
   uploadedFileUrl,
   videoChatUrl,
   websocketUrl,
@@ -112,6 +122,7 @@ import './chat.css';
 
 const props = defineProps({channel: {type: String, default: '1'}, title: {type: String, default: ''}, apiBaseUrl: {type: String, default: () => ConfigApi.url_base}});
 const {t} = useI18n();
+const router = useRouter();
 const pageSettings = reactive(PageSettings);
 const previousShowMainMenu = pageSettings.showMainMenu;
 pageSettings.showMainMenu = false;
@@ -139,17 +150,23 @@ const fileInput = ref(null);
 const uploading = ref(false);
 const recordingVoice = ref(false);
 const processingVoice = ref(false);
+const mentionCandidates = ref([]);
+const listTaggedUsers = ref([]);
+const mentionQuery = ref(null);
+const mentionOptionIndex = ref(0);
 const following = ref(true);
 const unread = ref(0);
 const user = CurrentUser.obj();
 const stopIdentityWatch = watchChatIdentity(user, () => connection?.updateUser());
 const canKick = computed(() => canKickParticipants(user));
+const canManageChatRoom = computed(() => canManageChat(user));
 const chatState = ref({name: props.title || normalizedChannel.value, isAnionAllowed: true, isConfirmationRequired: false});
 const chatName = ref(chatState.value.name);
 const joinRequests = ref([]);
 let pendingChatName = '';
 const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
+let mentionSearchTimer;
 function chatUser() {
   return user.attributes.id ? user.attributes : {...user.attributes, firstname: '', lastname: '', nickname: guestNickname.value.trim()};
 }
@@ -200,11 +217,29 @@ const statusIcon = computed(() => {
   return 'bi-circle';
 });
 const typingNames = computed(() => participants.value.filter(person => person.typing && person.id !== selfId.value).map(person => displayName(person.user, person.id)).join(', '));
+const mentionSelf = computed(() => {
+  const [senderType = '', ...id] = selfId.value.split(':');
+  return {senderType, senderId: id.join(':')};
+});
+const mentionSuggestions = computed(() => mentionQuery.value
+  ? filterMentionCandidates(mentionCandidates.value, mentionQuery.value.query, listTaggedUsers.value, mentionSelf.value, 5)
+  : []);
 function isOwn(message) {
   return !!selfId.value && message.participantId === selfId.value;
 }
 function canManageMessage(message) {
-  return isOwn(message) || user.isAdmin() || user.isModerator();
+  return mayManageMessage(user, message, selfId.value);
+}
+function canTagMessage(message) {
+  return !['bot', 'user_service'].includes(message.senderType) && !isOwn(message);
+}
+function privateMessageHref(message) {
+  if (['bot', 'user_service'].includes(message.senderType)) return '';
+  const channel = privateChannel(selfId.value, message.participantId);
+  return channel ? router.resolve({path: '/chat', query: {channel}}).href : '';
+}
+function canRenameGuestAuthor(message) {
+  return message.senderType === 'guest' && canRenameGuest(user);
 }
 function trackScroll() {
   const el = messageList.value;
@@ -263,6 +298,18 @@ function receive(event) {
   } else if (event.type === 'presence' && Array.isArray(event.participants)) {
     selfId.value = event.selfId;
     participants.value = event.participants;
+  } else if (event.type === 'guest_renamed' && event.participantId && event.guestId) {
+    const renamedSelf = acceptGuestRename(event, selfId.value, saveGuestNickname);
+    if (renamedSelf !== null) guestNickname.value = renamedSelf;
+    messages.value = messages.value.map(message => message.participantId === event.participantId || (message.senderType === 'user_service' && message.senderId === event.guestId)
+      ? {...message, CurrentUser: {...message.CurrentUser, guestId: event.guestId, nickname: event.nickname, name: event.name}}
+      : message);
+    participants.value = participants.value.map(person => person.id === event.participantId
+      ? {...person, user: {...person.user, guestId: event.guestId, nickname: event.nickname, name: event.name}}
+      : person);
+    mentionCandidates.value = mentionCandidates.value.map(candidate => candidate.senderType === 'guest' && candidate.senderId === event.guestId
+      ? {...candidate, senderName: event.name}
+      : candidate);
   } else if (event.type === 'chat_state' && event.chat?.name) {
     chatState.value = event.chat;
     chatName.value = event.chat.name;
@@ -283,6 +330,10 @@ function receive(event) {
     scrollIfFollowing();
   } else if (event.type === 'error') {
     error.value = event.error || t('Could not send the message.');
+  } else if (['mentions_directory', 'mentions_search'].includes(event.type) && Array.isArray(event.candidates)) {
+    const merged = new Map(mentionCandidates.value.map(candidate => [`${candidate.senderType}:${candidate.senderId}`, candidate]));
+    event.candidates.forEach(candidate => merged.set(`${candidate.senderType}:${candidate.senderId}`, candidate));
+    mentionCandidates.value = [...merged.values()].sort((a, b) => b.latestActivityAt - a.latestActivityAt).slice(0, 1000);
   }
 }
 watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) => {
@@ -296,6 +347,9 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   messages.value = [];
   editingMessageId.value = '';
   replyingMessageId.value = '';
+  mentionCandidates.value = [];
+  listTaggedUsers.value = [];
+  mentionQuery.value = null;
   editedMessageIds.clear();
   blinkingMessageIds.clear();
   participants.value = [];
@@ -324,7 +378,7 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
       onEvent: receive,
       onStatus: value => {
         status.value = value;
-        if (value.state === 'connected') admitted.value = true;
+        if (value.state === 'connected') { admitted.value = true; connection?.loadMentionDirectory(); }
         if (['connecting', 'joining', 'pending', 'kicked', 'reconnecting'].includes(value.state)) admitted.value = false;
         if (!admitted.value) { participants.value = []; selfId.value = ''; }
       },
@@ -396,12 +450,69 @@ function kickParticipant(participantId) {
 }
 function onInput() {
   error.value = '';
+  listTaggedUsers.value = synchronizeSelectedMentions(draft.value, listTaggedUsers.value);
+  updateMentionQuery();
   if (connected.value) connection?.typing(!!draft.value.trim());
 }
 function onKeydown(event) {
+  if (mentionSuggestions.value.length && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
+    event.preventDefault();
+    const direction = event.key === 'ArrowDown' ? 1 : -1;
+    mentionOptionIndex.value = (mentionOptionIndex.value + direction + mentionSuggestions.value.length) % mentionSuggestions.value.length;
+    return;
+  }
+  if (mentionSuggestions.value.length && event.key === 'Enter' && !event.ctrlKey) {
+    event.preventDefault();
+    selectMention(mentionSuggestions.value[mentionOptionIndex.value]);
+    return;
+  }
   if (event.ctrlKey && event.key === 'Enter' && !event.isComposing) {
     event.preventDefault();
     sendMessage();
+  }
+}
+function updateMentionQuery() {
+  mentionQuery.value = activeMentionQuery(draft.value, input.value?.selectionStart ?? draft.value.length);
+  mentionOptionIndex.value = 0;
+  clearTimeout(mentionSearchTimer);
+  if (mentionQuery.value && mentionQuery.value.query.length >= 3 && mentionSuggestions.value.length === 0) {
+    const query = mentionQuery.value.query;
+    mentionSearchTimer = setTimeout(() => connection?.searchMentions(query), 250);
+  }
+}
+function selectMention(candidate) {
+  if (!candidate || listTaggedUsers.value.length >= 22) {
+    if (listTaggedUsers.value.length >= 22) error.value = t('A message may mention at most 22 creatures.');
+    return;
+  }
+  const end = input.value?.selectionStart ?? draft.value.length;
+  const result = insertMention(draft.value, {start: mentionQuery.value.start, end}, candidate);
+  draft.value = result.text;
+  listTaggedUsers.value = [...listTaggedUsers.value, result.mention];
+  mentionQuery.value = null;
+  nextTick(() => { input.value?.focus(); input.value?.setSelectionRange(result.caret, result.caret); });
+}
+function tagMessageAuthor(message) {
+  if (!canTagMessage(message) || listTaggedUsers.value.length >= 22) {
+    if (listTaggedUsers.value.length >= 22) error.value = t('A message may mention at most 22 creatures.');
+    return;
+  }
+  const candidate = {
+    senderType: message.senderType,
+    senderId: String(message.senderId),
+    senderName: displayName(message.CurrentUser, message.participantId),
+    senderEmblem: message.CurrentUser?.emblem || '',
+  };
+  const caret = input.value?.selectionStart ?? draft.value.length;
+  const result = appendMention(draft.value, caret, candidate, listTaggedUsers.value);
+  draft.value = result.text;
+  listTaggedUsers.value = result.mentions;
+  mentionQuery.value = null;
+  nextTick(() => { input.value?.focus(); input.value?.setSelectionRange(result.caret, result.caret); });
+}
+function renameGuestAuthor(message, nickname) {
+  if (!canRenameGuestAuthor(message) || !connection?.renameGuest(message.senderId, nickname)) {
+    error.value = t('Could not rename the guest. Reconnect and try again.');
   }
 }
 async function uploadChatFiles(files) {
@@ -482,11 +593,12 @@ function sendMessage() {
     error.value = t('Message is too long (maximum 16000 bytes).');
     return;
   }
+  listTaggedUsers.value = synchronizeSelectedMentions(draft.value, listTaggedUsers.value).slice(0, 22);
   const sent = editingMessageId.value
     ? connection?.editMessage(editingMessageId.value, text)
     : replyingMessageId.value
       ? connection?.replyMessage(replyingMessageId.value, text)
-      : connection?.sendMessage(text);
+      : connection?.sendMessage(text, listTaggedUsers.value.map(({senderType, senderId}) => ({senderType, senderId})));
   if (!connected.value || !sent) {
     error.value = t('No active connection. Your draft is preserved.');
     return;
@@ -495,6 +607,8 @@ function sendMessage() {
   draft.value = '';
   editingMessageId.value = '';
   replyingMessageId.value = '';
+  listTaggedUsers.value = [];
+  mentionQuery.value = null;
   drafts.delete(normalizedChannel.value);
   jumpToLatest();
   input.value?.focus();
@@ -526,6 +640,7 @@ onBeforeUnmount(() => {
   stopIdentityWatch();
   window.removeEventListener('storage', syncGuestNickname);
   clearTimeout(nicknameTimer);
+  clearTimeout(mentionSearchTimer);
   pageSettings.showMainMenu = previousShowMainMenu;
   generation++;
   identityAbort?.abort();

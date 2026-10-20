@@ -1,11 +1,24 @@
 <template>
-  <article class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing, 'chat-message-edited': edited, 'chat-message-edited-blinking': editedBlinking, 'chat-message-replying': replying}">
+  <article v-if="isUserService" class="chat-message chat-message-service">
+    <div class="chat-service-heading"><time :datetime="message.timestamp" :title="fullTime">{{ time }}</time></div>
+    <div class="chat-message-body">{{ message.msg }}</div>
+    <footer v-if="canManage" class="chat-message-footer chat-service-footer">
+      <span></span><button type="button" class="chat-copy-button chat-message-delete" :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
+    </footer>
+  </article>
+  <article v-else class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing, 'chat-message-edited': edited, 'chat-message-edited-blinking': editedBlinking, 'chat-message-replying': replying}">
     <div class="chat-message-heading">
       <span v-if="isRobocop" class="chat-avatar chat-avatar-robocop chat-message-avatar" aria-hidden="true">🤖</span>
       <img v-else-if="avatar && !avatarFailed" :src="avatar" alt="" class="chat-avatar chat-message-avatar" @error="avatarFailed = true" />
       <span v-else class="chat-avatar chat-avatar-fallback chat-message-avatar" aria-hidden="true">{{ name.slice(0, 1).toUpperCase() }}</span>
-      <router-link v-if="profilePath" :to="profilePath" target="_blank" rel="noopener noreferrer" class="chat-message-author"><strong>{{ name }}</strong></router-link>
+      <input v-if="canRenameGuest" class="chat-guest-nickname chat-message-guest-name" :value="guestNickname" maxlength="25"
+             :aria-label="$t('Your nickname')" @blur="renameGuest" @keydown.enter.prevent="$event.target.blur()" />
+      <router-link v-else-if="profilePath" :to="profilePath" target="_blank" rel="noopener noreferrer" class="chat-message-author"><strong>{{ name }}</strong></router-link>
       <strong v-else>{{ name }}</strong>
+      <button v-if="canTag" type="button" class="chat-copy-button chat-message-tag" :disabled="replyDisabled"
+              :title="$t('Mention a creature')" :aria-label="$t('Mention a creature')" @click="$emit('tag', message)">TAG</button>
+      <a v-if="privateHref" :href="privateHref" target="_blank" rel="noopener noreferrer" class="chat-copy-button chat-message-private"
+         :title="$t('Open a separate chat')" :aria-label="$t('Open a separate chat')">PRIVATE</a>
       <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
     </div>
     <div v-if="parsed.quote" class="reply-quote">
@@ -46,14 +59,16 @@
 <script setup>
 import {computed, onBeforeUnmount, reactive, ref} from 'vue';
 import {displayName, formatChatTimestamp, messageParts, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
-const props = defineProps({message: {type: Object, required: true}, own: Boolean, canManage: Boolean, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
-const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply']);
+const props = defineProps({message: {type: Object, required: true}, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
+const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'tag', 'rename-guest']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);
 let copyTimer;
 const name = computed(() => displayName(props.message.CurrentUser, props.message.participantId));
+const guestNickname = computed(() => String(props.message.CurrentUser?.nickname || name.value).replace(/ \(Guest [^)]+\)$/, ''));
 const isRobocop = computed(() => props.message.participantId === 'bot:robocop');
+const isUserService = computed(() => props.message.senderType === 'user_service');
 const profilePath = computed(() => {
   const authorId = Number(props.message.CurrentUser?.id);
   return !isRobocop.value && Number.isInteger(authorId) && authorId > 0 ? `/auth/profile/${authorId}` : '';
@@ -67,6 +82,11 @@ const fullTime = computed(() => Number.isNaN(date.value.getTime())
   ? ''
   : `${date.value.getFullYear()}-${pad(date.value.getMonth() + 1)}-${pad(date.value.getDate())} ${pad(date.value.getHours())}:${pad(date.value.getMinutes())}`);
 const time = computed(() => formatChatTimestamp(date.value));
+function renameGuest(event) {
+  const nickname = event.target.value.trim();
+  event.target.value = guestNickname.value;
+  if (nickname && nickname !== guestNickname.value) emit('rename-guest', props.message, nickname);
+}
 async function copyUrl(url, index) {
   try {
     await navigator.clipboard.writeText(url);

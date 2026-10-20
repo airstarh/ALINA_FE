@@ -128,6 +128,10 @@ export default class CurrentUser {
     return res;
   }
 
+  isPrivileged() {
+    return this.hasRole("privileged");
+  }
+
   owns(id) {
     if (!id) {
       return false;
@@ -145,6 +149,10 @@ export default class CurrentUser {
 
   ownsOrAdminOrModerator(id) {
     return this.owns(id) || this.isAdmin() || this.isModerator();
+  }
+
+  ownsOrAdminOrModeratorOrPrivileged(id) {
+    return this.ownsOrAdminOrModerator(id) || this.isPrivileged();
   }
 
   name() {

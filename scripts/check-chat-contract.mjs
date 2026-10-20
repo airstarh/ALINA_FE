@@ -4,10 +4,12 @@ import {parse} from '@vue/compiler-sfc';
 import {nextTick, reactive} from 'vue';
 
 import {createChatConnection} from '../src/components/Chat/chatConnection.js';
+import {canManageChat, canManageMessage, canRenameGuest} from '../src/components/Chat/chatPermissions.js';
 import {
   canKickParticipants,
   canonicalChatUrl,
   createClientMessageId,
+  displayName,
   formatChatTimestamp,
   messageParts,
   parseReplyMessage,
@@ -15,9 +17,9 @@ import {
   withoutParticipantMessages,
 } from '../src/components/Chat/chatProtocol.js';
 
-let watchChatIdentity;
+let acceptGuestRename, watchChatIdentity;
 try {
-  ({watchChatIdentity} = await import('../src/components/Chat/chatIdentity.js'));
+  ({acceptGuestRename, watchChatIdentity} = await import('../src/components/Chat/chatIdentity.js'));
 } catch {
   // The assertion below reports the missing behavior as a contract failure.
 }
@@ -103,6 +105,23 @@ globalThis.clearTimeout = id => timers.delete(id);
 
 try {
   assert.equal(typeof watchChatIdentity, 'function', 'chat identity synchronization must be available');
+  assert.equal(typeof acceptGuestRename, 'function', 'guest rename synchronization must be available');
+  const savedGuestNames = [];
+  assert.equal(
+    acceptGuestRename(
+      {participantId: 'guest:b7c8ea87-34e4-49a1-ae9b-13de4fe35429', nickname: 'CHROMIUM aaa'},
+      'guest:b7c8ea87-34e4-49a1-ae9b-13de4fe35429',
+      nickname => { savedGuestNames.push(nickname); return nickname; },
+    ),
+    'CHROMIUM aaa',
+    'a socket rename targeting the current guest must replace its local nickname',
+  );
+  assert.deepEqual(savedGuestNames, ['CHROMIUM aaa']);
+  assert.equal(
+    acceptGuestRename({participantId: 'guest:other', nickname: 'Other'}, 'guest:self', nickname => savedGuestNames.push(nickname)),
+    null,
+    'another guest rename must not change the current browser identity',
+  );
   const observedIdentity = reactive({attributes: {id: 17, nickname: 'Alice', emblem: ''}});
   const synchronized = [];
   const stopIdentityWatch = watchChatIdentity(observedIdentity, identity => synchronized.push(identity));
@@ -125,6 +144,24 @@ try {
   assert.equal(canKickParticipants({isAdmin: () => true, isModerator: () => false}), true);
   assert.equal(canKickParticipants({isAdmin: () => false, isModerator: () => true}), true);
   assert.equal(canKickParticipants({isAdmin: () => false, isModerator: () => false}), false);
+  const ordinary = {participantId: 'user:17', senderType: 'user', senderId: '17'};
+  const roleUser = roles => ({
+    isAdmin: () => roles.includes('admin'),
+    isModerator: () => roles.includes('moderator'),
+    isPrivileged: () => roles.includes('privileged'),
+    ownsOrAdminOrModeratorOrPrivileged: id => id === '17' || roles.some(role => ['admin', 'moderator', 'privileged'].includes(role)),
+  });
+  assert.equal(canManageChat(roleUser(['privileged'])), true, 'privileged users must manage chat policy and name');
+  assert.equal(canManageChat(roleUser([])), false, 'ordinary registered users must not manage chat policy or name');
+  assert.equal(canManageMessage(roleUser([]), ordinary, 'user:17'), true, 'message owners must manage their own message');
+  assert.equal(canManageMessage(roleUser(['privileged']), ordinary, 'user:22'), true, 'privileged users must manage other messages');
+  assert.equal(canRenameGuest(roleUser(['admin'])), true, 'admins must rename guest authors');
+  assert.equal(canRenameGuest(roleUser(['moderator'])), false, 'guest author renaming is admin-only');
+  assert.equal(
+    displayName({guestId: 'b7c8ea87-34e4-49a1-ae9b-13de4fe35429', nickname: 'CHROMIUM (Guest b7c8ea87)'}, 'guest:b7c8ea87-34e4-49a1-ae9b-13de4fe35429'),
+    'CHROMIUM (Guest b7c8ea87)',
+    'persisted canonical guest names must not duplicate their Guest suffix',
+  );
   assert.deepEqual(
     withoutParticipantMessages([
       {id: '1', participantId: 'user:1'},
@@ -158,13 +195,13 @@ try {
   const anonymousControl = elementWithClass(indexComponent, 'chat-anonymous-control');
   assert.ok(anonymousControl, 'chat header must expose the anonymous-access control');
   assert.equal(anonymousControl.tag, 'button', 'anonymous-access control must be a button');
-  assert.equal(directive(anonymousControl, 'if'), undefined, 'ANON button must be visible to every participant');
+  assert.ok(directive(anonymousControl, 'if')?.exp?.content.includes('canManageChatRoom'), 'ANON button must be restricted to management roles');
   assert.ok(directive(anonymousControl, 'bind', 'class')?.exp?.content.includes('isAnionAllowed'), 'ANON button color must reflect the persisted anonymous-access flag');
   assert.ok(directive(anonymousControl, 'on', 'click'), 'every participant must be able to toggle anonymous access');
   const confirmationControl = elementWithClass(indexComponent, 'chat-confirmation-control');
   assert.ok(confirmationControl, 'chat header must expose the confirmation policy control');
   assert.equal(confirmationControl.tag, 'button', 'confirmation policy control must be a button');
-  assert.equal(directive(confirmationControl, 'if'), undefined, 'OPENED/CLOSED button must be visible to every participant');
+  assert.ok(directive(confirmationControl, 'if')?.exp?.content.includes('canManageChatRoom'), 'OPENED/CLOSED button must be restricted to management roles');
   assert.ok(directive(confirmationControl, 'bind', 'class')?.exp?.content.includes('isConfirmationRequired'), 'OPENED/CLOSED color must reflect the persisted confirmation flag');
   assert.ok(directive(confirmationControl, 'on', 'click'), 'every participant must be able to toggle confirmation policy');
   assert.ok(elementWithClass(indexComponent, 'chat-copy-link'), 'chat header must expose copy-link action');
@@ -185,7 +222,12 @@ try {
   const editControl = elementWithClass(messageComponent, 'chat-message-edit');
   const deleteControl = elementWithClass(messageComponent, 'chat-message-delete');
   const replyControl = elementWithClass(messageComponent, 'chat-message-reply');
+  const tagControl = elementWithClass(messageComponent, 'chat-message-tag');
+  const privateControl = elementWithClass(messageComponent, 'chat-message-private');
   assert.ok(replyControl, 'every message must expose a Reply control');
+  assert.ok(tagControl, 'ordinary message authors must expose a TAG action');
+  assert.ok(privateControl, 'ordinary message authors must expose a PRIVATE action');
+  assert.equal(staticAttribute(privateControl, 'target'), '_blank', 'PRIVATE must open a new tab');
   assert.ok(directive(replyControl, 'bind', 'disabled')?.exp?.content.includes('replyDisabled'), 'Reply must remain visible but disabled during editing');
   assert.ok(messageComponent.template.content.indexOf('chat-message-reply') < messageComponent.template.content.indexOf('chat-message-actions'), 'Reply must appear left of Edit/Delete controls');
   assert.ok(editControl && deleteControl, 'manageable messages must expose edit and delete footer controls');
@@ -202,7 +244,7 @@ try {
   const authorLink = elementWithClass(messageComponent, 'chat-message-author');
   assert.ok(authorLink, 'registered message authors must expose a profile link');
   assert.equal(authorLink.tag, 'router-link', 'registered message authors must link through the current-origin Vue router');
-  assert.ok(directive(authorLink, 'if')?.exp?.content.includes('profilePath'), 'guest and bot authors must remain unlinked');
+  assert.ok((directive(authorLink, 'if') || directive(authorLink, 'else-if'))?.exp?.content.includes('profilePath'), 'guest and bot authors must remain unlinked');
   assert.ok(directive(authorLink, 'bind', 'to')?.exp?.content.includes('profilePath'), 'author link must use the message author profile path');
   assert.equal(staticAttribute(authorLink, 'target'), '_blank', 'author profile links must open in a new tab');
   assert.equal(staticAttribute(authorLink, 'rel'), 'noopener noreferrer', 'new-tab author links must isolate the opener');
@@ -220,7 +262,8 @@ try {
   assert.match(indexComponent.scriptSetup.content, /editedMessageIds/, 'chat page must remember edited messages for the current session');
   assert.match(indexComponent.scriptSetup.content, /blinkingMessageIds/, 'chat page must retrigger edit blinking locally');
   assert.match(indexComponent.scriptSetup.content, /message_deleted/, 'chat page must apply incoming deletions');
-  assert.match(indexComponent.scriptSetup.content, /return isOwn\(message\) \|\| user\.isAdmin\(\) \|\| user\.isModerator\(\)/, 'only owners, admins and moderators must see message controls');
+  assert.match(indexComponent.scriptSetup.content, /appendMention/, 'TAG must reuse structured mention machinery');
+  assert.match(indexComponent.scriptSetup.content, /guest_renamed/, 'chat page must apply socket guest renames');
   const chatCss = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
   assert.match(chatCss, /\.chat-message-editing\s*\{[^}]*background:\s*#4f5867/s, 'the active edit target must have a gray background');
   assert.match(chatCss, /\.chat-message-edited\s*\{[^}]*background:\s*#[0-9a-f]{6}/si, 'session-edited messages must retain a dark-green background');
@@ -282,6 +325,13 @@ try {
   const sentMessages = socket.sent.filter(payload => payload.type === 'message');
   assert.equal(sentMessages[0].clientMessageId, firstId);
   assert.equal(sentMessages[0].CurrentUser.nickname, 'Alice');
+  connection.loadMentionDirectory();
+  assert.equal(socket.sent.at(-1).type, 'mentions_directory');
+  connection.searchMentions('cod');
+  assert.deepEqual(socket.sent.at(-1), {version: 2, channel: 'general', type: 'mentions_search', query: 'cod'});
+  const mentionId = connection.sendMessage('@Codex hi', [{senderType: 'user', senderId: '22'}]);
+  assert.equal(socket.sent.at(-1).clientMessageId, mentionId);
+  assert.deepEqual(socket.sent.at(-1).mentions, [{senderType: 'user', senderId: '22'}]);
 
   assert.equal(connection.editMessage('41', 'corrected'), true);
   assert.deepEqual(socket.sent.at(-1), {version: 2, channel: 'general', type: 'edit_message', messageId: '41', text: 'corrected'});
@@ -308,20 +358,22 @@ try {
   assert.equal(retriedId, failedId, 'retry must reuse the failed message identity');
 
   assert.equal(connection.renameChat('Renamed'), true);
+  assert.equal(connection.renameGuest('b7c8ea87-34e4-49a1-ae9b-13de4fe35429', 'CHROMIUM'), true);
   assert.equal(connection.setAnonymousAllowed(false), true);
   assert.equal(connection.setConfirmationRequired(true), true);
   assert.equal(connection.approve('user:22'), true);
   assert.equal(connection.kick('user:23'), true);
   connection.typing(true);
   assert.deepEqual(
-    socket.sent.slice(-6).map(({type, name, allowed, required, participantId, typing}) => ({type, name, allowed, required, participantId, typing})),
+    socket.sent.slice(-7).map(({type, name, guestId, allowed, required, participantId, typing}) => ({type, name, guestId, allowed, required, participantId, typing})),
     [
-      {type: 'rename', name: 'Renamed', allowed: undefined, required: undefined, participantId: undefined, typing: undefined},
-      {type: 'set_anonymous', name: undefined, allowed: false, required: undefined, participantId: undefined, typing: undefined},
-      {type: 'set_confirmation', name: undefined, allowed: undefined, required: true, participantId: undefined, typing: undefined},
-      {type: 'approve', name: undefined, allowed: undefined, required: undefined, participantId: 'user:22', typing: undefined},
-      {type: 'kick', name: undefined, allowed: undefined, required: undefined, participantId: 'user:23', typing: undefined},
-      {type: 'typing', name: undefined, allowed: undefined, required: undefined, participantId: undefined, typing: true},
+      {type: 'rename', name: 'Renamed', guestId: undefined, allowed: undefined, required: undefined, participantId: undefined, typing: undefined},
+      {type: 'rename_guest', name: 'CHROMIUM', guestId: 'b7c8ea87-34e4-49a1-ae9b-13de4fe35429', allowed: undefined, required: undefined, participantId: undefined, typing: undefined},
+      {type: 'set_anonymous', name: undefined, guestId: undefined, allowed: false, required: undefined, participantId: undefined, typing: undefined},
+      {type: 'set_confirmation', name: undefined, guestId: undefined, allowed: undefined, required: true, participantId: undefined, typing: undefined},
+      {type: 'approve', name: undefined, guestId: undefined, allowed: undefined, required: undefined, participantId: 'user:22', typing: undefined},
+      {type: 'kick', name: undefined, guestId: undefined, allowed: undefined, required: undefined, participantId: 'user:23', typing: undefined},
+      {type: 'typing', name: undefined, guestId: undefined, allowed: undefined, required: undefined, participantId: undefined, typing: true},
     ],
   );
 

@@ -15,6 +15,8 @@ const Translations = {
     "Could not record voice message.": "Could not record voice message.",
     "Could not upload voice message. Please try again.": "Could not upload voice message. Please try again.",
     "Could not send voice message.": "Could not send voice message.",
+    "Mention a creature": "Mention a creature",
+    "A message may mention at most 22 creatures.": "A message may mention at most 22 creatures.",
 
     "Show menu and footer":                                               "Show menu and footer",
     "Hide menu and footer":                                               "Hide menu and footer",
@@ -45,6 +47,7 @@ const Translations = {
     "Could not save the chat name. Reconnect and try again.":             "Could not save the chat name. Reconnect and try again.",
     "Could not save anonymous access. Reconnect and try again.":          "Could not save anonymous access. Reconnect and try again.",
     "Could not save confirmation policy. Reconnect and try again.":       "Could not save confirmation policy. Reconnect and try again.",
+    "Could not rename the guest. Reconnect and try again.":              "Could not rename the guest. Reconnect and try again.",
     "Join requests":                                                      "Join requests",
     "Approve":                                                            "Approve",
     "Could not approve the participant. Reconnect and try again.":        "Could not approve the participant. Reconnect and try again.",
@@ -191,6 +194,8 @@ const Translations = {
     "Could not record voice message.": "Не удалось записать голосовое сообщение.",
     "Could not upload voice message. Please try again.": "Не удалось загрузить голосовое сообщение. Попробуйте ещё раз.",
     "Could not send voice message.": "Не удалось отправить голосовое сообщение.",
+    "Mention a creature": "Упомянуть существо",
+    "A message may mention at most 22 creatures.": "В одном сообщении можно упомянуть не более 22 существ.",
 
     "Show menu and footer": "Показать меню и подвал",
     "Hide menu and footer": "Скрыть меню и подвал",
@@ -221,6 +226,7 @@ const Translations = {
     "Could not save the chat name. Reconnect and try again.": "Не удалось сохранить название чата. Переподключитесь и попробуйте ещё раз.",
     "Could not save anonymous access. Reconnect and try again.": "Не удалось сохранить настройку анонимного доступа. Переподключитесь и попробуйте ещё раз.",
     "Could not save confirmation policy. Reconnect and try again.": "Не удалось сохранить режим подтверждения. Переподключитесь и попробуйте ещё раз.",
+    "Could not rename the guest. Reconnect and try again.": "Не удалось переименовать гостя. Переподключитесь и попробуйте ещё раз.",
     "Join requests": "Запросы на вход",
     "Approve": "Разрешить",
     "Could not approve the participant. Reconnect and try again.": "Не удалось разрешить вход участнику. Переподключитесь и попробуйте ещё раз.",

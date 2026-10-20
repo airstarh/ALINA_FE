@@ -25,3 +25,8 @@ export function watchChatIdentity(user, synchronize) {
     {deep: true},
   );
 }
+
+export function acceptGuestRename(event, selfId, saveNickname) {
+  if (!selfId?.startsWith('guest:') || event?.participantId !== selfId || typeof event.nickname !== 'string') return null;
+  return saveNickname(event.nickname);
+}

@@ -28,6 +28,7 @@ export function displayName(user = {}, participantId = '') {
     if (identifier) {
       const base = `Guest ${identifier.slice(0, 8)}`;
       const nickname = user?.nickname?.trim() || [user?.firstname, user?.lastname].filter(Boolean).join(' ').trim();
+      if (nickname.endsWith(` (${base})`)) return nickname;
       return nickname && nickname !== base ? `${nickname} (${base})` : base;
     }
   }
