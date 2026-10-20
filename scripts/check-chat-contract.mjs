@@ -167,6 +167,9 @@ try {
   assert.ok(elementWithClass(indexComponent, 'chat-video-link'), 'chat header must expose video-chat action');
   const composer = elementWithClass(indexComponent, 'chat-composer-input');
   assert.ok(directive(composer, 'bind', 'disabled')?.exp?.content.includes('connected'), 'pending composer must be disabled');
+  const sendControl = elementWithClass(indexComponent, 'chat-send');
+  assert.ok(sendControl, 'chat composer must expose a send button');
+  assert.ok(indexComponent.template.content.includes("$t('i_save')"), 'send button must use the existing universal save symbol');
 
   const participantsComponent = componentDescriptor('src/components/Chat/ChatParticipants.vue');
   assert.ok(elementWithClass(participantsComponent, 'chat-approve'), 'join requests must expose approval action');
@@ -220,6 +223,7 @@ try {
   assert.match(chatCss, /\.chat-message-replying\s*\{[^}]*background:\s*#[0-9a-f]{6}/si, 'selected reply parent must have a dark-orange background');
   assert.match(chatCss, /\.reply-quote\s*\{[^}]*border-left:\s*3px[^;]*purple[^}]*color:\s*#[0-9a-f]{6}[^}]*font-size:\s*0\.7rem/s, 'reply quote must have the agreed purple border, gray text and size');
   assert.match(chatCss, /\.alina-chat \.chat-message\s*\{[^}]*margin:\s*0 0 20px/s, 'messages must have 20px vertical spacing');
+  assert.match(chatCss, /\.alina-chat \.chat-send\s*\{[^}]*border-radius:\s*50%/s, 'send button must be round');
 
   const ids = Array.from({length: 100}, () => createClientMessageId());
   assert.equal(new Set(ids).size, ids.length, 'message IDs must be unique');

@@ -71,7 +71,7 @@
           <button v-if="editingMessageId" type="button" class="chat-button chat-edit-cancel"
                   :title="$t('Cancel editing')" :aria-label="$t('Cancel editing')" @click="cancelEditingMessage">{{ $t('i_cancel') }}</button>
           <small v-if="uploading" class="chat-composer-hint" role="status">{{ $t('Uploading files…') }}</small>
-          <button type="submit" class="chat-send" :disabled="uploading || !connected || !draft.trim()">{{ $t('Send') }}</button>
+          <button type="submit" class="chat-send" :disabled="uploading || !connected || !draft.trim()">{{ $t('i_save') }}</button>
           <small class="chat-composer-hint">{{ $t('Ctrl+Enter to send · Enter for a new line') }}</small>
         </form>
       </div>
