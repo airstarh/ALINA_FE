@@ -265,12 +265,26 @@ try {
   assert.ok(directive(authorLink, 'bind', 'to')?.exp?.content.includes('profilePath'), 'author link must use the message author profile path');
   assert.equal(staticAttribute(authorLink, 'target'), undefined, 'author profile links must stay in the current app context');
   assert.match(messageComponent.scriptSetup.content, /props\.message\.CurrentUser\?\.id/, 'profile link must use the message author ID');
-  assert.doesNotMatch(messageComponent.template.content, /target="_blank"/, 'message links must stay in the current app context');
+  assert.match(
+    messageComponent.template.content,
+    /v-if="part\.type === 'link'"[^>]*class="chat-shared-window"[^>]*target="_blank"[^>]*rel="noopener noreferrer"[^>]*>\s*\{\{\s*\$t\('i_window'\)\s*\}\}/s,
+    'ordinary website URLs must expose a safe external-window action using i_window',
+  );
+  assert.equal((messageComponent.template.content.match(/target="_blank"/g) || []).length, 1, 'only the ordinary website fallback may open a new tab');
+  assert.ok(
+    messageComponent.template.content.indexOf('class="chat-shared-window"') < messageComponent.template.content.indexOf('class="chat-shared-link"'),
+    'the external-window action must appear before the displayed URL',
+  );
   assert.doesNotMatch(participantsComponent.template.content, /target="_blank"/, 'participant private-chat links must stay in the current app context');
   assert.doesNotMatch(indexComponent.source, /window\.open\(/, 'chat actions must not open new tabs or windows');
   assert.match(messageComponent.scriptSetup.content, /PopupObj\.isOn\s*=\s*true/, 'shared message URLs must open through the existing ALINA popup');
   const popupSource = readFileSync(new URL('../src/components/global/Popup.vue', import.meta.url), 'utf8');
   assert.match(popupSource, /UtilsFS\.typeAudio/, 'ALINA popup must render shared audio');
+  assert.match(
+    popupSource,
+    /\.popup-subject\.audio\s*\{[^}]*height:\s*[1-9][0-9]*px;[^}]*min-height:\s*[1-9][0-9]*px;/s,
+    'audio popup controls must retain an explicit visible height',
+  );
   assert.match(popupSource, /UtilsFS\.typeWeb/, 'ALINA popup must render ordinary shared URLs');
   assert.ok(messageHeading.children.some(child => child.tag === 'time'), 'message timestamp must appear in the nickname row');
   assert.equal(messageFooter.children.some(child => child.tag === 'time'), false, 'message timestamp must not remain in the action footer');
@@ -288,6 +302,7 @@ try {
   assert.match(indexComponent.scriptSetup.content, /appendMention/, 'TAG must reuse structured mention machinery');
   assert.match(indexComponent.scriptSetup.content, /guest_renamed/, 'chat page must apply socket guest renames');
   const chatCss = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
+  assert.match(chatCss, /\.chat-message-link-actions\s*\{[^}]*gap:\s*3mm;/s, 'URL, i_window, and i_copy must have 3mm gaps');
   assert.match(chatCss, /grid-template-columns:\s*auto auto minmax\(0,\s*1fr\) auto auto/, 'composer textarea column must be allowed to shrink fluidly');
   assert.match(chatCss, /clamp\(40px,\s*12vw,\s*56px\)/, 'composer controls must use fluid mobile dimensions');
   assert.match(chatCss, /\.chat-composer\s*\{[^}]*gap:\s*0[^}]*padding:\s*2px 2px max\(2px,\s*env\(safe-area-inset-bottom\)\) 0/s, 'composer must give all available left-side space to the textarea');

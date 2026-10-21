@@ -41,10 +41,14 @@
                  class="chat-shared-video" @loadedmetadata="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')"></video>
           <audio v-else-if="(part.type === 'voice' || part.type === 'audio') && !failedMedia[index]" :src="part.url" controls preload="none"
                  class="chat-shared-audio" @loadedmetadata="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')"></audio>
-          <button type="button" class="chat-shared-link" @click="openPopup(part)">{{ part.url }}</button>
-          <button type="button" class="chat-copy-button" :title="$t('Copy URL')" :aria-label="$t('Copy URL')" @click="copyUrl(part.url, index)">
-            {{ copied === index ? '✓' : '⧉' }}
-          </button>
+          <span class="chat-message-link-actions">
+            <a v-if="part.type === 'link'" class="chat-shared-window" :href="part.url" target="_blank" rel="noopener noreferrer"
+               :title="$t('Open in new window')" :aria-label="$t('Open in new window')">{{ $t('i_window') }}</a>
+            <button type="button" class="chat-shared-link" @click="openPopup(part)">{{ part.url }}</button>
+            <button type="button" class="chat-copy-button" :title="$t('Copy URL')" :aria-label="$t('Copy URL')" @click="copyUrl(part.url, index)">
+              {{ copied === index ? '✓' : $t('i_copy') }}
+            </button>
+          </span>
         </span>
       </template>
     </div>

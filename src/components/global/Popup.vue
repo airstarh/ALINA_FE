@@ -188,8 +188,10 @@ export default {
     }
 
     .popup-subject.audio {
+      display: block;
       width: min(90vw, 700px);
-      height: auto;
+      height: 54px;
+      min-height: 54px;
     }
 
     .popup-subject.web {
