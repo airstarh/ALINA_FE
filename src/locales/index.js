@@ -121,7 +121,7 @@ const Translations = {
     i_collapse:                                                           "▲",
     i_engage:                                                             "⤳",
     i_tag:                                                                "⏰",
-    i_private:                                                            "☔",
+    asdi_private:                                                         "☔",
     i_mic:                                                                "🎤",
     i_mic_off:                                                            "🔇",
     i_cam:                                                                "📷",
