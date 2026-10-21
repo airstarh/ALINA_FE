@@ -276,8 +276,9 @@ try {
   const chatCss = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
   assert.match(chatCss, /grid-template-columns:\s*auto auto minmax\(0,\s*1fr\) auto auto/, 'composer textarea column must be allowed to shrink fluidly');
   assert.match(chatCss, /clamp\(40px,\s*12vw,\s*56px\)/, 'composer controls must use fluid mobile dimensions');
-  assert.match(chatCss, /gap:\s*min\(6px,\s*1vw\)\s+min\(6px,\s*1vw\)/, 'composer gaps must remain compact and fluid');
-  assert.match(chatCss, /padding:\s*min\(8px,\s*1\.5vw\)\s+min\(8px,\s*1\.5vw\)/, 'composer outer padding must remain compact and fluid');
+  assert.match(chatCss, /\.chat-composer\s*\{[^}]*gap:\s*0[^}]*padding:\s*2px 2px max\(2px,\s*env\(safe-area-inset-bottom\)\) 0/s, 'composer must give all available left-side space to the textarea');
+  assert.match(chatCss, /\.chat-attach[^}]*\.chat-voice[^}]*\{[^}]*width:\s*auto[^}]*padding:\s*0[^}]*border:\s*0[^}]*background:\s*transparent/s, 'attachment and microphone controls must render as bare compact symbols');
+  assert.match(chatCss, /\.chat-composer textarea:focus-visible\s*\{[^}]*outline:\s*none[^}]*border-color:\s*#86b8ff/s, 'focused composer textarea must highlight its existing border without a second outline');
   assert.match(chatCss, /\.chat-title\s*\{[^}]*min-width:\s*0[^}]*grid-template-columns:\s*auto auto minmax\(80px,\s*1fr\) auto auto/s, 'chat title row must reserve a shrinkable title column');
   assert.match(chatCss, /\.chat-name-input\s*\{[^}]*grid-column:\s*3/s, 'chat name must occupy the shrinkable third column');
   assert.match(chatCss, /\.chat-message-editing\s*\{[^}]*background:\s*#4f5867/s, 'the active edit target must have a gray background');
@@ -286,6 +287,8 @@ try {
   assert.match(chatCss, /\.chat-message-replying\s*\{[^}]*background:\s*#[0-9a-f]{6}/si, 'selected reply parent must have a dark-orange background');
   assert.match(chatCss, /\.reply-quote\s*\{[^}]*border-left:\s*3px[^;]*purple[^}]*color:\s*#[0-9a-f]{6}[^}]*font-size:\s*0\.7rem/s, 'reply quote must have the agreed purple border, gray text and size');
   assert.match(chatCss, /\.alina-chat \.chat-message\s*\{[^}]*margin:\s*0 0 20px/s, 'messages must have 20px vertical spacing');
+  assert.match(chatCss, /\.alina-chat \.chat-messages\s*\{[^}]*padding:\s*2px/s, 'message list must use only two pixels of edge spacing');
+  assert.equal((chatCss.match(/\.alina-chat \.chat-messages\s*\{/g) || []).length, 1, 'mobile CSS must not restore larger message-list padding');
   assert.match(chatCss, /\.alina-chat \.chat-send\s*\{[^}]*border-radius:\s*50%/s, 'send button must be round');
 
   const ids = Array.from({length: 100}, () => createClientMessageId());

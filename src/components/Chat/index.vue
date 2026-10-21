@@ -76,7 +76,7 @@
                   :aria-label="$t('Attach files')" :disabled="uploading || recordingVoice || processingVoice || !user.attributes.id || !connected" @click="fileInput?.click()">
             <i class="bi bi-paperclip" aria-hidden="true"></i>
           </button>
-          <button type="button" class="chat-button chat-voice" :class="{'is-recording': recordingVoice}"
+          <button type="button" class="chat-button chat-voice me-1" :class="{'is-recording': recordingVoice}"
                   :title="$t(recordingVoice ? 'Stop and send voice recording' : 'Start voice recording')"
                   :aria-label="$t(recordingVoice ? 'Stop and send voice recording' : 'Start voice recording')"
                   :aria-pressed="recordingVoice"

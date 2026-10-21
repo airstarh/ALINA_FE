@@ -105,11 +105,15 @@ for (const relativePath of ['../src/views/Chat/rooms.vue', '../src/components/Ch
 }
 
 const tableSource = readFileSync(new URL('../src/components/Chat/ChatRoomsTable.vue', import.meta.url), 'utf8');
-assert.match(tableSource, /\$t\(['"]i_people['"]\)/, 'participant-count heading must use the existing people icon');
 assert.match(tableSource, /text-nowrap/, 'latest-message date must not wrap');
-assert.match(tableSource, />🕒<\/th>/, 'latest-message heading must use a UTF clock icon');
+assert.doesNotMatch(tableSource, /<thead>/, 'compact room list must not render a table heading');
+assert.doesNotMatch(tableSource, /\$t\(['"]TOTAL['"]\)/, 'compact room list must not render a totals row');
+assert.match(tableSource, /\{\{\s*\$t\(['"]i_people['"]\)\s*\}\}\s*\{\{\s*room\.participantCount\s*\}\}/, 'participant icon and count must follow the chat name');
+assert.match(tableSource, /🕒\s*\{\{\s*formatDate\(room\.latestMessageAt\)\s*\}\}/, 'clock icon must precede the latest-message date');
 const roomPageSource = readFileSync(new URL('../src/views/Chat/rooms.vue', import.meta.url), 'utf8');
 assert.match(roomPageSource, /chat-rooms-page/, 'room directory must expose its compact page wrapper');
+assert.match(roomPageSource, /class="container chat-rooms-page"/, 'room directory must use the established responsive ALINA page width');
+assert.doesNotMatch(roomPageSource, /container-fluid chat-rooms-page/, 'room directory must not stretch across the full desktop viewport');
 assert.doesNotMatch(roomPageSource, /overflow-y:\s*auto/, 'room directory must not create a nested vertical scrollbar');
 const chatPageSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');
 assert.match(chatPageSource, /padding:\s*2px/, 'chat page must use two-pixel page padding');
@@ -120,6 +124,10 @@ assert.match(tableSource, /rel="noopener"/, 'new-tab room links must isolate ope
 assert.match(tableSource, /offset\s*\+\s*index\s*\+\s*1/, 'row numbering must include section offset');
 assert.match(tableSource, /participantCount/, 'table must render participant totals');
 assert.match(tableSource, /latestMessageAt/, 'table must render latest-message dates');
+assert.match(tableSource, /rowspan="2"/, 'each chat order number must span both compact rows');
+assert.match(tableSource, /<template v-for="\(room, index\) in rows"/, 'each chat must render as a two-row template');
+assert.match(tableSource, /room\.chatName[\s\S]*room\.participantCount/, 'chat name row must include participant count');
+assert.match(tableSource, /:colspan="canDelete \? 2 : 1"/, 'chat name must span all columns after the order number');
 assert.match(tableSource, /UtilsDate\.dateObjFormat/, 'chat room dates must use ALINA date formatting');
 assert.match(tableSource, /['"]yyyy-MM-dd HH:mm['"]/, 'chat room dates must use the established YYYY-MM-DD HH:mm format');
 assert.doesNotMatch(tableSource, /v-html/, 'multibyte chat names must use safe text rendering');

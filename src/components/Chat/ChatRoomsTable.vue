@@ -1,35 +1,33 @@
 <template>
-  <section class="mb-4">
+  <section class="chat-list mb-4">
     <h2 class="mb-3">{{ title }} ({{ rows.length }})</h2>
     <div class="table-responsive">
-      <table class="table table-dark table-striped table-hover table-sm">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">{{ $t('Chat name') }}</th>
-            <th scope="col" :title="$t('Participants')" :aria-label="$t('Participants')">{{ $t('i_people') }}</th>
-            <th scope="col" class="text-nowrap" :title="$t('Latest message')" :aria-label="$t('Latest message')">🕒</th>
-            <th v-if="canDelete" scope="col"></th>
-          </tr>
-        </thead>
+      <table class=" table-dark">
         <tbody>
-          <tr v-for="(room, index) in rows" :key="room.id">
-            <td>{{ offset + index + 1 }}</td>
-            <td><a :href="roomHref(room.channel)" target="_blank" rel="noopener">{{ room.chatName }}</a></td>
-            <td>{{ room.participantCount }}</td>
-            <td class="text-nowrap">{{ formatDate(room.latestMessageAt) }}</td>
-            <td v-if="canDelete"><button type="button" class="btn btn-danger btn-sm" @click="$emit('delete', room)">X</button></td>
-          </tr>
+          <template v-for="(room, index) in rows" :key="room.id">
+            <tr>
+              <td rowspan="2" class="chat-number align-middle">{{ offset + index + 1 }}</td>
+              <td :colspan="canDelete ? 2 : 1">
+                <h3 class="h-chat-name">
+                  <a :href="roomHref(room.channel)" target="_blank" rel="noopener">{{ room.chatName }}</a>
+                  ({{ $t('i_people') }} {{ room.participantCount }})
+                </h3>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-nowrap">🕒 {{ formatDate(room.latestMessageAt) }}</td>
+              <td v-if="canDelete" class="text-end"><button type="button" class="btn btn-danger btn-sm" @click="$emit('delete', room)">X</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="mb-5"></div>
+              </td>
+            </tr>
+          </template>
           <tr v-if="!rows.length">
-            <td :colspan="canDelete ? 5 : 4" class="text-center text-secondary">{{ $t('No chats found.') }}</td>
+            <td :colspan="canDelete ? 3 : 2" class="text-center text-secondary">{{ $t('No chats found.') }}</td>
           </tr>
-          <tr class="fw-bold">
-            <td></td>
-            <th scope="row">{{ $t('TOTAL') }}</th>
-            <td>{{ participantTotal }}</td>
-            <td class="text-nowrap">{{ formatDate(latestMessageAt) }}</td>
-            <td v-if="canDelete"></td>
-          </tr>
+
         </tbody>
       </table>
     </div>
@@ -37,24 +35,19 @@
 </template>
 
 <script setup>
-import {computed} from 'vue';
-import {useRouter} from 'vue-router';
+import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import UtilsDate from '@/Utils/UtilsDate';
 
 const props = defineProps({
-  title: {type: String, required: true},
-  section: {type: Object, required: true},
+  title: { type: String, required: true },
+  section: { type: Object, required: true },
   canDelete: Boolean,
 });
 defineEmits(['delete']);
 const router = useRouter();
 const rows = computed(() => Array.isArray(props.section?.rows) ? props.section.rows : []);
 const offset = computed(() => Number(props.section?.offset) || 0);
-const participantTotal = computed(() => rows.value.reduce((sum, room) => sum + (Number(room.participantCount) || 0), 0));
-const latestMessageAt = computed(() => rows.value.reduce((latest, room) => {
-  const timestamp = Number(room.latestMessageAt) || 0;
-  return timestamp > latest ? timestamp : latest;
-}, 0) || null);
 function formatDate(timestamp) {
   return timestamp === null || timestamp === undefined
     ? ''
@@ -62,6 +55,16 @@ function formatDate(timestamp) {
 }
 
 function roomHref(channel) {
-  return router.resolve({path: '/chat', query: {channel}}).href;
+  return router.resolve({ path: '/chat', query: { channel } }).href;
 }
 </script>
+<style>
+.chat-list .chat-number {
+  background-color: #000 !important;
+  padding: 3mm;
+}
+
+.h-chat-name a {
+  color: #fff;
+}
+</style>
