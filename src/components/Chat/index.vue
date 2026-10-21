@@ -27,9 +27,9 @@
         <button type="button" class="chat-button chat-copy-link" :title="$t('Copy chat link')" :aria-label="$t('Copy chat link')" @click="copyChatLink">
           <i class="bi bi-link-45deg" aria-hidden="true"></i>
         </button>
-        <button type="button" class="chat-button chat-video-link" :title="$t('Open video chat')" :aria-label="$t('Open video chat')" @click="openVideoChat">
+        <a :href="videoChatHref" class="chat-button chat-video-link" :title="$t('Open video chat')" :aria-label="$t('Open video chat')">
           <i class="bi bi-camera-video" aria-hidden="true"></i>
-        </button>
+        </a>
         <button type="button" class="chat-button chat-people-toggle" :aria-expanded="peopleOpen" :aria-controls="peopleId" @click="peopleOpen = !peopleOpen">
           {{ $t('i_people') }} ({{ participants.length }})
         </button>
@@ -133,6 +133,7 @@ const inputId = `chat-input-${useId()}`;
 const chatNameId = `chat-name-${useId()}`;
 const peopleId = `chat-people-${useId()}`;
 const normalizedChannel = computed(() => props.channel.trim() || '1');
+const videoChatHref = computed(() => videoChatUrl(window.location.origin, normalizedChannel.value));
 const messages = ref([]);
 const participants = ref([]);
 const selfId = ref('');
@@ -427,9 +428,6 @@ async function copyChatLink() {
   } catch {
     error.value = t('Could not copy the chat link. Please copy it from the address bar.');
   }
-}
-function openVideoChat() {
-  window.location.assign(videoChatUrl(window.location.origin, normalizedChannel.value));
 }
 function saveChatName() {
   const name = chatName.value.trim();

@@ -20,6 +20,7 @@
 .alina-chat button { font: inherit; cursor: pointer; }
 .alina-chat button:focus-visible, .alina-chat a:focus-visible, .alina-chat input:focus-visible, .alina-chat textarea:focus-visible { outline: 2px solid #86b8ff; outline-offset: 3px; }
 .alina-chat .chat-button { border: 1px solid #53637a; background: transparent; color: #edf2f8; border-radius: 6px; padding: 6px 10px; }
+.alina-chat .chat-video-link { text-decoration: none; }
 .alina-chat .chat-people-toggle { display: none; }
 .alina-chat .chat-layout { display: flex; flex: 1 1 0; min-height: 0; }
 .alina-chat .chat-participants { width: 240px; flex: 0 0 240px; padding: 16px 12px; background: var(--chat-panel); border-right: 1px solid var(--chat-line); overflow-y: auto; }

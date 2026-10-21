@@ -213,7 +213,12 @@ try {
   assert.match(indexComponent.template.content, /isConfirmationRequired\s*\?\s*'i_lock'\s*:\s*'i_open'/, 'confirmation control must use lock/open localized icons');
   assert.doesNotMatch(indexComponent.template.content, /\?\s*'CLOSED'\s*:\s*'OPENED'/, 'confirmation control must not render textual state labels');
   assert.ok(elementWithClass(indexComponent, 'chat-copy-link'), 'chat header must expose copy-link action');
-  assert.ok(elementWithClass(indexComponent, 'chat-video-link'), 'chat header must expose video-chat action');
+  const videoChatLink = elementWithClass(indexComponent, 'chat-video-link');
+  assert.ok(videoChatLink, 'chat header must expose video-chat action');
+  assert.equal(videoChatLink.tag, 'a', 'video chat must be a native link so browser middle-click works');
+  assert.ok(directive(videoChatLink, 'bind', 'href')?.exp?.content.includes('videoChatHref'), 'video-chat link must use the canonical computed URL');
+  assert.equal(staticAttribute(videoChatLink, 'target'), undefined, 'ordinary video-chat click must remain same-context');
+  assert.equal(directive(videoChatLink, 'on', 'click'), undefined, 'video-chat link must preserve native browser click behavior');
   const composer = elementWithClass(indexComponent, 'chat-composer-input');
   assert.ok(directive(composer, 'bind', 'disabled')?.exp?.content.includes('connected'), 'pending composer must be disabled');
   const sendControl = elementWithClass(indexComponent, 'chat-send');
