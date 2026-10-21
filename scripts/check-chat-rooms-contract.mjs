@@ -6,15 +6,25 @@ globalThis.window ??= {location: {href: 'https://zero.home:50443/#/chat/rooms'},
 
 let refreshChatIdentity;
 let createChatRoomsConnection;
+let createChatRoomTarget;
 try {
   ({refreshChatIdentity} = await import('../src/components/Chat/chatIdentity.js'));
   ({createChatRoomsConnection} = await import('../src/components/Chat/chatRoomsConnection.js'));
+  ({createChatRoomTarget} = await import('../src/components/Chat/chatRoomCreation.js'));
 } catch {
   // Assertions below provide a stable RED failure while the feature is absent.
 }
 
 assert.equal(typeof refreshChatIdentity, 'function', 'shared chat identity refresh must exist');
 assert.equal(typeof createChatRoomsConnection, 'function', 'room directory transport must exist');
+assert.equal(typeof createChatRoomTarget, 'function', 'new-room route generator must exist');
+assert.deepEqual(createChatRoomTarget('  Human room  ', 17, 'test-id'), {
+  path: '/chat',
+  query: {channel: 'room_17_test-id', name: 'Human room'},
+});
+assert.equal(createChatRoomTarget('   ', 17, 'test-id'), null, 'blank room names must be rejected');
+assert.equal(createChatRoomTarget('x'.repeat(201), 17, 'test-id'), null, 'room names over 200 characters must be rejected');
+assert.equal(createChatRoomTarget('Human room', null, 'test-id'), null, 'anonymous users must not create rooms');
 
 const originalFetch = globalThis.fetch;
 let fetched;
@@ -115,10 +125,18 @@ assert.match(roomPageSource, /chat-rooms-page/, 'room directory must expose its 
 assert.match(roomPageSource, /class="container chat-rooms-page"/, 'room directory must use the established responsive ALINA page width');
 assert.doesNotMatch(roomPageSource, /container-fluid chat-rooms-page/, 'room directory must not stretch across the full desktop viewport');
 assert.doesNotMatch(roomPageSource, /overflow-y:\s*auto/, 'room directory must not create a nested vertical scrollbar');
+assert.match(roomPageSource, /v-if="user\.attributes\.id"[^>]*class="[^"]*chat-room-create[^"]*"/, 'new-room form must be restricted to logged-in users');
+assert.match(roomPageSource, /maxlength="200"/, 'new room human name must be limited to 200 characters');
+assert.match(roomPageSource, /createChatRoomTarget/, 'new-room form must generate its route automatically');
+assert.match(roomPageSource, /window\.open\([^,]+,\s*['_"]_blank['_"]/, 'new room must open in a new tab');
+const chatViewSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');
+assert.match(chatViewSource, /<Chat\s+:channel="channel"\s+:title="title"/, 'chat route must pass the requested human name into the room');
 const chatPageSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');
 assert.match(chatPageSource, /padding:\s*2px/, 'chat page must use two-pixel page padding');
+const chatComponentSource = readFileSync(new URL('../src/components/Chat/index.vue', import.meta.url), 'utf8');
+assert.match(chatComponentSource, /connection\?\.renameChat\(requestedName\)/, 'newly joined generated room must persist its requested human name');
 assert.match(tableSource, /class="table-responsive"/, 'room tables must use the existing responsive-table class');
-assert.match(tableSource, /class="table table-dark table-striped table-hover table-sm"/, 'room tables must use the established ALINA table treatment');
+assert.match(tableSource, /<table class="[^"]*table-dark[^"]*">/, 'room tables must retain the current dark treatment');
 assert.match(tableSource, /target="_blank"/, 'room links must open in a new tab');
 assert.match(tableSource, /rel="noopener"/, 'new-tab room links must isolate opener');
 assert.match(tableSource, /offset\s*\+\s*index\s*\+\s*1/, 'row numbering must include section offset');

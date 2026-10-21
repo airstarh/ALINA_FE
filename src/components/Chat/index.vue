@@ -23,6 +23,7 @@
       <div class="chat-header-actions">
         <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
                :placeholder="$t('Your nickname')" :aria-label="$t('Your nickname')" @input="changeGuestNickname" />
+        <router-link v-if="!user.attributes.id" to="/auth/register" target="_blank" rel="noopener" class="chat-button chat-register">{{ $t('SignUp') }}</router-link>
         <button type="button" class="chat-button chat-copy-link" :title="$t('Copy chat link')" :aria-label="$t('Copy chat link')" @click="copyChatLink">
           <i class="bi bi-link-45deg" aria-hidden="true"></i>
         </button>
@@ -166,6 +167,7 @@ const chatState = ref({name: props.title || normalizedChannel.value, isAnionAllo
 const chatName = ref(chatState.value.name);
 const joinRequests = ref([]);
 let pendingChatName = '';
+let requestedChatNameApplied = false;
 const pendingDiscussionWindows = new Map();
 const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
@@ -327,6 +329,15 @@ function receive(event) {
   } else if (event.type === 'chat_state' && event.chat?.name) {
     chatState.value = event.chat;
     chatName.value = event.chat.name;
+    const requestedName = props.title.trim();
+    if (!requestedChatNameApplied && user.attributes.id && requestedName && [...requestedName].length <= 200 && event.chat.name === normalizedChannel.value) {
+      requestedChatNameApplied = true;
+      if (connection?.renameChat(requestedName)) {
+        chatName.value = requestedName;
+        pendingChatName = requestedName;
+        feedback.value = t('Saving chat name…');
+      }
+    }
     if (pendingChatName === event.chat.name) {
       feedback.value = t('Chat name saved.');
       pendingChatName = '';
@@ -378,6 +389,7 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   error.value = '';
   feedback.value = '';
   pendingChatName = '';
+  requestedChatNameApplied = false;
   chatState.value = {name: props.title || channel, isAnionAllowed: true, isConfirmationRequired: false};
   chatName.value = chatState.value.name;
   status.value = {state: 'connecting'};

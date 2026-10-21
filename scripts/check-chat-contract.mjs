@@ -192,6 +192,12 @@ try {
   assert.equal(directive(nameInput, 'if'), undefined, 'chat name input must not be conditional');
   assert.ok(directive(nameInput, 'on', 'blur'), 'chat name must save on blur');
   assert.equal(elementWithClass(indexComponent, 'channel-name'), null, 'internal chat channel ID must not be displayed');
+  const registerLink = elementWithClass(indexComponent, 'chat-register');
+  assert.equal(registerLink?.tag, 'router-link', 'chat header must expose the registration route as a link');
+  assert.equal(staticAttribute(registerLink, 'to'), '/auth/register');
+  assert.equal(staticAttribute(registerLink, 'target'), '_blank', 'chat registration link must open in a new tab');
+  assert.ok(directive(registerLink, 'if')?.exp?.content.includes('!user.attributes.id'), 'registration link must appear beside the anonymous nickname only for guests');
+  assert.match(indexComponent.template.content, /chat-register[^>]*>[\s\S]*\$t\('SignUp'\)/, 'registration link must use the translated SignUp label');
   const anonymousControl = elementWithClass(indexComponent, 'chat-anonymous-control');
   assert.ok(anonymousControl, 'chat header must expose the anonymous-access control');
   assert.equal(anonymousControl.tag, 'button', 'anonymous-access control must be a button');

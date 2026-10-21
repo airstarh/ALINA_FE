@@ -10,6 +10,13 @@
         <button type="button" class="btn btn-danger btn-sm ms-2" @click="retry">{{ $t('Retry') }}</button>
       </p>
     </header>
+    <form v-if="user.attributes.id" class="chat-room-create mb-4" @submit.prevent="createChatRoom">
+      <label for="chat-room-create-name" class="form-label">{{ $t('Create my chat:') }}</label>
+      <div class="input-group">
+        <input id="chat-room-create-name" v-model="newChatName" type="text" class="form-control" maxlength="200" required />
+        <button type="submit" class="btn btn-primary" :aria-label="$t('Create my chat:')">→</button>
+      </div>
+    </form>
     <div class="mb-5">&nbsp;</div>
     <ChatRoomsTable :title="$t('My chats')" :section="rooms.mine" :can-delete="canDelete" @delete="deleteRoom" />
     <div class="mb-5">&nbsp;</div>
@@ -20,6 +27,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import ConfigApi from '@/configs/ConfigApi';
 import CurrentUser from '@/services/CurrentUser';
 import ChatRoomsTable from '@/components/Chat/ChatRoomsTable.vue';
@@ -27,10 +35,13 @@ import { refreshChatIdentity } from '@/components/Chat/chatIdentity.js';
 import { createChatRoomsConnection } from '@/components/Chat/chatRoomsConnection.js';
 import { websocketUrl } from '@/components/Chat/chatProtocol.js';
 import { canKickParticipants } from '@/components/Chat/chatProtocol.js';
+import { createChatRoomTarget } from '@/components/Chat/chatRoomCreation.js';
 
 const user = CurrentUser.obj();
 const { t } = useI18n();
+const router = useRouter();
 const canDelete = computed(() => canKickParticipants(user));
+const newChatName = ref('');
 const status = ref({ state: 'connecting' });
 const rooms = reactive({
   mine: { rows: [], total: 0, limit: 1000, offset: 0 },
@@ -79,6 +90,13 @@ async function start() {
 
 function deleteRoom(room) {
   if (window.confirm(`${t('Delete chat')} “${room.chatName}”?`)) connection?.deleteChat(room.channel);
+}
+
+function createChatRoom() {
+  const target = createChatRoomTarget(newChatName.value, user.attributes.id);
+  if (!target) return;
+  const opened = window.open(router.resolve(target).href, '_blank', 'noopener,noreferrer');
+  if (opened) newChatName.value = '';
 }
 
 function retry() {

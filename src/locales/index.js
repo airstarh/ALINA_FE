@@ -1,5 +1,7 @@
 const Translations = {
   en: {
+    SignUp: "SignUp",
+    "Create my chat:": "Create my chat:",
     "Open a separate chat": "Open a separate chat",
     "Discuss": "Discuss",
     "Delete chat": "Delete chat",
@@ -190,6 +192,8 @@ const Translations = {
     dtLatLongCSV: "Lat, Long",
   },
   ru: {
+    SignUp: "Вход",
+    "Create my chat:": "Создать мой чат:",
     "Open a separate chat": "Открыть отдельный чат",
     "Discuss": "Обсудить",
     "Delete chat": "Удалить чат",
