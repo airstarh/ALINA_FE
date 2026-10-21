@@ -1,6 +1,6 @@
 <template>
-  <section class="chat-list mb-4">
-    <h2 class="mb-3">{{ title }} ({{ rows.length }})</h2>
+  <section class="chat-list mt-5 mb-5">
+    <h2 class="mb-5">{{ title }} ({{ rows.length }})</h2>
     <div class="table-responsive">
       <table class=" table-dark">
         <tbody>
