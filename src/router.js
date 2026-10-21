@@ -36,7 +36,6 @@ export default createRouter({
 			path: "/chat/rooms",
 			name: "Chat rooms",
 			component: () => import("@/views/Chat/rooms.vue"),
-			meta: {chat: true},
 		},
 		{
 			path: "/chat",

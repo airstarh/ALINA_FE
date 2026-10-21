@@ -94,6 +94,8 @@ assert.equal(second.onmessage, null);
 
 const routerSource = readFileSync(new URL('../src/router.js', import.meta.url), 'utf8');
 assert.match(routerSource, /path:\s*["']\/chat\/rooms["']/, 'router must expose /chat/rooms');
+const roomsRouteSource = routerSource.match(/\{\s*path:\s*["']\/chat\/rooms["'][\s\S]*?\n\s*\}/)?.[0] || '';
+assert.doesNotMatch(roomsRouteSource, /meta:\s*\{\s*chat:\s*true\s*\}/, 'room directory must use normal document scrolling instead of the locked chat-room layout');
 
 for (const relativePath of ['../src/views/Chat/rooms.vue', '../src/components/Chat/ChatRoomsTable.vue']) {
   const source = readFileSync(new URL(relativePath, import.meta.url), 'utf8');
@@ -108,6 +110,7 @@ assert.match(tableSource, /text-nowrap/, 'latest-message date must not wrap');
 assert.match(tableSource, />🕒<\/th>/, 'latest-message heading must use a UTF clock icon');
 const roomPageSource = readFileSync(new URL('../src/views/Chat/rooms.vue', import.meta.url), 'utf8');
 assert.match(roomPageSource, /chat-rooms-page/, 'room directory must expose its compact page wrapper');
+assert.doesNotMatch(roomPageSource, /overflow-y:\s*auto/, 'room directory must not create a nested vertical scrollbar');
 const chatPageSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');
 assert.match(chatPageSource, /padding:\s*2px/, 'chat page must use two-pixel page padding');
 assert.match(tableSource, /class="table-responsive"/, 'room tables must use the existing responsive-table class');
