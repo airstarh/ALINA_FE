@@ -6,7 +6,9 @@
         <tbody>
           <template v-for="(room, index) in rows" :key="room.id">
             <tr>
-              <td rowspan="2" class="chat-number align-middle">{{ offset + index + 1 }}</td>
+              <td rowspan="2" class="align-middle">
+                <div class="chat-number">{{ offset + index + 1 }}</div>
+              </td>
               <td :colspan="canDelete ? 2 : 1">
                 <h3 class="h-chat-name">
                   <a :href="roomHref(room.channel)" target="_blank" rel="noopener">{{ room.chatName }}</a>
@@ -59,9 +61,18 @@ function roomHref(channel) {
 }
 </script>
 <style>
-.chat-list .chat-number {
+.chat-number {
   background-color: #000 !important;
-  padding: 3mm;
+  padding: 2mm;
+  margin: 3mm;
+
+  border-radius: 50%;
+  aspect-ratio: 1;
+  min-height: 7mm;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .h-chat-name a {

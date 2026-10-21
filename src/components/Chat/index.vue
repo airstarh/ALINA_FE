@@ -17,7 +17,7 @@
                 :class="chatState.isConfirmationRequired ? 'is-closed' : 'is-opened'"
                 :aria-pressed="chatState.isConfirmationRequired" :disabled="!connected"
                 @click="setConfirmationRequired(!chatState.isConfirmationRequired)">
-          {{ chatState.isConfirmationRequired ? 'CLOSED' : 'OPENED' }}
+          {{ $t(chatState.isConfirmationRequired ? 'i_lock' : 'i_open') }}
         </button>
       </div>
       <div class="chat-header-actions">

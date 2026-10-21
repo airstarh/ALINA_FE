@@ -54,7 +54,7 @@ const Translations = {
     "Could not save the chat name. Reconnect and try again.":             "Could not save the chat name. Reconnect and try again.",
     "Could not save anonymous access. Reconnect and try again.":          "Could not save anonymous access. Reconnect and try again.",
     "Could not save confirmation policy. Reconnect and try again.":       "Could not save confirmation policy. Reconnect and try again.",
-    "Could not rename the guest. Reconnect and try again.":              "Could not rename the guest. Reconnect and try again.",
+    "Could not rename the guest. Reconnect and try again.":               "Could not rename the guest. Reconnect and try again.",
     "Join requests":                                                      "Join requests",
     "Approve":                                                            "Approve",
     "Could not approve the participant. Reconnect and try again.":        "Could not approve the participant. Reconnect and try again.",
@@ -134,6 +134,8 @@ const Translations = {
     i_pin:                                                                "📌",
     i_fail:                                                               "💥",
     i_people:                                                             "👥",
+    i_lock:                                                               "🔓",
+    i_open:                                                               "🖖",
     // ###########################################################################################
     TXT_LOGIN: "Log-in",
     TXT_REGISTER: "Register",

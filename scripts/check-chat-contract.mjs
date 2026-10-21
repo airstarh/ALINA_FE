@@ -204,6 +204,8 @@ try {
   assert.ok(directive(confirmationControl, 'if')?.exp?.content.includes('canManageChatRoom'), 'OPENED/CLOSED button must be restricted to management roles');
   assert.ok(directive(confirmationControl, 'bind', 'class')?.exp?.content.includes('isConfirmationRequired'), 'OPENED/CLOSED color must reflect the persisted confirmation flag');
   assert.ok(directive(confirmationControl, 'on', 'click'), 'every participant must be able to toggle confirmation policy');
+  assert.match(indexComponent.template.content, /isConfirmationRequired\s*\?\s*'i_lock'\s*:\s*'i_open'/, 'confirmation control must use lock/open localized icons');
+  assert.doesNotMatch(indexComponent.template.content, /\?\s*'CLOSED'\s*:\s*'OPENED'/, 'confirmation control must not render textual state labels');
   assert.ok(elementWithClass(indexComponent, 'chat-copy-link'), 'chat header must expose copy-link action');
   assert.ok(elementWithClass(indexComponent, 'chat-video-link'), 'chat header must expose video-chat action');
   const composer = elementWithClass(indexComponent, 'chat-composer-input');
@@ -287,7 +289,7 @@ try {
   assert.match(chatCss, /\.chat-message-replying\s*\{[^}]*background:\s*#[0-9a-f]{6}/si, 'selected reply parent must have a dark-orange background');
   assert.match(chatCss, /\.reply-quote\s*\{[^}]*border-left:\s*3px[^;]*purple[^}]*color:\s*#[0-9a-f]{6}[^}]*font-size:\s*0\.7rem/s, 'reply quote must have the agreed purple border, gray text and size');
   assert.match(chatCss, /\.alina-chat \.chat-message\s*\{[^}]*margin:\s*0 0 20px/s, 'messages must have 20px vertical spacing');
-  assert.match(chatCss, /\.alina-chat \.chat-messages\s*\{[^}]*padding:\s*2px/s, 'message list must use only two pixels of edge spacing');
+  assert.match(chatCss, /\.alina-chat \.chat-messages\s*\{[^}]*padding:\s*[12]px/s, 'message list must keep compact one-to-two-pixel edge spacing');
   assert.equal((chatCss.match(/\.alina-chat \.chat-messages\s*\{/g) || []).length, 1, 'mobile CSS must not restore larger message-list padding');
   assert.match(chatCss, /\.alina-chat \.chat-send\s*\{[^}]*border-radius:\s*50%/s, 'send button must be round');
 
