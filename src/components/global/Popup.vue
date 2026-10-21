@@ -32,6 +32,21 @@
         :title="PopupObj.item.title"
         @click.self="popupClose"
       />
+      <audio
+        v-else-if="UtilsFS.typeAudio === PopupObj.item.type"
+        class="popup-subject audio"
+        :src="PopupObj.item.url"
+        controls
+        autoplay
+        :title="PopupObj.item.title"
+      ></audio>
+      <iframe
+        v-else-if="UtilsFS.typeWeb === PopupObj.item.type"
+        class="popup-subject web"
+        :src="PopupObj.item.url"
+        :title="PopupObj.item.title"
+        referrerpolicy="no-referrer"
+      ></iframe>
     </div>
   </div>
 </template>
@@ -170,6 +185,18 @@ export default {
       width: 90vw;
       height: 90vh;
       object-fit: contain;
+    }
+
+    .popup-subject.audio {
+      width: min(90vw, 700px);
+      height: auto;
+    }
+
+    .popup-subject.web {
+      width: 95vw;
+      height: 95vh;
+      border: 0;
+      background: #fff;
     }
   }
 }

@@ -19,7 +19,7 @@
         <component :is="privateHref(person) ? 'a' : 'span'" :href="privateHref(person) || undefined"
                    :title="privateHref(person) ? $t('Open a separate chat') : undefined"
                    :aria-label="privateHref(person) ? `${$t('Open a separate chat')}: ${displayName(person.user, person.id)}` : undefined"
-                   target="_blank" rel="noopener noreferrer" style="display: inline-flex; flex: 0 0 40px;">
+                   style="display: inline-flex; flex: 0 0 40px;">
         <img v-if="avatar(person.user) && !failedAvatars[person.id]" :src="avatar(person.user)"
              alt="" class="chat-avatar" @error="failedAvatars[person.id] = true" />
         <span v-else class="chat-avatar chat-avatar-fallback" aria-hidden="true">{{ displayName(person.user, person.id).slice(0, 1).toUpperCase() }}</span>

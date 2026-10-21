@@ -95,8 +95,8 @@ function deleteRoom(room) {
 function createChatRoom() {
   const target = createChatRoomTarget(newChatName.value, user.attributes.id);
   if (!target) return;
-  const opened = window.open(router.resolve(target).href, '_blank', 'noopener,noreferrer');
-  if (opened) newChatName.value = '';
+  newChatName.value = '';
+  router.push(target);
 }
 
 function retry() {

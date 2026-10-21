@@ -17,11 +17,11 @@
       <span v-else class="chat-avatar chat-avatar-fallback chat-message-avatar" aria-hidden="true">{{ name.slice(0, 1).toUpperCase() }}</span>
       <input v-if="canRenameGuest" class="chat-guest-nickname chat-message-guest-name" :value="guestNickname" maxlength="25"
              :aria-label="$t('Your nickname')" @blur="renameGuest" @keydown.enter.prevent="$event.target.blur()" />
-      <router-link v-else-if="profilePath" :to="profilePath" target="_blank" rel="noopener noreferrer" class="chat-message-author"><strong>{{ name }}</strong></router-link>
+      <router-link v-else-if="profilePath" :to="profilePath" class="chat-message-author"><strong>{{ name }}</strong></router-link>
       <strong v-else>{{ name }}</strong>
       <button v-if="canTag" type="button" class="chat-copy-button chat-message-tag" :disabled="replyDisabled"
               :title="$t('Mention a creature')" :aria-label="$t('Mention a creature')" @click="$emit('tag', message)">{{ $t('i_tag') }}</button>
-      <a v-if="privateHref" :href="privateHref" target="_blank" rel="noopener noreferrer" class="chat-copy-button chat-message-private"
+      <a v-if="privateHref" :href="privateHref" class="chat-copy-button chat-message-private"
          :title="$t('Open a separate chat')" :aria-label="$t('Open a separate chat')">{{ $t('i_private') }}</a>
       <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
     </div>
@@ -34,14 +34,14 @@
         <span v-if="part.type === 'text'">{{ part.text }}</span>
         <pre v-else-if="part.type === 'code'"><code>{{ part.text }}</code></pre>
         <span v-else class="chat-message-link-block">
-          <a v-if="part.type === 'image' && !failedMedia[index]" :href="part.url" target="_blank" rel="noopener noreferrer">
+          <button v-if="part.type === 'image' && !failedMedia[index]" type="button" class="chat-media-popup" @click="openPopup(part)">
             <img :src="part.url" alt="Shared image" loading="lazy" class="chat-shared-image" @load="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')" />
-          </a>
+          </button>
           <video v-else-if="part.type === 'video' && !failedMedia[index]" :src="part.url" controls playsinline preload="metadata"
                  class="chat-shared-video" @loadedmetadata="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')"></video>
           <audio v-else-if="(part.type === 'voice' || part.type === 'audio') && !failedMedia[index]" :src="part.url" controls preload="none"
                  class="chat-shared-audio" @loadedmetadata="$emit('media-load')" @error="failedMedia[index] = true; $emit('media-load')"></audio>
-          <a :href="part.url" target="_blank" rel="noopener noreferrer" class="chat-shared-link">{{ part.url }}</a>
+          <button type="button" class="chat-shared-link" @click="openPopup(part)">{{ part.url }}</button>
           <button type="button" class="chat-copy-button" :title="$t('Copy URL')" :aria-label="$t('Copy URL')" @click="copyUrl(part.url, index)">
             {{ copied === index ? '✓' : '⧉' }}
           </button>
@@ -52,7 +52,7 @@
       <span class="chat-message-secondary-actions">
         <button type="button" class="chat-copy-button chat-message-reply" :disabled="replyDisabled"
                 :title="$t('Reply')" :aria-label="$t('Reply')" @click="$emit('reply', message)">{{ $t('Reply') }}</button>
-        <a v-if="message.discussion" :href="discussionHref" target="_blank" rel="noopener noreferrer"
+        <a v-if="message.discussion" :href="discussionHref"
            class="chat-copy-button chat-message-discussion is-active">{{ $t('...in discussion') }} ({{ discussionResponseCount }})</a>
         <button v-else-if="!firstMessage" type="button" class="chat-copy-button chat-message-discussion"
                 @click="$emit('discuss', message)">{{ $t('Discuss') }}</button>
@@ -69,6 +69,8 @@
 <script setup>
 import {computed, onBeforeUnmount, reactive, ref} from 'vue';
 import {displayName, formatChatTimestamp, messageParts, parseMentionNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
+import PopupObj from '@/services/PopupObj';
+import UtilsFS from '@/Utils/UtilsFS';
 const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
 const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'discuss', 'tag', 'rename-guest']);
 const avatarFailed = ref(false);
@@ -100,6 +102,14 @@ function renameGuest(event) {
   const nickname = event.target.value.trim();
   event.target.value = guestNickname.value;
   if (nickname && nickname !== guestNickname.value) emit('rename-guest', props.message, nickname);
+}
+function openPopup(part) {
+  const types = {image: UtilsFS.typeImage, video: UtilsFS.typeVideo, voice: UtilsFS.typeAudio, audio: UtilsFS.typeAudio, link: UtilsFS.typeWeb};
+  PopupObj.item.id = null;
+  PopupObj.item.url = part.url;
+  PopupObj.item.title = part.url;
+  PopupObj.item.type = types[part.type] || UtilsFS.typeWeb;
+  PopupObj.isOn = true;
 }
 async function copyUrl(url, index) {
   try {

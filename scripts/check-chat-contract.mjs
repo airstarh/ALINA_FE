@@ -195,7 +195,7 @@ try {
   const registerLink = elementWithClass(indexComponent, 'chat-register');
   assert.equal(registerLink?.tag, 'router-link', 'chat header must expose the registration route as a link');
   assert.equal(staticAttribute(registerLink, 'to'), '/auth/register');
-  assert.equal(staticAttribute(registerLink, 'target'), '_blank', 'chat registration link must open in a new tab');
+  assert.equal(staticAttribute(registerLink, 'target'), undefined, 'chat registration link must stay in the current app context');
   assert.ok(directive(registerLink, 'if')?.exp?.content.includes('!user.attributes.id'), 'registration link must appear beside the anonymous nickname only for guests');
   assert.match(indexComponent.template.content, /chat-register[^>]*>[\s\S]*\$t\('SignUp'\)/, 'registration link must use the translated SignUp label');
   const anonymousControl = elementWithClass(indexComponent, 'chat-anonymous-control');
@@ -244,7 +244,7 @@ try {
   assert.match(tagControl?.children?.[0]?.content?.content || '', /\$t\(['"]i_tag['"]\)/, 'mention action must use the localized i_tag icon');
   assert.ok(privateControl, 'ordinary message authors must expose a PRIVATE action');
   assert.match(privateControl?.children?.[0]?.content?.content || '', /\$t\(['"]i_private['"]\)/, 'private-chat action must use the localized i_private icon');
-  assert.equal(staticAttribute(privateControl, 'target'), '_blank', 'PRIVATE must open a new tab');
+  assert.equal(staticAttribute(privateControl, 'target'), undefined, 'PRIVATE must stay in the current app context');
   assert.ok(directive(replyControl, 'bind', 'disabled')?.exp?.content.includes('replyDisabled'), 'Reply must remain visible but disabled during editing');
   assert.ok(messageComponent.template.content.indexOf('chat-message-reply') < messageComponent.template.content.indexOf('chat-message-actions'), 'Reply must appear left of Edit/Delete controls');
   assert.ok(editControl && deleteControl, 'manageable messages must expose edit and delete footer controls');
@@ -263,9 +263,15 @@ try {
   assert.equal(authorLink.tag, 'router-link', 'registered message authors must link through the current-origin Vue router');
   assert.ok((directive(authorLink, 'if') || directive(authorLink, 'else-if'))?.exp?.content.includes('profilePath'), 'guest and bot authors must remain unlinked');
   assert.ok(directive(authorLink, 'bind', 'to')?.exp?.content.includes('profilePath'), 'author link must use the message author profile path');
-  assert.equal(staticAttribute(authorLink, 'target'), '_blank', 'author profile links must open in a new tab');
-  assert.equal(staticAttribute(authorLink, 'rel'), 'noopener noreferrer', 'new-tab author links must isolate the opener');
+  assert.equal(staticAttribute(authorLink, 'target'), undefined, 'author profile links must stay in the current app context');
   assert.match(messageComponent.scriptSetup.content, /props\.message\.CurrentUser\?\.id/, 'profile link must use the message author ID');
+  assert.doesNotMatch(messageComponent.template.content, /target="_blank"/, 'message links must stay in the current app context');
+  assert.doesNotMatch(participantsComponent.template.content, /target="_blank"/, 'participant private-chat links must stay in the current app context');
+  assert.doesNotMatch(indexComponent.source, /window\.open\(/, 'chat actions must not open new tabs or windows');
+  assert.match(messageComponent.scriptSetup.content, /PopupObj\.isOn\s*=\s*true/, 'shared message URLs must open through the existing ALINA popup');
+  const popupSource = readFileSync(new URL('../src/components/global/Popup.vue', import.meta.url), 'utf8');
+  assert.match(popupSource, /UtilsFS\.typeAudio/, 'ALINA popup must render shared audio');
+  assert.match(popupSource, /UtilsFS\.typeWeb/, 'ALINA popup must render ordinary shared URLs');
   assert.ok(messageHeading.children.some(child => child.tag === 'time'), 'message timestamp must appear in the nickname row');
   assert.equal(messageFooter.children.some(child => child.tag === 'time'), false, 'message timestamp must not remain in the action footer');
   assert.match(messageComponent.scriptSetup.content, /formatChatTimestamp/, 'message and quote timestamps must share the 24-hour formatter');

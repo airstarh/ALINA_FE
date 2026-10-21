@@ -23,7 +23,7 @@
       <div class="chat-header-actions">
         <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
                :placeholder="$t('Your nickname')" :aria-label="$t('Your nickname')" @input="changeGuestNickname" />
-        <router-link v-if="!user.attributes.id" to="/auth/register" target="_blank" rel="noopener" class="chat-button chat-register">{{ $t('SignUp') }}</router-link>
+        <router-link v-if="!user.attributes.id" to="/auth/register" class="chat-button chat-register">{{ $t('SignUp') }}</router-link>
         <button type="button" class="chat-button chat-copy-link" :title="$t('Copy chat link')" :aria-label="$t('Copy chat link')" @click="copyChatLink">
           <i class="bi bi-link-45deg" aria-hidden="true"></i>
         </button>
@@ -168,7 +168,7 @@ const chatName = ref(chatState.value.name);
 const joinRequests = ref([]);
 let pendingChatName = '';
 let requestedChatNameApplied = false;
-const pendingDiscussionWindows = new Map();
+const pendingDiscussionRequests = new Set();
 const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
 let mentionSearchTimer;
@@ -303,9 +303,7 @@ function receive(event) {
   } else if (event.type === 'discussion_ready' && event.sourceMessageId && event.discussion) {
     const index = messages.value.findIndex(message => message.id === event.sourceMessageId);
     if (index !== -1) messages.value[index] = {...messages.value[index], discussion: event.discussion};
-    const pendingWindow = pendingDiscussionWindows.get(event.sourceMessageId);
-    if (pendingWindow && !pendingWindow.closed) pendingWindow.location.href = `${window.location.origin}/#/chat?channel=${encodeURIComponent(event.discussion.channel)}`;
-    pendingDiscussionWindows.delete(event.sourceMessageId);
+    if (pendingDiscussionRequests.delete(event.sourceMessageId)) router.push({path: '/chat', query: {channel: event.discussion.channel}});
   } else if (event.type === 'chat_deleted') {
     router.push('/chat/rooms');
   } else if (event.type === 'discussion_removed' && event.sourceMessageId) {
@@ -354,8 +352,7 @@ function receive(event) {
     joinRequests.value = joinRequests.value.filter(request => request.id !== event.participantId);
     scrollIfFollowing();
   } else if (event.type === 'error') {
-    pendingDiscussionWindows.forEach(pendingWindow => pendingWindow?.close());
-    pendingDiscussionWindows.clear();
+    pendingDiscussionRequests.clear();
     error.value = event.error || t('Could not send the message.');
   } else if (['mentions_directory', 'mentions_search'].includes(event.type) && Array.isArray(event.candidates)) {
     const merged = new Map(mentionCandidates.value.map(candidate => [`${candidate.senderType}:${candidate.senderId}`, candidate]));
@@ -432,7 +429,7 @@ async function copyChatLink() {
   }
 }
 function openVideoChat() {
-  window.open(videoChatUrl(window.location.origin, normalizedChannel.value), '_blank', 'noopener,noreferrer');
+  window.location.assign(videoChatUrl(window.location.origin, normalizedChannel.value));
 }
 function saveChatName() {
   const name = chatName.value.trim();
@@ -480,13 +477,12 @@ function deleteCurrentChat() {
   if (window.confirm(`${t('Delete chat')} “${chatName.value}”?`)) connection?.deleteChat();
 }
 function discussMessage(message) {
-  const discussionWindow = window.open('about:blank', '_blank');
-  if (discussionWindow) pendingDiscussionWindows.set(message.id, discussionWindow);
   if (!connected.value || !connection?.discussMessage(message.id)) {
-    discussionWindow?.close();
-    pendingDiscussionWindows.delete(message.id);
+    pendingDiscussionRequests.delete(message.id);
     error.value = t('Could not open discussion. Reconnect and try again.');
+    return;
   }
+  pendingDiscussionRequests.add(message.id);
 }
 function onInput() {
   error.value = '';

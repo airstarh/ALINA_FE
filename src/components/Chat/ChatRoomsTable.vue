@@ -11,7 +11,7 @@
               </td>
               <td :colspan="canDelete ? 2 : 1">
                 <h3 class="h-chat-name">
-                  <a :href="roomHref(room.channel)" target="_blank" rel="noopener">{{ room.chatName }}</a>
+                  <a :href="roomHref(room.channel)">{{ room.chatName }}</a>
                   ({{ $t('i_people') }} {{ room.participantCount }})
                 </h3>
               </td>

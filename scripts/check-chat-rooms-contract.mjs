@@ -128,7 +128,7 @@ assert.doesNotMatch(roomPageSource, /overflow-y:\s*auto/, 'room directory must n
 assert.match(roomPageSource, /v-if="user\.attributes\.id"[^>]*class="[^"]*chat-room-create[^"]*"/, 'new-room form must be restricted to logged-in users');
 assert.match(roomPageSource, /maxlength="200"/, 'new room human name must be limited to 200 characters');
 assert.match(roomPageSource, /createChatRoomTarget/, 'new-room form must generate its route automatically');
-assert.match(roomPageSource, /window\.open\([^,]+,\s*['_"]_blank['_"]/, 'new room must open in a new tab');
+assert.match(roomPageSource, /router\.push\(target\)/, 'new room must open in the current SPA context');
 const chatViewSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');
 assert.match(chatViewSource, /<Chat\s+:channel="channel"\s+:title="title"/, 'chat route must pass the requested human name into the room');
 const chatPageSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');
@@ -137,8 +137,7 @@ const chatComponentSource = readFileSync(new URL('../src/components/Chat/index.v
 assert.match(chatComponentSource, /connection\?\.renameChat\(requestedName\)/, 'newly joined generated room must persist its requested human name');
 assert.match(tableSource, /class="table-responsive"/, 'room tables must use the existing responsive-table class');
 assert.match(tableSource, /<table class="[^"]*table-dark[^"]*">/, 'room tables must retain the current dark treatment');
-assert.match(tableSource, /target="_blank"/, 'room links must open in a new tab');
-assert.match(tableSource, /rel="noopener"/, 'new-tab room links must isolate opener');
+assert.doesNotMatch(tableSource, /target="_blank"/, 'room links must stay in the current SPA context');
 assert.match(tableSource, /offset\s*\+\s*index\s*\+\s*1/, 'row numbering must include section offset');
 assert.match(tableSource, /participantCount/, 'table must render participant totals');
 assert.match(tableSource, /latestMessageAt/, 'table must render latest-message dates');
