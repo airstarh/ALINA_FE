@@ -294,10 +294,10 @@ export default {
           query: query,
         })
         .catch(() => { });
-      //this.ajaGetFeed();
     },
 
     onAddressBarModified() {
+
       this.dataGetParams.txt = Array.isArray(this.$route.query?.txt)
         ? this.$route.query.txt.join(",")
         : this.$route.query?.txt || "";
@@ -343,7 +343,6 @@ export default {
         pageSize: this.feedPagination.pageSize,
         pageCurrentNumber: this.feedPagination.pageCurrentNumber,
       });
-      //this.ajaGetFeed();
     },
 
     search() {
@@ -361,7 +360,6 @@ export default {
         pageCurrentNumber: 1,
         txt: "",
       });
-      //this.ajaGetFeed();
     },
 
     scrollTop(className = "alina-feed-start") {
