@@ -87,27 +87,16 @@
           v-html="tale.body_free"></div>
         <!-- endregion BODY FREE -->
 
-        <!-- region iframe -->
-        <div>
-          <aInput
-            v-model="tale.iframe"
-            :src="tale.iframe"
-            :label="$t('iframe')"
-            :placeholder="$t('iframe').toString()"
-            :modeEdit="dConf.modeEdit"
-            componentDisplay="block" />
-
-          <div
-            v-if="tale.iframe && dConf.modeEdit"
-            class="mt-3 mb-3">
-            <iframe
-              :src="tale.iframe"
-              frameborder="1"
-              width="98%"
-              height="300px"></iframe>
-          </div>
-        </div>
-        <!-- endregion iframe -->
+        <!-- region iframe VIEW -->
+        <aInput
+          v-if="!dConf.modeEdit && tale.iframe"
+          v-model="tale.iframe"
+          :src="tale.iframe"
+          :label="$t('iframe')"
+          :placeholder="$t('iframe').toString()"
+          :modeEdit="dConf.modeEdit"
+          componentDisplay="block" />
+        <!-- endregion iframe VIEW -->
 
         <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
@@ -124,39 +113,92 @@
             :modeEdit="dConf.modeEdit" />
           <!-- endregion DATE -->
 
-          <div class="mb-3">&nbsp;</div>
+          <!-- region iframe -->
+          <div
+            v-if="CU.isAdmin() || CU.isModerator() || CU.isPrivileged()"
+            class="mt-3 mb-3">
+            <b-button
+              v-b-toggle="`tale-iframe-${tale.id}`"
+              class="btn-a">
+              {{ $t("iframe") }}
+            </b-button>
+
+            <b-collapse
+              :id="`tale-iframe-${tale.id}`"
+              class="mt-3">
+              <aInput
+                v-model="tale.iframe"
+                :src="tale.iframe"
+                :label="$t('iframe')"
+                :placeholder="$t('iframe').toString()"
+                :modeEdit="dConf.modeEdit"
+                componentDisplay="block" />
+
+              <div
+                v-if="tale.iframe"
+                class="mt-3 mb-3">
+                <iframe
+                  :src="tale.iframe"
+                  frameborder="1"
+                  width="98%"
+                  height="300px"></iframe>
+              </div>
+            </b-collapse>
+          </div>
+          <!-- endregion iframe -->
 
           <!-- region BODY FREE -->
-          <div v-if="CU.isAdmin()">
-            <div class="input-group input-group mb-3">
-              <!-- body_free -->
-              <span class="input-group-text bg-dark text-light">{{
-                $t("body_free")
-              }}</span>
-              <textarea
-                class="form-control"
-                :placeholder="$t('body_free').toString()"
-                v-model="tale.body_free"
-                rows="20"></textarea>
-            </div>
-            <div class="mt-3 mb-3">
-              <div v-html="tale.body_free"></div>
-            </div>
+          <div v-if="CU.isAdmin()" class="mt-3 mb-3">
+            <b-button
+              v-b-toggle="`tale-body-free-${tale.id}`"
+              class="btn-a">
+              {{ $t("body_free") }}
+            </b-button>
+            <b-collapse
+              :id="`tale-body-free-${tale.id}`"
+              class="mt-3">
+              <div class="input-group input-group mb-3">
+                <!-- body_free -->
+                <span class="input-group-text bg-dark text-light">{{
+                  $t("body_free")
+                }}</span>
+                <textarea
+                  class="form-control"
+                  :placeholder="$t('body_free').toString()"
+                  v-model="tale.body_free"
+                  rows="20"></textarea>
+              </div>
+              <div class="mt-3 mb-3">
+                <div v-html="tale.body_free"></div>
+              </div>
+            </b-collapse>
           </div>
           <!-- endregion BODY FREE -->
 
           <!-- region ALIAS -->
-          <div class="mb-3">
-            <div>
-              {{ taleUrl }}
-            </div>
+          <div
+            v-if="CU.isAdmin() || CU.isModerator() || CU.isPrivileged()"
+            class="mt-3 mb-3">
+            <b-button
+              v-b-toggle="`tale-alias-${tale.id}`"
+              class="btn-a">
+              {{ $t("Page Alias") }}
+            </b-button>
 
-            <aInput
-              v-model="tale.router_alias"
-              :label="$t('Page Alias').toString()"
-              :placeholder="$t('Page Alias').toString()"
-              :modeEdit="dConf.modeEdit"
-              componentDisplay="block" />
+            <b-collapse
+              :id="`tale-alias-${tale.id}`"
+              class="mt-3">
+              <div>
+                {{ taleUrl }}
+              </div>
+
+              <aInput
+                v-model="tale.router_alias"
+                :label="$t('Page Alias').toString()"
+                :placeholder="$t('Page Alias').toString()"
+                :modeEdit="dConf.modeEdit"
+                componentDisplay="block" />
+            </b-collapse>
           </div>
           <!-- endregion ALIAS -->
 
