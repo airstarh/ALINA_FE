@@ -42,7 +42,7 @@
               <router-link v-if="item.link" :to="txtUrl(item)" class="btn btn-primary">
                 {{ $t(txtText(item)) }}
               </router-link>
-              <span v-else>
+              <span v-else class="btn-a">
                 {{ $t(txtText(item)) }}
               </span>
             </span>
