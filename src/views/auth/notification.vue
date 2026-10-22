@@ -5,71 +5,78 @@
       <div class="col mx-auto">
         <div class="mb-5 text-center">
           <Paginator
-              :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-              :pageSize="parseInt(feedPagination.pageSize)"
-              :rowsTotal="parseInt(feedPagination.rowsTotal)"
-              :pagesTotal="parseInt(feedPagination.pagesTotal)"
-              :onClickPage="pageChange"
-          ></Paginator>
+            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+            :pageSize="parseInt(feedPagination.pageSize)"
+            :rowsTotal="parseInt(feedPagination.rowsTotal)"
+            :pagesTotal="parseInt(feedPagination.pagesTotal)"
+            :onClickPage="pageChange"></Paginator>
         </div>
         <!-- ##################################################-->
         <!-- region Feed -->
         <div class="row g-0 mb-5">
           <div class="col">
             <button
-                @click="ajaDeleteAll"
-                class="btn btn-danger"
-            >{{ $t("TXT_DELETE_ALL") }}
+              @click="ajaDeleteAll"
+              class="btn btn-danger">{{ $t("TXT_DELETE_ALL") }}
             </button>
           </div>
         </div>
+
         <div v-for="(item, index) in feed" v-bind:key="item.id"
-             class="row g-0 mb-3"
-             :class="{
-                            'ishown': item.is_shown
-                         }"
-        >
-                        <span class="col-auto">
-                            <a :href="`/#/auth/profile/${item.from_id}`">
-                                <img v-if="item.from_emblem" :src="item.from_emblem" width="50px" class="a-circle">
-                                <img v-if="!item.from_emblem" src="@/assets/anarki.png" width="50px" class="a-circle">
-                            </a>
-                        </span>
-          <span class="col ps-1">
-                            <span class="backend-text">
-                              <router-link :to="txtUrl(item)" class="btn btn-primary">
-                                {{ $t(txtText(item)) }}
-                              </router-link>
-                            </span>
-                            <br>
-                            <a :href="`/#/auth/profile/${item.from_id}`">
-                                <span><b>{{ item.from_firstname }} {{ item.from_lastname }}</b></span>
-                            </a>
-                            <br>
-                            <span>
-                                <i>{{ UtilsDate.fromUnixToDateTime(item.created_at) }}</i>
-                            </span>
-                        </span>
+          class="row g-0 mb-3"
+          :class="{
+            'ishown': item.is_shown
+          }">
+
+          <!-- FROM EMBLEM LINK -->
           <span class="col-auto">
-                            <button
-                                class="btn btn-danger"
-                                @click="ajaDeleteItem(item.id, index)">{{ $t("TXT_DELETE") }}</button>
-                        </span>
+            <a :href="`/#/auth/profile/${item.from_id}`">
+              <img v-if="item.from_emblem" :src="item.from_emblem" width="50px" class="a-circle">
+              <img v-if="!item.from_emblem" src="@/assets/anarki.png" width="50px" class="a-circle">
+            </a>
+          </span>
+
+          <!-- TARGET -->
+          <span class="col ps-1">
+            <span class="backend-text">
+              <router-link v-if="item.link" :to="txtUrl(item)" class="btn btn-primary">
+                {{ $t(txtText(item)) }}
+              </router-link>
+              <span v-else>
+                {{ $t(txtText(item)) }}
+              </span>
+            </span>
+
+            <br>
+
+            <!-- FROM NAME LINK -->
+            <a :href="`/#/auth/profile/${item.from_id}`">
+              <span><b>{{ item.from_firstname }} {{ item.from_lastname }}</b></span>
+            </a>
+            <br>
+            <span>
+              <i>{{ UtilsDate.fromUnixToDateTime(item.created_at) }}</i>
+            </span>
+          </span>
+
+          <!-- MANAGE BUTTONS -->
+          <span class="col-auto">
+            <button
+              class="btn btn-danger"
+              @click="ajaDeleteItem(item.id, index)">{{ $t("TXT_DELETE") }}</button>
+          </span>
           <hr>
         </div>
         <!-- endregion Feed -->
         <!--##################################################-->
-        <!--##################################################-->
-        <!--##################################################-->
 
         <div class="mt-5 text-center">
           <Paginator
-              :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
-              :pageSize="parseInt(feedPagination.pageSize)"
-              :rowsTotal="parseInt(feedPagination.rowsTotal)"
-              :pagesTotal="parseInt(feedPagination.pagesTotal)"
-              :onClickPage="pageChange"
-          ></Paginator>
+            :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
+            :pageSize="parseInt(feedPagination.pageSize)"
+            :rowsTotal="parseInt(feedPagination.rowsTotal)"
+            :pagesTotal="parseInt(feedPagination.pagesTotal)"
+            :onClickPage="pageChange"></Paginator>
         </div>
       </div>
     </div>
@@ -79,49 +86,49 @@
 <!--##################################################-->
 <!--##################################################-->
 <script>
-import UtilsData   from "@/Utils/UtilsData";
-import ConfigApi   from "@/configs/ConfigApi";
-import AjaxAlina   from "@/services/AjaxAlina";
+import UtilsData from "@/Utils/UtilsData";
+import ConfigApi from "@/configs/ConfigApi";
+import AjaxAlina from "@/services/AjaxAlina";
 import CurrentUser from "@/services/CurrentUser";
-import Paginator   from "@/components/elements/form/Paginator";
-import UtilsArray  from "@/Utils/UtilsArray";
-import Obj         from "@/Utils/UtilsObject";
-import UtilsDate   from "../../Utils/UtilsDate";
+import Paginator from "@/components/elements/form/Paginator";
+import UtilsArray from "@/Utils/UtilsArray";
+import Obj from "@/Utils/UtilsObject";
+import UtilsDate from "../../Utils/UtilsDate";
 //#####
 export default {
-  name:       "notification",
-	computed: {
-		UtilsDate() {
-			return UtilsDate
-		}
-	},
+  name: "notification",
+  computed: {
+    UtilsDate() {
+      return UtilsDate
+    }
+  },
   components: {
     Paginator
   },
-  props:      {
+  props: {
     // #####
     queryProps: {
-      type:    Object,
+      type: Object,
       default: () => ({}),
     },
   },
   data() {
     return {
-      ConfigApi:      ConfigApi,
-      CU:             CurrentUser.obj(),
-      options:        {
-        urlFeed:        `${ConfigApi.url_base}/notification/SelectListLatest`,
+      ConfigApi: ConfigApi,
+      CU: CurrentUser.obj(),
+      options: {
+        urlFeed: `${ConfigApi.url_base}/notification/SelectListLatest`,
         urlMarkAsShown: `${ConfigApi.url_base}/notification/MarkAsShownEarlierThan`,
-        urlDelete:      `${ConfigApi.url_base}/notification/Delete`,
-        urlDeleteAll:   `${ConfigApi.url_base}/notification/Delete`,
+        urlDelete: `${ConfigApi.url_base}/notification/Delete`,
+        urlDeleteAll: `${ConfigApi.url_base}/notification/Delete`,
       },
-      queryData:      {},
-      feed:           [],
+      queryData: {},
+      feed: [],
       feedPagination: {
         pageCurrentNumber: 1,
-        pageSize:          10,
-        rowsTotal:         0,
-        pagesTotal:        0,
+        pageSize: 10,
+        rowsTotal: 0,
+        pagesTotal: 0,
       },
     }
   },
@@ -134,13 +141,13 @@ export default {
     //##################################################
     ajaGetFeed() {
       AjaxAlina.newInst({
-        method:    'GET',
-        url:       `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
-        getParams: {...{}, ...this.queryProps, ...this.$route.query},
-        onDone:    (aja) => {
+        method: 'GET',
+        url: `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
+        getParams: { ...{}, ...this.queryProps, ...this.$route.query },
+        onDone: (aja) => {
           //UtilsArray.vueSensitiveConcat(this.feed, aja.respBody.data.tale);
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.feed           = aja.respBody.data;
+            this.feed = aja.respBody.data;
             this.feedPagination = aja.respBody.meta.notification;
             if (this.feed && this.feed[0]) {
               this.ajaMarkAsShown();
@@ -149,32 +156,32 @@ export default {
           window.scrollTo(0, 0);
         }
       })
-      .go();
+        .go();
     },
     ajaMarkAsShown() {
       const latest = this.feed[0].created_at;
       AjaxAlina.newInst({
         method: 'GET',
-        url:    `${this.options.urlMarkAsShown}/${latest}`,
+        url: `${this.options.urlMarkAsShown}/${latest}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             this.CU.attributes.count_notifications = 0;
           }
         }
       })
-      .go();
+        .go();
     },
     ajaDeleteItem(id, index) {
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        `${this.options.urlDelete}/${id}`,
-        postParams: {form_id: "actionDelete"},
-        onDone:     (aja) => {
+        method: 'POST',
+        url: `${this.options.urlDelete}/${id}`,
+        postParams: { form_id: "actionDelete" },
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.elRemoveByIndex(this.feed, index);
             if (this.feed.length == 0) {
               let pageCurrentNumber =
-                      this.feedPagination.pageCurrentNumber - 1;
+                this.feedPagination.pageCurrentNumber - 1;
               if (pageCurrentNumber > 0) {
                 this.feedPagination.pageCurrentNumber = pageCurrentNumber;
               } else {
@@ -185,25 +192,25 @@ export default {
           }
         }
       })
-      .go();
+        .go();
     },
     ajaDeleteAll() {
-      if (!confirm("Are you sure?")) {return;}
+      if (!confirm("Are you sure?")) { return; }
       AjaxAlina.newInst({
-        method:     'POST',
-        url:        `${this.options.urlDeleteAll}`,
-        postParams: {form_id: "actionDeleteAll"},
-        onDone:     (aja) => {
+        method: 'POST',
+        url: `${this.options.urlDeleteAll}`,
+        postParams: { form_id: "actionDeleteAll" },
+        onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             this.feed = [];
           }
         }
       })
-      .go();
+        .go();
     },
     //##################################################
     pageChange(pageSize, pageCurrentNumber) {
-      this.feedPagination.pageSize          = pageSize;
+      this.feedPagination.pageSize = pageSize;
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.ajaGetFeed();
     },
@@ -233,7 +240,7 @@ export default {
 
     //##################################################
   },
-  watch:   {
+  watch: {
     $route(to, from) {
       //
     }
