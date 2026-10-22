@@ -217,6 +217,11 @@ import Share from "@/components/elements/form/Share.vue";
 import Paginator from "@/components/elements/form/Paginator.vue";
 import tale_upsert from "@/views/tale/upsert.vue";
 import {shouldReloadFeedForRouteChange} from "@/services/FeedNavigation";
+import {
+  createFeedSessionKey,
+  readSessionState,
+  writeSessionState,
+} from "@/services/FeedSessionState";
 
 export default {
   name: "tale_feed",
@@ -270,7 +275,13 @@ export default {
   },
 
   created() {
-    this.onAddressBarModified();
+    if (!this.restoreSessionState()) {
+      this.onAddressBarModified();
+    }
+  },
+
+  mounted() {
+    window.addEventListener("pagehide", this.saveSessionState);
   },
 
   activated() {
@@ -293,9 +304,56 @@ export default {
     }
 
     this.savedScrollPosition = window.scrollY;
+    this.saveSessionState();
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("pagehide", this.saveSessionState);
+    this.saveSessionState();
   },
 
   methods: {
+    sessionKey() {
+      return createFeedSessionKey(
+        this.routeContext,
+        this.queryProps.owner ?? null,
+        this.$route.query || {},
+      );
+    },
+
+    saveSessionState() {
+      if (this.routeContext === "main") {
+        this.savedScrollPosition = window.scrollY;
+      }
+
+      writeSessionState(sessionStorage, this.sessionKey(), {
+        dataGetParams: this.dataGetParams,
+        expandedTales: this.expandedTales,
+        feed: this.feed,
+        feedForceShow: this.feedForceShow,
+        feedPagination: this.feedPagination,
+        scrollPosition: this.savedScrollPosition,
+      });
+    },
+
+    restoreSessionState() {
+      const saved = readSessionState(sessionStorage, this.sessionKey());
+
+      if (!saved || !Array.isArray(saved.feed)) {
+        return false;
+      }
+
+      this.dataGetParams = saved.dataGetParams || {txt: ""};
+      this.expandedTales = saved.expandedTales || {};
+      this.feed = saved.feed;
+      this.feedForceShow = Array.isArray(saved.feedForceShow)
+        ? saved.feedForceShow
+        : [];
+      this.feedPagination = saved.feedPagination || this.feedPagination;
+      this.savedScrollPosition = Number(saved.scrollPosition) || 0;
+      return true;
+    },
+
     taleMustBeExpanded(tale) {
       return (tale?.body?.length || 0) < 1000;
     },
@@ -357,6 +415,7 @@ export default {
             });
 
             this.feedPagination = aja.respBody.meta.tale;
+            this.saveSessionState();
 
             if (scrollAfterLoad) {
               this.$nextTick(() => this.scrollTop());

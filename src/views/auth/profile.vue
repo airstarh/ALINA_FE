@@ -81,6 +81,11 @@ import UtilsObject from "@/Utils/UtilsObject";
 import UtilsStr from "@/Utils/UtilsStr";
 import UtilsDate from "../../Utils/UtilsDate";
 import BorgEditor from "@/components/BorgEditor/index.vue";
+import {
+  createProfileSessionKey,
+  readSessionState,
+  writeSessionState,
+} from "@/services/FeedSessionState";
 //#####
 export default {
   name: "auth_profile",
@@ -117,9 +122,12 @@ export default {
     BorgEditor,
   },
   created() {
-    const vm = this;
-    const id = this.curId;
-    vm.fetchProfile(id);
+    if (!this.restoreSessionState()) {
+      this.fetchProfile(this.curId);
+    }
+  },
+  mounted() {
+    window.addEventListener("pagehide", this.saveSessionState);
   },
   activated() {
     this.$nextTick(() => {
@@ -132,8 +140,34 @@ export default {
   },
   beforeRouteLeave(to, from) {
     this.savedScrollPosition = window.scrollY;
+    this.saveSessionState();
+  },
+  beforeUnmount() {
+    window.removeEventListener("pagehide", this.saveSessionState);
+    this.saveSessionState();
   },
   methods: {
+    sessionKey(owner = this.curId) {
+      return createProfileSessionKey(owner);
+    },
+    saveSessionState() {
+      this.savedScrollPosition = window.scrollY;
+      writeSessionState(sessionStorage, this.sessionKey(), {
+        post: this.post,
+        scrollPosition: this.savedScrollPosition,
+      });
+    },
+    restoreSessionState() {
+      const saved = readSessionState(sessionStorage, this.sessionKey());
+
+      if (!saved?.post || String(saved.post.id) !== String(this.curId)) {
+        return false;
+      }
+
+      this.post = saved.post;
+      this.savedScrollPosition = Number(saved.scrollPosition) || 0;
+      return true;
+    },
     //##################################################
     //region Define User
     fetchProfile(id, callback) {
@@ -144,6 +178,7 @@ export default {
           if (aja.respBody.meta.alina_response_success == 1) {
             this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
             this.options.modeEdit = false;
+            this.saveSessionState();
           }
         }
       })
@@ -185,6 +220,7 @@ export default {
             }
 
             this.options.modeEdit = false;
+            this.saveSessionState();
           }
         }
       })
@@ -202,6 +238,7 @@ export default {
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             this.post.emblem = aja.respBody.data.url;
+            this.saveSessionState();
           }
         }
       })
