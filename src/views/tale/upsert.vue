@@ -296,18 +296,14 @@
         <!-- region FILES -->
         <div class="mt-3 mb-3">
           <AlinaFileUploader
+            ref="fileUploader"
             :entity_id="tale.id"
             entity_table="tale"
             :owner_id="tale.owner_id"
             :modeEdit="dConf.modeEdit"
             :ownLength="tale.count_files"
-            :expanded="pFilesExpanded"
-            @update:expanded="
-              (expanded) => $emit('filesExpandedChanged', {
-                taleId: tale.id,
-                expanded,
-              })
-            " />
+            :expanded="taleUiState.filesExpanded"
+            @update:expanded="handleFilesExpandedChanged" />
         </div>
         <!-- endregion FILES -->
 
@@ -346,13 +342,16 @@
           v-if="tale.is_comment_denied != 1"
           class="mb-5">
           <Comment
+            ref="comments"
             v-if="tale.level < 2"
             :level="tale.level + 1"
             type="COMMENT"
             :root_tale_id="tale.root_tale_id ? tale.root_tale_id : tale.id"
             :answer_to_tale_id="tale.id"
             :count_by_answer_to_tale_id="tale.count_root_tale_id"
-            :root_tale_object="tale"></Comment>
+            :root_tale_object="tale"
+            :expanded-collapse-ids="taleUiState.commentsExpanded"
+            @expanded-changed="handleCommentExpandedChanged"></Comment>
         </div>
         <!-- endregion COMMENTS -->
 
@@ -382,20 +381,21 @@ import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 import UtilsDate from "../../Utils/UtilsDate";
 import BorgEditor from "@/components/BorgEditor/index.vue";
 import aInput from "@/components/elements/form/aInput.vue";
+import {
+  createTaleSessionKey,
+  readSessionState,
+  writeSessionState,
+} from "@/services/FeedSessionState";
 //#####
 export default {
   name: "tale_upsert",
-  emits: ["deleted", "taleChanged", "modeEditChanged", "filesExpandedChanged"],
+  emits: ["deleted", "taleChanged", "modeEditChanged"],
   props: {
     pTale: {
       type: Object,
       default: null,
     },
     pFlagInFeed: {
-      type: Boolean,
-      default: false,
-    },
-    pFilesExpanded: {
       type: Boolean,
       default: false,
     },
@@ -453,6 +453,12 @@ export default {
       storage: {
         keyTaleLastTouched: "keyTaleLastTouched",
       },
+      taleUiState: {
+        filesExpanded: false,
+        commentsExpanded: [],
+        scrollPosition: 0,
+      },
+      hasBeenActivated: false,
     };
   },
   components: {
@@ -469,8 +475,40 @@ export default {
     BorgEditor,
   },
   created() {
+    this.restoreTaleUiState(this.pTale?.id ?? this.routerTaleId);
     const id = this.routerTaleId;
     this.ajaxGetTale(id);
+  },
+
+  mounted() {
+    if (!this.pFlagInFeed) {
+      window.addEventListener("pagehide", this.handlePageHide);
+    }
+  },
+
+  activated() {
+    if (!this.pFlagInFeed) {
+      if (this.hasBeenActivated) {
+        this.refreshExpandedLocalData();
+      }
+      this.hasBeenActivated = true;
+      this.restoreScrollPosition();
+    }
+  },
+
+  beforeRouteLeave(to, from) {
+    if (!this.pFlagInFeed) {
+      this.taleUiState.scrollPosition = window.scrollY;
+      this.saveTaleUiState();
+    }
+  },
+
+  beforeUnmount() {
+    if (!this.pFlagInFeed) {
+      window.removeEventListener("pagehide", this.handlePageHide);
+      this.taleUiState.scrollPosition = window.scrollY;
+    }
+    this.saveTaleUiState();
   },
 
   computed: {
@@ -536,12 +574,88 @@ export default {
       deep: true,
     },
 
-    routerTaleId: function (valNew) {
+    routerTaleId: function (valNew, valOld) {
+      if (this.pFlagInFeed || !this.$route.path.startsWith("/tale/upsert")) {
+        return;
+      }
+
+      this.saveTaleUiState(valOld);
+      this.restoreTaleUiState(valNew);
       this.ajaxGetTale(valNew);
     },
   },
 
   methods: {
+    handlePageHide() {
+      this.taleUiState.scrollPosition = window.scrollY;
+      this.saveTaleUiState();
+    },
+
+    refreshExpandedLocalData() {
+      if (this.taleUiState.filesExpanded) {
+        this.$refs.fileUploader?.loadFileList();
+      }
+      this.$refs.comments?.refreshExpanded();
+    },
+
+    taleStateId() {
+      return this.pTale?.id ?? this.routerTaleId ?? this.tale.id;
+    },
+
+    saveTaleUiState(taleId = this.taleStateId()) {
+      if (!taleId) {
+        return;
+      }
+
+      writeSessionState(
+        sessionStorage,
+        createTaleSessionKey(taleId),
+        this.taleUiState,
+      );
+    },
+
+    restoreTaleUiState(taleId = this.taleStateId()) {
+      const saved = taleId
+        ? readSessionState(sessionStorage, createTaleSessionKey(taleId))
+        : null;
+
+      this.taleUiState = {
+        filesExpanded: saved?.filesExpanded === true,
+        commentsExpanded: Array.isArray(saved?.commentsExpanded)
+          ? saved.commentsExpanded
+          : [],
+        scrollPosition: Number(saved?.scrollPosition) || 0,
+      };
+    },
+
+    restoreScrollPosition() {
+      this.$nextTick(() => {
+        window.scrollTo({
+          left: 0,
+          top: this.taleUiState.scrollPosition,
+          behavior: "auto",
+        });
+      });
+    },
+
+    handleFilesExpandedChanged(expanded) {
+      this.taleUiState.filesExpanded = expanded;
+      this.saveTaleUiState();
+    },
+
+    handleCommentExpandedChanged({collapseId, expanded}) {
+      const expandedIds = this.taleUiState.commentsExpanded;
+      const index = expandedIds.indexOf(collapseId);
+
+      if (expanded && index === -1) {
+        expandedIds.push(collapseId);
+      } else if (!expanded && index !== -1) {
+        expandedIds.splice(index, 1);
+      }
+
+      this.saveTaleUiState();
+    },
+
     // ##################################################
     // region Functional Actions
     taleLastTouchedRemember(tale) {
@@ -639,6 +753,7 @@ export default {
               }
             }
             Object.assign(_t.tale, aja.respBody.data);
+            _t.restoreScrollPosition();
             if (_t.tale.is_submitted == 0) {
               if (_t.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
                 _t.dConf.modeEdit = true;

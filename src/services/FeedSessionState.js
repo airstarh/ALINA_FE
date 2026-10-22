@@ -34,6 +34,10 @@ export function createProfileSessionKey(owner) {
   return createSessionKey("profile", owner);
 }
 
+export function createTaleSessionKey(taleId) {
+  return createSessionKey("tale-ui", taleId);
+}
+
 export function writeSessionState(storage, key, state, now = Date.now()) {
   try {
     storage.setItem(key, JSON.stringify({savedAt: now, state}));

@@ -142,13 +142,7 @@
                   <tale_upsert
                     :p-flag-in-feed="true"
                     :p-tale="tale"
-                    :p-files-expanded="!!fileBlocksExpanded[tale.id]"
                     @deleted="ajaGetFeed"
-                    @files-expanded-changed="
-                      ({ taleId, expanded }) => {
-                        handleFilesExpandedChanged(taleId, expanded);
-                      }
-                    "
                     @taleChanged="
                       (newTale) => {
                         handleTaleChanged(newTale, index);
@@ -261,7 +255,6 @@ export default {
   data() {
     return {
       expandedTales: {},
-      fileBlocksExpanded: {},
       ConfigApi: ConfigApi,
       options: {
         urlFeed: `${ConfigApi.url_base}/tale/feed`,
@@ -336,7 +329,6 @@ export default {
       writeSessionState(sessionStorage, this.sessionKey(), {
         dataGetParams: this.dataGetParams,
         expandedTales: this.expandedTales,
-        fileBlocksExpanded: this.fileBlocksExpanded,
         feed: this.feed,
         feedForceShow: this.feedForceShow,
         feedPagination: this.feedPagination,
@@ -353,7 +345,6 @@ export default {
 
       this.dataGetParams = saved.dataGetParams || {txt: ""};
       this.expandedTales = saved.expandedTales || {};
-      this.fileBlocksExpanded = saved.fileBlocksExpanded || {};
       this.feed = saved.feed;
       this.feedForceShow = Array.isArray(saved.feedForceShow)
         ? saved.feedForceShow
@@ -483,11 +474,6 @@ export default {
       if (modeEdit === true) {
         this.toggleExpand(taleId, true);
       }
-    },
-
-    handleFilesExpandedChanged(taleId, expanded) {
-      this.fileBlocksExpanded[taleId] = expanded;
-      this.saveSessionState();
     },
 
     log(data) {

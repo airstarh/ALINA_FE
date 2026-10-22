@@ -7,6 +7,7 @@ import {
 } from "../src/services/FeedNavigation.js";
 import {
   createFeedSessionKey,
+  createTaleSessionKey,
   readSessionState,
   writeSessionState,
 } from "../src/services/FeedSessionState.js";
@@ -33,6 +34,11 @@ assert.notEqual(
   createFeedSessionKey("profile", "1", {pageCurrentNumber: "2"}),
   createFeedSessionKey("profile", "2", {pageCurrentNumber: "2"}),
   "Different profile owners must not share saved feed state",
+);
+assert.notEqual(
+  createTaleSessionKey("1"),
+  createTaleSessionKey("2"),
+  "Different tales must not share saved UI state",
 );
 
 writeSessionState(storage, "test-key", {scrollPosition: 321}, 1_000);
@@ -117,7 +123,7 @@ assert.equal(
 );
 
 const appSource = fs.readFileSync("src/App.vue", "utf8");
-assert.match(appSource, /<KeepAlive\s+:include="\['tale_feed', 'auth_profile'\]">/);
+assert.match(appSource, /<KeepAlive\s+:include="\['tale_feed', 'auth_profile', 'tale_upsert'\]">/);
 
 const feedSource = fs.readFileSync("src/views/tale/feed.vue", "utf8");
 assert.match(feedSource, /activated\(\)/);
@@ -125,11 +131,7 @@ assert.match(feedSource, /beforeRouteLeave\(to, from\)/);
 assert.match(feedSource, /window\.addEventListener\("pagehide", this\.saveSessionState\)/);
 assert.match(feedSource, /restoreSessionState\(\)/);
 assert.match(feedSource, /createFeedSessionKey/);
-assert.match(feedSource, /fileBlocksExpanded:\s*\{\}/);
-assert.match(feedSource, /fileBlocksExpanded:\s*this\.fileBlocksExpanded/);
-assert.match(feedSource, /this\.fileBlocksExpanded\s*=\s*saved\.fileBlocksExpanded\s*\|\|\s*\{\}/);
-assert.match(feedSource, /:p-files-expanded="!!fileBlocksExpanded\[tale\.id\]"/);
-assert.match(feedSource, /@files-expanded-changed=/);
+assert.doesNotMatch(feedSource, /fileBlocksExpanded/);
 assert.match(feedSource, /if \(this\.routeContext !== "main"\)/);
 assert.match(feedSource, /shouldReloadFeedForRouteChange\(to, from, this\.routeContext\)/);
 assert.match(feedSource, /["']queryProps\.owner["']/);
@@ -148,13 +150,32 @@ const helperSource = fs.readFileSync("src/services/FeedNavigation.js", "utf8");
 assert.doesNotMatch(helperSource, /\.path\b/);
 
 const taleSource = fs.readFileSync("src/views/tale/upsert.vue", "utf8");
-assert.match(taleSource, /pFilesExpanded/);
-assert.match(taleSource, /filesExpandedChanged/);
-assert.match(taleSource, /:expanded="pFilesExpanded"/);
+assert.match(taleSource, /taleUiState:\s*\{/);
+assert.match(taleSource, /filesExpanded:\s*false/);
+assert.match(taleSource, /commentsExpanded:\s*\[\]/);
+assert.match(taleSource, /createTaleSessionKey/);
+assert.match(taleSource, /restoreTaleUiState/);
+assert.match(taleSource, /saveTaleUiState/);
+assert.match(taleSource, /:expanded="taleUiState\.filesExpanded"/);
+assert.match(taleSource, /:expanded-collapse-ids="taleUiState\.commentsExpanded"/);
+assert.match(taleSource, /ref="fileUploader"/);
+assert.match(taleSource, /ref="comments"/);
+assert.match(taleSource, /this\.\$refs\.fileUploader\?\.loadFileList\(\)/);
+assert.match(taleSource, /this\.\$refs\.comments\?\.refreshExpanded\(\)/);
 
 const uploaderSource = fs.readFileSync("src/components/elements\/form\/AlinaFileUploader.vue", "utf8");
 assert.match(uploaderSource, /:model-value="dExpanded"/);
 assert.match(uploaderSource, /@update:model-value="onExpandedChanged"/);
 assert.match(uploaderSource, /emits:\s*\["update:expanded"\]/);
+assert.match(uploaderSource, /@show="onShow"/);
+assert.match(uploaderSource, /onShow\(\)\s*\{\s*this\.loadFileList\(\)/);
+
+const commentSource = fs.readFileSync("src/components/elements/form/Comment.vue", "utf8");
+assert.match(commentSource, /expandedCollapseIds/);
+assert.match(commentSource, /:model-value="isExpanded"/);
+assert.match(commentSource, /@update:model-value="onExpandedChanged"/);
+assert.match(commentSource, /@show="onExpandCommentList/);
+assert.match(commentSource, /onExpandCommentList\(collapseId\)[\s\S]*?this\.ajaGetComments\(\)/);
+assert.match(commentSource, /refreshExpanded\(\)/);
 
 console.log("Feed navigation contract satisfied");

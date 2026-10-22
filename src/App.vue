@@ -20,7 +20,7 @@
       <Spinner />
       <Popup />
       <router-view v-slot="{ Component }">
-        <KeepAlive :include="['tale_feed', 'auth_profile']">
+        <KeepAlive :include="['tale_feed', 'auth_profile', 'tale_upsert']">
           <component :is="Component" />
         </KeepAlive>
       </router-view>

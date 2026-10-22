@@ -16,6 +16,8 @@
     </div>
     <b-collapse
       :id="`comment-collapse-${answer_to_tale_id}`"
+      :model-value="isExpanded"
+      @update:model-value="onExpandedChanged"
       @show="onExpandCommentList(`comment-collapse-${answer_to_tale_id}`)"
       @shown="pageRecalcIframeHeight"
       @hidden="pageRecalcIframeHeight"
@@ -131,7 +133,9 @@
           :root_tale_id="tale.root_tale_id"
           :answer_to_tale_id="tale.id"
           :count_by_answer_to_tale_id="tale.count_answer_to_tale_id"
-          :root_tale_object="root_tale_object"></Comment>
+          :root_tale_object="root_tale_object"
+          :expanded-collapse-ids="expandedCollapseIds"
+          @expanded-changed="$emit('expandedChanged', $event)"></Comment>
       </div>
       <Paginator
         :pageCurrentNumber="parseInt(feedPagination.pageCurrentNumber)"
@@ -267,7 +271,7 @@ export default {
       },
     };
   },
-  emits: ["bv::toggle::collapse"],
+  emits: ["bv::toggle::collapse", "expandedChanged"],
   props: {
     root_tale_object: {
       type: Object,
@@ -293,6 +297,10 @@ export default {
       type: Number,
       default: 0,
     },
+    expandedCollapseIds: {
+      type: Array,
+      default: () => [],
+    },
   },
   mounted() {
     this.processQuery();
@@ -303,6 +311,31 @@ export default {
     this.pageRecalcIframeHeight();
   },
   methods: {
+    refreshExpanded() {
+      if (this.isExpanded) {
+        this.ajaGetComments();
+      }
+    },
+
+    onExpandedChanged(expanded) {
+      if (expanded) {
+        UtilsArray.pushIfNotAlready(
+          this.AlinaStorage.Comment.expanded,
+          this.collapseId,
+        );
+      } else {
+        UtilsArray.elRemoveByValue(
+          this.AlinaStorage.Comment.expanded,
+          this.collapseId,
+        );
+      }
+
+      this.$emit("expandedChanged", {
+        collapseId: this.collapseId,
+        expanded,
+      });
+    },
+
     ajaGetComments(more = false) {
       // #####
       const q = this.$route.query;
@@ -463,9 +496,7 @@ export default {
         return false;
       }
       if (
-        !this.AlinaStorage.Comment.expanded.includes(
-          `comment-collapse-${this.answer_to_tale_id}`
-        )
+        !this.isExpanded
       ) {
         return false;
       }
@@ -491,6 +522,12 @@ export default {
     // },
   },
   computed: {
+    collapseId() {
+      return `comment-collapse-${this.answer_to_tale_id}`;
+    },
+    isExpanded() {
+      return this.level == 3 || this.expandedCollapseIds.includes(this.collapseId);
+    },
     // a computed getter
     commentsTotal: function () {
       let res = 0;
