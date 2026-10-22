@@ -300,7 +300,14 @@
             entity_table="tale"
             :owner_id="tale.owner_id"
             :modeEdit="dConf.modeEdit"
-            :ownLength="tale.count_files" />
+            :ownLength="tale.count_files"
+            :expanded="pFilesExpanded"
+            @update:expanded="
+              (expanded) => $emit('filesExpandedChanged', {
+                taleId: tale.id,
+                expanded,
+              })
+            " />
         </div>
         <!-- endregion FILES -->
 
@@ -378,13 +385,17 @@ import aInput from "@/components/elements/form/aInput.vue";
 //#####
 export default {
   name: "tale_upsert",
-  emits: ["deleted", "taleChanged", "modeEditChanged"],
+  emits: ["deleted", "taleChanged", "modeEditChanged", "filesExpandedChanged"],
   props: {
     pTale: {
       type: Object,
       default: null,
     },
     pFlagInFeed: {
+      type: Boolean,
+      default: false,
+    },
+    pFilesExpanded: {
       type: Boolean,
       default: false,
     },

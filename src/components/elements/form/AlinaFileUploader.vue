@@ -45,6 +45,8 @@
 
       <b-collapse
         :id="`f-${entity_id}`"
+        :model-value="dExpanded"
+        @update:model-value="onExpandedChanged"
         class="mt-3"
         @show="onShow"
         @hide="onHide">
@@ -91,6 +93,7 @@ import aInput from "@/components/elements/form/aInput";
 
 export default {
   name: "AlinaFileUploader",
+  emits: ["update:expanded"],
   props: {
     entity_id: {
       type: Number,
@@ -137,6 +140,10 @@ export default {
       type: Number,
       default: 0,
     },
+    expanded: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -151,6 +158,7 @@ export default {
       ConfigApi,
       dArrFiles: [],
       dModeEdit: this.modeEdit,
+      dExpanded: this.expanded,
       viewMode: "vertical",
     };
   },
@@ -162,6 +170,10 @@ export default {
     this.pageRecalcIframeHeight();
   },
   methods: {
+    onExpandedChanged(expanded) {
+      this.dExpanded = expanded;
+      this.$emit("update:expanded", expanded);
+    },
     toggleViewMode() {
       this.viewMode = this.viewMode === "horizontal" ? "vertical" : "horizontal";
       this.$nextTick(this.pageRecalcIframeHeight);
@@ -298,6 +310,9 @@ export default {
   },
 
   watch: {
+    expanded(newValue) {
+      this.dExpanded = newValue;
+    },
     modeEdit(newValue) {
       return (this.dModeEdit = newValue);
     },

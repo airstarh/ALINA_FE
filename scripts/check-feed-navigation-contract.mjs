@@ -125,6 +125,11 @@ assert.match(feedSource, /beforeRouteLeave\(to, from\)/);
 assert.match(feedSource, /window\.addEventListener\("pagehide", this\.saveSessionState\)/);
 assert.match(feedSource, /restoreSessionState\(\)/);
 assert.match(feedSource, /createFeedSessionKey/);
+assert.match(feedSource, /fileBlocksExpanded:\s*\{\}/);
+assert.match(feedSource, /fileBlocksExpanded:\s*this\.fileBlocksExpanded/);
+assert.match(feedSource, /this\.fileBlocksExpanded\s*=\s*saved\.fileBlocksExpanded\s*\|\|\s*\{\}/);
+assert.match(feedSource, /:p-files-expanded="!!fileBlocksExpanded\[tale\.id\]"/);
+assert.match(feedSource, /@files-expanded-changed=/);
 assert.match(feedSource, /if \(this\.routeContext !== "main"\)/);
 assert.match(feedSource, /shouldReloadFeedForRouteChange\(to, from, this\.routeContext\)/);
 assert.match(feedSource, /["']queryProps\.owner["']/);
@@ -141,5 +146,15 @@ assert.match(profileSource, /createProfileSessionKey/);
 
 const helperSource = fs.readFileSync("src/services/FeedNavigation.js", "utf8");
 assert.doesNotMatch(helperSource, /\.path\b/);
+
+const taleSource = fs.readFileSync("src/views/tale/upsert.vue", "utf8");
+assert.match(taleSource, /pFilesExpanded/);
+assert.match(taleSource, /filesExpandedChanged/);
+assert.match(taleSource, /:expanded="pFilesExpanded"/);
+
+const uploaderSource = fs.readFileSync("src/components/elements\/form\/AlinaFileUploader.vue", "utf8");
+assert.match(uploaderSource, /:model-value="dExpanded"/);
+assert.match(uploaderSource, /@update:model-value="onExpandedChanged"/);
+assert.match(uploaderSource, /emits:\s*\["update:expanded"\]/);
 
 console.log("Feed navigation contract satisfied");
