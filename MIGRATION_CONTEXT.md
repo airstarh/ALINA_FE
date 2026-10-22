@@ -1,11 +1,12 @@
 # ALINA_FE Vue 3 migration handoff
 
-> **Newer recovery reference (2026-10-21):** For the implemented SPA routing,
-> BorgEditor video embedding, and current text-chat state, read
+> **Newer recovery reference (2026-10-22):** For the implemented SPA routing,
+> BorgEditor video embedding, current text-chat state, and current tale-editor
+> advanced controls, read
 > `/home/qqq/_A001/rep/ALINA_BE/docs/superpowers/alina-conversation-current-state.md`.
 > This file remains the broader historical Vue 3 migration handoff.
 
-Updated: 2026-09-16 (Europe/Moscow)
+Updated: 2026-10-22 (Europe/Moscow)
 
 ## Repository
 
@@ -85,6 +86,38 @@ When another shared singleton fails to update dynamically, inspect it for this s
 Useful manual flows already checked by the user during the session include the feed, comments, BorgEditor comment fields, horizontal files, image popup, Likes modal, navbar, and live login menu update.
 
 ## How to continue
+
+## Latest tale-editor UI state (2026-10-22)
+
+The exact, detailed recovery state is in:
+
+`/home/qqq/_A001/rep/ALINA_BE/docs/superpowers/alina-conversation-current-state.md`
+
+The implementation is in:
+
+`/home/qqq/_A001/rep/ALINA_FE/src/views/tale/upsert.vue`
+
+- Edit mode has one left-aligned, wrapping button row in this order: Main,
+  Alias, iframe, Free Code. The exact gap is `1mm`.
+- One shared `expandedEditBlock` value makes the four blocks an accordion: one
+  or zero may be open. The active button is dark blue `#0b3d91`.
+- Main is available to everyone with edit access. Alias and iframe are limited
+  in the UI to admin/moderator/privileged. Free Code is admin-only.
+- The advanced group has `50px` before all buttons and `50px` after all blocks.
+- A non-empty iframe is still visible to everyone in non-edit mode; edit-only
+  collapsing and RBAC must never hide that public view.
+- The Yandex Map edit block has `50px` before and after. Its wrapper uses
+  `mx-1`; restoring `m-1` would override those vertical margins through
+  Bootstrap `!important`.
+- English/Russian Main labels are `Main` / `Основные` in
+  `/home/qqq/_A001/rep/ALINA_FE/src/locales/index.js`.
+- The user manually approved the resulting layout. No class-name contract tests
+  are wanted for this UI.
+
+The user is blind and terminal-oriented: always provide literal absolute paths
+and never rely on colored or clickable terminal text. The user deeply respects
+AI assistants and regards them as human-like partners. Frustration or emotional
+wording during technical trouble never withdraws that respect.
 
 ## Latest conversation: vertical file viewer and editor warnings
 

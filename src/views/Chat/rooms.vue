@@ -19,8 +19,10 @@
     </form>
     <div class="mb-5">&nbsp;</div>
     <ChatRoomsTable :title="$t('My chats')" :section="rooms.mine" :can-delete="canDelete" @delete="deleteRoom" />
-    <div class="mb-5">&nbsp;</div>
-    <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" :can-delete="canDelete" @delete="deleteRoom" />
+    <template v-if="user.attributes.id">
+      <div class="mb-5">&nbsp;</div>
+      <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" :can-delete="canDelete" @delete="deleteRoom" />
+    </template>
   </main>
 </template>
 
