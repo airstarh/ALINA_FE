@@ -113,230 +113,255 @@
             :modeEdit="dConf.modeEdit" />
           <!-- endregion DATE -->
 
-          <!-- region iframe -->
+          <div style="margin-top: 50px; margin-bottom: 50px">
+          <!-- region ADVANCED EDIT BUTTONS -->
           <div
-            v-if="CU.isAdmin() || CU.isModerator() || CU.isPrivileged()"
-            class="mt-3 mb-3">
+            class="d-flex justify-content-start flex-wrap mb-3"
+            style="gap: 1mm">
             <b-button
-              v-b-toggle="`tale-iframe-${tale.id}`"
-              class="btn-a">
-              {{ $t("iframe") }}
-            </b-button>
-
-            <b-collapse
-              :id="`tale-iframe-${tale.id}`"
-              class="mt-3">
-              <aInput
-                v-model="tale.iframe"
-                :src="tale.iframe"
-                :label="$t('iframe')"
-                :placeholder="$t('iframe').toString()"
-                :modeEdit="dConf.modeEdit"
-                componentDisplay="block" />
-
-              <div
-                v-if="tale.iframe"
-                class="mt-3 mb-3">
-                <iframe
-                  :src="tale.iframe"
-                  frameborder="1"
-                  width="98%"
-                  height="300px"></iframe>
-              </div>
-            </b-collapse>
-          </div>
-          <!-- endregion iframe -->
-
-          <!-- region BODY FREE -->
-          <div v-if="CU.isAdmin()" class="mt-3 mb-3">
-            <b-button
-              v-b-toggle="`tale-body-free-${tale.id}`"
-              class="btn-a">
-              {{ $t("body_free") }}
-            </b-button>
-            <b-collapse
-              :id="`tale-body-free-${tale.id}`"
-              class="mt-3">
-              <div class="input-group input-group mb-3">
-                <!-- body_free -->
-                <span class="input-group-text bg-dark text-light">{{
-                  $t("body_free")
-                }}</span>
-                <textarea
-                  class="form-control"
-                  :placeholder="$t('body_free').toString()"
-                  v-model="tale.body_free"
-                  rows="20"></textarea>
-              </div>
-              <div class="mt-3 mb-3">
-                <div v-html="tale.body_free"></div>
-              </div>
-            </b-collapse>
-          </div>
-          <!-- endregion BODY FREE -->
-
-          <!-- region ALIAS -->
-          <div
-            v-if="CU.isAdmin() || CU.isModerator() || CU.isPrivileged()"
-            class="mt-3 mb-3">
-            <b-button
-              v-b-toggle="`tale-alias-${tale.id}`"
-              class="btn-a">
-              {{ $t("Page Alias") }}
-            </b-button>
-
-            <b-collapse
-              :id="`tale-alias-${tale.id}`"
-              class="mt-3">
-              <div>
-                {{ taleUrl }}
-              </div>
-
-              <aInput
-                v-model="tale.router_alias"
-                :label="$t('Page Alias').toString()"
-                :placeholder="$t('Page Alias').toString()"
-                :modeEdit="dConf.modeEdit"
-                componentDisplay="block" />
-            </b-collapse>
-          </div>
-          <!-- endregion ALIAS -->
-
-          <!-- region TALE VIEW SETTINGS -->
-          <div class="mt-3 mb-3">
-            <b-button
-              v-b-toggle="`tale-main-${tale.id}`"
-              class="btn-a">
+              class="btn-a"
+              :class="{
+                'edit-section-button-active': expandedEditBlock === 'main',
+              }"
+              @click="toggleEditBlock('main')">
               {{ $t("Main") }}
             </b-button>
 
-            <b-collapse
-              :id="`tale-main-${tale.id}`"
-              class="mt-3">
-              <div class="row g-0 tale-view-settings">
-                <div class="col-md">
-              <div class="mb-3">
-                <!-- is_header_hidden -->
-                <aInput
-                  :label="$t('Hide header').toString()"
-                  v-model="tale.is_header_hidden"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="true" />
-              </div>
-              <div class="mb-3">
-                <!-- is_date_hidden -->
-                <aInput
-                  :label="$t('Hide date').toString()"
-                  v-model="tale.is_date_hidden"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-              <div class="mb-3">
-                <!-- is_avatar_hidden -->
-                <aInput
-                  :label="$t('Hide avatar').toString()"
-                  v-model="tale.is_avatar_hidden"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-              <div class="mb-3">
-                <!-- is_social_sharing_hidden -->
-                <aInput
-                  :label="$t('Hide social sharing').toString()"
-                  v-model="tale.is_social_sharing_hidden"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-              <div class="mb-3">
-                <!-- is_comment_denied -->
-                <aInput
-                  :label="$t('Comments denied').toString()"
-                  v-model="tale.is_comment_denied"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-              <div class="mb-3">
-                <!-- is_comment_for_owner -->
-                <aInput
-                  :label="$t('Comments only for owner').toString()"
-                  v-model="tale.is_comment_for_owner"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-                </div>
-                <div class="col-md">
-              <div class="mb-3">
-                <!-- is_sticked -->
-                <aInput
-                  :label="$t('Sticked').toString()"
-                  v-model="tale.is_sticked"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-              <div class="mb-3">
-                <!-- is_adult_denied -->
-                <aInput
-                  :label="$t('Not for kids').toString()"
-                  v-model="tale.is_adult_denied"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-              <div class="mb-3">
-                <!-- is_adv -->
-                <aInput
-                  :label="$t('Advertisement').toString()"
-                  v-model="tale.is_adv"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-              <div class="mb-3">
-                <!-- is_draft -->
-                <aInput
-                  :label="$t('Hide on feed').toString()"
-                  v-model="tale.is_draft"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
-              <div class="mb-3">
-                <!-- is_for_registered -->
-                <aInput
-                  :label="$t('Only for registered users').toString()"
-                  v-model="tale.is_for_registered"
-                  type="checkbox"
-                  :flagLabelFirst="false"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
+            <b-button
+              v-if="CU.isAdmin() || CU.isModerator() || CU.isPrivileged()"
+              class="btn-a"
+              :class="{
+                'edit-section-button-active': expandedEditBlock === 'alias',
+              }"
+              @click="toggleEditBlock('alias')">
+              {{ $t("Page Alias") }}
+            </b-button>
 
-              <!-- seo_index -->
-              <div class="mb-3">
-                <aInput
-                  v-model="tale.seo_index"
-                  :label="$t(' SEO Index')"
-                  :placeholder="$t('SEO Index')"
-                  :modeEdit="dConf.modeEdit" />
-              </div>
+            <b-button
+              v-if="CU.isAdmin() || CU.isModerator() || CU.isPrivileged()"
+              class="btn-a"
+              :class="{
+                'edit-section-button-active': expandedEditBlock === 'iframe',
+              }"
+              @click="toggleEditBlock('iframe')">
+              {{ $t("iframe") }}
+            </b-button>
+
+            <b-button
+              v-if="CU.isAdmin()"
+              class="btn-a"
+              :class="{
+                'edit-section-button-active': expandedEditBlock === 'body-free',
+              }"
+              @click="toggleEditBlock('body-free')">
+              {{ $t("body_free") }}
+            </b-button>
+          </div>
+          <!-- endregion ADVANCED EDIT BUTTONS -->
+
+          <!-- region TALE VIEW SETTINGS -->
+          <b-collapse
+            :id="`tale-main-${tale.id}`"
+            :model-value="expandedEditBlock === 'main'"
+            class="mt-3">
+            <div class="row g-0 tale-view-settings">
+              <div class="col-md">
+                <div class="mb-3">
+                  <!-- is_header_hidden -->
+                  <aInput
+                    :label="$t('Hide header').toString()"
+                    v-model="tale.is_header_hidden"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="true" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_date_hidden -->
+                  <aInput
+                    :label="$t('Hide date').toString()"
+                    v-model="tale.is_date_hidden"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_avatar_hidden -->
+                  <aInput
+                    :label="$t('Hide avatar').toString()"
+                    v-model="tale.is_avatar_hidden"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_social_sharing_hidden -->
+                  <aInput
+                    :label="$t('Hide social sharing').toString()"
+                    v-model="tale.is_social_sharing_hidden"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_comment_denied -->
+                  <aInput
+                    :label="$t('Comments denied').toString()"
+                    v-model="tale.is_comment_denied"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_comment_for_owner -->
+                  <aInput
+                    :label="$t('Comments only for owner').toString()"
+                    v-model="tale.is_comment_for_owner"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
                 </div>
               </div>
-            </b-collapse>
-          </div>
+              <div class="col-md">
+                <div class="mb-3">
+                  <!-- is_sticked -->
+                  <aInput
+                    :label="$t('Sticked').toString()"
+                    v-model="tale.is_sticked"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_adult_denied -->
+                  <aInput
+                    :label="$t('Not for kids').toString()"
+                    v-model="tale.is_adult_denied"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_adv -->
+                  <aInput
+                    :label="$t('Advertisement').toString()"
+                    v-model="tale.is_adv"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_draft -->
+                  <aInput
+                    :label="$t('Hide on feed').toString()"
+                    v-model="tale.is_draft"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+                <div class="mb-3">
+                  <!-- is_for_registered -->
+                  <aInput
+                    :label="$t('Only for registered users').toString()"
+                    v-model="tale.is_for_registered"
+                    type="checkbox"
+                    :flagLabelFirst="false"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+
+                <!-- seo_index -->
+                <div class="mb-3">
+                  <aInput
+                    v-model="tale.seo_index"
+                    :label="$t(' SEO Index')"
+                    :placeholder="$t('SEO Index')"
+                    :modeEdit="dConf.modeEdit" />
+                </div>
+              </div>
+            </div>
+          </b-collapse>
           <!-- endregion TALE VIEW SETTINGS -->
+
+          <!-- region ALIAS -->
+          <b-collapse
+            v-if="CU.isAdmin() || CU.isModerator() || CU.isPrivileged()"
+            :id="`tale-alias-${tale.id}`"
+            :model-value="expandedEditBlock === 'alias'"
+            class="mt-3">
+            <div>
+              {{ taleUrl }}
+            </div>
+
+            <aInput
+              v-model="tale.router_alias"
+              :label="$t('Page Alias').toString()"
+              :placeholder="$t('Page Alias').toString()"
+              :modeEdit="dConf.modeEdit"
+              componentDisplay="block" />
+          </b-collapse>
+          <!-- endregion ALIAS -->
+
+          <!-- region iframe -->
+          <b-collapse
+            v-if="CU.isAdmin() || CU.isModerator() || CU.isPrivileged()"
+            :id="`tale-iframe-${tale.id}`"
+            :model-value="expandedEditBlock === 'iframe'"
+            class="mt-3">
+            <aInput
+              v-model="tale.iframe"
+              :src="tale.iframe"
+              :label="$t('iframe')"
+              :placeholder="$t('iframe').toString()"
+              :modeEdit="dConf.modeEdit"
+              componentDisplay="block" />
+
+            <div
+              v-if="tale.iframe"
+              class="mt-3 mb-3">
+              <iframe
+                :src="tale.iframe"
+                frameborder="1"
+                width="98%"
+                height="300px"></iframe>
+            </div>
+          </b-collapse>
+          <!-- endregion iframe -->
+
+          <!-- region BODY FREE -->
+          <b-collapse
+            v-if="CU.isAdmin()"
+            :id="`tale-body-free-${tale.id}`"
+            :model-value="expandedEditBlock === 'body-free'"
+            class="mt-3">
+            <div class="input-group input-group mb-3">
+              <!-- body_free -->
+              <span class="input-group-text bg-dark text-light">{{
+                $t("body_free")
+              }}</span>
+              <textarea
+                class="form-control"
+                :placeholder="$t('body_free').toString()"
+                v-model="tale.body_free"
+                rows="20"></textarea>
+            </div>
+            <div class="mt-3 mb-3">
+              <div v-html="tale.body_free"></div>
+            </div>
+          </b-collapse>
+          <!-- endregion BODY FREE -->
+          </div>
         </div>
         <!-- endregion EDIT -->
 
         <!-- # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #  -->
 
         <!-- region Yandex Map-->
-        <div class="row g-0 m-1 ps-2">
+        <div
+          class="row g-0 mx-1 ps-2"
+          :style="
+            dConf.modeEdit
+              ? { marginTop: '50px', marginBottom: '50px' }
+              : null
+          ">
           <div class="col">
             <AlinaYandexMap
               :item="tale"
@@ -461,6 +486,7 @@ export default {
       UtilsStr,
       CU: CurrentUser.obj(),
       ConfigApi,
+      expandedEditBlock: null,
       dConf: {
         url: `${ConfigApi.url_base}/tale/upsert`,
         urlDelete: `${ConfigApi.url_base}/tale/delete`,
@@ -651,6 +677,11 @@ export default {
   },
 
   methods: {
+    toggleEditBlock(blockName) {
+      this.expandedEditBlock =
+        this.expandedEditBlock === blockName ? null : blockName;
+    },
+
     handlePageHide() {
       this.taleUiState.scrollPosition = window.scrollY;
       this.saveTaleUiState();
@@ -894,5 +925,10 @@ export default {
   width: 100%;
   max-width: 1000px;
   margin-inline: auto;
+}
+
+.edit-section-button-active {
+  background-color: #0b3d91 !important;
+  outline-color: #0b3d91 !important;
 }
 </style>
