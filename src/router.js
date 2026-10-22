@@ -30,7 +30,11 @@ export default createRouter({
 			}
 			return false;
 		}
-		if (feedContext(to) === "main" && feedContext(from) !== "main") {
+		const targetContext = feedContext(to);
+		if (
+			["main", "profile"].includes(targetContext)
+			&& feedContext(from) !== targetContext
+		) {
 			return false;
 		}
 		return {left: 0, top: 0};

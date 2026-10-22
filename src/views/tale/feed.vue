@@ -274,6 +274,10 @@ export default {
   },
 
   activated() {
+    if (this.routeContext !== "main") {
+      return;
+    }
+
     this.$nextTick(() => {
       window.scrollTo({
         left: 0,
@@ -284,6 +288,10 @@ export default {
   },
 
   beforeRouteLeave(to, from) {
+    if (this.routeContext !== "main") {
+      return;
+    }
+
     this.savedScrollPosition = window.scrollY;
   },
 

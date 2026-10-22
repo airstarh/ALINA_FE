@@ -71,17 +71,21 @@ assert.equal(
 );
 
 const appSource = fs.readFileSync("src/App.vue", "utf8");
-assert.match(appSource, /<KeepAlive\s+include="tale_feed">/);
+assert.match(appSource, /<KeepAlive\s+:include="\['tale_feed', 'auth_profile'\]">/);
 
 const feedSource = fs.readFileSync("src/views/tale/feed.vue", "utf8");
 assert.match(feedSource, /activated\(\)/);
 assert.match(feedSource, /beforeRouteLeave\(to, from\)/);
+assert.match(feedSource, /if \(this\.routeContext !== "main"\)/);
 assert.match(feedSource, /shouldReloadFeedForRouteChange\(to, from, this\.routeContext\)/);
 assert.match(feedSource, /["']queryProps\.owner["']/);
 assert.match(feedSource, /this\.\$nextTick\(\(\) => this\.scrollTop\(\)\)/);
 
 const profileSource = fs.readFileSync("src/views/auth/profile.vue", "utf8");
 assert.match(profileSource, /route-context="profile"/);
+assert.match(profileSource, /savedScrollPosition:\s*0/);
+assert.match(profileSource, /activated\(\)/);
+assert.match(profileSource, /beforeRouteLeave\(to, from\)/);
 
 const helperSource = fs.readFileSync("src/services/FeedNavigation.js", "utf8");
 assert.doesNotMatch(helperSource, /\.path\b/);

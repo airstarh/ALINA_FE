@@ -89,6 +89,7 @@ export default {
       UtilsStr,
       ConfigApi: ConfigApi,
       CU: CurrentUser.obj(),
+      savedScrollPosition: 0,
       options: {
         url: `${ConfigApi.url_base}/auth/profile`,
         urlEmblem: `${ConfigApi.url_base}/FileUpload/CkEditor`,
@@ -119,6 +120,18 @@ export default {
     const vm = this;
     const id = this.curId;
     vm.fetchProfile(id);
+  },
+  activated() {
+    this.$nextTick(() => {
+      window.scrollTo({
+        left: 0,
+        top: this.savedScrollPosition,
+        behavior: "auto",
+      });
+    });
+  },
+  beforeRouteLeave(to, from) {
+    this.savedScrollPosition = window.scrollY;
   },
   methods: {
     //##################################################
