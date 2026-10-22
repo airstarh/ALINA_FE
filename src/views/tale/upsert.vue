@@ -203,8 +203,18 @@
           <!-- endregion ALIAS -->
 
           <!-- region TALE VIEW SETTINGS -->
-          <div class="row g-0 tale-view-settings">
-            <div class="col-md">
+          <div class="mt-3 mb-3">
+            <b-button
+              v-b-toggle="`tale-main-${tale.id}`"
+              class="btn-a">
+              {{ $t("Main") }}
+            </b-button>
+
+            <b-collapse
+              :id="`tale-main-${tale.id}`"
+              class="mt-3">
+              <div class="row g-0 tale-view-settings">
+                <div class="col-md">
               <div class="mb-3">
                 <!-- is_header_hidden -->
                 <aInput
@@ -259,8 +269,8 @@
                   :flagLabelFirst="false"
                   :modeEdit="dConf.modeEdit" />
               </div>
-            </div>
-            <div class="col-md">
+                </div>
+                <div class="col-md">
               <div class="mb-3">
                 <!-- is_sticked -->
                 <aInput
@@ -315,7 +325,9 @@
                   :placeholder="$t('SEO Index')"
                   :modeEdit="dConf.modeEdit" />
               </div>
-            </div>
+                </div>
+              </div>
+            </b-collapse>
           </div>
           <!-- endregion TALE VIEW SETTINGS -->
         </div>

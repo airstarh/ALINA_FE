@@ -1,5 +1,6 @@
 const Translations = {
   en: {
+    Main: "Main",
     SignUp: "SignUp",
     "Create my chat:": "Create my chat:",
     "Open a separate chat": "Open a separate chat",
@@ -194,6 +195,7 @@ const Translations = {
     dtLatLongCSV: "Lat, Long",
   },
   ru: {
+    Main: "Основные",
     SignUp: "Вход",
     "Create my chat:": "Создать мой чат:",
     "Open a separate chat": "Открыть отдельный чат",
