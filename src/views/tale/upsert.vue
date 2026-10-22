@@ -383,6 +383,7 @@ import BorgEditor from "@/components/BorgEditor/index.vue";
 import aInput from "@/components/elements/form/aInput.vue";
 import {
   createTaleSessionKey,
+  markFeedDataStale,
   readSessionState,
   writeSessionState,
 } from "@/services/FeedSessionState";
@@ -488,7 +489,13 @@ export default {
 
   activated() {
     if (!this.pFlagInFeed) {
-      if (this.hasBeenActivated) {
+      if (
+        this.$route.path === "/tale/upsert"
+        && this.tale.id
+        && this.tale.is_submitted == 1
+      ) {
+        this.startNewTale();
+      } else if (this.hasBeenActivated) {
         this.refreshExpandedLocalData();
       }
       this.hasBeenActivated = true;
@@ -581,7 +588,11 @@ export default {
 
       this.saveTaleUiState(valOld);
       this.restoreTaleUiState(valNew);
-      this.ajaxGetTale(valNew);
+      if (valNew) {
+        this.ajaxGetTale(valNew);
+      } else {
+        this.startNewTale();
+      }
     },
   },
 
@@ -589,6 +600,16 @@ export default {
     handlePageHide() {
       this.taleUiState.scrollPosition = window.scrollY;
       this.saveTaleUiState();
+    },
+
+    startNewTale() {
+      this.tale = {
+        id: null,
+        is_submitted: 0,
+      };
+      this.dConf.modeEdit = false;
+      this.restoreTaleUiState(null);
+      this.ajaxGetTale(null);
     },
 
     refreshExpandedLocalData() {
@@ -716,6 +737,7 @@ export default {
             Object.assign(this.tale, aja.respBody.data);
             this.dConf.modeEdit = false;
             this.taleLastTouchedRemember({});
+            markFeedDataStale(sessionStorage);
           }
         },
       }).go();
@@ -782,6 +804,7 @@ export default {
         postParams: tale,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
+            markFeedDataStale(sessionStorage);
             _t.tale = {};
             _t.$emit("deleted");
 

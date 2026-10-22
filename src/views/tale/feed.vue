@@ -219,6 +219,8 @@ import tale_upsert from "@/views/tale/upsert.vue";
 import {shouldReloadFeedForRouteChange} from "@/services/FeedNavigation";
 import {
   createFeedSessionKey,
+  feedDataRevision,
+  isPageReload,
   readSessionState,
   writeSessionState,
 } from "@/services/FeedSessionState";
@@ -271,11 +273,16 @@ export default {
       },
       feedForceShow: [],
       savedScrollPosition: 0,
+      loadedFeedRevision: 0,
+      forceFeedRefresh: false,
     };
   },
 
   created() {
-    if (!this.restoreSessionState()) {
+    if (this.restoreSessionState()) {
+      this.forceFeedRefresh = isPageReload(window.performance);
+    } else {
+      this.loadedFeedRevision = feedDataRevision(sessionStorage);
       this.onAddressBarModified();
     }
   },
@@ -285,6 +292,8 @@ export default {
   },
 
   activated() {
+    this.refreshFeedIfStale(this.forceFeedRefresh);
+
     if (this.routeContext !== "main") {
       return;
     }
@@ -332,6 +341,7 @@ export default {
         feed: this.feed,
         feedForceShow: this.feedForceShow,
         feedPagination: this.feedPagination,
+        feedRevision: this.loadedFeedRevision,
         scrollPosition: this.savedScrollPosition,
       });
     },
@@ -350,8 +360,21 @@ export default {
         ? saved.feedForceShow
         : [];
       this.feedPagination = saved.feedPagination || this.feedPagination;
+      this.loadedFeedRevision = Number(saved.feedRevision) || 0;
       this.savedScrollPosition = Number(saved.scrollPosition) || 0;
       return true;
+    },
+
+    refreshFeedIfStale(force = false) {
+      const currentRevision = feedDataRevision(sessionStorage);
+      this.forceFeedRefresh = false;
+
+      if (!force && this.loadedFeedRevision >= currentRevision) {
+        return;
+      }
+
+      this.loadedFeedRevision = currentRevision;
+      this.onAddressBarModified();
     },
 
     taleMustBeExpanded(tale) {
@@ -415,6 +438,7 @@ export default {
             });
 
             this.feedPagination = aja.respBody.meta.tale;
+            this.loadedFeedRevision = feedDataRevision(sessionStorage);
             this.saveSessionState();
 
             if (scrollAfterLoad) {

@@ -1,4 +1,5 @@
 export const FEED_SESSION_TTL_MS = 5 * 60 * 1000;
+const FEED_DATA_REVISION_KEY = "alina-session-v1:feed-data-revision";
 
 function normalizeValue(value) {
   if (Array.isArray(value)) {
@@ -36,6 +37,34 @@ export function createProfileSessionKey(owner) {
 
 export function createTaleSessionKey(taleId) {
   return createSessionKey("tale-ui", taleId);
+}
+
+export function feedDataRevision(storage) {
+  try {
+    return Number(storage.getItem(FEED_DATA_REVISION_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+export function markFeedDataStale(storage, now = Date.now()) {
+  const revision = Math.max(now, feedDataRevision(storage) + 1);
+
+  try {
+    storage.setItem(FEED_DATA_REVISION_KEY, String(revision));
+  } catch {
+    return revision;
+  }
+
+  return revision;
+}
+
+export function isPageReload(performanceApi) {
+  try {
+    return performanceApi?.getEntriesByType?.("navigation")?.[0]?.type === "reload";
+  } catch {
+    return false;
+  }
 }
 
 export function writeSessionState(storage, key, state, now = Date.now()) {

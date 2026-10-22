@@ -8,6 +8,9 @@ import {
 import {
   createFeedSessionKey,
   createTaleSessionKey,
+  feedDataRevision,
+  isPageReload,
+  markFeedDataStale,
   readSessionState,
   writeSessionState,
 } from "../src/services/FeedSessionState.js";
@@ -34,6 +37,20 @@ assert.notEqual(
   createFeedSessionKey("profile", "1", {pageCurrentNumber: "2"}),
   createFeedSessionKey("profile", "2", {pageCurrentNumber: "2"}),
   "Different profile owners must not share saved feed state",
+);
+
+assert.equal(feedDataRevision(storage), 0);
+markFeedDataStale(storage, 1234);
+assert.equal(feedDataRevision(storage), 1234, "A tale mutation must invalidate cached feeds");
+assert.equal(
+  isPageReload({getEntriesByType: () => [{type: "reload"}]}),
+  true,
+  "A genuine browser reload must force fresh feed data",
+);
+assert.equal(
+  isPageReload({getEntriesByType: () => [{type: "back_forward"}]}),
+  false,
+  "Browser Back restoration may reuse recent feed data",
 );
 assert.notEqual(
   createTaleSessionKey("1"),
@@ -132,6 +149,9 @@ assert.match(feedSource, /window\.addEventListener\("pagehide", this\.saveSessio
 assert.match(feedSource, /restoreSessionState\(\)/);
 assert.match(feedSource, /createFeedSessionKey/);
 assert.doesNotMatch(feedSource, /fileBlocksExpanded/);
+assert.match(feedSource, /feedDataRevision/);
+assert.match(feedSource, /isPageReload/);
+assert.match(feedSource, /refreshFeedIfStale/);
 assert.match(feedSource, /if \(this\.routeContext !== "main"\)/);
 assert.match(feedSource, /shouldReloadFeedForRouteChange\(to, from, this\.routeContext\)/);
 assert.match(feedSource, /["']queryProps\.owner["']/);
@@ -162,6 +182,8 @@ assert.match(taleSource, /ref="fileUploader"/);
 assert.match(taleSource, /ref="comments"/);
 assert.match(taleSource, /this\.\$refs\.fileUploader\?\.loadFileList\(\)/);
 assert.match(taleSource, /this\.\$refs\.comments\?\.refreshExpanded\(\)/);
+assert.match(taleSource, /markFeedDataStale\(sessionStorage\)/);
+assert.match(taleSource, /startNewTale\(\)/);
 
 const uploaderSource = fs.readFileSync("src/components/elements\/form\/AlinaFileUploader.vue", "utf8");
 assert.match(uploaderSource, /:model-value="dExpanded"/);
