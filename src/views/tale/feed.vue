@@ -216,6 +216,7 @@ import Like from "@/components/elements/form/Like.vue";
 import Share from "@/components/elements/form/Share.vue";
 import Paginator from "@/components/elements/form/Paginator.vue";
 import tale_upsert from "@/views/tale/upsert.vue";
+import {shouldReloadFeedForRouteChange} from "@/services/FeedNavigation";
 
 export default {
   name: "tale_feed",
@@ -240,6 +241,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    routeContext: {
+      type: String,
+      default: "main",
+    },
   },
 
   data() {
@@ -260,11 +265,26 @@ export default {
         pagesTotal: 0,
       },
       feedForceShow: [],
+      savedScrollPosition: 0,
     };
   },
 
   created() {
     this.onAddressBarModified();
+  },
+
+  activated() {
+    this.$nextTick(() => {
+      window.scrollTo({
+        left: 0,
+        top: this.savedScrollPosition,
+        behavior: "auto",
+      });
+    });
+  },
+
+  beforeRouteLeave(to, from) {
+    this.savedScrollPosition = window.scrollY;
   },
 
   methods: {
@@ -296,7 +316,7 @@ export default {
         .catch(() => { });
     },
 
-    onAddressBarModified() {
+    onAddressBarModified(options = {}) {
 
       this.dataGetParams.txt = Array.isArray(this.$route.query?.txt)
         ? this.$route.query.txt.join(",")
@@ -309,10 +329,12 @@ export default {
         : parseInt(this.$route.query?.pageCurrentNumber || 1, 10);
 
       this.feedPagination.pageSize = this.$route.query?.pageSize || 10;
-      this.ajaGetFeed();
+      this.ajaGetFeed(options);
     },
 
-    ajaGetFeed() {
+    ajaGetFeed(options = {}) {
+      const scrollAfterLoad = options?.scrollAfterLoad === true;
+
       AjaxAlina.newInst({
         method: "GET",
         url: `${this.options.urlFeed}/${this.feedPagination.pageSize}/${this.feedPagination.pageCurrentNumber}`,
@@ -328,8 +350,8 @@ export default {
 
             this.feedPagination = aja.respBody.meta.tale;
 
-            if (this.feedPagination.pageCurrentNumber != 1) {
-              this.scrollTop();
+            if (scrollAfterLoad) {
+              this.$nextTick(() => this.scrollTop());
             }
           }
         },
@@ -395,7 +417,14 @@ export default {
 
   watch: {
     $route(to, from) {
-      this.onAddressBarModified();
+      if (shouldReloadFeedForRouteChange(to, from, this.routeContext)) {
+        this.onAddressBarModified({scrollAfterLoad: true});
+      }
+    },
+    "queryProps.owner"(newOwner, oldOwner) {
+      if (newOwner && newOwner !== oldOwner) {
+        this.onAddressBarModified({scrollAfterLoad: true});
+      }
     },
   },
 };

@@ -19,7 +19,11 @@
       <Messages />
       <Spinner />
       <Popup />
-      <router-view></router-view>
+      <router-view v-slot="{ Component }">
+        <KeepAlive include="tale_feed">
+          <component :is="Component" />
+        </KeepAlive>
+      </router-view>
     </div>
     <div
       class="alina-flex-vertical-footer"

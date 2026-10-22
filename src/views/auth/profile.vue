@@ -58,7 +58,12 @@
     <StandardButtons v-if="options.modeEdit" :onGo="runAJax" class="mt-5"></StandardButtons>
 
     <div class="mt-5">&nbsp;</div>
-    <tale_feed :doShowAuthorInfo="false" :queryProps="{ 'owner': this.curId }" v-if="this.curId"></tale_feed>
+    <tale_feed
+      v-if="this.curId"
+      route-context="profile"
+      :doShowAuthorInfo="false"
+      :queryProps="{owner: this.curId}">
+    </tale_feed>
 
   </div>
 </template>

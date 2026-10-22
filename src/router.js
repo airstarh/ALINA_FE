@@ -16,6 +16,7 @@ import tale_feed                     from "@/views/tale/feed";
 import notification                  from "@/views/auth/notification";
 import AjaxAlina                     from "@/services/AjaxAlina";
 import ConfigApi                     from "@/configs/ConfigApi";
+import {feedContext}                 from "@/services/FeedNavigation";
 
 export default createRouter({
 	history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,9 @@ export default createRouter({
 			if (document.querySelector(to.hash)) {
 				return {el: to.hash, top: to.hash === '#experience' ? 220 : 0};
 			}
+			return false;
+		}
+		if (feedContext(to) === "main" && feedContext(from) !== "main") {
 			return false;
 		}
 		return {left: 0, top: 0};
@@ -46,7 +50,8 @@ export default createRouter({
 		{
 			path:      "/",
 			name:      "feed",
-			component: tale_feed
+			component: tale_feed,
+			meta:      {feedContext: "main"}
 		},
 		{
 			path:      "/about",
@@ -98,7 +103,8 @@ export default createRouter({
 		},
 		{
 			path:      "/tale/feed",
-			component: tale_feed
+			component: tale_feed,
+			meta:      {feedContext: "main"}
 		},
 		//##################################################
 		//##################################################
@@ -130,11 +136,13 @@ export default createRouter({
 		},
 		{
 			path:      "/auth/profile",
-			component: auth_profile
+			component: auth_profile,
+			meta:      {feedContext: "profile"}
 		},
 		{
 			path:      "/auth/profile/:id",
-			component: auth_profile
+			component: auth_profile,
+			meta:      {feedContext: "profile"}
 		},
 		{
 			path:      "/auth/register",
