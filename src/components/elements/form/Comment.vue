@@ -192,7 +192,7 @@
 
       <div
         v-if="!CU.isLoggedIn()"
-        class="col">
+        class="col mt-5">
         <a
           href="#/auth/login"
           class="btn btn-sm btn-primary"
