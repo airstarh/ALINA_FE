@@ -21,7 +21,7 @@
       <strong v-else>{{ name }}</strong>
       <button v-if="canTag" type="button" class="chat-copy-button chat-message-tag" :disabled="replyDisabled"
               :title="$t('Mention a creature')" :aria-label="$t('Mention a creature')" @click="$emit('tag', message)">{{ $t('i_tag') }}</button>
-      <a v-if="privateHref" :href="privateHref" class="chat-copy-button chat-message-private"
+      <a v-if="privateHref" :href="privateHref" class="chat-copy-button chat-message-private" @click.prevent="$emit('open-private', message)"
          :title="$t('Open a separate chat')" :aria-label="$t('Open a separate chat')">{{ $t('i_private') }}</a>
       <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
     </div>
@@ -76,7 +76,7 @@ import {displayName, formatChatTimestamp, messageParts, parseMentionNotification
 import PopupObj from '@/services/PopupObj';
 import UtilsFS from '@/Utils/UtilsFS';
 const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
-const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'discuss', 'tag', 'rename-guest']);
+const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'discuss', 'tag', 'rename-guest', 'open-private']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);

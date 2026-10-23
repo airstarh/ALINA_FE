@@ -13,9 +13,22 @@ import {
   formatChatTimestamp,
   messageParts,
   parseReplyMessage,
+  privateChat,
   videoChatUrl,
   withoutParticipantMessages,
 } from '../src/components/Chat/chatProtocol.js';
+
+assert.deepEqual(
+  privateChat('user:10', 'Ten', 'user:2', 'Two'),
+  {channel: '2_10', name: 'PRIVATE: Two & Ten'},
+  'private chat title must follow canonical participant ordering',
+);
+assert.deepEqual(
+  privateChat('guest:123', 'Guest One', 'user:7', 'User Seven'),
+  {channel: '7_guest_123', name: 'PRIVATE: User Seven & Guest One'},
+  'registered users must precede guests in private chat title and channel',
+);
+assert.equal(privateChat('user:1', '', 'user:2', 'Two'), null, 'private chat requires both displayed names');
 
 let acceptGuestRename, watchChatIdentity;
 try {

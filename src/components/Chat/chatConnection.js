@@ -1,7 +1,7 @@
 import {createClientMessageId, publicChatUser} from './chatProtocol.js';
 
 // Framework-independent transport. All timers and handlers belong to this instance.
-export function createChatConnection({url, channel, getUser, onEvent, onStatus, WebSocketClass = WebSocket}) {
+export function createChatConnection({url, channel, chatName = '', getUser, onEvent, onStatus, WebSocketClass = WebSocket}) {
   let socket = null;
   let retryTimer = null;
   let typingTimer = null;
@@ -51,7 +51,7 @@ export function createChatConnection({url, channel, getUser, onEvent, onStatus, 
     }
     active.onopen = () => {
       if (stopped || socket !== active) return;
-      if (send({type: 'join', CurrentUser: publicChatUser(getUser())})) {
+      if (send({type: 'join', ...(chatName ? {chatName} : {}), CurrentUser: publicChatUser(getUser())})) {
         historyRequests.push('initial');
         attempts = 0;
         status('joining');

@@ -19,7 +19,7 @@
         <component :is="privateHref(person) ? 'a' : 'span'" :href="privateHref(person) || undefined"
                    :title="privateHref(person) ? $t('Open a separate chat') : undefined"
                    :aria-label="privateHref(person) ? `${$t('Open a separate chat')}: ${displayName(person.user, person.id)}` : undefined"
-                   style="display: inline-flex; flex: 0 0 40px;">
+                   style="display: inline-flex; flex: 0 0 40px;" @click.prevent="openPrivate(person)">
         <img v-if="avatar(person.user) && !failedAvatars[person.id]" :src="avatar(person.user)"
              alt="" class="chat-avatar" @error="failedAvatars[person.id] = true" />
         <span v-else class="chat-avatar chat-avatar-fallback" aria-hidden="true">{{ displayName(person.user, person.id).slice(0, 1).toUpperCase() }}</span>
@@ -40,11 +40,12 @@
 <script setup>
 import {reactive} from 'vue';
 import {useRouter} from 'vue-router';
-import {displayName, privateChannel, safeHttpUrl} from './chatProtocol.js';
+import {displayName, privateChat, safeHttpUrl} from './chatProtocol.js';
 const props = defineProps({
   participants: {type: Array, default: () => []},
   joinRequests: {type: Array, default: () => []},
   selfId: {type: String, default: ''},
+  selfUser: {type: Object, default: () => ({})},
   baseUrl: {type: String, required: true},
   connected: Boolean,
   canKick: Boolean,
@@ -52,8 +53,15 @@ const props = defineProps({
 defineEmits(['approve', 'kick']);
 const router = useRouter();
 function privateHref(person) {
-  const channel = privateChannel(props.selfId, person.id);
-  return channel ? router.resolve({path: '/chat', query: {channel}}).href : '';
+  const target = privateTarget(person);
+  return target ? router.resolve({path: '/chat', query: {channel: target.channel}}).href : '';
+}
+function privateTarget(person) {
+  return privateChat(props.selfId, displayName(props.selfUser, props.selfId), person.id, displayName(person.user, person.id));
+}
+function openPrivate(person) {
+  const target = privateTarget(person);
+  if (target) router.push({path: '/chat', query: {channel: target.channel}, state: {privateChatChannel: target.channel, privateChatName: target.name}});
 }
 const failedAvatars = reactive({});
 const avatar = user => safeHttpUrl(user?.emblem, props.baseUrl);

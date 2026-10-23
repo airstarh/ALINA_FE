@@ -51,7 +51,7 @@
     <p v-if="feedback" class="chat-feedback" role="status">{{ feedback }}</p>
     <p v-if="status.state === 'pending'" class="chat-pending" role="status">{{ $t('Waiting for a participant to approve your request.') }}</p>
     <div class="chat-layout" :class="{'chat-people-open': peopleOpen, 'chat-rooms-open': roomsOpen}">
-      <ChatParticipants :id="peopleId" :participants="participants" :self-id="selfId" :base-url="apiBaseUrl" :connected="connected"
+      <ChatParticipants :id="peopleId" :participants="participants" :self-id="selfId" :self-user="chatUser()" :base-url="apiBaseUrl" :connected="connected"
                         :can-kick="canKick" :join-requests="joinRequests" @approve="approveParticipant" @kick="kickParticipant" />
       <div class="chat-conversation">
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions" @scroll="trackScroll">
@@ -61,7 +61,7 @@
                        :can-tag="canTagMessage(message)" :private-href="privateMessageHref(message)" :can-rename-guest="canRenameGuestAuthor(message)"
                        :edited="editedMessageIds.has(message.id)" :edited-blinking="blinkingMessageIds.has(message.id)" :base-url="apiBaseUrl"
                        :replying="replyingMessageId === message.id" :reply-disabled="!!editingMessageId"
-                       @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor"
+                       @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
         </div>
         <button v-if="unread" type="button" class="chat-new-messages" @click="jumpToLatest">{{ $t('New messages') }} ({{ unread }}) ↓</button>
@@ -124,7 +124,7 @@ import {
   canonicalChatUrl,
   displayName,
   parseReplyMessage,
-  privateChannel,
+  privateChat,
   uploadedFileUrl,
   videoChatUrl,
   websocketUrl,
@@ -132,7 +132,7 @@ import {
 } from './chatProtocol.js';
 import './chat.css';
 
-const props = defineProps({channel: {type: String, default: '1'}, title: {type: String, default: ''}, apiBaseUrl: {type: String, default: () => ConfigApi.url_base}});
+const props = defineProps({channel: {type: String, default: '1'}, title: {type: String, default: ''}, initialChatName: {type: String, default: ''}, apiBaseUrl: {type: String, default: () => ConfigApi.url_base}});
 const {t} = useI18n();
 const router = useRouter();
 const pageSettings = reactive(PageSettings);
@@ -256,8 +256,15 @@ function canTagMessage(message) {
 }
 function privateMessageHref(message) {
   if (['bot', 'user_service'].includes(message.senderType)) return '';
-  const channel = privateChannel(selfId.value, message.participantId);
-  return channel ? router.resolve({path: '/chat', query: {channel}}).href : '';
+  const target = privateMessageTarget(message);
+  return target ? router.resolve({path: '/chat', query: {channel: target.channel}}).href : '';
+}
+function privateMessageTarget(message) {
+  return privateChat(selfId.value, displayName(chatUser(), selfId.value), message.participantId, displayName(message.CurrentUser, message.participantId));
+}
+function openPrivateMessage(message) {
+  const target = privateMessageTarget(message);
+  if (target) router.push({path: '/chat', query: {channel: target.channel}, state: {privateChatChannel: target.channel, privateChatName: target.name}});
 }
 function canRenameGuestAuthor(message) {
   return message.senderType === 'guest' && canRenameGuest(user);
@@ -416,7 +423,7 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   identityAbort = null;
   try {
     connection = createChatConnection({
-      url: websocketUrl(props.apiBaseUrl), channel, getUser: chatUser,
+      url: websocketUrl(props.apiBaseUrl), channel, chatName: props.initialChatName, getUser: chatUser,
       onEvent: receive,
       onStatus: value => {
         status.value = value;

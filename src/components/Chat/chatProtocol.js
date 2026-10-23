@@ -188,3 +188,18 @@ export function privateChannel(first, second) {
   });
   return sorted.map(x => `${x.guest ? 'guest_' : ''}${x.value}`).join('_');
 }
+
+export function privateChat(firstId, firstName, secondId, secondName) {
+  const channel = privateChannel(firstId, secondId);
+  const names = new Map([[firstId, String(firstName || '').trim()], [secondId, String(secondName || '').trim()]]);
+  if (!channel || [...names.values()].some(name => !name)) return null;
+  const orderedIds = [firstId, secondId].sort((a, b) => {
+    const aGuest = a.startsWith('guest:'), bGuest = b.startsWith('guest:');
+    if (aGuest !== bGuest) return aGuest ? 1 : -1;
+    const x = a.slice(a.indexOf(':') + 1), y = b.slice(b.indexOf(':') + 1);
+    if (!aGuest && x.length !== y.length) return x.length - y.length;
+    return x < y ? -1 : x > y ? 1 : 0;
+  });
+  const name = `PRIVATE: ${names.get(orderedIds[0])} & ${names.get(orderedIds[1])}`;
+  return [...name].length <= 200 ? {channel, name} : null;
+}
