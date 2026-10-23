@@ -54,4 +54,31 @@ export default class UtilsFS {
     }
     return UtilsFS.fType.generic;
   }
+
+  static formatFileSize(bytes) {
+    if (bytes === null || bytes === undefined || bytes === "") {
+      return "";
+    }
+
+    const size = Number(bytes);
+
+    if (!Number.isFinite(size) || size < 0) {
+      return "";
+    }
+
+    if (size < 1024) {
+      return `${size} B`;
+    }
+
+    const units = ["KB", "MB", "GB", "TB", "PB"];
+    let value = size;
+    let unitIndex = -1;
+
+    do {
+      value /= 1024;
+      unitIndex += 1;
+    } while (value >= 1024 && unitIndex < units.length - 1);
+
+    return `${Number(value.toFixed(1))} ${units[unitIndex]}`;
+  }
 }

@@ -56,6 +56,10 @@ export default class UtilsArray {
         return arr1.splice(arr1.length + 1, 0, ...arr2);
     }
 
+    static vueSensitivePrepend(arr1, arr2) {
+        return arr1.splice(0, 0, ...arr2);
+    }
+
     static pushIfNotAlready(arr, val) {
         if (!arr.includes(val)) {
             arr.push(val);

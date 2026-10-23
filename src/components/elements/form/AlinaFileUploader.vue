@@ -225,7 +225,7 @@ export default {
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             //_t.dArrFiles = aja.respBody.data;
-            UtilsArray.vueSensitiveConcat(_t.dArrFiles, aja.respBody.data);
+            UtilsArray.vueSensitivePrepend(_t.dArrFiles, aja.respBody.data);
             _t.loopFiles();
           }
           _t.pageRecalcIframeHeight();

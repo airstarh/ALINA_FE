@@ -63,6 +63,7 @@
       >
         {{ pFileJson.name_human }}
       </a>
+      <small v-if="fileSize" class="file-size">{{ fileSize }}</small>
     </div>
   </div>
 </template>
@@ -121,6 +122,9 @@ export default {
         return path;
       }
     },
+    fileSize() {
+      return UtilsFS.formatFileSize(this.pFileJson.size);
+    },
   },
 
   methods: {
@@ -150,6 +154,15 @@ export default {
 .alina-file.horizontal {
   height: 40vh;
   max-height: 400px;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+}
+
+.file-size {
+  display: block;
 }
 
 .alina-file.horizontal.audio,

@@ -30,7 +30,8 @@
     "check:chat-voice-ui": "node scripts/check-chat-voice-ui-contract.mjs",
     "check:chat-mentions": "node scripts/check-chat-mentions-contract.mjs",
     "check:feed-navigation": "node scripts/check-feed-navigation-contract.mjs",
-    "check:migration": "npm run check:vite && npm run check:vue3 && npm run check:bootstrap5 && npm run check:media-embed && npm run check:chat && npm run check:chat-rooms && npm run check:chat-voice-recorder && npm run check:chat-voice-ui && npm run check:chat-mentions && npm run check:feed-navigation"
+    "check:file-list": "node scripts/check-file-list.mjs",
+    "check:migration": "npm run check:vite && npm run check:vue3 && npm run check:bootstrap5 && npm run check:media-embed && npm run check:chat && npm run check:chat-rooms && npm run check:chat-voice-recorder && npm run check:chat-voice-ui && npm run check:chat-mentions && npm run check:feed-navigation && npm run check:file-list"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-vue": "^8.2.0",

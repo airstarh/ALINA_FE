@@ -22,6 +22,10 @@
           :download="flagShowDownload(row.fType) ? row.name_human : null"
           :placeholder="$t('File Name')" />
 
+        <small v-if="formattedFileSize(row.size)" class="file-size">
+          {{ formattedFileSize(row.size) }}
+        </small>
+
         <template v-if="modeEdit && isCurrentUserAllowedEdit(row)">
           <aInput
             type="number"
@@ -111,6 +115,9 @@ export default {
         UtilsFS.typeText,
         UtilsFS.typeWeb,
       ].includes(fType);
+    },
+    formattedFileSize(size) {
+      return UtilsFS.formatFileSize(size);
     },
   },
 };
