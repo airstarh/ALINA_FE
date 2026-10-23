@@ -513,10 +513,21 @@
           <aSelect v-model="aSelectRemote" modeEdit label="Remote" :options="[]"
             :searchRemoteUrl="`${ConfigApi.url_base}/tale/feed/10/1`" remoteQueryParam="txt"
             remoteResponsePath="data.tale" labelKey="header" />
+          <p class="mt-4">Label after the select:</p>
+          <aSelect v-model="aSelectLabelAfter" modeEdit label="Label after" :flagLabelFirst="false" :options="aSelectOptions" />
+          <p class="mt-3">Block layout:</p>
+          <aSelect v-model="aSelectBlock" modeEdit label="Block label" componentDisplay="block" inputWidth="100%" :options="aSelectOptions" />
+          <p class="mt-3">Inline selects:</p>
+          <aSelect v-model="aSelectInlineOne" modeEdit label="One" :options="aSelectOptions" />
+          inline text
+          <aSelect v-model="aSelectInlineTwo" modeEdit label="Two" :options="aSelectOptions" />
+          <p class="mt-3">Empty value forbidden; first enabled option is automatic:</p>
+          <aSelect v-model="aSelectRequired" modeEdit label="Required" :allowEmpty="false" :options="aSelectOptions" />
           <pre class="mt-3">single: {{ aSelectSingle }}
 multiple: {{ aSelectMultiple }}
 object: {{ aSelectObject }}
-remote: {{ aSelectRemote }}</pre>
+remote: {{ aSelectRemote }}
+required: {{ aSelectRequired }}</pre>
         </div>
         <div class="clear">&nbsp;</div>
 
@@ -574,6 +585,11 @@ export default {
       aSelectMultiple: [1, 4],
       aSelectObject: null,
       aSelectRemote: null,
+      aSelectLabelAfter: 3,
+      aSelectBlock: 4,
+      aSelectInlineOne: 1,
+      aSelectInlineTwo: 2,
+      aSelectRequired: null,
       aSelectOptions: [
         { id: 1, option_value: "Alpha" },
         { id: 2, option_value: "Beta" },

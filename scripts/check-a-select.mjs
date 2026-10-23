@@ -8,6 +8,10 @@ assert.match(componentSource, /class="aSelect-single"/, "single selection must r
 assert.match(componentSource, /<div class="a-flex"/, "custom select must not wrap interactive controls in a label");
 assert.match(componentSource, /@click\.stop="choose\(row\)"/, "option selection must complete on click without reaching the parent control");
 assert.match(componentSource, /remoteRows\(\).*flattenOptionTree\(this\.remoteTree\)/s, "server-filtered remote options must not be filtered locally a second time");
+assert.match(componentSource, /allowEmpty:\s*\{\s*type:\s*Boolean/, "empty selection must be an explicit component option");
+assert.match(componentSource, /class="aSelect-option aSelect-empty"/, "allowed empty selection must be visible in the dropdown");
+assert.match(componentSource, /ensureRequiredSelection\(\)/, "a required select must fall back to its first enabled option");
+assert.match(componentSource, /\.aSelect-single[^}]*background:\s*#120133/s, "single and multiple selected values must share the selected background");
 
 const flat = normalizeOptions([{ id: 1, option_value: "Alpha" }, { id: 2, option_value: "Beta" }]);
 assert.deepEqual(flat.map((item) => item.label), ["Alpha", "Beta"]);
