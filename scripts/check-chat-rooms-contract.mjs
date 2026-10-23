@@ -7,10 +7,12 @@ globalThis.window ??= {location: {href: 'https://zero.home:50443/#/chat/rooms'},
 let refreshChatIdentity;
 let createChatRoomsConnection;
 let createChatRoomTarget;
+let nextChatSidebar;
 try {
   ({refreshChatIdentity} = await import('../src/components/Chat/chatIdentity.js'));
   ({createChatRoomsConnection} = await import('../src/components/Chat/chatRoomsConnection.js'));
   ({createChatRoomTarget} = await import('../src/components/Chat/chatRoomCreation.js'));
+  ({nextChatSidebar} = await import('../src/components/Chat/chatSidebar.js'));
 } catch {
   // Assertions below provide a stable RED failure while the feature is absent.
 }
@@ -18,6 +20,11 @@ try {
 assert.equal(typeof refreshChatIdentity, 'function', 'shared chat identity refresh must exist');
 assert.equal(typeof createChatRoomsConnection, 'function', 'room directory transport must exist');
 assert.equal(typeof createChatRoomTarget, 'function', 'new-room route generator must exist');
+assert.equal(typeof nextChatSidebar, 'function', 'narrow chat sidebar switcher must exist');
+assert.equal(nextChatSidebar('', 'people'), 'people', 'people button must open the people drawer');
+assert.equal(nextChatSidebar('people', 'people'), '', 'clicking the active people button must close its drawer');
+assert.equal(nextChatSidebar('people', 'rooms'), 'rooms', 'opening rooms must close people and open rooms');
+assert.equal(nextChatSidebar('rooms', 'people'), 'people', 'opening people must close rooms and open people');
 assert.deepEqual(createChatRoomTarget('  Human room  ', 17, 'test-id'), {
   path: '/chat',
   query: {channel: 'room_17_test-id', name: 'Human room'},
@@ -107,7 +114,7 @@ assert.match(routerSource, /path:\s*["']\/chat\/rooms["']/, 'router must expose 
 const roomsRouteSource = routerSource.match(/\{\s*path:\s*["']\/chat\/rooms["'][\s\S]*?\n\s*\}/)?.[0] || '';
 assert.doesNotMatch(roomsRouteSource, /meta:\s*\{\s*chat:\s*true\s*\}/, 'room directory must use normal document scrolling instead of the locked chat-room layout');
 
-for (const relativePath of ['../src/views/Chat/rooms.vue', '../src/components/Chat/ChatRoomsTable.vue']) {
+for (const relativePath of ['../src/views/Chat/rooms.vue', '../src/components/Chat/ChatRoomsDirectory.vue', '../src/components/Chat/ChatRoomsTable.vue']) {
   const source = readFileSync(new URL(relativePath, import.meta.url), 'utf8');
   const {descriptor, errors} = parse(source, {filename: relativePath});
   assert.deepEqual(errors, [], `${relativePath} must parse as a Vue SFC`);

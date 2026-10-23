@@ -1,5 +1,25 @@
 <template>
-  <section class="chat-list mt-5 mb-5">
+  <section v-if="compact" class="chat-room-sidebar-section">
+    <div class="chat-sidebar-title">
+      <h2>{{ title }}</h2><span>{{ rows.length }}</span>
+    </div>
+    <p v-if="!rows.length" class="chat-muted">{{ $t('No chats found.') }}</p>
+    <ul v-else class="chat-room-sidebar-list">
+      <li v-for="room in rows" :key="room.id" class="chat-room-sidebar-item">
+        <div class="chat-room-sidebar-details">
+          <a :href="roomHref(room.channel)" class="chat-room-sidebar-name">{{ room.chatName }}</a>
+          <span class="chat-room-sidebar-status">
+            {{ $t('i_people') }} {{ room.participantCount }}
+            <span v-if="room.latestMessageAt">· {{ formatDate(room.latestMessageAt) }}</span>
+          </span>
+        </div>
+        <button v-if="canDelete" type="button" class="chat-button chat-kick"
+                :title="$t('Delete chat')" :aria-label="`${$t('Delete chat')}: ${room.chatName}`"
+                @click="$emit('delete', room)">×</button>
+      </li>
+    </ul>
+  </section>
+  <section v-else class="chat-list mt-5 mb-5">
     <h2 class="mb-5">{{ title }} ({{ rows.length }})</h2>
     <div class="table-responsive">
       <table class=" table-dark">
@@ -45,6 +65,7 @@ const props = defineProps({
   title: { type: String, required: true },
   section: { type: Object, required: true },
   canDelete: Boolean,
+  compact: Boolean,
 });
 defineEmits(['delete']);
 const router = useRouter();
@@ -77,5 +98,39 @@ function roomHref(channel) {
 
 .h-chat-name a {
   color: #fff;
+}
+.chat-room-sidebar-section + .chat-room-sidebar-section {
+  margin-top: 28px;
+}
+.chat-room-sidebar-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chat-room-sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.chat-room-sidebar-details {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+.chat-room-sidebar-name {
+  color: #edf2f8;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+.chat-room-sidebar-name:hover {
+  text-decoration: underline;
+}
+.chat-room-sidebar-status {
+  color: #a8b7c9;
+  font-size: 12px;
+  overflow-wrap: anywhere;
 }
 </style>

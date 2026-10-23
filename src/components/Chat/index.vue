@@ -21,6 +21,9 @@
         </button>
       </div>
       <div class="chat-header-actions">
+        <button type="button" class="chat-button chat-people-toggle" :aria-expanded="peopleOpen" :aria-controls="peopleId" @click="toggleSidebar('people')">
+          {{ $t('i_people') }} ({{ participants.length }})
+        </button>
         <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
                :placeholder="$t('Your nickname')" :aria-label="$t('Your nickname')" @input="changeGuestNickname" />
         <router-link v-if="!user.attributes.id" to="/auth/register" class="chat-button chat-register">{{ $t('SignUp') }}</router-link>
@@ -30,9 +33,6 @@
         <a :href="videoChatHref" class="chat-button chat-video-link" :title="$t('Open video chat')" :aria-label="$t('Open video chat')">
           <i class="bi bi-camera-video" aria-hidden="true"></i>
         </a>
-        <button type="button" class="chat-button chat-people-toggle" :aria-expanded="peopleOpen" :aria-controls="peopleId" @click="peopleOpen = !peopleOpen">
-          {{ $t('i_people') }} ({{ participants.length }})
-        </button>
         <button type="button" class="chat-button" :title="$t('Reconnect')" :aria-label="$t('Reconnect')" @click="reconnect">↻</button>
         <button v-if="canKick" type="button" class="chat-button chat-delete-room" :title="$t('Delete chat')" :aria-label="$t('Delete chat')" @click="deleteCurrentChat">X</button>
         <button type="button" class="chat-button chat-page-toggle"
@@ -42,11 +42,15 @@
                 @click="pageSettings.showMainMenu = !pageSettings.showMainMenu">
           <i class="bi" :class="pageSettings.showMainMenu ? 'bi-fullscreen' : 'bi-fullscreen-exit'" aria-hidden="true"></i>
         </button>
+        <button type="button" class="chat-button chat-rooms-toggle" :title="$t('Chat rooms')" :aria-label="$t('Chat rooms')"
+                :aria-expanded="roomsOpen" :aria-controls="roomsId" @click="toggleSidebar('rooms')">
+          <i class="bi bi-chat-square-text" aria-hidden="true"></i>
+        </button>
       </div>
     </header>
     <p v-if="feedback" class="chat-feedback" role="status">{{ feedback }}</p>
     <p v-if="status.state === 'pending'" class="chat-pending" role="status">{{ $t('Waiting for a participant to approve your request.') }}</p>
-    <div class="chat-layout" :class="{'chat-people-open': peopleOpen}">
+    <div class="chat-layout" :class="{'chat-people-open': peopleOpen, 'chat-rooms-open': roomsOpen}">
       <ChatParticipants :id="peopleId" :participants="participants" :self-id="selfId" :base-url="apiBaseUrl" :connected="connected"
                         :can-kick="canKick" :join-requests="joinRequests" @approve="approveParticipant" @kick="kickParticipant" />
       <div class="chat-conversation">
@@ -91,6 +95,9 @@
           <small class="chat-composer-hint">{{ $t('Ctrl+Enter to send · Enter for a new line') }}</small>
         </form>
       </div>
+      <aside :id="roomsId" class="chat-rooms-drawer">
+        <ChatRoomsDirectory :api-base-url="apiBaseUrl" compact />
+      </aside>
     </div>
   </section>
 </template>
@@ -105,7 +112,9 @@ import AjaxAlina from '@/services/AjaxAlina';
 import PageSettings from '@/services/PageSettings';
 import ChatMessage from './ChatMessage.vue';
 import ChatParticipants from './ChatParticipants.vue';
+import ChatRoomsDirectory from './ChatRoomsDirectory.vue';
 import {createChatConnection} from './chatConnection.js';
+import {nextChatSidebar} from './chatSidebar.js';
 import {createVoiceRecorder} from './chatVoiceRecorder.js';
 import {activeMentionQuery, appendMention, filterMentionCandidates, insertMention, synchronizeSelectedMentions} from './chatMentions.js';
 import {canManageChat, canManageMessage as mayManageMessage, canRenameGuest} from './chatPermissions.js';
@@ -132,6 +141,7 @@ pageSettings.showMainMenu = false;
 const inputId = `chat-input-${useId()}`;
 const chatNameId = `chat-name-${useId()}`;
 const peopleId = `chat-people-${useId()}`;
+const roomsId = `chat-rooms-${useId()}`;
 const normalizedChannel = computed(() => props.channel.trim() || '1');
 const videoChatHref = computed(() => videoChatUrl(window.location.origin, normalizedChannel.value));
 const messages = ref([]);
@@ -144,7 +154,9 @@ const editedMessageIds = reactive(new Set());
 const blinkingMessageIds = reactive(new Set());
 const error = ref('');
 const feedback = ref('');
-const peopleOpen = ref(false);
+const openSidebar = ref('');
+const peopleOpen = computed(() => openSidebar.value === 'people');
+const roomsOpen = computed(() => openSidebar.value === 'rooms');
 const status = ref({state: 'connecting'});
 const admitted = ref(false);
 const connected = computed(() => admitted.value);
@@ -173,6 +185,9 @@ const pendingDiscussionRequests = new Set();
 const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
 let mentionSearchTimer;
+function toggleSidebar(requested) {
+  openSidebar.value = nextChatSidebar(openSidebar.value, requested);
+}
 function chatUser() {
   return user.attributes.id ? user.attributes : {...user.attributes, firstname: '', lastname: '', nickname: guestNickname.value.trim()};
 }
@@ -386,6 +401,7 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   draft.value = drafts.get(channel) || '';
   error.value = '';
   feedback.value = '';
+  openSidebar.value = '';
   pendingChatName = '';
   requestedChatNameApplied = false;
   chatState.value = {name: props.title || channel, isAnionAllowed: true, isConfirmationRequired: false};

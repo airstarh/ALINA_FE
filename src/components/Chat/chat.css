@@ -21,9 +21,10 @@
 .alina-chat button:focus-visible, .alina-chat a:focus-visible, .alina-chat input:focus-visible, .alina-chat textarea:focus-visible { outline: 2px solid #86b8ff; outline-offset: 3px; }
 .alina-chat .chat-button { border: 1px solid #53637a; background: transparent; color: #edf2f8; border-radius: 6px; padding: 6px 10px; }
 .alina-chat .chat-video-link { text-decoration: none; }
-.alina-chat .chat-people-toggle { display: none; }
+.alina-chat .chat-people-toggle, .alina-chat .chat-rooms-toggle { display: none; }
 .alina-chat .chat-layout { display: flex; flex: 1 1 0; min-height: 0; }
 .alina-chat .chat-participants { width: 240px; flex: 0 0 240px; padding: 16px 12px; background: var(--chat-panel); border-right: 1px solid var(--chat-line); overflow-y: auto; }
+.alina-chat .chat-rooms-drawer { width: 300px; flex: 0 0 300px; padding: 16px 12px; overflow-y: auto; color: #edf2f8; background: var(--chat-panel); border-left: 1px solid var(--chat-line); }
 .alina-chat .chat-sidebar-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .alina-chat .chat-sidebar-title h2 { margin: 0; font-size: 14px; color: #edf2f8; }
 .alina-chat .chat-sidebar-title > span { padding: 2px 8px; border-radius: 12px; background: #344052; }
@@ -108,10 +109,12 @@
   .alina-chat .chat-title { flex-basis: 100%; }
   .alina-chat .chat-name-input { font-size: 16px; }
   .alina-chat .chat-header-actions { gap: 6px; }
-  .alina-chat .chat-people-toggle { display: inline-block; }
+  .alina-chat .chat-people-toggle, .alina-chat .chat-rooms-toggle { display: inline-block; }
   .alina-chat .chat-layout { position: relative; }
   .alina-chat .chat-participants { display: none; }
+  .alina-chat .chat-rooms-drawer { display: none; }
   .alina-chat .chat-people-open .chat-participants { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: min(280px, 85%); z-index: 2; box-shadow: 8px 0 24px #0006; }
+  .alina-chat .chat-rooms-open .chat-rooms-drawer { display: block; position: absolute; right: 0; top: 0; bottom: 0; width: min(380px, 95%); z-index: 3; padding: 12px; overflow-y: auto; color: #edf2f8; background: var(--chat-panel); box-shadow: -8px 0 24px #0006; }
 }
 
 .alina-chat .chat-shared-audio { display: block; width: min(100%, 500px); margin: 8px 0; }
