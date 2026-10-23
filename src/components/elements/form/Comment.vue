@@ -25,17 +25,17 @@
       <!--##################################################-->
       <!--region SUBMITTED COMMENTS-->
       <div
-        v-for="(tale, feedIndex) in feed"
+        v-for="tale in displayedFeed"
         :key="tale.id"
         class=""
         :data-id="tale.id"
         :data-to="tale.answer_to_tale_id"
-        :data-root="root_tale_id"
-        :data-index="feedIndex">
+        :data-root="root_tale_id">
         <div
           class="single-comment mt-5"
           :class="{
             highlight: $route.query.highlight == tale.id,
+            'pinned-comment': Number(tale.is_sticked) === 1,
           }">
           <!--##################################################-->
           <!--region User Info-->
@@ -83,29 +83,40 @@
               <div
                 class="d-flex"
                 style="gap: 3mm;"
-                v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
+                v-if="CU.ownsOrAdminOrModerator(tale.owner_id) || canPinComments">
+                <template v-if="CU.ownsOrAdminOrModerator(tale.owner_id)">
+                  <button
+                    @click="ajaDeleteComment(tale)"
+                    class="btn btn-sm btn-a">
+                    {{ $t("i_delete") }}
+                  </button>
+                  <button
+                    @click="toggleCommentEditMode(tale)"
+                    v-if="!state.feedsInEdit.includes(tale.id)"
+                    class="btn btn-sm btn-a">
+                    {{ $t("i_edit") }}
+                  </button>
+                  <button
+                    @click="commentCancelEdit(tale)"
+                    v-if="state.feedsInEdit.includes(tale.id)"
+                    class="btn btn-sm btn-a">
+                    {{ $t("i_undo") }}
+                  </button>
+                  <button
+                    @click="ajaCommentSave(tale)"
+                    v-if="state.feedsInEdit.includes(tale.id)"
+                    class="btn btn-sm btn-a">
+                    {{ $t("i_ok") }}
+                  </button>
+                </template>
                 <button
-                  @click="ajaDeleteComment(feed[feedIndex], feedIndex)"
-                  class="btn btn-sm btn-a">
-                  {{ $t("i_delete") }}
-                </button>
-                <button
-                  @click="toggleCommentEditMode(feed[feedIndex], feedIndex)"
-                  v-if="!state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-a">
-                  {{ $t("i_edit") }}
-                </button>
-                <button
-                  @click="commentCancelEdit(feed[feedIndex], feedIndex)"
-                  v-if="state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-a">
-                  {{ $t("i_undo") }}
-                </button>
-                <button
-                  @click="ajaCommentSave(feed[feedIndex], feedIndex)"
-                  v-if="state.feedsInEdit.includes(tale.id)"
-                  class="btn btn-sm btn-a">
-                  {{ $t("i_ok") }}
+                  v-if="canPinComments"
+                  type="button"
+                  class="btn btn-sm btn-a"
+                  :title="$t(Number(tale.is_sticked) === 1 ? 'Unpin comment' : 'Pin comment')"
+                  :aria-label="$t(Number(tale.is_sticked) === 1 ? 'Unpin comment' : 'Pin comment')"
+                  @click="ajaSetCommentPinned(tale, Number(tale.is_sticked) === 1 ? 0 : 1)">
+                  {{ Number(tale.is_sticked) === 1 ? $t("i_unpin") : $t("i_pin") }}
                 </button>
               </div>
             </div>
@@ -246,6 +257,7 @@ export default {
         urlFeed: `${ConfigApi.url_base}/tale/feed`,
         urlTaleUpsert: `${ConfigApi.url_base}/tale/upsert`,
         urlCommentDel: `${ConfigApi.url_base}/tale/delete`,
+        urlCommentStick: `${ConfigApi.url_base}/tale/StickComment`,
         style: {
           padding: "0",
           margin: "0",
@@ -263,6 +275,7 @@ export default {
       },
       body: "",
       feed: [],
+      pinnedComment: null,
       feedPagination: {
         pageCurrentNumber: "last",
         pageSize: this.level == 1 ? 10 : 10,
@@ -358,6 +371,10 @@ export default {
               this.feed = [];
               this.feed = aja.respBody.data.tale;
             }
+            this.pinnedComment =
+              this.level == 1
+                ? (aja.respBody.meta.pinned_comment ?? null)
+                : null;
             this.feedPagination = aja.respBody.meta.tale;
           }
           this.pageRecalcIframeHeight();
@@ -407,7 +424,7 @@ export default {
       this.feedPagination.pageCurrentNumber = pageCurrentNumber;
       this.ajaGetComments(false);
     },
-    toggleCommentEditMode(comment, feedIndex) {
+    toggleCommentEditMode(comment) {
       if (!this.state.feedsInEdit.includes(comment.id)) {
         comment.bodyPrevious = comment.body;
         this.state.feedsInEdit.push(comment.id);
@@ -416,7 +433,7 @@ export default {
       }
     },
 
-    ajaCommentSave(comment, feedIndex) {
+    ajaCommentSave(comment) {
       if (UtilsStr.stripHTML(comment.body) === "") {
         return;
       }
@@ -429,17 +446,17 @@ export default {
         postParams: comment,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.toggleCommentEditMode(comment, feedIndex);
+            this.toggleCommentEditMode(comment);
           }
           this.pageRecalcIframeHeight();
         },
       }).go();
     },
-    commentCancelEdit(comment, feedIndex) {
+    commentCancelEdit(comment) {
       comment.body = comment.bodyPrevious;
-      this.toggleCommentEditMode(comment, feedIndex);
+      this.toggleCommentEditMode(comment);
     },
-    ajaDeleteComment(comment, feedIndex) {
+    ajaDeleteComment(comment) {
       if (!confirm("Are you sure?")) {
         return;
       }
@@ -450,8 +467,22 @@ export default {
         postParams: comment,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            UtilsArray.elRemoveByIndex(this.feed, feedIndex);
+            this.ajaGetComments();
           }
+          this.pageRecalcIframeHeight();
+        },
+      }).go();
+    },
+    ajaSetCommentPinned(comment, isSticked) {
+      AjaxAlina.newInst({
+        method: "POST",
+        url: `${this.dConf.urlCommentStick}/${comment.id}`,
+        postParams: {
+          is_sticked: Number(isSticked) === 1 ? 1 : 0,
+          form_id: "actionStickComment",
+        },
+        onDone: () => {
+          this.ajaGetComments();
           this.pageRecalcIframeHeight();
         },
       }).go();
@@ -473,7 +504,7 @@ export default {
           this.$root.$emit("bv::toggle::collapse", idRoot);
         }
         //#####
-        this.feed.forEach((e, i) => {
+        this.displayedFeed.forEach((e) => {
           if (e.id == q.expand) {
             idAnsw = `comment-collapse-${q.expand}`;
             if (!this.AlinaStorage.Comment.expanded.includes(idAnsw)) {
@@ -522,6 +553,22 @@ export default {
     // },
   },
   computed: {
+    displayedFeed() {
+      if (!this.pinnedComment) {
+        return this.feed;
+      }
+
+      return [
+        this.pinnedComment,
+        ...this.feed.filter((comment) => comment.id != this.pinnedComment.id),
+      ];
+    },
+    canPinComments() {
+      return (
+        this.level == 1 &&
+        this.CU.ownsOrAdminOrModerator(this.root_tale_object?.owner_id)
+      );
+    },
     collapseId() {
       return `comment-collapse-${this.answer_to_tale_id}`;
     },
@@ -532,7 +579,9 @@ export default {
     commentsTotal: function () {
       let res = 0;
       if (this.feedPagination.rowsTotal) {
-        res = this.feedPagination.rowsTotal;
+        res =
+          Number(this.feedPagination.rowsTotal) +
+          (this.pinnedComment ? 1 : 0);
       }
       if (this.count_by_answer_to_tale_id) {
         res = this.count_by_answer_to_tale_id;
@@ -555,6 +604,10 @@ export default {
   background-color: #222;
   border-radius: 5%;
   padding: 10px 2px;
+}
+
+.pinned-comment {
+  background-color: #120133;
 }
 
 .highlight {
