@@ -61,7 +61,7 @@ import {computed, ref, watch} from 'vue';
 import { useRouter } from 'vue-router';
 import UtilsDate from '@/Utils/UtilsDate';
 import {prioritizeCurrentRoom} from '@/components/Chat/chatRoomDirectory.js';
-import {acknowledgeRoomMention, isRoomMentionUnread, loadRoomMentionAcknowledgements} from '@/components/Chat/chatRoomMentions.js';
+import {acknowledgeRoomMention, isRoomMentionUnread, loadRoomMentionAcknowledgements, prioritizeUnreadRooms} from '@/components/Chat/chatRoomMentions.js';
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -72,8 +72,11 @@ const props = defineProps({
 });
 defineEmits(['delete']);
 const router = useRouter();
-const rows = computed(() => prioritizeCurrentRoom(props.section?.rows, props.currentChannel));
 const seenMentions = ref(loadRoomMentionAcknowledgements(window.sessionStorage));
+const rows = computed(() => prioritizeUnreadRooms(
+  prioritizeCurrentRoom(props.section?.rows, props.currentChannel),
+  seenMentions.value,
+));
 watch([rows, () => props.currentChannel], ([currentRows, currentChannel]) => {
   const currentRoom = currentRows.find(room => room.channel === currentChannel);
   if (currentRoom) seenMentions.value = acknowledgeRoomMention(seenMentions.value, currentRoom, window.sessionStorage);

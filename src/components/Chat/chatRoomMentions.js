@@ -5,6 +5,15 @@ export function isRoomMentionUnread(room, seenAt = 0) {
   return !!room?.isMentioned && latestMentionAt > Number(seenAt || 0);
 }
 
+export function prioritizeUnreadRooms(rooms, acknowledgements = {}) {
+  const unread = [];
+  const ordinary = [];
+  for (const room of Array.isArray(rooms) ? rooms : []) {
+    (isRoomMentionUnread(room, acknowledgements[room.channel]) ? unread : ordinary).push(room);
+  }
+  return [...unread, ...ordinary];
+}
+
 export function loadRoomMentionAcknowledgements(storage) {
   try {
     const value = JSON.parse(storage?.getItem(storageKey) || '{}');
