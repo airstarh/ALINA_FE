@@ -502,6 +502,25 @@
         <div class="clear">&nbsp;</div>
 
         <div class="alina-ui-test-unit">
+          <h1>aSelect</h1>
+          <p>Local search, single value:</p>
+          <aSelect v-model="aSelectSingle" modeEdit label="Choice" :options="aSelectOptions" />
+          <p class="mt-3">Nested groups and multiple values:</p>
+          <aSelect v-model="aSelectMultiple" modeEdit multiple label="Choices" :options="aSelectOptions" />
+          <p class="mt-3">Returns the complete selected object:</p>
+          <aSelect v-model="aSelectObject" modeEdit returnObject clearable label="Object" :options="aSelectOptions" />
+          <p class="mt-3">Remote search (tales; type part of a title):</p>
+          <aSelect v-model="aSelectRemote" modeEdit label="Remote" :options="[]"
+            :searchRemoteUrl="`${ConfigApi.url_base}/tale/feed/10/1`" remoteQueryParam="txt"
+            remoteResponsePath="data.tale" labelKey="header" />
+          <pre class="mt-3">single: {{ aSelectSingle }}
+multiple: {{ aSelectMultiple }}
+object: {{ aSelectObject }}
+remote: {{ aSelectRemote }}</pre>
+        </div>
+        <div class="clear">&nbsp;</div>
+
+        <div class="alina-ui-test-unit">
           <h1>The emd</h1>
         </div>
       </div>
@@ -532,6 +551,7 @@ import UtilsStr from "@/Utils/UtilsStr";
 import AlinaTableJson from "@/components/AlinaTableJson";
 import AlinaFileUploader from "@/components/elements/form/AlinaFileUploader.vue";
 import aInput from "@/components/elements/form/aInput.vue";
+import aSelect from "@/components/elements/form/aSelect.vue";
 
 export default {
   name: "About",
@@ -542,6 +562,7 @@ export default {
     AlinaFileUploader,
     BorgEditor,
     aInput,
+    aSelect,
   },
   data() {
     const twoWeeksFromNow = new Date();
@@ -549,6 +570,23 @@ export default {
 
     return {
       aInputModel: "aInputModel",
+      aSelectSingle: 2,
+      aSelectMultiple: [1, 4],
+      aSelectObject: null,
+      aSelectRemote: null,
+      aSelectOptions: [
+        { id: 1, option_value: "Alpha" },
+        { id: 2, option_value: "Beta" },
+        {
+          group: "Animals",
+          options: [
+            { id: 3, option_value: "Cat" },
+            { id: 4, option_value: "Dog" },
+            { Birds: [{ id: 5, option_value: "Owl" }] },
+          ],
+        },
+        { Disabled: [{ id: 6, option_value: "Unavailable", disabled: true }] },
+      ],
       protoTale: {
         header: "This is Tale prototype",
         body: "",
