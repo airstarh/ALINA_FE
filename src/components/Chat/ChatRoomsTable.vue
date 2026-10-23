@@ -5,7 +5,7 @@
     </div>
     <p v-if="!rows.length" class="chat-muted">{{ $t('No chats found.') }}</p>
     <ul v-else class="chat-room-sidebar-list">
-      <li v-for="room in rows" :key="room.id" class="chat-room-sidebar-item" :class="{'is-mentioned': mentionIsUnread(room)}">
+      <li v-for="room in rows" :key="room.id" class="chat-room-sidebar-item" :class="{'is-mentioned': mentionIsUnread(room), 'is-current': room.channel === currentChannel}">
         <div class="chat-room-sidebar-details">
           <a :href="roomHref(room.channel)" class="chat-room-sidebar-name">{{ room.chatName }}</a>
           <span class="chat-room-sidebar-status">
@@ -25,7 +25,7 @@
       <table class=" table-dark">
         <tbody>
           <template v-for="(room, index) in rows" :key="room.id">
-            <tr>
+            <tr class="chat-room-table-row" :class="{'is-current': room.channel === currentChannel}">
               <td rowspan="2" class="align-middle">
                 <div class="chat-number">{{ offset + index + 1 }}</div>
               </td>
@@ -36,7 +36,7 @@
                 </h3>
               </td>
             </tr>
-            <tr>
+            <tr class="chat-room-table-row" :class="{'is-current': room.channel === currentChannel}">
               <td class="text-nowrap">🕒 {{ formatDate(room.latestMessageAt) }}</td>
               <td v-if="canDelete" class="text-end"><button type="button" class="btn btn-danger btn-sm" @click="$emit('delete', room)">X</button></td>
             </tr>
@@ -132,6 +132,10 @@ function roomHref(channel) {
   padding: 6px;
   border-radius: 6px;
   background: #123d2a;
+}
+.chat-room-sidebar-item.is-current,
+.chat-room-table-row.is-current {
+  background: #203d62;
 }
 .chat-room-sidebar-details {
   min-width: 0;

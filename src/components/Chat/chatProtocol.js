@@ -203,3 +203,10 @@ export function privateChat(firstId, firstName, secondId, secondName) {
   const name = `PRIVATE: ${names.get(orderedIds[0])} & ${names.get(orderedIds[1])}`;
   return [...name].length <= 200 ? {channel, name} : null;
 }
+
+export function prioritizeSelfParticipant(participants, selfId) {
+  const rows = Array.isArray(participants) ? participants : [];
+  const index = rows.findIndex(person => person?.id === selfId);
+  if (index <= 0) return rows;
+  return [rows[index], ...rows.slice(0, index), ...rows.slice(index + 1)];
+}

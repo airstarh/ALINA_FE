@@ -15,7 +15,7 @@
       </ul>
     </section>
     <ul class="chat-people-list">
-      <li v-for="person in participants" :key="person.id" class="chat-person">
+      <li v-for="person in orderedParticipants" :key="person.id" class="chat-person">
         <component :is="privateHref(person) ? 'a' : 'span'" :href="privateHref(person) || undefined"
                    :title="privateHref(person) ? $t('Open a separate chat') : undefined"
                    :aria-label="privateHref(person) ? `${$t('Open a separate chat')}: ${displayName(person.user, person.id)}` : undefined"
@@ -38,9 +38,9 @@
   </aside>
 </template>
 <script setup>
-import {reactive} from 'vue';
+import {computed, reactive} from 'vue';
 import {useRouter} from 'vue-router';
-import {displayName, privateChat, safeHttpUrl} from './chatProtocol.js';
+import {displayName, privateChat, prioritizeSelfParticipant, safeHttpUrl} from './chatProtocol.js';
 const props = defineProps({
   participants: {type: Array, default: () => []},
   joinRequests: {type: Array, default: () => []},
@@ -52,6 +52,7 @@ const props = defineProps({
 });
 defineEmits(['approve', 'kick']);
 const router = useRouter();
+const orderedParticipants = computed(() => prioritizeSelfParticipant(props.participants, props.selfId));
 function privateHref(person) {
   const target = privateTarget(person);
   return target ? router.resolve({path: '/chat', query: {channel: target.channel}}).href : '';

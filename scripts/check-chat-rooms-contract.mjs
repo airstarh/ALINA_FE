@@ -147,6 +147,9 @@ assert.doesNotMatch(tableSource, /<thead>/, 'compact room list must not render a
 assert.doesNotMatch(tableSource, /\$t\(['"]TOTAL['"]\)/, 'compact room list must not render a totals row');
 assert.match(tableSource, /\{\{\s*\$t\(['"]i_people['"]\)\s*\}\}\s*\{\{\s*room\.participantCount\s*\}\}/, 'participant icon and count must follow the chat name');
 assert.match(tableSource, /🕒\s*\{\{\s*formatDate\(room\.latestMessageAt\)\s*\}\}/, 'clock icon must precede the latest-message date');
+assert.match(tableSource, /'is-current':\s*room\.channel\s*===\s*currentChannel/, 'current room must receive a dedicated background class');
+assert.match(tableSource, /\.chat-room-sidebar-item\.is-current[\s\S]*background:\s*#203d62/, 'current compact room must use the own-message background');
+assert.match(tableSource, /\.chat-room-table-row\.is-current[\s\S]*background:\s*#203d62/, 'current full-list room must use the own-message background');
 const roomPageSource = readFileSync(new URL('../src/views/Chat/rooms.vue', import.meta.url), 'utf8');
 assert.match(roomPageSource, /chat-rooms-page/, 'room directory must expose its compact page wrapper');
 assert.match(roomPageSource, /class="container chat-rooms-page"/, 'room directory must use the established responsive ALINA page width');

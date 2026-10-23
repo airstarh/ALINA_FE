@@ -14,6 +14,7 @@ import {
   messageParts,
   parseReplyMessage,
   privateChat,
+  prioritizeSelfParticipant,
   videoChatUrl,
   withoutParticipantMessages,
 } from '../src/components/Chat/chatProtocol.js';
@@ -29,6 +30,11 @@ assert.deepEqual(
   'registered users must precede guests in private chat title and channel',
 );
 assert.equal(privateChat('user:1', '', 'user:2', 'Two'), null, 'private chat requires both displayed names');
+assert.deepEqual(
+  prioritizeSelfParticipant([{id: 'user:2'}, {id: 'user:1'}, {id: 'user:3'}], 'user:1').map(person => person.id),
+  ['user:1', 'user:2', 'user:3'],
+  'current participant must always appear first without changing the remaining order',
+);
 
 let acceptGuestRename, watchChatIdentity;
 try {
