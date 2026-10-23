@@ -5,6 +5,9 @@
       <strong class="chat-mention-target">{{ mentionNotification.target }}!!!</strong>
       {{ mentionNotification.caller }} {{ $t('calls you!') }}
     </div>
+    <div v-else-if="presenceNotification" class="chat-message-body">
+      {{ presenceNotification.name }} {{ $t(presenceNotification.action === 'enter' ? 'enters' : 'leaves') }}
+    </div>
     <div v-else class="chat-message-body">{{ message.msg }}</div>
     <footer v-if="canManage" class="chat-message-footer chat-service-footer">
       <span></span><button type="button" class="chat-copy-button chat-message-delete" :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
@@ -72,7 +75,7 @@
 </template>
 <script setup>
 import {computed, onBeforeUnmount, reactive, ref} from 'vue';
-import {displayName, formatChatTimestamp, messageParts, parseMentionNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
+import {displayName, formatChatTimestamp, messageParts, parseMentionNotification, parsePresenceNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
 import PopupObj from '@/services/PopupObj';
 import UtilsFS from '@/Utils/UtilsFS';
 const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
@@ -86,6 +89,7 @@ const guestNickname = computed(() => String(props.message.CurrentUser?.nickname 
 const isRobocop = computed(() => props.message.participantId === 'bot:robocop');
 const isUserService = computed(() => props.message.senderType === 'user_service');
 const mentionNotification = computed(() => isUserService.value ? parseMentionNotification(props.message.msg) : null);
+const presenceNotification = computed(() => isUserService.value ? parsePresenceNotification(props.message.msg) : null);
 const profilePath = computed(() => {
   const authorId = Number(props.message.CurrentUser?.id);
   return !isRobocop.value && Number.isInteger(authorId) && authorId > 0 ? `/auth/profile/${authorId}` : '';

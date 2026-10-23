@@ -69,6 +69,18 @@ export function parseMentionNotification(text) {
   }
 }
 
+export function parsePresenceNotification(text) {
+  const source = String(text || '');
+  if (!source.startsWith('PRESENCE:')) return null;
+  try {
+    const payload = JSON.parse(decodeURIComponent(source.slice('PRESENCE:'.length)));
+    if (!['enter', 'leave'].includes(payload?.action) || typeof payload?.name !== 'string' || !payload.name.trim()) return null;
+    return {action: payload.action, name: payload.name.trim()};
+  } catch {
+    return null;
+  }
+}
+
 export function formatChatTimestamp(value, now = new Date()) {
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return '';

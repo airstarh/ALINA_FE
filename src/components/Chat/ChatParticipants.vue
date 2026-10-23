@@ -25,7 +25,10 @@
         <span v-else class="chat-avatar chat-avatar-fallback" aria-hidden="true">{{ displayName(person.user, person.id).slice(0, 1).toUpperCase() }}</span>
         </component>
         <div class="chat-person-details">
-          <span class="chat-person-name">{{ displayName(person.user, person.id) }} <small v-if="person.id === selfId">({{ $t('you') }})</small></span>
+          <router-link v-if="person.user?.id" :to="`/auth/profile/${person.user.id}`" class="chat-person-name chat-person-profile">
+            {{ displayName(person.user, person.id) }} <small v-if="person.id === selfId">({{ $t('you') }})</small>
+          </router-link>
+          <span v-else class="chat-person-name">{{ displayName(person.user, person.id) }} <small v-if="person.id === selfId">({{ $t('you') }})</small></span>
           <span class="chat-person-status" :class="{'is-typing': person.typing}">
             <span class="chat-online-dot" :class="{'is-online': person.online}" aria-hidden="true"></span>{{ person.typing ? $t('Typing…') : person.inChat ? $t('In chat') : $t('Not in chat') }}
           </span>
@@ -67,3 +70,10 @@ function openPrivate(person) {
 const failedAvatars = reactive({});
 const avatar = user => safeHttpUrl(user?.emblem, props.baseUrl);
 </script>
+<style scoped>
+.chat-person-profile {
+  color: inherit;
+  font-weight: bold;
+  text-decoration: none;
+}
+</style>

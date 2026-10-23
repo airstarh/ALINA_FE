@@ -12,6 +12,7 @@ import {
   displayName,
   formatChatTimestamp,
   messageParts,
+  parsePresenceNotification,
   parseReplyMessage,
   privateChat,
   prioritizeSelfParticipant,
@@ -30,6 +31,9 @@ assert.deepEqual(
   'registered users must precede guests in private chat title and channel',
 );
 assert.equal(privateChat('user:1', '', 'user:2', 'Two'), null, 'private chat requires both displayed names');
+assert.deepEqual(parsePresenceNotification(`PRESENCE:${encodeURIComponent(JSON.stringify({action: 'enter', name: 'Alice'}))}`), {action: 'enter', name: 'Alice'}, 'presence entry must parse');
+assert.deepEqual(parsePresenceNotification(`PRESENCE:${encodeURIComponent(JSON.stringify({action: 'leave', name: 'Bob'}))}`), {action: 'leave', name: 'Bob'}, 'presence exit must parse');
+assert.equal(parsePresenceNotification('PRESENCE:broken'), null, 'malformed presence message must remain ordinary text');
 assert.deepEqual(
   prioritizeSelfParticipant([{id: 'user:2'}, {id: 'user:1'}, {id: 'user:3'}], 'user:1').map(person => person.id),
   ['user:1', 'user:2', 'user:3'],
@@ -205,6 +209,9 @@ try {
   assert.equal(messageParts('VOICE:javascript:alert(1)')[0].type, 'text', 'unsafe voice markers must remain text');
 
   const indexComponent = componentDescriptor('src/components/Chat/index.vue');
+  const participantsSource = readFileSync(new URL('../src/components/Chat/ChatParticipants.vue', import.meta.url), 'utf8');
+  assert.match(participantsSource, /<router-link\s+v-if="person\.user\?\.id"[^>]*:to="`\/auth\/profile\/\$\{person\.user\.id\}`"[^>]*class="chat-person-name chat-person-profile"/, 'registered participant name must link to the profile route');
+  assert.match(participantsSource, /\.chat-person-profile\s*\{[^}]*font-weight:\s*bold/s, 'registered participant profile link must be bold');
   const nameInput = elementWithClass(indexComponent, 'chat-name-input');
   assert.ok(nameInput, 'chat name input must always be visible');
   assert.equal(staticAttribute(nameInput, 'maxlength'), '200');
