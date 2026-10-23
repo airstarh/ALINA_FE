@@ -96,7 +96,7 @@
         </form>
       </div>
       <aside :id="roomsId" class="chat-rooms-drawer">
-        <ChatRoomsDirectory :api-base-url="apiBaseUrl" compact />
+        <ChatRoomsDirectory :api-base-url="apiBaseUrl" :current-channel="normalizedChannel" compact />
       </aside>
     </div>
   </section>

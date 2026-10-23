@@ -7,10 +7,10 @@
       {{ status.error || $t('Could not load chat rooms.') }}
       <button type="button" class="btn btn-danger btn-sm ms-2" @click="retry">{{ $t('Retry') }}</button>
     </p>
-    <ChatRoomsTable :title="$t('My chats')" :section="rooms.mine" :can-delete="canDelete" :compact="compact" @delete="deleteRoom" />
+    <ChatRoomsTable :title="$t('My chats')" :section="rooms.mine" :can-delete="canDelete" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom" />
     <template v-if="user.attributes.id">
       <div v-if="!compact" class="mb-5">&nbsp;</div>
-      <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" :can-delete="canDelete" :compact="compact" @delete="deleteRoom" />
+      <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" :can-delete="canDelete" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom" />
     </template>
   </section>
 </template>
@@ -28,6 +28,7 @@ import {canKickParticipants, websocketUrl} from '@/components/Chat/chatProtocol.
 const props = defineProps({
   apiBaseUrl: {type: String, default: () => ConfigApi.url_base},
   compact: Boolean,
+  currentChannel: {type: String, default: ''},
 });
 const user = CurrentUser.obj();
 const {t} = useI18n();

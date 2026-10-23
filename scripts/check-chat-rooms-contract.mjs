@@ -8,11 +8,15 @@ let refreshChatIdentity;
 let createChatRoomsConnection;
 let createChatRoomTarget;
 let nextChatSidebar;
+let prioritizeCurrentRoom;
+let isRoomMentionUnread;
 try {
   ({refreshChatIdentity} = await import('../src/components/Chat/chatIdentity.js'));
   ({createChatRoomsConnection} = await import('../src/components/Chat/chatRoomsConnection.js'));
   ({createChatRoomTarget} = await import('../src/components/Chat/chatRoomCreation.js'));
   ({nextChatSidebar} = await import('../src/components/Chat/chatSidebar.js'));
+  ({prioritizeCurrentRoom} = await import('../src/components/Chat/chatRoomDirectory.js'));
+  ({isRoomMentionUnread} = await import('../src/components/Chat/chatRoomMentions.js'));
 } catch {
   // Assertions below provide a stable RED failure while the feature is absent.
 }
@@ -21,6 +25,11 @@ assert.equal(typeof refreshChatIdentity, 'function', 'shared chat identity refre
 assert.equal(typeof createChatRoomsConnection, 'function', 'room directory transport must exist');
 assert.equal(typeof createChatRoomTarget, 'function', 'new-room route generator must exist');
 assert.equal(typeof nextChatSidebar, 'function', 'narrow chat sidebar switcher must exist');
+assert.deepEqual(prioritizeCurrentRoom([{channel: 'a'}, {channel: 'b'}], 'b').map(room => room.channel), ['b', 'a'], 'entered room must be rendered first');
+assert.deepEqual(prioritizeCurrentRoom([{channel: 'a'}, {channel: 'b'}], 'missing').map(room => room.channel), ['a', 'b'], 'unknown room must preserve server order');
+assert.equal(isRoomMentionUnread({isMentioned: true, latestMentionAt: 200}, 100), true, 'a newer mention must highlight a room');
+assert.equal(isRoomMentionUnread({isMentioned: true, latestMentionAt: 200}, 200), false, 'an opened mention must stop highlighting a room');
+assert.equal(isRoomMentionUnread({isMentioned: false, latestMentionAt: null}, 0), false, 'ordinary rooms must remain calm');
 assert.equal(nextChatSidebar('', 'people'), 'people', 'people button must open the people drawer');
 assert.equal(nextChatSidebar('people', 'people'), '', 'clicking the active people button must close its drawer');
 assert.equal(nextChatSidebar('people', 'rooms'), 'rooms', 'opening rooms must close people and open rooms');

@@ -5,7 +5,7 @@
     </div>
     <p v-if="!rows.length" class="chat-muted">{{ $t('No chats found.') }}</p>
     <ul v-else class="chat-room-sidebar-list">
-      <li v-for="room in rows" :key="room.id" class="chat-room-sidebar-item">
+      <li v-for="room in rows" :key="room.id" class="chat-room-sidebar-item" :class="{'is-mentioned': mentionIsUnread(room)}">
         <div class="chat-room-sidebar-details">
           <a :href="roomHref(room.channel)" class="chat-room-sidebar-name">{{ room.chatName }}</a>
           <span class="chat-room-sidebar-status">
@@ -57,19 +57,30 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import {computed, ref, watch} from 'vue';
 import { useRouter } from 'vue-router';
 import UtilsDate from '@/Utils/UtilsDate';
+import {prioritizeCurrentRoom} from '@/components/Chat/chatRoomDirectory.js';
+import {acknowledgeRoomMention, isRoomMentionUnread, loadRoomMentionAcknowledgements} from '@/components/Chat/chatRoomMentions.js';
 
 const props = defineProps({
   title: { type: String, required: true },
   section: { type: Object, required: true },
   canDelete: Boolean,
   compact: Boolean,
+  currentChannel: {type: String, default: ''},
 });
 defineEmits(['delete']);
 const router = useRouter();
-const rows = computed(() => Array.isArray(props.section?.rows) ? props.section.rows : []);
+const rows = computed(() => prioritizeCurrentRoom(props.section?.rows, props.currentChannel));
+const seenMentions = ref(loadRoomMentionAcknowledgements(window.sessionStorage));
+watch([rows, () => props.currentChannel], ([currentRows, currentChannel]) => {
+  const currentRoom = currentRows.find(room => room.channel === currentChannel);
+  if (currentRoom) seenMentions.value = acknowledgeRoomMention(seenMentions.value, currentRoom, window.sessionStorage);
+}, {immediate: true});
+function mentionIsUnread(room) {
+  return isRoomMentionUnread(room, seenMentions.value[room.channel]);
+}
 const offset = computed(() => Number(props.section?.offset) || 0);
 function formatDate(timestamp) {
   return timestamp === null || timestamp === undefined
@@ -112,6 +123,12 @@ function roomHref(channel) {
   align-items: center;
   gap: 10px;
   margin-bottom: 18px;
+}
+.chat-room-sidebar-item.is-mentioned {
+  margin-inline: -6px;
+  padding: 6px;
+  border-radius: 6px;
+  background: #123d2a;
 }
 .chat-room-sidebar-details {
   min-width: 0;
