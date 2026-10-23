@@ -41,6 +41,26 @@ export default class AjaxAlina extends Ajax {
             UtilsSys.processMessages(this.respBody);
             //endregion Messages
             // ##################################################
+            const clientRedirect = this.respBody?.meta?.client_redirect;
+
+            if (
+                this.classBehaviour.followRedirects
+                && typeof clientRedirect?.url === 'string'
+                && clientRedirect.url.length > 0
+            ) {
+                SpinnerObj.isOn = false;
+                this.options.onDone = () => {};
+
+                if (clientRedirect.replace) {
+                    window.location.replace(clientRedirect.url);
+                }
+                else {
+                    window.location.assign(clientRedirect.url);
+                }
+
+                return;
+            }
+            // ##################################################
             if (this.resp.redirected) {
                 if (this.respBody["data"] && this.respBody["data"]["form_id"]) {
                     const formId       = this.respBody["data"]["form_id"];
