@@ -207,8 +207,13 @@ export default {
         .go();
     }, //##################################################
     runAJax() {
-      const postParams = {...this.post};
-      delete postParams.password;
+      const editableFields = ['id', 'mail', 'firstname', 'lastname', 'birth', 'about_myself', 'emblem', 'language'];
+      const postParams = Object.fromEntries(
+        editableFields
+          .filter(field => Object.prototype.hasOwnProperty.call(this.post, field))
+          .map(field => [field, this.post[field]])
+      );
+      postParams.form_id = 'profile';
       AjaxAlina.newInst({
         method: 'POST',
         url: this.options.url,

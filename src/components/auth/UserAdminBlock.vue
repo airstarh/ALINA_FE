@@ -121,13 +121,17 @@ export default {
       this.saving = true;
       this.saved = false;
       this.error = '';
-      const postParams = {
-        ...this.form,
-        role_ids: this.form.role_ids || [],
-        form_id: 'actionProfileAdmin',
-      };
-      if (!String(postParams.password ?? '').trim()) {
-        delete postParams.password;
+      const editableFields = ['id', 'mail', 'firstname', 'lastname', 'birth', 'language', 'is_verified', 'banned_till', 'is_deleted'];
+      const postParams = Object.fromEntries(
+        editableFields
+          .filter(field => Object.prototype.hasOwnProperty.call(this.form, field))
+          .map(field => [field, this.form[field]])
+      );
+      postParams.rbac_user_role = [...new Set((this.form.role_ids || []).map(Number))];
+      postParams.form_id = 'actionProfileAdmin';
+      const password = String(this.form.password ?? '');
+      if (password.trim()) {
+        postParams.password = password;
       }
       AjaxAlina.newInst({
         method: 'POST',
