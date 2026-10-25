@@ -127,6 +127,8 @@
                 <Like
                   :pAmountLikes="tale.count_like"
                   :pCurrentUserLiked="tale.current_user_liked"
+                  :pAmountDislikes="tale.count_dislike"
+                  :pCurrentUserDisliked="tale.current_user_disliked"
                   ref_table="tale"
                   :ref_id="tale.id"></Like>
               </div>

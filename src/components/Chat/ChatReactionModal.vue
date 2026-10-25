@@ -1,5 +1,5 @@
 <template>
-  <b-modal v-model="open" class="chat-reaction-modal" :title="$t('Reactions')" :ok-only="true" size="sm">
+  <b-modal v-model="open" class="chat-reaction-modal" dialog-class="reaction-summary-dialog" :title="$t('Reactions')" :ok-only="true">
     <table class="chat-reaction-table">
       <thead><tr><th>+</th><th>−</th></tr></thead>
       <tbody>

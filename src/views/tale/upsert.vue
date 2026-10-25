@@ -405,6 +405,8 @@
                 v-if="tale.is_comment_denied != 1"
                 :pAmountLikes="tale.count_like"
                 :pCurrentUserLiked="tale.current_user_liked"
+                :pAmountDislikes="tale.count_dislike"
+                :pCurrentUserDisliked="tale.current_user_disliked"
                 ref_table="tale"
                 :ref_id="tale.id"></Like>
             </div>
@@ -509,6 +511,8 @@ export default {
         owner_id: -1,
         count_like: "",
         current_user_liked: "",
+        count_dislike: "",
+        current_user_disliked: "",
         router_alias: "",
         router_alias_id: null,
         iframe: null,
