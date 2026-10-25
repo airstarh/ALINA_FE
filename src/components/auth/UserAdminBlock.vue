@@ -17,10 +17,12 @@
           <div class="user-admin-grid">
             <aInput :modelValue="String(form.id)" type="text" :modeEdit="false" :label="$t('ID')" componentDisplay="block" />
             <aInput v-model="form.mail" type="email" :modeEdit="true" :label="$t('Email')" componentDisplay="block" />
+            <aInput v-model="form.password" type="password" :modeEdit="true" :label="$t('TXT_PASSWORD')"
+                    :placeholder="$t('Leave empty to keep the current password')" componentDisplay="block" />
             <aInput v-model="form.firstname" type="text" :modeEdit="true" :label="$t('First name')" componentDisplay="block" />
             <aInput v-model="form.lastname" type="text" :modeEdit="true" :label="$t('Last name')" componentDisplay="block" />
             <aInput v-model="form.language" type="text" :modeEdit="true" :label="$t('Language')" componentDisplay="block" />
-            <aInput :modelValue="form.created_at" type="text" :modeEdit="false" :label="$t('Created')" componentDisplay="block" />
+            <AlinaDatePicker v-model="form.created_at" :label="$t('Created')" :idq="`admin-created-${userId}`" format="dateTime" :modeEdit="false" />
           </div>
 
           <div class="user-admin-dates">
@@ -34,9 +36,21 @@
           </div>
 
           <div class="user-admin-actions">
-            <button type="submit" class="btn btn-a" :disabled="saving">{{ $t(saving ? 'i_loading' : 'Save') }}</button>
+            <button type="button" class="btn btn-danger" :disabled="saving || deleting" @click="deleteUser">
+              {{ $t(deleting ? 'i_loading' : 'i_delete') }}
+            </button>
+            <button type="submit" class="btn btn-a" :disabled="saving || deleting">{{ $t(saving ? 'i_loading' : 'Save') }}</button>
             <span v-if="saved" class="user-admin-saved">{{ $t('Saved') }}</span>
           </div>
+
+          <AlinaFileUploader
+            :entity_id="Number(userId)"
+            entity_table="user"
+            :owner_id="Number(userId)"
+            :ownLength="Number(form.count_files || 0)"
+            :modeEdit="false"
+            :expanded="false"
+            loadByOwner />
         </form>
       </div>
     </b-collapse>
@@ -49,10 +63,11 @@ import ConfigApi from '@/configs/ConfigApi';
 import aInput from '@/components/elements/form/aInput.vue';
 import aSelect from '@/components/elements/form/aSelect.vue';
 import AlinaDatePicker from '@/components/elements/form/AlinaDatePicker.vue';
+import AlinaFileUploader from '@/components/elements/form/AlinaFileUploader.vue';
 
 export default {
   name: 'UserAdminBlock',
-  components: {aInput, aSelect, AlinaDatePicker},
+  components: {aInput, aSelect, AlinaDatePicker, AlinaFileUploader},
   emits: ['saved'],
   props: {
     userId: {type: [Number, String], required: true},
@@ -64,6 +79,7 @@ export default {
       loaded: false,
       loading: false,
       saving: false,
+      deleting: false,
       saved: false,
       error: '',
       savedTimer: null,
@@ -91,7 +107,7 @@ export default {
         onDone: aja => {
           this.loading = false;
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.form = {...aja.respBody.data.user};
+            this.form = {...aja.respBody.data.user, password: ''};
             this.roles = aja.respBody.data.roles || [];
             this.loaded = true;
           } else {
@@ -112,7 +128,7 @@ export default {
         onDone: aja => {
           this.saving = false;
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.form = {...aja.respBody.data.user};
+            this.form = {...aja.respBody.data.user, password: ''};
             this.roles = aja.respBody.data.roles || this.roles;
             this.saved = true;
             this.$emit('saved', this.form);
@@ -120,6 +136,26 @@ export default {
             this.savedTimer = setTimeout(() => { this.saved = false; }, 3000);
           } else {
             this.error = this.$t('Could not save administrative user data.');
+          }
+        },
+      }).go();
+    },
+    deleteUser() {
+      if (this.deleting || this.saving) return;
+      if (!window.confirm(this.$t('Delete this user and all related data?'))) return;
+      if (!window.confirm(this.$t('This cannot be undone. Continue?'))) return;
+      this.deleting = true;
+      this.error = '';
+      AjaxAlina.newInst({
+        method: 'POST',
+        url: `${ConfigApi.url_base}/auth/UserDelete/${this.userId}`,
+        postParams: {id: this.userId, form_id: 'actionUserDelete'},
+        onDone: aja => {
+          this.deleting = false;
+          if (aja.respBody.meta.alina_response_success == 1) {
+            this.$router.replace('/auth/users');
+          } else {
+            this.error = this.$t('Could not delete user.');
           }
         },
       }).go();

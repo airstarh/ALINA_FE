@@ -30,6 +30,10 @@
             {{ $t(copiedFileId === row.id ? 'i_ok' : 'i_copy') }}
           </button>
         </div>
+        <router-link v-if="row.source_path" :to="row.source_path" class="file-source-link">
+          {{ sourceLabel(row) }}
+        </router-link>
+        <span v-else-if="row.source_type" class="file-source-link">{{ sourceLabel(row) }}</span>
 
         <template v-if="modeEdit && isCurrentUserAllowedEdit(row)">
           <aInput
@@ -129,6 +133,11 @@ export default {
     formattedFileSize(size) {
       return UtilsFS.formatFileSize(size);
     },
+    sourceLabel(file) {
+      const labels = {tale: 'Tale', comment: 'Comment', user: 'Profile'};
+      const label = this.$t(labels[file.source_type] || file.source_type);
+      return `${label} #${file.entity_id}`;
+    },
     async copyFileUrl(file) {
       try {
         await navigator.clipboard.writeText(this.fileUrl(file));
@@ -192,6 +201,7 @@ export default {
 .file-meta { display: flex; align-items: center; gap: .4rem; }
 .file-copy-button { min-width: 2rem; padding: 0 .35rem; border: 1px solid #777; border-radius: .25rem; color: inherit; background: transparent; }
 .file-copy-button:hover { background: #444; }
+.file-source-link { color: #8fc7ff !important; font-size: .85rem; }
 
 .vertical-file-details :deep(a),
 .vertical-file-details :deep(a:link),

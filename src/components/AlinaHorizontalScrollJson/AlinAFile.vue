@@ -69,6 +69,10 @@
           {{ $t(copied ? 'i_ok' : 'i_copy') }}
         </button>
       </span>
+      <router-link v-if="pFileJson.source_path" :to="pFileJson.source_path" class="file-source-link">
+        {{ sourceLabel }}
+      </router-link>
+      <span v-else-if="pFileJson.source_type" class="file-source-link">{{ sourceLabel }}</span>
     </div>
   </div>
 </template>
@@ -132,6 +136,11 @@ export default {
     fileSize() {
       return UtilsFS.formatFileSize(this.pFileJson.size);
     },
+    sourceLabel() {
+      const labels = {tale: 'Tale', comment: 'Comment', user: 'Profile'};
+      const label = this.$t(labels[this.pFileJson.source_type] || this.pFileJson.source_type);
+      return `${label} #${this.pFileJson.entity_id}`;
+    },
   },
 
   beforeUnmount() {
@@ -188,6 +197,7 @@ export default {
 .file-size { display: inline-block; }
 .file-copy-button { min-width: 2rem; padding: 0 .35rem; border: 1px solid #777; border-radius: .25rem; color: inherit; background: transparent; }
 .file-copy-button:hover { background: #444; }
+.file-source-link { display: block; color: #8fc7ff; font-size: .85rem; }
 
 .alina-file.horizontal.audio,
 .alina-file.horizontal.video {

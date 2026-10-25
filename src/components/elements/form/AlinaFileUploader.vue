@@ -18,14 +18,14 @@
         </b-button>
 
         <button
-          v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id) && dArrFiles.length > 0"
+          v-if="!loadByOwner && ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id) && dArrFiles.length > 0"
           class="btn btn-a"
           @click="dModeEdit = !dModeEdit">
           {{ dModeEdit ? $t("i_undo") : $t("i_edit") }}
         </button>
 
         <b-button
-          v-if="dModeEdit && dArrFiles.length > 0"
+          v-if="!loadByOwner && dModeEdit && dArrFiles.length > 0"
           size="md"
           class="btn btn-a"
           @click="onChangeBulk(dArrFiles)">{{ $t("i_ok") }}</b-button>
@@ -53,6 +53,7 @@
 
         <div class="d-flex justify-content-center">
           <aInput
+            v-if="!loadByOwner"
             type="file"
             :modeEdit="dModeEdit"
             accept="*/*"
@@ -144,6 +145,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    loadByOwner: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -154,6 +159,7 @@ export default {
         urlFileUpdate: `${ConfigApi.url_base}/AdminDbManager/EditRow`,
         urlFileUpdateBulk: `${ConfigApi.url_base}/AdminDbManager/UpdateBulk`,
         urlGetFiles: `${ConfigApi.url_base}/FileUpload/getFiles`,
+        urlGetFilesByOwner: `${ConfigApi.url_base}/FileUpload/getFilesByOwner`,
       },
       ConfigApi,
       dArrFiles: [],
@@ -194,7 +200,9 @@ export default {
       const _t = this;
       AjaxAlina.newInst({
         method: "GET",
-        url: `${_t.dConf.urlGetFiles}/${_t.entity_table}/${_t.entity_id}`,
+        url: _t.loadByOwner
+          ? `${_t.dConf.urlGetFilesByOwner}/${_t.owner_id}`
+          : `${_t.dConf.urlGetFiles}/${_t.entity_table}/${_t.entity_id}`,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.clear(_t.dArrFiles);
