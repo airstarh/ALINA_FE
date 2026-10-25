@@ -54,7 +54,11 @@
       <ChatParticipants :id="peopleId" :participants="participants" :self-id="selfId" :self-user="chatUser()" :base-url="apiBaseUrl" :connected="connected"
                         :can-kick="canKick" :join-requests="joinRequests" @approve="approveParticipant" @kick="kickParticipant" />
       <div class="chat-conversation">
-        <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions" @scroll="trackScroll">
+        <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions"
+             @scroll="trackScroll" @wheel.passive="trackHistoryIntent">
+          <button v-if="showLoadOlder" type="button" class="chat-load-older" :disabled="loadingOlder" @click="loadOlderMessages">
+            {{ $t('Load older') }}
+          </button>
           <p v-if="!messages.length" class="chat-empty">{{ connected ? $t('No messages yet. Start the conversation.') : $t('Connecting to chat…') }}</p>
           <template v-for="entry in timelineEntries" :key="entry.key">
           <ChatMessage v-if="entry.type === 'message'" :message="entry.message" :first-message="entry.index === 0" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(entry.message)"
@@ -125,6 +129,7 @@ import {activeMentionQuery, appendMention, filterMentionCandidates, insertMentio
 import {canManageChat, canManageMessage as mayManageMessage, canRenameGuest} from './chatPermissions.js';
 import {acceptGuestRename, refreshChatIdentity, watchChatIdentity} from './chatIdentity.js';
 import {groupChatTimeline} from './chatActivity.js';
+import {prependOlderMessages, preservedScrollTop} from './chatHistory.js';
 import {
   canKickParticipants,
   canonicalChatUrl,
@@ -179,6 +184,9 @@ const mentionQuery = ref(null);
 const mentionOptionIndex = ref(0);
 const following = ref(true);
 const unread = ref(0);
+const hasOlder = ref(false);
+const showLoadOlder = ref(false);
+const loadingOlder = ref(false);
 const user = CurrentUser.obj();
 const stopIdentityWatch = watchChatIdentity(user, () => connection?.updateUser());
 const canKick = computed(() => canKickParticipants(user));
@@ -281,6 +289,17 @@ function trackScroll() {
   if (!el) return;
   following.value = el.scrollHeight - el.scrollTop - el.clientHeight < 80;
   if (following.value) unread.value = 0;
+  if (hasOlder.value && el.scrollTop <= 8) showLoadOlder.value = true;
+}
+function trackHistoryIntent(event) {
+  if (event.deltaY < 0 && hasOlder.value && (messageList.value?.scrollTop ?? 0) <= 8) showLoadOlder.value = true;
+}
+function loadOlderMessages() {
+  const firstId = messages.value[0]?.id;
+  const el = messageList.value;
+  if (!firstId || !el || loadingOlder.value || !connection?.loadOlder(firstId)) return;
+  loadingOlder.value = true;
+  showLoadOlder.value = false;
 }
 async function scrollIfFollowing() {
   await nextTick();
@@ -304,15 +323,28 @@ function clearMissingReplySelection() {
 function receive(event) {
   if (event.type === 'history' && Array.isArray(event.messages)) {
     messages.value = event.messages;
+    hasOlder.value = event.hasOlder === true;
+    showLoadOlder.value = false;
+    loadingOlder.value = false;
     clearMissingReplySelection();
     unread.value = 0;
     following.value = true;
     scrollIfFollowing();
+  } else if (event.type === 'history_older' && Array.isArray(event.messages)) {
+    const el = messageList.value;
+    const previousHeight = el?.scrollHeight ?? 0;
+    const previousTop = el?.scrollTop ?? 0;
+    messages.value = prependOlderMessages(messages.value, event.messages);
+    hasOlder.value = event.hasOlder === true;
+    loadingOlder.value = false;
+    nextTick(() => {
+      if (el) el.scrollTop = preservedScrollTop(previousTop, previousHeight, el.scrollHeight);
+    });
   } else if (event.type === 'message' && event.message?.id) {
     if (messages.value.some(message => message.id === event.message.id)) return;
     messages.value.push(event.message);
     // Bound DOM growth during long-lived sessions.
-    if (messages.value.length > 500) {
+    if (messages.value.length > 1000) {
       messages.value.shift();
       clearMissingReplySelection();
     }
@@ -383,6 +415,8 @@ function receive(event) {
     scrollIfFollowing();
   } else if (event.type === 'error') {
     pendingDiscussionRequests.clear();
+    loadingOlder.value = false;
+    if (hasOlder.value) showLoadOlder.value = true;
     error.value = event.error || t('Could not send the message.');
   } else if (['mentions_directory', 'mentions_search'].includes(event.type) && Array.isArray(event.candidates)) {
     const merged = new Map(mentionCandidates.value.map(candidate => [`${candidate.senderType}:${candidate.senderId}`, candidate]));
@@ -399,6 +433,9 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   identityAbort?.abort();
   clearTimeout(identityTimeout);
   messages.value = [];
+  hasOlder.value = false;
+  showLoadOlder.value = false;
+  loadingOlder.value = false;
   editingMessageId.value = '';
   replyingMessageId.value = '';
   mentionCandidates.value = [];

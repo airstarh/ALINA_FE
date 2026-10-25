@@ -159,6 +159,7 @@ export function createChatConnection({url, channel, chatName = '', getUser, onEv
       return clientMessageId;
     },
     loadMentionDirectory() { return send({type: 'mentions_directory'}); },
+    loadOlder(beforeMessageId) { return send({type: 'history_before', beforeMessageId: String(beforeMessageId)}); },
     searchMentions(query) { return send({type: 'mentions_search', query: String(query)}); },
     replyMessage(replyToMessageId, text, requestedMessageId = '') {
       const key = `reply:${String(replyToMessageId)}\0${String(text)}`;

@@ -48,6 +48,8 @@
 .alina-chat .is-typing { color: #91bcff; }
 .alina-chat .chat-conversation { position: relative; min-width: 0; min-height: 0; flex: 1; display: flex; flex-direction: column; }
 .alina-chat .chat-messages { overflow-y: auto; overscroll-behavior: contain; flex: 1 1 0; min-height: 0; padding: 1px; scrollbar-width: thin; scrollbar-color: #53637a transparent; }
+.alina-chat .chat-load-older { display: block; margin: 4px auto 8px; border: 1px solid #7188a5; border-radius: 14px; padding: 3px 12px; color: #e5efff; background: #202b3a; font-size: 12px; }
+.alina-chat .chat-load-older:disabled { opacity: .55; }
 .alina-chat .chat-empty { color: var(--chat-muted); text-align: center; padding: 30px 12px; }
 .alina-chat .chat-message { margin: 0 0 20px; border: 1px solid #344052; border-radius: 10px; padding: 12px; background: #232c3a; }
 .alina-chat .chat-message-own { border-color: #4776b3; background: #203d62; }
