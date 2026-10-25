@@ -18,14 +18,14 @@
         </b-button>
 
         <button
-          v-if="!loadByOwner && ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id) && dArrFiles.length > 0"
+          v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id) && dArrFiles.length > 0"
           class="btn btn-a"
           @click="dModeEdit = !dModeEdit">
           {{ dModeEdit ? $t("i_undo") : $t("i_edit") }}
         </button>
 
         <b-button
-          v-if="!loadByOwner && dModeEdit && dArrFiles.length > 0"
+          v-if="dModeEdit && dArrFiles.length > 0"
           size="md"
           class="btn btn-a"
           @click="onChangeBulk(dArrFiles)">{{ $t("i_ok") }}</b-button>
