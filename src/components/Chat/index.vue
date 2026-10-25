@@ -80,11 +80,11 @@
           <div v-if="mentionSuggestions.length" class="chat-mention-selector" role="listbox" :aria-label="$t('Mention a creature')">
             <button v-for="(candidate, index) in mentionSuggestions" :key="`${candidate.senderType}:${candidate.senderId}`" type="button"
                     class="chat-mention-option" :class="{'is-active': index === mentionOptionIndex}" role="option"
-                    @mousedown.prevent="selectMention(candidate)">{{ candidate.senderName }}</button>
+                    @pointerdown.prevent="selectMention(candidate)">{{ candidate.senderName }}</button>
           </div>
           <label class="chat-sr-only" :for="inputId">{{ $t('Message') }}</label>
           <textarea :id="inputId" ref="input" v-model="draft" class="chat-composer-input" :placeholder="$t('Type a message…')" rows="2" maxlength="16000" :disabled="!connected"
-                    @input="onInput" @click="updateMentionQuery" @keyup="updateMentionQuery" @keydown="onKeydown" @blur="connection?.typing(false)"></textarea>
+                    @input="onInput" @click="updateMentionQuery" @keyup="updateMentionQuery" @compositionend="updateMentionQuery" @keydown="onKeydown" @blur="connection?.typing(false)"></textarea>
           <input ref="fileInput" type="file" multiple class="chat-sr-only" :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id || !connected" @change="uploadFiles" />
           <button type="button" class="chat-button chat-attach" :title="$t(user.attributes.id ? 'Attach files' : 'Sign in to upload files')"
                   :aria-label="$t('Attach files')" :disabled="uploading || recordingVoice || processingVoice || !user.attributes.id || !connected" @click="fileInput?.click()">

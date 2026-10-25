@@ -2,7 +2,7 @@ const identityKey = creature => `${creature?.senderType || ''}:${creature?.sende
 
 export function activeMentionQuery(text, caret) {
   const before = String(text || '').slice(0, caret);
-  const match = before.match(/(?:^| )@([^@\n]*)$/u);
+  const match = before.match(/(?:^|[\s\u00a0])@([^@\n]*)$/u);
   if (!match) return null;
   return {start: before.length - match[1].length - 1, query: match[1]};
 }
