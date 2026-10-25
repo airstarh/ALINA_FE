@@ -57,6 +57,8 @@
 
     <StandardButtons v-if="options.modeEdit" :onGo="runAJax" class="mt-5"></StandardButtons>
 
+    <UserAdminBlock v-if="canAdministrateUsers && post.id" :key="post.id" :userId="post.id" @saved="applyAdministrativeUpdate" />
+
     <div class="mt-5">&nbsp;</div>
     <tale_feed
       v-if="this.curId"
@@ -81,6 +83,7 @@ import UtilsObject from "@/Utils/UtilsObject";
 import UtilsStr from "@/Utils/UtilsStr";
 import UtilsDate from "../../Utils/UtilsDate";
 import BorgEditor from "@/components/BorgEditor/index.vue";
+import UserAdminBlock from "@/components/auth/UserAdminBlock.vue";
 import {
   createProfileSessionKey,
   readSessionState,
@@ -120,6 +123,7 @@ export default {
     AlinaDatePicker,
     tale_feed,
     BorgEditor,
+    UserAdminBlock,
   },
   created() {
     if (!this.restoreSessionState()) {
@@ -244,8 +248,18 @@ export default {
       })
         .go();
     },
+    applyAdministrativeUpdate(savedUser) {
+      this.post = UtilsObject.mergeRecursively(this.post, savedUser);
+      if (this.CU.owns(savedUser.id)) {
+        this.CU.applyAttributes({...this.CU.attributes, ...savedUser});
+      }
+      this.saveSessionState();
+    },
   },
   computed: {
+    canAdministrateUsers() {
+      return this.CU.isAdmin() || this.CU.isModerator();
+    },
     emblemUrl() {
       const path = this.post.emblem;
 
