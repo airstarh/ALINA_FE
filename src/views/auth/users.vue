@@ -1,10 +1,9 @@
 <template>
   <main class="users-feed">
     <header class="users-feed-header">
-      <h1>{{ $t('Users') }}</h1>
-      <input v-model="search" type="search" class="form-control users-feed-search"
-             :placeholder="$t('Search users by name…')" :aria-label="$t('Search users by name…')"
-             @input="scheduleSearch" />
+      <h1 :title="$t('Users')" :aria-label="$t('Users')">👥</h1>
+      <aInput v-model="search" type="text" :modeEdit="true" componentDisplay="block" class="users-feed-search"
+              :placeholder="$t('Search users by name…')" @update:modelValue="scheduleSearch" />
     </header>
 
     <Paginator
@@ -49,11 +48,12 @@
 import AjaxAlina from '@/services/AjaxAlina';
 import ConfigApi from '@/configs/ConfigApi';
 import Paginator from '@/components/elements/form/Paginator.vue';
+import aInput from '@/components/elements/form/aInput.vue';
 import UtilsStr from '@/Utils/UtilsStr';
 
 export default {
   name: 'AuthUsers',
-  components: {Paginator},
+  components: {Paginator, aInput},
   data() {
     return {
       users: [],
@@ -127,8 +127,10 @@ export default {
 .users-feed { width: min(96vw, 1400px); margin: 1rem auto 4rem; }
 .users-feed-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
 .users-feed-header h1 { margin: 0; }
-.users-feed-search { flex: 1 1 20rem; min-width: 0; }
-.users-feed-list { display: flex; flex-direction: column; gap: 1.2rem; }
+.users-feed-search { flex: 1 1 auto; width: 100%; max-width: none; min-width: 0; }
+.users-feed-search :deep(label), .users-feed-search :deep(.a-input) { width: 100%; }
+.users-feed-search :deep(input) { height: auto; min-height: 2.25rem; }
+.users-feed-list { display: flex; flex-direction: column; gap: 200px; }
 .users-feed-card { display: flex; gap: 7mm; padding: 1rem; border-radius: 1rem; background: #242424; }
 .users-feed-photo { flex: 0 0 min(28vw, 260px); align-self: flex-start; }
 .users-feed-photo img { display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: .75rem; object-fit: cover; }
