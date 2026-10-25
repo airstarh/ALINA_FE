@@ -207,10 +207,12 @@ export default {
         .go();
     }, //##################################################
     runAJax() {
+      const postParams = {...this.post};
+      delete postParams.password;
       AjaxAlina.newInst({
         method: 'POST',
         url: this.options.url,
-        postParams: this.post,
+        postParams,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             const savedUser = aja.respBody.data.user;

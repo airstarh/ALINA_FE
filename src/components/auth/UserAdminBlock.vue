@@ -121,17 +121,25 @@ export default {
       this.saving = true;
       this.saved = false;
       this.error = '';
+      const postParams = {
+        ...this.form,
+        role_ids: this.form.role_ids || [],
+        form_id: 'actionProfileAdmin',
+      };
+      if (!String(postParams.password ?? '').trim()) {
+        delete postParams.password;
+      }
       AjaxAlina.newInst({
         method: 'POST',
         url: this.endpoint,
-        postParams: {...this.form, role_ids: this.form.role_ids || [], form_id: 'actionProfileAdmin'},
+        postParams,
         onDone: aja => {
           this.saving = false;
           if (aja.respBody.meta.alina_response_success == 1) {
             this.form = {...aja.respBody.data.user, password: ''};
             this.roles = aja.respBody.data.roles || this.roles;
             this.saved = true;
-            this.$emit('saved', this.form);
+            this.$emit('saved', aja.respBody.data.user);
             clearTimeout(this.savedTimer);
             this.savedTimer = setTimeout(() => { this.saved = false; }, 3000);
           } else {
