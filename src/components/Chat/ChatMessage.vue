@@ -1,17 +1,17 @@
 <template>
   <article v-if="isUserService" class="chat-message chat-message-service">
-    <div class="chat-service-heading"><time :datetime="message.timestamp" :title="fullTime">{{ time }}</time></div>
-    <div v-if="mentionNotification" class="chat-message-body">
-      <strong class="chat-mention-target">{{ mentionNotification.target }}!!!</strong>
-      {{ mentionNotification.caller }} {{ $t('calls you!') }}
+    <div class="chat-service-row">
+      <div v-if="mentionNotification" class="chat-service-text">
+        <strong class="chat-mention-target">{{ mentionNotification.target }}!!!</strong>
+        {{ mentionNotification.caller }} {{ $t('calls you!') }}
+      </div>
+      <div v-else-if="presenceNotification" class="chat-service-text">
+        {{ presenceNotification.name }} {{ $t(presenceNotification.action === 'enter' ? 'enters' : 'leaves') }}
+      </div>
+      <div v-else class="chat-service-text">{{ message.msg }}</div>
+      <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
+      <button v-if="canManage" type="button" class="chat-copy-button chat-message-delete" :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
     </div>
-    <div v-else-if="presenceNotification" class="chat-message-body">
-      {{ presenceNotification.name }} {{ $t(presenceNotification.action === 'enter' ? 'enters' : 'leaves') }}
-    </div>
-    <div v-else class="chat-message-body">{{ message.msg }}</div>
-    <footer v-if="canManage" class="chat-message-footer chat-service-footer">
-      <span></span><button type="button" class="chat-copy-button chat-message-delete" :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
-    </footer>
   </article>
   <article v-else class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing, 'chat-message-edited': edited, 'chat-message-edited-blinking': editedBlinking, 'chat-message-replying': replying}">
     <div class="chat-message-heading">

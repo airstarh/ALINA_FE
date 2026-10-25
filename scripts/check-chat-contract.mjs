@@ -33,6 +33,8 @@ assert.deepEqual(
 assert.equal(privateChat('user:1', '', 'user:2', 'Two'), null, 'private chat requires both displayed names');
 assert.deepEqual(parsePresenceNotification(`PRESENCE:${encodeURIComponent(JSON.stringify({action: 'enter', name: 'Alice'}))}`), {action: 'enter', name: 'Alice'}, 'presence entry must parse');
 assert.deepEqual(parsePresenceNotification(`PRESENCE:${encodeURIComponent(JSON.stringify({action: 'leave', name: 'Bob'}))}`), {action: 'leave', name: 'Bob'}, 'presence exit must parse');
+assert.equal(parsePresenceNotification(`PRESENCE:${encodeURIComponent(JSON.stringify({action: 'reconnect', name: 'Alice'}))}`), null, 'unknown presence actions must remain ordinary text');
+assert.equal(parsePresenceNotification(`PRESENCE:${encodeURIComponent(JSON.stringify({action: 'enter', name: '  '}))}`), null, 'presence names must not be empty');
 assert.equal(parsePresenceNotification('PRESENCE:broken'), null, 'malformed presence message must remain ordinary text');
 assert.deepEqual(
   prioritizeSelfParticipant([{id: 'user:2'}, {id: 'user:1'}, {id: 'user:3'}], 'user:1').map(person => person.id),

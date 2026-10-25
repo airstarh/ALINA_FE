@@ -56,10 +56,19 @@
 .alina-chat .chat-message-replying { background: #7a3f12; }
 .alina-chat .chat-message-editing { background: #4f5867; }
 .alina-chat .chat-message-edited-blinking { animation: chat-message-edited-blink 0.5s ease-in-out 3; }
-.alina-chat .chat-message-service { padding: 8px 12px; border-left: 3px solid #8b5cf6; background: #252c38; color: #c9d1dc; font-size: .9rem; }
+.alina-chat .chat-message-service { margin: 0; padding: 3px 7px; border-left: 3px solid #8b5cf6; border-radius: 4px; background: #252c38; color: #c9d1dc; font-size: .82rem; }
 .alina-chat .chat-mention-target { color: #f7f9fc; font-weight: 700; }
-.alina-chat .chat-service-heading { display: flex; justify-content: flex-end; color: var(--chat-muted); font-size: 11px; }
-.alina-chat .chat-service-footer { margin-top: 4px; }
+.alina-chat .chat-service-row { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.alina-chat .chat-service-text { min-width: 0; flex: 1 1 auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+.alina-chat .chat-service-row time { flex: 0 0 auto; white-space: nowrap; color: var(--chat-muted); font-size: 10px; }
+.alina-chat .chat-service-row .chat-copy-button { flex: 0 0 auto; margin: 0; padding: 0 4px; }
+.alina-chat .chat-activity-block { margin: 0 0 6px; border-left: 3px solid #8b5cf6; border-radius: 4px; background: #202733; color: #c9d1dc; font-size: .82rem; }
+.alina-chat .chat-activity-summary { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 3px 7px; }
+.alina-chat .chat-activity-summary > span { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; }
+.alina-chat .chat-activity-summary time { flex: 0 0 auto; white-space: nowrap; color: var(--chat-muted); font-size: 10px; }
+.alina-chat .chat-activity-toggle { flex: 0 0 auto; width: 20px; height: 20px; padding: 0; border: 1px solid #7188a5; border-radius: 3px; color: #e5efff; background: transparent; line-height: 1; }
+.alina-chat .chat-activity-rows { display: grid; gap: 2px; padding: 0 3px 3px; }
+.alina-chat .chat-activity-rows .chat-message-service { border-top: 1px solid #344052; }
 @keyframes chat-message-edited-blink {
   0%, 100% { background: #1f4d38; }
   50% { background: #4f5867; }

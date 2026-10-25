@@ -56,13 +56,17 @@
       <div class="chat-conversation">
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions" @scroll="trackScroll">
           <p v-if="!messages.length" class="chat-empty">{{ connected ? $t('No messages yet. Start the conversation.') : $t('Connecting to chat…') }}</p>
-          <ChatMessage v-for="(message, messageIndex) in messages" :key="message.id" :message="message" :first-message="messageIndex === 0" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(message)"
-                       :can-manage="canManageMessage(message)" :editing="editingMessageId === message.id"
-                       :can-tag="canTagMessage(message)" :private-href="privateMessageHref(message)" :can-rename-guest="canRenameGuestAuthor(message)"
-                       :edited="editedMessageIds.has(message.id)" :edited-blinking="blinkingMessageIds.has(message.id)" :base-url="apiBaseUrl"
-                       :replying="replyingMessageId === message.id" :reply-disabled="!!editingMessageId"
+          <template v-for="entry in timelineEntries" :key="entry.key">
+          <ChatMessage v-if="entry.type === 'message'" :message="entry.message" :first-message="entry.index === 0" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(entry.message)"
+                       :can-manage="canManageMessage(entry.message)" :editing="editingMessageId === entry.message.id"
+                       :can-tag="canTagMessage(entry.message)" :private-href="privateMessageHref(entry.message)" :can-rename-guest="canRenameGuestAuthor(entry.message)"
+                       :edited="editedMessageIds.has(entry.message.id)" :edited-blinking="blinkingMessageIds.has(entry.message.id)" :base-url="apiBaseUrl"
+                       :replying="replyingMessageId === entry.message.id" :reply-disabled="!!editingMessageId"
                        @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
+          <ChatActivityBlock v-else :messages="entry.messages" :start-index="entry.startIndex" :discussion-room="!!chatState.discussionOfMessageId"
+                             :base-url="apiBaseUrl" :can-manage-message="canManageMessage" @delete="deleteMessage" />
+          </template>
         </div>
         <button v-if="unread" type="button" class="chat-new-messages" @click="jumpToLatest">{{ $t('New messages') }} ({{ unread }}) ↓</button>
         <p v-if="typingNames" class="chat-typing-summary" role="status">{{ typingNames }} — {{ $t('Typing…') }}</p>
@@ -111,6 +115,7 @@ import ConfigApi from '@/configs/ConfigApi';
 import AjaxAlina from '@/services/AjaxAlina';
 import PageSettings from '@/services/PageSettings';
 import ChatMessage from './ChatMessage.vue';
+import ChatActivityBlock from './ChatActivityBlock.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import ChatRoomsDirectory from './ChatRoomsDirectory.vue';
 import {createChatConnection} from './chatConnection.js';
@@ -119,6 +124,7 @@ import {createVoiceRecorder} from './chatVoiceRecorder.js';
 import {activeMentionQuery, appendMention, filterMentionCandidates, insertMention, synchronizeSelectedMentions} from './chatMentions.js';
 import {canManageChat, canManageMessage as mayManageMessage, canRenameGuest} from './chatPermissions.js';
 import {acceptGuestRename, refreshChatIdentity, watchChatIdentity} from './chatIdentity.js';
+import {groupChatTimeline} from './chatActivity.js';
 import {
   canKickParticipants,
   canonicalChatUrl,
@@ -145,6 +151,7 @@ const roomsId = `chat-rooms-${useId()}`;
 const normalizedChannel = computed(() => props.channel.trim() || '1');
 const videoChatHref = computed(() => videoChatUrl(window.location.origin, normalizedChannel.value));
 const messages = ref([]);
+const timelineEntries = computed(() => groupChatTimeline(messages.value));
 const participants = ref([]);
 const selfId = ref('');
 const draft = ref('');
