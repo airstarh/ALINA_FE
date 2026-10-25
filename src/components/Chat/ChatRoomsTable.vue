@@ -3,6 +3,7 @@
     <div class="chat-sidebar-title">
       <h2>{{ title }}</h2><span>{{ rows.length }}</span>
     </div>
+    <slot name="after-title" />
     <p v-if="!rows.length" class="chat-muted">{{ $t('No chats found.') }}</p>
     <ul v-else class="chat-room-sidebar-list">
       <li v-for="room in rows" :key="room.id" class="chat-room-sidebar-item" :class="{'is-mentioned': mentionIsUnread(room), 'is-current': room.channel === currentChannel}">

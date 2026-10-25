@@ -8,8 +8,14 @@
       <button type="button" class="btn btn-danger btn-sm ms-2" @click="retry">{{ $t('Retry') }}</button>
     </p>
     <ChatRoomCreateForm v-if="compact" compact />
-    <ChatRoomsTable :title="$t('My chats')" :section="rooms.mine" :can-delete="canDelete" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom" />
-    <template v-if="user.attributes.id">
+    <ChatRoomsTable :title="$t('My chats')" :section="searchActive ? searchSection : rooms.mine" :can-delete="canDelete" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom">
+      <template v-if="compact && user.attributes.id" #after-title>
+        <label class="chat-sr-only" :for="searchId">{{ $t('Search chats') }}</label>
+        <input :id="searchId" v-model="searchQuery" type="search" class="chat-directory-search"
+               :placeholder="$t('Search chats')" maxlength="200" @input="searchChats" />
+      </template>
+    </ChatRoomsTable>
+    <template v-if="user.attributes.id && !searchActive">
       <div v-if="!compact" class="mb-5">&nbsp;</div>
       <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" :can-delete="canDelete" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom" />
     </template>
@@ -17,7 +23,7 @@
 </template>
 
 <script setup>
-import {computed, onBeforeUnmount, onMounted, reactive, ref} from 'vue';
+import {computed, onBeforeUnmount, onMounted, reactive, ref, useId} from 'vue';
 import {useI18n} from 'vue-i18n';
 import ConfigApi from '@/configs/ConfigApi';
 import CurrentUser from '@/services/CurrentUser';
@@ -35,6 +41,11 @@ const props = defineProps({
 const user = CurrentUser.obj();
 const {t} = useI18n();
 const canDelete = computed(() => canKickParticipants(user));
+const searchId = `chat-directory-search-${useId()}`;
+const searchQuery = ref('');
+const searchRows = ref([]);
+const searchActive = computed(() => searchQuery.value.trim() !== '');
+const searchSection = computed(() => ({rows: searchRows.value, total: searchRows.value.length, limit: 1000, offset: 0}));
 const status = ref({state: 'connecting'});
 const rooms = reactive({
   mine: {rows: [], total: 0, limit: 1000, offset: 0},
@@ -47,6 +58,7 @@ const pagination = reactive({
 let connection = null;
 let identityAbort = null;
 let generation = 0;
+let searchTimer;
 
 function applyRooms(response) {
   rooms.mine = response.mine;
@@ -68,6 +80,9 @@ async function start() {
     getUser: () => user.attributes,
     getPagination: () => ({mine: {...pagination.mine}, others: {...pagination.others}}),
     onRooms: applyRooms,
+    onSearch: result => {
+      if (result.query === searchQuery.value.trim()) searchRows.value = result.rooms;
+    },
     onDeleted: event => {
       const deleted = new Set(event.deletedChannels || []);
       rooms.mine = {...rooms.mine, rows: rooms.mine.rows.filter(room => !deleted.has(room.channel))};
@@ -76,6 +91,14 @@ async function start() {
     onStatus: value => { status.value = value; },
   });
   connection.start();
+}
+
+function searchChats() {
+  searchRows.value = [];
+  clearTimeout(searchTimer);
+  const query = searchQuery.value.trim();
+  if (!query) return;
+  searchTimer = setTimeout(() => connection?.searchRooms(query), 250);
 }
 
 function deleteRoom(room) {
@@ -91,6 +114,7 @@ onMounted(start);
 onBeforeUnmount(() => {
   generation++;
   identityAbort?.abort();
+  clearTimeout(searchTimer);
   connection?.stop();
 });
 </script>

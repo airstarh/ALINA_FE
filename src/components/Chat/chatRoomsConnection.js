@@ -1,6 +1,6 @@
 import {publicChatUser} from './chatProtocol.js';
 
-export function createChatRoomsConnection({url, getUser, getPagination, onRooms, onDeleted = () => {}, onStatus, WebSocketClass = WebSocket}) {
+export function createChatRoomsConnection({url, getUser, getPagination, onRooms, onSearch = () => {}, onDeleted = () => {}, onStatus, WebSocketClass = WebSocket}) {
   let socket = null;
   let retryTimer = null;
   let stopped = true;
@@ -63,6 +63,8 @@ export function createChatRoomsConnection({url, getUser, getPagination, onRooms,
       if (data.type === 'rooms' && data.mine && data.others) {
         onRooms({mine: data.mine, others: data.others});
         status('connected');
+      } else if (data.type === 'rooms_search' && typeof data.query === 'string' && Array.isArray(data.rooms)) {
+        onSearch({query: data.query, rooms: data.rooms});
       } else if (data.type === 'chat_deleted') {
         onDeleted(data);
       } else if (data.type === 'error') {
@@ -98,6 +100,12 @@ export function createChatRoomsConnection({url, getUser, getPagination, onRooms,
     start() { if (stopped) { stopped = false; connect(); } },
     stop,
     retry,
+    searchRooms(query) {
+      const normalized = String(query ?? '').trim();
+      if (!getUser()?.id || !normalized || !socket || socket.readyState !== WebSocketClass.OPEN) return false;
+      socket.send(JSON.stringify({version: 2, type: 'search_rooms', query: normalized}));
+      return true;
+    },
     deleteChat(channel) {
       if (!socket || socket.readyState !== WebSocketClass.OPEN) return false;
       socket.send(JSON.stringify({version: 2, type: 'delete_chat', channel, CurrentUser: publicChatUser(getUser())}));

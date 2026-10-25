@@ -85,6 +85,7 @@ class FakeWebSocket {
 
 const statuses = [];
 const responses = [];
+const searchResponses = [];
 const pagination = {
   mine: {limit: 25, offset: 50},
   others: {limit: 1000, offset: 0},
@@ -94,6 +95,7 @@ const connection = createChatRoomsConnection({
   getUser: () => ({id: 17, nickname: 'Alice', token: 'private'}),
   getPagination: () => pagination,
   onRooms: rooms => responses.push(rooms),
+  onSearch: result => searchResponses.push(result),
   onStatus: status => statuses.push(status),
   WebSocketClass: FakeWebSocket,
 });
@@ -117,6 +119,11 @@ const payload = {mine: {rows: [], total: 0, limit: 25, offset: 50}, others: {row
 first.receive({version: 2, type: 'rooms', ...payload});
 assert.deepEqual(responses[0], payload);
 assert.equal(statuses.at(-1).state, 'connected');
+
+assert.equal(connection.searchRooms('  Other  '), true, 'registered room directory must send searches');
+assert.deepEqual(first.sent.at(-1), {version: 2, type: 'search_rooms', query: 'Other'});
+first.receive({version: 2, type: 'rooms_search', query: 'Other', rooms: [{channel: 'other'}]});
+assert.deepEqual(searchResponses.at(-1), {query: 'Other', rooms: [{channel: 'other'}]});
 
 first.fail();
 assert.equal(statuses.at(-1).state, 'error');
@@ -155,6 +162,9 @@ const directorySource = readFileSync(new URL('../src/components/Chat/ChatRoomsDi
 const createFormSource = readFileSync(new URL('../src/components/Chat/ChatRoomCreateForm.vue', import.meta.url), 'utf8');
 assert.match(roomPageSource, /<ChatRoomCreateForm/, 'full room page must use the shared creation form');
 assert.match(directorySource, /<ChatRoomCreateForm\s+v-if="compact"\s+compact/, 'compact chat list must show the shared creation form');
+assert.match(directorySource, /<template v-if="compact && user\.attributes\.id" #after-title>/, 'room-name search slot must be visible only to registered users in the sidebar');
+assert.match(directorySource, /v-model="searchQuery" type="search"/, 'room-name search must use a single search input');
+assert.match(directorySource, /searchActive[\s\S]*rooms\.others/, 'room search must replace the normal room sections while the input has a value');
 assert.ok(directorySource.indexOf('<ChatRoomCreateForm') < directorySource.indexOf('<ChatRoomsTable'), 'creation form must appear above My chats');
 assert.match(createFormSource, /createChatRoomTarget/, 'shared creation form must use the canonical route generator');
 assert.match(createFormSource, /maxlength="200"/, 'shared creation form must enforce the room-name limit');
