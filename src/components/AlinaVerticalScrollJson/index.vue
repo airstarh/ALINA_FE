@@ -22,9 +22,14 @@
           :download="flagShowDownload(row.fType) ? row.name_human : null"
           :placeholder="$t('File Name')" />
 
-        <small v-if="formattedFileSize(row.size)" class="file-size">
-          {{ formattedFileSize(row.size) }}
-        </small>
+        <div class="file-meta">
+          <small v-if="formattedFileSize(row.size)" class="file-size">
+            {{ formattedFileSize(row.size) }}
+          </small>
+          <button type="button" class="file-copy-button" :title="$t('Copy URL')" :aria-label="$t('Copy URL')" @click="copyFileUrl(row)">
+            {{ $t(copiedFileId === row.id ? 'i_ok' : 'i_copy') }}
+          </button>
+        </div>
 
         <template v-if="modeEdit && isCurrentUserAllowedEdit(row)">
           <aInput
@@ -77,6 +82,8 @@ export default {
   data() {
     return {
       CurrentUser: CurrentUser.obj(),
+      copiedFileId: null,
+      copyTimer: null,
     };
   },
   mounted() {
@@ -84,6 +91,9 @@ export default {
   },
   updated() {
     AlinaPageGlobalAnalyzer.AlinaAudioPlayer.addAudioEventHandlers();
+  },
+  beforeUnmount() {
+    clearTimeout(this.copyTimer);
   },
   methods: {
     isCurrentUserAllowedEdit(file) {
@@ -118,6 +128,18 @@ export default {
     },
     formattedFileSize(size) {
       return UtilsFS.formatFileSize(size);
+    },
+    async copyFileUrl(file) {
+      try {
+        await navigator.clipboard.writeText(this.fileUrl(file));
+        this.copiedFileId = file.id;
+        clearTimeout(this.copyTimer);
+        this.copyTimer = setTimeout(() => {
+          this.copiedFileId = null;
+        }, 3000);
+      } catch {
+        this.copiedFileId = null;
+      }
     },
   },
 };
@@ -166,6 +188,10 @@ export default {
 .vertical-file-details :deep(.aInput.aInput-edit:not(.aInput-fixed-width)) {
   flex: 0 0 auto;
 }
+
+.file-meta { display: flex; align-items: center; gap: .4rem; }
+.file-copy-button { min-width: 2rem; padding: 0 .35rem; border: 1px solid #777; border-radius: .25rem; color: inherit; background: transparent; }
+.file-copy-button:hover { background: #444; }
 
 .vertical-file-details :deep(a),
 .vertical-file-details :deep(a:link),

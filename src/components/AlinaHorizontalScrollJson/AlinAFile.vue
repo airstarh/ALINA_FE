@@ -63,7 +63,12 @@
       >
         {{ pFileJson.name_human }}
       </a>
-      <small v-if="fileSize" class="file-size">{{ fileSize }}</small>
+      <span class="file-meta">
+        <small v-if="fileSize" class="file-size">{{ fileSize }}</small>
+        <button type="button" class="file-copy-button" :title="$t('Copy URL')" :aria-label="$t('Copy URL')" @click="copyFileUrl">
+          {{ $t(copied ? 'i_ok' : 'i_copy') }}
+        </button>
+      </span>
     </div>
   </div>
 </template>
@@ -103,6 +108,8 @@ export default {
       UtilsFS,
       iconFilePdf,
       iconFileGeneric,
+      copied: false,
+      copyTimer: null,
     };
   },
 
@@ -127,6 +134,10 @@ export default {
     },
   },
 
+  beforeUnmount() {
+    clearTimeout(this.copyTimer);
+  },
+
   methods: {
     flagShowDownLoad(fType) {
       return (
@@ -146,6 +157,18 @@ export default {
       PopupObj.item.type = this.pFileJson.fType;
       PopupObj.isOn = true;
     },
+    async copyFileUrl() {
+      try {
+        await navigator.clipboard.writeText(this.fileUrl);
+        this.copied = true;
+        clearTimeout(this.copyTimer);
+        this.copyTimer = setTimeout(() => {
+          this.copied = false;
+        }, 3000);
+      } catch {
+        this.copied = false;
+      }
+    },
   },
 };
 </script>
@@ -161,9 +184,10 @@ export default {
   flex-direction: column;
 }
 
-.file-size {
-  display: block;
-}
+.file-meta { display: flex; align-items: center; gap: .4rem; }
+.file-size { display: inline-block; }
+.file-copy-button { min-width: 2rem; padding: 0 .35rem; border: 1px solid #777; border-radius: .25rem; color: inherit; background: transparent; }
+.file-copy-button:hover { background: #444; }
 
 .alina-file.horizontal.audio,
 .alina-file.horizontal.video {
