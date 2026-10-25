@@ -149,6 +149,11 @@ export default createRouter({
 			meta:      {feedContext: "profile"}
 		},
 		{
+			path:      "/auth/users",
+			name:      "users",
+			component: () => import("@/views/auth/users.vue")
+		},
+		{
 			path:      "/auth/register",
 			name:      "auth_register",
 			component: auth_register
