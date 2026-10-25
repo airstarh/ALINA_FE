@@ -15,18 +15,22 @@
   </article>
   <article v-else class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing, 'chat-message-edited': edited, 'chat-message-edited-blinking': editedBlinking, 'chat-message-replying': replying}">
     <div class="chat-message-heading">
-      <span v-if="isRobocop" class="chat-avatar chat-avatar-robocop chat-message-avatar" aria-hidden="true">🤖</span>
-      <img v-else-if="avatar && !avatarFailed" :src="avatar" alt="" class="chat-avatar chat-message-avatar" @error="avatarFailed = true" />
-      <span v-else class="chat-avatar chat-avatar-fallback chat-message-avatar" aria-hidden="true">{{ name.slice(0, 1).toUpperCase() }}</span>
-      <input v-if="canRenameGuest" class="chat-guest-nickname chat-message-guest-name" :value="guestNickname" maxlength="25"
-             :aria-label="$t('Your nickname')" @blur="renameGuest" @keydown.enter.prevent="$event.target.blur()" />
-      <router-link v-else-if="profilePath" :to="profilePath" class="chat-message-author"><strong>{{ name }}</strong></router-link>
-      <strong v-else>{{ name }}</strong>
-      <button v-if="canTag" type="button" class="chat-copy-button chat-message-tag" :disabled="replyDisabled"
-              :title="$t('Mention a creature')" :aria-label="$t('Mention a creature')" @click="$emit('tag', message)">{{ $t('i_tag') }}</button>
-      <a v-if="privateHref" :href="privateHref" class="chat-copy-button chat-message-private" @click.prevent="$emit('open-private', message)"
-         :title="$t('Open a separate chat')" :aria-label="$t('Open a separate chat')">{{ $t('i_private') }}</a>
-      <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
+      <div class="chat-message-identity">
+        <span v-if="isRobocop" class="chat-avatar chat-avatar-robocop chat-message-avatar" aria-hidden="true">🤖</span>
+        <img v-else-if="avatar && !avatarFailed" :src="avatar" alt="" class="chat-avatar chat-message-avatar" @error="avatarFailed = true" />
+        <span v-else class="chat-avatar chat-avatar-fallback chat-message-avatar" aria-hidden="true">{{ name.slice(0, 1).toUpperCase() }}</span>
+        <input v-if="canRenameGuest" class="chat-guest-nickname chat-message-guest-name" :value="guestNickname" maxlength="25"
+               :aria-label="$t('Your nickname')" @blur="renameGuest" @keydown.enter.prevent="$event.target.blur()" />
+        <router-link v-else-if="profilePath" :to="profilePath" class="chat-message-author"><strong>{{ name }}</strong></router-link>
+        <strong v-else>{{ name }}</strong>
+      </div>
+      <div class="chat-message-heading-actions">
+        <button v-if="canTag" type="button" class="chat-copy-button chat-message-tag" :disabled="replyDisabled"
+                :title="$t('Mention a creature')" :aria-label="$t('Mention a creature')" @click="$emit('tag', message)">{{ $t('i_tag') }}</button>
+        <a v-if="privateHref" :href="privateHref" class="chat-copy-button chat-message-private" @click.prevent="$emit('open-private', message)"
+           :title="$t('Open a separate chat')" :aria-label="$t('Open a separate chat')">{{ $t('i_private') }}</a>
+        <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
+      </div>
     </div>
     <div v-if="parsed.quote" class="reply-quote">
       <div class="reply-quote-heading"><strong>{{ parsed.quote.author }}</strong><time>{{ formatChatTimestamp(parsed.quote.timestamp) }}</time></div>

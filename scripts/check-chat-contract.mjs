@@ -271,6 +271,8 @@ try {
   assert.match(participantsComponent.template.content, /person\.typing[^]*Typing…[^]*person\.inChat[^]*In chat[^]*Not in chat/, 'participant words must distinguish typing, in-chat and not-in-chat states');
 
   const messageComponent = componentDescriptor('src/components/Chat/ChatMessage.vue');
+  assert.match(messageComponent.template.content, /chat-message-identity/, 'message avatar and name must share an identity row');
+  assert.match(messageComponent.template.content, /chat-message-heading-actions/, 'message controls and time must share a separate row');
   assert.match(messageComponent.source, /discussion/, 'message card must expose discussion controls');
   assert.match(messageComponent.source, /discussionResponseCount/, 'discussion button must show response count');
   assert.ok(elementWithClass(messageComponent, 'chat-mention-target'), 'structured mention recipient must have dedicated emphasis');
@@ -300,6 +302,7 @@ try {
   assert.ok(messageComponent.template.content.includes('chat-message-replying'), 'selected reply parent must receive an orange-state class');
   assert.ok(messageComponent.template.content.includes('reply-quote'), 'canonical reply metadata must render as a quote block');
   const messageHeading = elementWithClass(messageComponent, 'chat-message-heading');
+  const messageHeadingActions = elementWithClass(messageComponent, 'chat-message-heading-actions');
   const messageFooter = elementWithClass(messageComponent, 'chat-message-footer');
   const authorLink = elementWithClass(messageComponent, 'chat-message-author');
   assert.ok(authorLink, 'registered message authors must expose a profile link');
@@ -329,7 +332,7 @@ try {
     'audio popup controls must retain an explicit visible height',
   );
   assert.match(popupSource, /UtilsFS\.typeWeb/, 'ALINA popup must render ordinary shared URLs');
-  assert.ok(messageHeading.children.some(child => child.tag === 'time'), 'message timestamp must appear in the nickname row');
+  assert.ok(messageHeadingActions.children.some(child => child.tag === 'time'), 'message timestamp must appear with heading controls');
   assert.equal(messageFooter.children.some(child => child.tag === 'time'), false, 'message timestamp must not remain in the action footer');
   assert.match(messageComponent.scriptSetup.content, /formatChatTimestamp/, 'message and quote timestamps must share the 24-hour formatter');
   assert.doesNotMatch(messageComponent.scriptSetup.content, /date\.value\.toLocaleString\(\)/, 'message timestamp tooltip must not fall back to locale AM/PM formatting');
