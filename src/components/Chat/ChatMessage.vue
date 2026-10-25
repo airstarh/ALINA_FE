@@ -79,9 +79,12 @@
                 @click="$emit('discuss', message)">{{ $t('Discuss') }}</button>
       </span>
       <span class="chat-message-actions">
+        <button v-if="canPin" type="button" class="chat-copy-button chat-message-pin" :class="{'is-active': message.isPinned}"
+                :title="$t(message.isPinned ? 'Unpin message' : 'Pin message')" :aria-label="$t(message.isPinned ? 'Unpin message' : 'Pin message')"
+                :aria-pressed="message.isPinned" @click="$emit('pin', message)">{{ $t(message.isPinned ? 'i_unpin' : 'i_pin') }}</button>
         <button v-if="canManage" type="button" class="chat-copy-button chat-message-edit"
                 :title="$t('Edit message')" :aria-label="$t('Edit message')" @click="$emit('edit', message)">{{ $t('i_edit') }}</button>
-        <button v-if="canManage && !message.discussion && !(discussionRoom && firstMessage)" type="button" class="chat-copy-button chat-message-delete"
+        <button v-if="canManage && !message.isPinned && !message.discussion && !(discussionRoom && firstMessage)" type="button" class="chat-copy-button chat-message-delete"
                 :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
       </span>
     </footer>
@@ -92,8 +95,8 @@ import {computed, onBeforeUnmount, reactive, ref} from 'vue';
 import {displayName, formatChatTimestamp, messageParts, parseMentionNotification, parsePresenceNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
 import PopupObj from '@/services/PopupObj';
 import UtilsFS from '@/Utils/UtilsFS';
-const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
-const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'discuss', 'tag', 'rename-guest', 'open-private', 'react', 'reaction-list']);
+const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canPin: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
+const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'pin', 'reply', 'discuss', 'tag', 'rename-guest', 'open-private', 'react', 'reaction-list']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);

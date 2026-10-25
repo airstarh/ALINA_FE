@@ -56,6 +56,13 @@
                         :search-active="!!participantSearchQuery" @approve="approveParticipant" @kick="kickParticipant"
                         @tag="tagParticipant" @search="searchParticipants" />
       <div class="chat-conversation">
+        <div v-if="pinnedMessage" class="chat-pinned-message">
+          <ChatMessage :message="pinnedMessage" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(pinnedMessage)"
+                       :can-manage="canManageMessage(pinnedMessage)" :can-pin="!!user.attributes.id" :can-tag="canTagMessage(pinnedMessage)"
+                       :private-href="privateMessageHref(pinnedMessage)" :base-url="apiBaseUrl" @pin="toggleMessagePin"
+                       @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage"
+                       @tag="tagMessageAuthor" @open-private="openPrivateMessage" @react="reactMessage" @reaction-list="showReactionList" />
+        </div>
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions"
              @scroll="trackScroll" @wheel.passive="trackHistoryIntent">
           <button v-if="showLoadOlder" type="button" class="chat-load-older" :disabled="loadingOlder" @click="loadOlderMessages">
@@ -64,12 +71,12 @@
           <p v-if="!messages.length" class="chat-empty">{{ connected ? $t('No messages yet. Start the conversation.') : $t('Connecting to chat…') }}</p>
           <template v-for="entry in timelineEntries" :key="entry.key">
           <ChatMessage v-if="entry.type === 'message'" :message="entry.message" :first-message="entry.index === 0" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(entry.message)"
-                       :can-manage="canManageMessage(entry.message)" :editing="editingMessageId === entry.message.id"
+                       :can-manage="canManageMessage(entry.message)" :can-pin="!!user.attributes.id" :editing="editingMessageId === entry.message.id"
                        :can-tag="canTagMessage(entry.message)" :private-href="privateMessageHref(entry.message)" :can-rename-guest="canRenameGuestAuthor(entry.message)"
                        :edited="editedMessageIds.has(entry.message.id)" :edited-blinking="blinkingMessageIds.has(entry.message.id)" :base-url="apiBaseUrl"
                        :replying="replyingMessageId === entry.message.id" :reply-disabled="!!editingMessageId"
                        @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
-                       @react="reactMessage" @reaction-list="showReactionList"
+                       @react="reactMessage" @reaction-list="showReactionList" @pin="toggleMessagePin"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
           <ChatActivityBlock v-else :messages="entry.messages" :start-index="entry.startIndex" :discussion-room="!!chatState.discussionOfMessageId"
                              :base-url="apiBaseUrl" :can-manage-message="canManageMessage" @delete="deleteMessage" />
@@ -193,6 +200,7 @@ const following = ref(true);
 const unread = ref(0);
 const reactionModalOpen = ref(false);
 const reactionPeople = ref({positive: [], negative: []});
+const pinnedMessage = ref(null);
 const hasOlder = ref(false);
 const showLoadOlder = ref(false);
 const loadingOlder = ref(false);
@@ -333,6 +341,7 @@ function clearMissingReplySelection() {
 function receive(event) {
   if (event.type === 'history' && Array.isArray(event.messages)) {
     messages.value = event.messages;
+    pinnedMessage.value = event.pinnedMessage || null;
     hasOlder.value = event.hasOlder === true;
     showLoadOlder.value = false;
     loadingOlder.value = false;
@@ -363,6 +372,10 @@ function receive(event) {
   } else if (event.type === 'reaction_changed' && event.messageId && event.reactions) {
     const index = messages.value.findIndex(message => message.id === event.messageId);
     if (index !== -1) messages.value[index] = {...messages.value[index], reactions: event.reactions};
+    if (pinnedMessage.value?.id === event.messageId) pinnedMessage.value = {...pinnedMessage.value, reactions: event.reactions};
+  } else if (event.type === 'message_pin_changed') {
+    pinnedMessage.value = event.message || null;
+    messages.value = messages.value.map(message => ({...message, isPinned: event.message?.id === message.id}));
   } else if (event.type === 'reaction_list' && Array.isArray(event.positive) && Array.isArray(event.negative)) {
     reactionPeople.value = {positive: event.positive, negative: event.negative};
     reactionModalOpen.value = true;
@@ -370,6 +383,7 @@ function receive(event) {
     const index = messages.value.findIndex(message => message.id === event.message.id);
     if (index !== -1) {
       messages.value[index] = event.message;
+      if (pinnedMessage.value?.id === event.message.id) pinnedMessage.value = event.message;
       markMessageEdited(event.message.id);
     }
   } else if (event.type === 'message_deleted' && event.messageId) {
@@ -452,6 +466,7 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   identityAbort?.abort();
   clearTimeout(identityTimeout);
   messages.value = [];
+  pinnedMessage.value = null;
   hasOlder.value = false;
   showLoadOlder.value = false;
   loadingOlder.value = false;
@@ -576,6 +591,9 @@ function reactMessage(message, reaction) {
 }
 function showReactionList(message) {
   if (!connected.value || !connection?.loadReactionList(message.id)) error.value = t('Could not load reactions.');
+}
+function toggleMessagePin(message) {
+  if (!connected.value || !connection?.toggleMessagePin(message.id)) error.value = t('Could not change message pin.');
 }
 function onInput() {
   error.value = '';

@@ -8,7 +8,7 @@
       <button type="button" class="btn btn-danger btn-sm ms-2" @click="retry">{{ $t('Retry') }}</button>
     </p>
     <ChatRoomCreateForm v-if="compact" compact />
-    <ChatRoomsTable :title="$t('My chats')" :section="searchActive ? searchSection : rooms.mine" :can-delete="canDelete" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom">
+    <ChatRoomsTable :title="$t('My chats')" :section="searchActive ? searchSection : rooms.mine" :can-delete="canDelete" :can-pin="!!user.attributes.id" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom" @pin="pinRoom">
       <template v-if="compact && user.attributes.id" #after-title>
         <label class="chat-sr-only" :for="searchId">{{ $t('Search chats') }}</label>
         <input :id="searchId" v-model="searchQuery" type="search" class="chat-directory-search"
@@ -17,7 +17,7 @@
     </ChatRoomsTable>
     <template v-if="user.attributes.id && !searchActive">
       <div v-if="!compact" class="mb-5">&nbsp;</div>
-      <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" :can-delete="canDelete" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom" />
+      <ChatRoomsTable :title="$t('Other chats')" :section="rooms.others" :can-delete="canDelete" :can-pin="!!user.attributes.id" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom" @pin="pinRoom" />
     </template>
   </section>
 </template>
@@ -83,6 +83,13 @@ async function start() {
     onSearch: result => {
       if (result.query === searchQuery.value.trim()) searchRows.value = result.rooms;
     },
+    onPin: ({channel, isPinned}) => {
+      for (const section of [rooms.mine, rooms.others]) {
+        section.rows = section.rows.map(room => room.channel === channel ? {...room, isPinned} : room);
+      }
+      searchRows.value = searchRows.value.map(room => room.channel === channel ? {...room, isPinned} : room);
+      if (searchActive.value) connection?.searchRooms(searchQuery.value.trim());
+    },
     onDeleted: event => {
       const deleted = new Set(event.deletedChannels || []);
       rooms.mine = {...rooms.mine, rows: rooms.mine.rows.filter(room => !deleted.has(room.channel))};
@@ -103,6 +110,10 @@ function searchChats() {
 
 function deleteRoom(room) {
   if (window.confirm(`${t('Delete chat')} “${room.chatName}”?`)) connection?.deleteChat(room.channel);
+}
+
+function pinRoom(room) {
+  connection?.toggleChatPin(room.channel);
 }
 
 function retry() {

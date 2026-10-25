@@ -124,6 +124,8 @@ assert.equal(connection.searchRooms('  Other  '), true, 'registered room directo
 assert.deepEqual(first.sent.at(-1), {version: 2, type: 'search_rooms', query: 'Other'});
 first.receive({version: 2, type: 'rooms_search', query: 'Other', rooms: [{channel: 'other'}]});
 assert.deepEqual(searchResponses.at(-1), {query: 'Other', rooms: [{channel: 'other'}]});
+assert.equal(connection.toggleChatPin('other'), true, 'registered users must be able to toggle a room pin');
+assert.deepEqual(first.sent.at(-1), {version: 2, type: 'toggle_chat_pin', channel: 'other'});
 
 first.fail();
 assert.equal(statuses.at(-1).state, 'error');
@@ -187,11 +189,14 @@ assert.match(tableSource, /<table class="[^"]*table-dark[^"]*">/, 'room tables m
 assert.doesNotMatch(tableSource, /target="_blank"/, 'room links must stay in the current SPA context');
 assert.match(tableSource, /offset\s*\+\s*index\s*\+\s*1/, 'row numbering must include section offset');
 assert.match(tableSource, /participantCount/, 'table must render participant totals');
+assert.match(tableSource, /messageCount/, 'room lists must render the capped ordinary-message count');
+assert.match(tableSource, /i_pin/, 'room lists must use the established pin icon');
+assert.match(tableSource, /\$emit\(['"]pin['"],\s*room\)/, 'room pin buttons must emit their room');
 assert.match(tableSource, /latestMessageAt/, 'table must render latest-message dates');
-assert.match(tableSource, /rowspan="2"/, 'each chat order number must span both compact rows');
-assert.match(tableSource, /<template v-for="\(room, index\) in rows"/, 'each chat must render as a two-row template');
+assert.match(tableSource, /rowspan="3"/, 'each chat order number must span its action, name, and date rows');
+assert.match(tableSource, /chat-room-actions[\s\S]*h-chat-name/, 'chat controls must render on their own row above the chat name');
 assert.match(tableSource, /room\.chatName[\s\S]*room\.participantCount/, 'chat name row must include participant count');
-assert.match(tableSource, /:colspan="canDelete \? 2 : 1"/, 'chat name must span all columns after the order number');
+assert.match(tableSource, /:colspan="1 \+ Number\(canPin\) \+ Number\(canDelete\)"/, 'chat name must span all columns after the order number');
 assert.match(tableSource, /UtilsDate\.dateObjFormat/, 'chat room dates must use ALINA date formatting');
 assert.match(tableSource, /['"]yyyy-MM-dd HH:mm['"]/, 'chat room dates must use the established YYYY-MM-DD HH:mm format');
 assert.doesNotMatch(tableSource, /v-html/, 'multibyte chat names must use safe text rendering');

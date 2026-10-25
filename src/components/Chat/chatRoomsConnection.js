@@ -1,6 +1,6 @@
 import {publicChatUser} from './chatProtocol.js';
 
-export function createChatRoomsConnection({url, getUser, getPagination, onRooms, onSearch = () => {}, onDeleted = () => {}, onStatus, WebSocketClass = WebSocket}) {
+export function createChatRoomsConnection({url, getUser, getPagination, onRooms, onSearch = () => {}, onPin = () => {}, onDeleted = () => {}, onStatus, WebSocketClass = WebSocket}) {
   let socket = null;
   let retryTimer = null;
   let stopped = true;
@@ -65,6 +65,8 @@ export function createChatRoomsConnection({url, getUser, getPagination, onRooms,
         status('connected');
       } else if (data.type === 'rooms_search' && typeof data.query === 'string' && Array.isArray(data.rooms)) {
         onSearch({query: data.query, rooms: data.rooms});
+      } else if (data.type === 'chat_pin_changed' && typeof data.channel === 'string') {
+        onPin({channel: data.channel, isPinned: data.isPinned === true});
       } else if (data.type === 'chat_deleted') {
         onDeleted(data);
       } else if (data.type === 'error') {
@@ -104,6 +106,12 @@ export function createChatRoomsConnection({url, getUser, getPagination, onRooms,
       const normalized = String(query ?? '').trim();
       if (!getUser()?.id || !normalized || !socket || socket.readyState !== WebSocketClass.OPEN) return false;
       socket.send(JSON.stringify({version: 2, type: 'search_rooms', query: normalized}));
+      return true;
+    },
+    toggleChatPin(channel) {
+      if (!getUser()?.id || !socket || socket.readyState !== WebSocketClass.OPEN) return false;
+      try { socket.send(JSON.stringify({version: 2, type: 'toggle_chat_pin', channel: String(channel)})); }
+      catch { return false; }
       return true;
     },
     deleteChat(channel) {

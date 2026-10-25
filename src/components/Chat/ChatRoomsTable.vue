@@ -7,16 +7,21 @@
     <p v-if="!rows.length" class="chat-muted">{{ $t('No chats found.') }}</p>
     <ul v-else class="chat-room-sidebar-list">
       <li v-for="room in rows" :key="room.id" class="chat-room-sidebar-item" :class="{'is-mentioned': mentionIsUnread(room), 'is-current': room.channel === currentChannel}">
+        <div v-if="canPin || canDelete" class="chat-room-actions">
+          <button v-if="canPin" type="button" class="chat-button chat-room-pin" :class="{'is-active': room.isPinned}"
+                  :title="$t(room.isPinned ? 'Unpin chat' : 'Pin chat')" :aria-label="`${$t(room.isPinned ? 'Unpin chat' : 'Pin chat')}: ${room.chatName}`"
+                  :aria-pressed="room.isPinned" @click="$emit('pin', room)">{{ $t(room.isPinned ? 'i_unpin' : 'i_pin') }}</button>
+          <button v-if="canDelete" type="button" class="chat-button chat-kick"
+                  :title="$t('Delete chat')" :aria-label="`${$t('Delete chat')}: ${room.chatName}`"
+                  @click="$emit('delete', room)">×</button>
+        </div>
         <div class="chat-room-sidebar-details">
           <a :href="roomHref(room.channel)" class="chat-room-sidebar-name">{{ room.chatName }}</a>
           <span class="chat-room-sidebar-status">
-            {{ $t('i_people') }} {{ room.participantCount }}
-            <span v-if="room.latestMessageAt">· {{ formatDate(room.latestMessageAt) }}</span>
+            <span v-if="room.latestMessageAt">{{ formatDate(room.latestMessageAt) }} · </span>
+            {{ $t('i_chat') }} {{ formatMessageCount(room.messageCount) }} · {{ $t('i_people') }} {{ room.participantCount }}
           </span>
         </div>
-        <button v-if="canDelete" type="button" class="chat-button chat-kick"
-                :title="$t('Delete chat')" :aria-label="`${$t('Delete chat')}: ${room.chatName}`"
-                @click="$emit('delete', room)">×</button>
       </li>
     </ul>
   </section>
@@ -26,20 +31,30 @@
       <table class=" table-dark">
         <tbody>
           <template v-for="(room, index) in rows" :key="room.id">
-            <tr class="chat-room-table-row" :class="{'is-current': room.channel === currentChannel}">
-              <td rowspan="2" class="align-middle">
+            <tr v-if="canPin || canDelete" class="chat-room-table-row" :class="{'is-current': room.channel === currentChannel}">
+              <td rowspan="3" class="align-middle">
                 <div class="chat-number">{{ offset + index + 1 }}</div>
               </td>
-              <td :colspan="canDelete ? 2 : 1">
+              <td :colspan="1 + Number(canPin) + Number(canDelete)">
+                <div v-if="canPin || canDelete" class="chat-room-actions">
+                  <button v-if="canPin" type="button" class="btn btn-sm chat-room-pin" :class="{'is-active': room.isPinned}" @click="$emit('pin', room)">{{ $t(room.isPinned ? 'i_unpin' : 'i_pin') }}</button>
+                  <button v-if="canDelete" type="button" class="btn btn-danger btn-sm" @click="$emit('delete', room)">X</button>
+                </div>
+              </td>
+            </tr>
+            <tr class="chat-room-table-row" :class="{'is-current': room.channel === currentChannel}">
+              <td v-if="!canPin && !canDelete" rowspan="2" class="align-middle">
+                <div class="chat-number">{{ offset + index + 1 }}</div>
+              </td>
+              <td :colspan="1 + Number(canPin) + Number(canDelete)">
                 <h3 class="h-chat-name">
                   <a :href="roomHref(room.channel)">{{ room.chatName }}</a>
-                  ({{ $t('i_people') }} {{ room.participantCount }})
+                  ({{ $t('i_chat') }} {{ formatMessageCount(room.messageCount) }} · {{ $t('i_people') }} {{ room.participantCount }})
                 </h3>
               </td>
             </tr>
             <tr class="chat-room-table-row" :class="{'is-current': room.channel === currentChannel}">
-              <td class="text-nowrap">🕒 {{ formatDate(room.latestMessageAt) }}</td>
-              <td v-if="canDelete" class="text-end"><button type="button" class="btn btn-danger btn-sm" @click="$emit('delete', room)">X</button></td>
+              <td :colspan="1 + Number(canPin) + Number(canDelete)" class="text-nowrap">🕒 {{ formatDate(room.latestMessageAt) }}</td>
             </tr>
             <tr>
               <td>
@@ -48,7 +63,7 @@
             </tr>
           </template>
           <tr v-if="!rows.length">
-            <td :colspan="canDelete ? 3 : 2" class="text-center text-secondary">{{ $t('No chats found.') }}</td>
+            <td :colspan="2 + Number(canPin) + Number(canDelete)" class="text-center text-secondary">{{ $t('No chats found.') }}</td>
           </tr>
 
         </tbody>
@@ -68,16 +83,20 @@ const props = defineProps({
   title: { type: String, required: true },
   section: { type: Object, required: true },
   canDelete: Boolean,
+  canPin: Boolean,
   compact: Boolean,
   currentChannel: {type: String, default: ''},
 });
-defineEmits(['delete']);
+defineEmits(['delete', 'pin']);
 const router = useRouter();
 const seenMentions = ref(loadRoomMentionAcknowledgements(window.sessionStorage));
-const rows = computed(() => prioritizeUnreadRooms(
-  prioritizeCurrentRoom(props.section?.rows, props.currentChannel),
-  seenMentions.value,
-));
+const rows = computed(() => {
+  const prioritized = prioritizeUnreadRooms(
+    prioritizeCurrentRoom(props.section?.rows, props.currentChannel),
+    seenMentions.value,
+  );
+  return [...prioritized.filter(room => room.isPinned), ...prioritized.filter(room => !room.isPinned)];
+});
 watch([rows, () => props.currentChannel], ([currentRows, currentChannel]) => {
   const currentRoom = currentRows.find(room => room.channel === currentChannel);
   if (currentRoom) seenMentions.value = acknowledgeRoomMention(seenMentions.value, currentRoom, window.sessionStorage);
@@ -90,6 +109,9 @@ function formatDate(timestamp) {
   return timestamp === null || timestamp === undefined
     ? ''
     : UtilsDate.dateObjFormat(new Date(Number(timestamp)), 'yyyy-MM-dd HH:mm');
+}
+function formatMessageCount(count) {
+  return Number(count) > 5000 ? '5000+' : Number(count) || 0;
 }
 
 function roomHref(channel) {
@@ -124,9 +146,19 @@ function roomHref(channel) {
 }
 .chat-room-sidebar-item {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
   margin-bottom: 18px;
+}
+.chat-room-actions {
+  display: inline-flex;
+  justify-content: flex-end;
+  gap: 3px;
+  min-height: 24px;
+}
+.chat-room-actions .chat-button {
+  padding: 2px 6px;
 }
 .chat-room-sidebar-item.is-mentioned {
   margin-inline: -6px;

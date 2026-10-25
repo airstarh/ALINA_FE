@@ -287,6 +287,8 @@ try {
   assert.ok(replyControl, 'every message must expose a Reply control');
   assert.ok(tagControl, 'ordinary message authors must expose a TAG action');
   assert.match(tagControl?.children?.[0]?.content?.content || '', /\$t\(['"]i_tag['"]\)/, 'mention action must use the localized i_tag icon');
+  const localeSource = readFileSync(new URL('../src/locales/index.js', import.meta.url), 'utf8');
+  assert.match(localeSource, /i_tag:\s*"🔔"/, 'mention action must use the bell icon');
   assert.ok(privateControl, 'ordinary message authors must expose a PRIVATE action');
   assert.match(privateControl?.children?.[0]?.content?.content || '', /\$t\(['"]i_private['"]\)/, 'private-chat action must use the localized i_private icon');
   assert.equal(staticAttribute(privateControl, 'target'), undefined, 'PRIVATE must stay in the current app context');
@@ -345,6 +347,8 @@ try {
   assert.match(indexComponent.scriptSetup.content, /editedMessageIds/, 'chat page must remember edited messages for the current session');
   assert.match(indexComponent.scriptSetup.content, /blinkingMessageIds/, 'chat page must retrigger edit blinking locally');
   assert.match(indexComponent.scriptSetup.content, /message_deleted/, 'chat page must apply incoming deletions');
+  assert.match(indexComponent.template.content, /chat-pinned-message/, 'chat page must keep the pinned message outside the scrolling message list');
+  assert.match(messageComponent.template.content, /chat-message-pin/, 'ordinary messages must expose a pin action for registered users');
   assert.match(indexComponent.scriptSetup.content, /appendMention/, 'TAG must reuse structured mention machinery');
   assert.match(indexComponent.scriptSetup.content, /guest_renamed/, 'chat page must apply socket guest renames');
   const chatCss = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
@@ -430,6 +434,8 @@ try {
   assert.deepEqual(socket.sent.at(-1), {version: 2, channel: 'general', type: 'edit_message', messageId: '41', text: 'corrected'});
   assert.equal(connection.deleteMessage('41'), true);
   assert.deepEqual(socket.sent.at(-1), {version: 2, channel: 'general', type: 'delete_message', messageId: '41'});
+  assert.equal(connection.toggleMessagePin('41'), true);
+  assert.deepEqual(socket.sent.at(-1), {version: 2, channel: 'general', type: 'toggle_message_pin', messageId: '41'});
   socket.throwForType = 'edit_message';
   assert.equal(connection.editMessage('41', 'retry'), false, 'failed edit send must preserve UI state for retry');
 

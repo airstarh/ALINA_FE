@@ -177,6 +177,7 @@ export function createChatConnection({url, channel, chatName = '', getUser, onEv
     },
     editMessage(messageId, text) { return send({type: 'edit_message', messageId: String(messageId), text}); },
     deleteMessage(messageId) { return send({type: 'delete_message', messageId: String(messageId)}); },
+    toggleMessagePin(messageId) { return send({type: 'toggle_message_pin', messageId: String(messageId)}); },
     discussMessage(messageId) { return send({type: 'discuss_message', messageId: String(messageId)}); },
     deleteChat() { return send({type: 'delete_chat'}); },
     renameChat(name) { return send({type: 'rename', name}); },
