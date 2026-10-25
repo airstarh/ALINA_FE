@@ -256,6 +256,16 @@ try {
   const participantsComponent = componentDescriptor('src/components/Chat/ChatParticipants.vue');
   assert.ok(elementWithClass(participantsComponent, 'chat-approve'), 'join requests must expose approval action');
   assert.ok(elementWithClass(participantsComponent, 'chat-kick'), 'participant rows must expose role-controlled kick action');
+  const participantTag = elementWithClass(participantsComponent, 'chat-person-tag');
+  const participantPrivate = elementWithClass(participantsComponent, 'chat-person-private');
+  const participantActions = elementWithClass(participantsComponent, 'chat-person-actions');
+  assert.ok(participantTag, 'participant rows must expose the existing TAG action');
+  assert.ok(participantPrivate, 'participant rows must expose the existing PRIVATE action');
+  assert.ok(directive(participantActions, 'if')?.exp?.content.includes('person.id !== selfId'), 'participant actions must not target the current participant');
+  assert.match(participantsComponent.template.content, /chat-person-tag[^>]*@click="\$emit\('tag', person\)"/, 'participant TAG must emit the selected participant');
+  assert.match(participantsComponent.template.content, /chat-person-private[^>]*@click="openPrivate\(person\)"/, 'participant PRIVATE must reuse canonical private-chat navigation');
+  assert.match(indexComponent.template.content, /<ChatParticipants[^>]*@tag="tagParticipant"/, 'chat view must connect participant TAG to the composer mention flow');
+  assert.ok(participantsComponent.template.content.indexOf('chat-person-actions') < participantsComponent.template.content.indexOf('chat-person-main'), 'participant actions must render above the avatar and identity row');
   const onlineDot = elementWithClass(participantsComponent, 'chat-online-dot');
   assert.ok(directive(onlineDot, 'bind', 'class')?.exp?.content.includes('person.online'), 'participant icon must reflect origin-wide online state');
   assert.match(participantsComponent.template.content, /person\.typing[^]*Typing…[^]*person\.inChat[^]*In chat[^]*Not in chat/, 'participant words must distinguish typing, in-chat and not-in-chat states');

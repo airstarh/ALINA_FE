@@ -16,26 +16,36 @@
     </section>
     <ul class="chat-people-list">
       <li v-for="person in orderedParticipants" :key="person.id" class="chat-person">
-        <component :is="privateHref(person) ? 'a' : 'span'" :href="privateHref(person) || undefined"
-                   :title="privateHref(person) ? $t('Open a separate chat') : undefined"
-                   :aria-label="privateHref(person) ? `${$t('Open a separate chat')}: ${displayName(person.user, person.id)}` : undefined"
-                   style="display: inline-flex; flex: 0 0 40px;" @click.prevent="openPrivate(person)">
-        <img v-if="avatar(person.user) && !failedAvatars[person.id]" :src="avatar(person.user)"
-             alt="" class="chat-avatar" @error="failedAvatars[person.id] = true" />
-        <span v-else class="chat-avatar chat-avatar-fallback" aria-hidden="true">{{ displayName(person.user, person.id).slice(0, 1).toUpperCase() }}</span>
-        </component>
-        <div class="chat-person-details">
-          <router-link v-if="person.user?.id" :to="`/auth/profile/${person.user.id}`" class="chat-person-name chat-person-profile">
-            {{ displayName(person.user, person.id) }} <small v-if="person.id === selfId">({{ $t('you') }})</small>
-          </router-link>
-          <span v-else class="chat-person-name">{{ displayName(person.user, person.id) }} <small v-if="person.id === selfId">({{ $t('you') }})</small></span>
-          <span class="chat-person-status" :class="{'is-typing': person.typing}">
-            <span class="chat-online-dot" :class="{'is-online': person.online}" aria-hidden="true"></span>{{ person.typing ? $t('Typing…') : person.inChat ? $t('In chat') : $t('Not in chat') }}
-          </span>
+        <div v-if="person.id !== selfId" class="chat-person-actions">
+          <button type="button" class="chat-button chat-person-tag"
+                  :title="$t('Mention a creature')" :aria-label="`${$t('Mention a creature')}: ${displayName(person.user, person.id)}`"
+                  @click="$emit('tag', person)">{{ $t('i_tag') }}</button>
+          <button type="button" class="chat-button chat-person-private"
+                  :title="$t('Open a separate chat')" :aria-label="`${$t('Open a separate chat')}: ${displayName(person.user, person.id)}`"
+                  @click="openPrivate(person)">{{ $t('i_private') }}</button>
+          <button v-if="canKick" type="button" class="chat-button chat-kick"
+                  :title="$t('Remove from chat')" :aria-label="`${$t('Remove from chat')}: ${displayName(person.user, person.id)}`"
+                  @click="$emit('kick', person.id)">×</button>
         </div>
-        <button v-if="canKick && person.id !== selfId" type="button" class="chat-button chat-kick"
-                :title="$t('Remove from chat')" :aria-label="`${$t('Remove from chat')}: ${displayName(person.user, person.id)}`"
-                @click="$emit('kick', person.id)">×</button>
+        <div class="chat-person-main">
+          <component :is="privateHref(person) ? 'a' : 'span'" :href="privateHref(person) || undefined"
+                     :title="privateHref(person) ? $t('Open a separate chat') : undefined"
+                     :aria-label="privateHref(person) ? `${$t('Open a separate chat')}: ${displayName(person.user, person.id)}` : undefined"
+                     class="chat-person-avatar-link" @click.prevent="openPrivate(person)">
+            <img v-if="avatar(person.user) && !failedAvatars[person.id]" :src="avatar(person.user)"
+                 alt="" class="chat-avatar" @error="failedAvatars[person.id] = true" />
+            <span v-else class="chat-avatar chat-avatar-fallback" aria-hidden="true">{{ displayName(person.user, person.id).slice(0, 1).toUpperCase() }}</span>
+          </component>
+          <div class="chat-person-details">
+            <router-link v-if="person.user?.id" :to="`/auth/profile/${person.user.id}`" class="chat-person-name chat-person-profile">
+              {{ displayName(person.user, person.id) }} <small v-if="person.id === selfId">({{ $t('you') }})</small>
+            </router-link>
+            <span v-else class="chat-person-name">{{ displayName(person.user, person.id) }} <small v-if="person.id === selfId">({{ $t('you') }})</small></span>
+            <span class="chat-person-status" :class="{'is-typing': person.typing}">
+              <span class="chat-online-dot" :class="{'is-online': person.online}" aria-hidden="true"></span>{{ person.typing ? $t('Typing…') : person.inChat ? $t('In chat') : $t('Not in chat') }}
+            </span>
+          </div>
+        </div>
       </li>
     </ul>
   </aside>
@@ -53,7 +63,7 @@ const props = defineProps({
   connected: Boolean,
   canKick: Boolean,
 });
-defineEmits(['approve', 'kick']);
+defineEmits(['approve', 'kick', 'tag']);
 const router = useRouter();
 const orderedParticipants = computed(() => prioritizeSelfParticipant(props.participants, props.selfId));
 function privateHref(person) {

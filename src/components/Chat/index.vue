@@ -52,7 +52,7 @@
     <p v-if="status.state === 'pending'" class="chat-pending" role="status">{{ $t('Waiting for a participant to approve your request.') }}</p>
     <div class="chat-layout" :class="{'chat-people-open': peopleOpen, 'chat-rooms-open': roomsOpen}">
       <ChatParticipants :id="peopleId" :participants="participants" :self-id="selfId" :self-user="chatUser()" :base-url="apiBaseUrl" :connected="connected"
-                        :can-kick="canKick" :join-requests="joinRequests" @approve="approveParticipant" @kick="kickParticipant" />
+                        :can-kick="canKick" :join-requests="joinRequests" @approve="approveParticipant" @kick="kickParticipant" @tag="tagParticipant" />
       <div class="chat-conversation">
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions"
              @scroll="trackScroll" @wheel.passive="trackHistoryIntent">
@@ -610,6 +610,15 @@ function tagMessageAuthor(message) {
   listTaggedUsers.value = result.mentions;
   mentionQuery.value = null;
   nextTick(() => { input.value?.focus(); input.value?.setSelectionRange(result.caret, result.caret); });
+}
+function tagParticipant(person) {
+  const [senderType, ...senderId] = person.id.split(':');
+  tagMessageAuthor({
+    participantId: person.id,
+    senderType,
+    senderId: senderId.join(':'),
+    CurrentUser: person.user,
+  });
 }
 function renameGuestAuthor(message, nickname) {
   if (!canRenameGuestAuthor(message) || !connection?.renameGuest(message.senderId, nickname)) {
