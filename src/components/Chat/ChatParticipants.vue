@@ -1,10 +1,13 @@
 <template>
   <aside class="chat-participants" aria-label="Chat participants">
     <div class="chat-sidebar-title">
-      <h2>{{ $t('People') }}</h2><span>{{ participants.length }}</span>
+      <h2>{{ $t('People') }}</h2><span>{{ displayedParticipants.length }}</span>
     </div>
+    <label class="chat-sr-only" :for="searchId">{{ $t('Search users') }}</label>
+    <input :id="searchId" v-model="searchQuery" type="search" class="chat-participant-search"
+           :placeholder="$t('Search users')" maxlength="200" @input="$emit('search', searchQuery)" />
     <p v-if="!connected" class="chat-muted">{{ $t('Waiting for connection…') }}</p>
-    <p v-else-if="!participants.length" class="chat-muted">{{ $t('Loading participants…') }}</p>
+    <p v-else-if="!searchActive && !participants.length" class="chat-muted">{{ $t('Loading participants…') }}</p>
     <section v-if="connected && joinRequests.length" class="chat-join-requests" :aria-label="$t('Join requests')">
       <h3>{{ $t('Join requests') }}</h3>
       <ul>
@@ -15,7 +18,7 @@
       </ul>
     </section>
     <ul class="chat-people-list">
-      <li v-for="person in orderedParticipants" :key="person.id" class="chat-person">
+      <li v-for="person in displayedParticipants" :key="person.id" class="chat-person">
         <div v-if="person.id !== selfId" class="chat-person-actions">
           <button type="button" class="chat-button chat-person-tag"
                   :title="$t('Mention a creature')" :aria-label="`${$t('Mention a creature')}: ${displayName(person.user, person.id)}`"
@@ -51,7 +54,7 @@
   </aside>
 </template>
 <script setup>
-import {computed, reactive} from 'vue';
+import {computed, reactive, ref, useId} from 'vue';
 import {useRouter} from 'vue-router';
 import {displayName, privateChat, prioritizeSelfParticipant, safeHttpUrl} from './chatProtocol.js';
 const props = defineProps({
@@ -62,10 +65,15 @@ const props = defineProps({
   baseUrl: {type: String, required: true},
   connected: Boolean,
   canKick: Boolean,
+  searchResults: {type: Array, default: () => []},
+  searchActive: Boolean,
 });
-defineEmits(['approve', 'kick', 'tag']);
+defineEmits(['approve', 'kick', 'tag', 'search']);
 const router = useRouter();
 const orderedParticipants = computed(() => prioritizeSelfParticipant(props.participants, props.selfId));
+const displayedParticipants = computed(() => props.searchActive ? props.searchResults : orderedParticipants.value);
+const searchQuery = ref('');
+const searchId = `chat-participant-search-${useId()}`;
 function privateHref(person) {
   const target = privateTarget(person);
   return target ? router.resolve({path: '/chat', query: {channel: target.channel}}).href : '';

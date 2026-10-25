@@ -51,8 +51,10 @@
     <p v-if="feedback" class="chat-feedback" role="status">{{ feedback }}</p>
     <p v-if="status.state === 'pending'" class="chat-pending" role="status">{{ $t('Waiting for a participant to approve your request.') }}</p>
     <div class="chat-layout" :class="{'chat-people-open': peopleOpen, 'chat-rooms-open': roomsOpen}">
-      <ChatParticipants :id="peopleId" :participants="participants" :self-id="selfId" :self-user="chatUser()" :base-url="apiBaseUrl" :connected="connected"
-                        :can-kick="canKick" :join-requests="joinRequests" @approve="approveParticipant" @kick="kickParticipant" @tag="tagParticipant" />
+      <ChatParticipants :id="peopleId" :key="normalizedChannel" :participants="participants" :self-id="selfId" :self-user="chatUser()" :base-url="apiBaseUrl" :connected="connected"
+                        :can-kick="canKick" :join-requests="joinRequests" :search-results="participantSearchResults"
+                        :search-active="!!participantSearchQuery" @approve="approveParticipant" @kick="kickParticipant"
+                        @tag="tagParticipant" @search="searchParticipants" />
       <div class="chat-conversation">
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions"
              @scroll="trackScroll" @wheel.passive="trackHistoryIntent">
@@ -182,6 +184,8 @@ const uploading = ref(false);
 const recordingVoice = ref(false);
 const processingVoice = ref(false);
 const mentionCandidates = ref([]);
+const participantSearchQuery = ref('');
+const participantSearchResults = ref([]);
 const listTaggedUsers = ref([]);
 const mentionQuery = ref(null);
 const mentionOptionIndex = ref(0);
@@ -205,6 +209,7 @@ const pendingDiscussionRequests = new Set();
 const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
 let mentionSearchTimer;
+let participantSearchTimer;
 function toggleSidebar(requested) {
   openSidebar.value = nextChatSidebar(openSidebar.value, requested);
 }
@@ -385,6 +390,9 @@ function receive(event) {
   } else if (event.type === 'presence' && Array.isArray(event.participants)) {
     selfId.value = event.selfId;
     participants.value = event.participants;
+  } else if (event.type === 'participants_search' && Array.isArray(event.participants)
+      && event.query === participantSearchQuery.value) {
+    participantSearchResults.value = event.participants;
   } else if (event.type === 'guest_renamed' && event.participantId && event.guestId) {
     const renamedSelf = acceptGuestRename(event, selfId.value, saveGuestNickname);
     if (renamedSelf !== null) guestNickname.value = renamedSelf;
@@ -450,6 +458,9 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   editingMessageId.value = '';
   replyingMessageId.value = '';
   mentionCandidates.value = [];
+  participantSearchQuery.value = '';
+  participantSearchResults.value = [];
+  clearTimeout(participantSearchTimer);
   listTaggedUsers.value = [];
   mentionQuery.value = null;
   editedMessageIds.clear();
@@ -597,6 +608,14 @@ function updateMentionQuery() {
     const query = mentionQuery.value.query;
     mentionSearchTimer = setTimeout(() => connection?.searchMentions(query), 250);
   }
+}
+function searchParticipants(value) {
+  participantSearchQuery.value = String(value ?? '').trim();
+  participantSearchResults.value = [];
+  clearTimeout(participantSearchTimer);
+  if (!participantSearchQuery.value) return;
+  const query = participantSearchQuery.value;
+  participantSearchTimer = setTimeout(() => connection?.searchParticipants(query), 250);
 }
 function selectMention(candidate) {
   if (!candidate || listTaggedUsers.value.length >= 22) {
@@ -768,6 +787,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('storage', syncGuestNickname);
   clearTimeout(nicknameTimer);
   clearTimeout(mentionSearchTimer);
+  clearTimeout(participantSearchTimer);
   pageSettings.showMainMenu = previousShowMainMenu;
   generation++;
   identityAbort?.abort();

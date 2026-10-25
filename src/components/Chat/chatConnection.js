@@ -163,6 +163,7 @@ export function createChatConnection({url, channel, chatName = '', getUser, onEv
     reactMessage(messageId, reaction) { return send({type: 'react_message', messageId: String(messageId), reaction}); },
     loadReactionList(messageId) { return send({type: 'reaction_list', messageId: String(messageId)}); },
     searchMentions(query) { return send({type: 'mentions_search', query: String(query)}); },
+    searchParticipants(query) { return send({type: 'participants_search', query: String(query)}); },
     replyMessage(replyToMessageId, text, requestedMessageId = '') {
       const key = `reply:${String(replyToMessageId)}\0${String(text)}`;
       const clientMessageId = requestedMessageId || failedMessageIds.get(key) || createClientMessageId();

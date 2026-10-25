@@ -28,6 +28,8 @@
 .alina-chat .chat-sidebar-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .alina-chat .chat-sidebar-title h2 { margin: 0; font-size: 14px; color: #edf2f8; }
 .alina-chat .chat-sidebar-title > span { padding: 2px 8px; border-radius: 12px; background: #344052; }
+.alina-chat .chat-participant-search { width: 100%; margin: 0 0 12px; padding: 6px 8px; border: 1px solid #53637a; border-radius: 6px; color: #edf2f8; background: #151c27; font: inherit; }
+.alina-chat .chat-participant-search::placeholder { color: var(--chat-muted); }
 .alina-chat .chat-people-list { margin: 0; padding: 0; list-style: none; }
 .alina-chat .chat-person { display: flex; flex-direction: column; align-items: stretch; gap: 5px; margin-bottom: 18px; }
 .alina-chat .chat-person-main { display: flex; align-items: center; gap: 10px; min-width: 0; }
