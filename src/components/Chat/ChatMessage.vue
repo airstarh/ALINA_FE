@@ -1,5 +1,5 @@
 <template>
-  <article v-if="isUserService" class="chat-message chat-message-service">
+  <article v-if="isUserService" :id="messageElementId" tabindex="-1" class="chat-message chat-message-service">
     <div class="chat-service-row">
       <div v-if="mentionNotification" class="chat-service-text">
         <strong class="chat-mention-target">{{ mentionNotification.target }}!!!</strong>
@@ -13,7 +13,7 @@
       <button v-if="canManage" type="button" class="chat-copy-button chat-message-delete" :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
     </div>
   </article>
-  <article v-else class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing, 'chat-message-edited': edited, 'chat-message-edited-blinking': editedBlinking, 'chat-message-replying': replying}">
+  <article v-else :id="messageElementId" tabindex="-1" class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing, 'chat-message-edited': edited, 'chat-message-edited-blinking': editedBlinking, 'chat-message-replying': replying}">
     <div class="chat-message-heading">
       <div class="chat-message-identity">
         <span v-if="isRobocop" class="chat-avatar chat-avatar-robocop chat-message-avatar" aria-hidden="true">🤖</span>
@@ -101,6 +101,7 @@ const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);
 let copyTimer;
+const messageElementId = computed(() => `chat-message-${props.message.id}`);
 const name = computed(() => displayName(props.message.CurrentUser, props.message.participantId));
 const guestNickname = computed(() => String(props.message.CurrentUser?.nickname || name.value).replace(/ \(Guest [^)]+\)$/, ''));
 const isRobocop = computed(() => props.message.participantId === 'bot:robocop');

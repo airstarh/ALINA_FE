@@ -57,11 +57,10 @@
                         @tag="tagParticipant" @search="searchParticipants" />
       <div class="chat-conversation">
         <div v-if="pinnedMessage" class="chat-pinned-message">
-          <ChatMessage :message="pinnedMessage" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(pinnedMessage)"
-                       :can-manage="canManageMessage(pinnedMessage)" :can-pin="!!user.attributes.id" :can-tag="canTagMessage(pinnedMessage)"
-                       :private-href="privateMessageHref(pinnedMessage)" :base-url="apiBaseUrl" @pin="toggleMessagePin"
-                       @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage"
-                       @tag="tagMessageAuthor" @open-private="openPrivateMessage" @react="reactMessage" @reaction-list="showReactionList" />
+          <button v-if="pinnedMessageLoaded" type="button" class="chat-pinned-message-text is-linked" @click="jumpToPinnedMessage">
+            {{ pinnedMessageText }}
+          </button>
+          <p v-else class="chat-pinned-message-text">{{ pinnedMessageText }}</p>
         </div>
         <div ref="messageList" class="chat-messages" role="log" :aria-label="$t('Messages')" aria-live="polite" aria-relevant="additions"
              @scroll="trackScroll" @wheel.passive="trackHistoryIntent">
@@ -201,6 +200,12 @@ const unread = ref(0);
 const reactionModalOpen = ref(false);
 const reactionPeople = ref({positive: [], negative: []});
 const pinnedMessage = ref(null);
+const pinnedMessageText = computed(() => {
+  const text = parseReplyMessage(pinnedMessage.value?.msg).body.trim();
+  const characters = [...text];
+  return characters.length > 150 ? `${characters.slice(0, 149).join('')}…` : text;
+});
+const pinnedMessageLoaded = computed(() => messages.value.some(message => String(message.id) === String(pinnedMessage.value?.id)));
 const hasOlder = ref(false);
 const showLoadOlder = ref(false);
 const loadingOlder = ref(false);
@@ -327,6 +332,12 @@ function jumpToLatest() {
   following.value = true;
   unread.value = 0;
   scrollIfFollowing();
+}
+function jumpToPinnedMessage() {
+  if (!pinnedMessageLoaded.value) return;
+  const element = document.getElementById(`chat-message-${pinnedMessage.value.id}`);
+  element?.scrollIntoView({behavior: 'smooth', block: 'center'});
+  element?.focus({preventScroll: true});
 }
 function markMessageEdited(messageId) {
   editedMessageIds.add(messageId);
