@@ -134,7 +134,7 @@ assert.match(routerSource, /path:\s*["']\/chat\/rooms["']/, 'router must expose 
 const roomsRouteSource = routerSource.match(/\{\s*path:\s*["']\/chat\/rooms["'][\s\S]*?\n\s*\}/)?.[0] || '';
 assert.doesNotMatch(roomsRouteSource, /meta:\s*\{\s*chat:\s*true\s*\}/, 'room directory must use normal document scrolling instead of the locked chat-room layout');
 
-for (const relativePath of ['../src/views/Chat/rooms.vue', '../src/components/Chat/ChatRoomsDirectory.vue', '../src/components/Chat/ChatRoomsTable.vue']) {
+for (const relativePath of ['../src/views/Chat/rooms.vue', '../src/components/Chat/ChatRoomsDirectory.vue', '../src/components/Chat/ChatRoomsTable.vue', '../src/components/Chat/ChatRoomCreateForm.vue']) {
   const source = readFileSync(new URL(relativePath, import.meta.url), 'utf8');
   const {descriptor, errors} = parse(source, {filename: relativePath});
   assert.deepEqual(errors, [], `${relativePath} must parse as a Vue SFC`);
@@ -151,14 +151,21 @@ assert.match(tableSource, /'is-current':\s*room\.channel\s*===\s*currentChannel/
 assert.match(tableSource, /\.chat-room-sidebar-item\.is-current[\s\S]*background:\s*#203d62/, 'current compact room must use the own-message background');
 assert.match(tableSource, /\.chat-room-table-row\.is-current[\s\S]*background:\s*#203d62/, 'current full-list room must use the own-message background');
 const roomPageSource = readFileSync(new URL('../src/views/Chat/rooms.vue', import.meta.url), 'utf8');
+const directorySource = readFileSync(new URL('../src/components/Chat/ChatRoomsDirectory.vue', import.meta.url), 'utf8');
+const createFormSource = readFileSync(new URL('../src/components/Chat/ChatRoomCreateForm.vue', import.meta.url), 'utf8');
+assert.match(roomPageSource, /<ChatRoomCreateForm/, 'full room page must use the shared creation form');
+assert.match(directorySource, /<ChatRoomCreateForm\s+v-if="compact"\s+compact/, 'compact chat list must show the shared creation form');
+assert.ok(directorySource.indexOf('<ChatRoomCreateForm') < directorySource.indexOf('<ChatRoomsTable'), 'creation form must appear above My chats');
+assert.match(createFormSource, /createChatRoomTarget/, 'shared creation form must use the canonical route generator');
+assert.match(createFormSource, /maxlength="200"/, 'shared creation form must enforce the room-name limit');
 assert.match(roomPageSource, /chat-rooms-page/, 'room directory must expose its compact page wrapper');
 assert.match(roomPageSource, /class="container chat-rooms-page"/, 'room directory must use the established responsive ALINA page width');
 assert.doesNotMatch(roomPageSource, /container-fluid chat-rooms-page/, 'room directory must not stretch across the full desktop viewport');
 assert.doesNotMatch(roomPageSource, /overflow-y:\s*auto/, 'room directory must not create a nested vertical scrollbar');
-assert.match(roomPageSource, /v-if="user\.attributes\.id"[^>]*class="[^"]*chat-room-create[^"]*"/, 'new-room form must be restricted to logged-in users');
-assert.match(roomPageSource, /maxlength="200"/, 'new room human name must be limited to 200 characters');
-assert.match(roomPageSource, /createChatRoomTarget/, 'new-room form must generate its route automatically');
-assert.match(roomPageSource, /router\.push\(target\)/, 'new room must open in the current SPA context');
+assert.match(createFormSource, /v-if="user\.attributes\.id"[^>]*class="[^"]*chat-room-create[^"]*"/, 'new-room form must be restricted to logged-in users');
+assert.match(createFormSource, /maxlength="200"/, 'new room human name must be limited to 200 characters');
+assert.match(createFormSource, /createChatRoomTarget/, 'new-room form must generate its route automatically');
+assert.match(createFormSource, /router\.push\(target\)/, 'new room must open in the current SPA context');
 const chatViewSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');
 assert.match(chatViewSource, /<Chat\s+:channel="channel"\s+:title="title"/, 'chat route must pass the requested human name into the room');
 const chatPageSource = readFileSync(new URL('../src/views/Chat/index.vue', import.meta.url), 'utf8');

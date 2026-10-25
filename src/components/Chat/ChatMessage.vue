@@ -60,10 +60,12 @@
         <span class="chat-message-reactions">
           <button type="button" class="chat-copy-button chat-reaction-positive" :class="{'is-active': reactions.currentReaction === 1}"
                   :aria-pressed="reactions.currentReaction === 1" @click="$emit('react', message, 1)">+</button>
-          <button type="button" class="chat-reaction-count" @click="$emit('reaction-list', message)">{{ reactions.positiveCount }}</button>
+          <button type="button" class="chat-reaction-count chat-reaction-positive-count" :class="{'has-reactions': reactions.positiveCount > 0}"
+                  @click="$emit('reaction-list', message)">{{ reactions.positiveCount }}</button>
           <button type="button" class="chat-copy-button chat-reaction-negative" :class="{'is-active': reactions.currentReaction === -1}"
                   :aria-pressed="reactions.currentReaction === -1" @click="$emit('react', message, -1)">−</button>
-          <button type="button" class="chat-reaction-count" @click="$emit('reaction-list', message)">{{ reactions.negativeCount }}</button>
+          <button type="button" class="chat-reaction-count chat-reaction-negative-count" :class="{'has-reactions': reactions.negativeCount > 0}"
+                  @click="$emit('reaction-list', message)">{{ reactions.negativeCount }}</button>
         </span>
         <button type="button" class="chat-copy-button chat-message-reply" :disabled="replyDisabled"
                 :title="$t('Reply')" :aria-label="$t('Reply')" @click="$emit('reply', message)">{{ $t('Reply') }}</button>

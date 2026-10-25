@@ -7,6 +7,7 @@
       {{ status.error || $t('Could not load chat rooms.') }}
       <button type="button" class="btn btn-danger btn-sm ms-2" @click="retry">{{ $t('Retry') }}</button>
     </p>
+    <ChatRoomCreateForm v-if="compact" compact />
     <ChatRoomsTable :title="$t('My chats')" :section="rooms.mine" :can-delete="canDelete" :compact="compact" :current-channel="currentChannel" @delete="deleteRoom" />
     <template v-if="user.attributes.id">
       <div v-if="!compact" class="mb-5">&nbsp;</div>
@@ -21,6 +22,7 @@ import {useI18n} from 'vue-i18n';
 import ConfigApi from '@/configs/ConfigApi';
 import CurrentUser from '@/services/CurrentUser';
 import ChatRoomsTable from '@/components/Chat/ChatRoomsTable.vue';
+import ChatRoomCreateForm from '@/components/Chat/ChatRoomCreateForm.vue';
 import {refreshChatIdentity} from '@/components/Chat/chatIdentity.js';
 import {createChatRoomsConnection} from '@/components/Chat/chatRoomsConnection.js';
 import {canKickParticipants, websocketUrl} from '@/components/Chat/chatProtocol.js';

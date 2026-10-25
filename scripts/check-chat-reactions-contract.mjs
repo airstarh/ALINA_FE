@@ -11,6 +11,11 @@ const connection = readFileSync(new URL('../src/components/Chat/chatConnection.j
 assert.match(message, /chat-reaction-positive/);
 assert.match(message, /chat-reaction-negative/);
 assert.match(message, /is-active/);
+assert.match(message, /chat-reaction-positive-count[^>]*positiveCount > 0/s);
+assert.match(message, /chat-reaction-negative-count[^>]*negativeCount > 0/s);
+const css = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
+assert.match(css, /chat-reaction-positive\.is-active[^}]*background:\s*#91d9aa/s);
+assert.match(css, /chat-reaction-negative\.is-active[^}]*background:\s*#e49a9a/s);
 assert.match(message, /\$emit\('reaction-list', message\)/);
 assert.match(modal, /<b-modal/);
 assert.match(modal, /positive/);
