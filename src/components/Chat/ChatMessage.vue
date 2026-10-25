@@ -57,6 +57,14 @@
     </div>
     <footer class="chat-message-footer">
       <span class="chat-message-secondary-actions">
+        <span class="chat-message-reactions">
+          <button type="button" class="chat-copy-button chat-reaction-positive" :class="{'is-active': reactions.currentReaction === 1}"
+                  :aria-pressed="reactions.currentReaction === 1" @click="$emit('react', message, 1)">+</button>
+          <button type="button" class="chat-reaction-count" @click="$emit('reaction-list', message)">{{ reactions.positiveCount }}</button>
+          <button type="button" class="chat-copy-button chat-reaction-negative" :class="{'is-active': reactions.currentReaction === -1}"
+                  :aria-pressed="reactions.currentReaction === -1" @click="$emit('react', message, -1)">−</button>
+          <button type="button" class="chat-reaction-count" @click="$emit('reaction-list', message)">{{ reactions.negativeCount }}</button>
+        </span>
         <button type="button" class="chat-copy-button chat-message-reply" :disabled="replyDisabled"
                 :title="$t('Reply')" :aria-label="$t('Reply')" @click="$emit('reply', message)">{{ $t('Reply') }}</button>
         <a v-if="message.discussion" :href="discussionHref"
@@ -79,7 +87,7 @@ import {displayName, formatChatTimestamp, messageParts, parseMentionNotification
 import PopupObj from '@/services/PopupObj';
 import UtilsFS from '@/Utils/UtilsFS';
 const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
-const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'discuss', 'tag', 'rename-guest', 'open-private']);
+const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'reply', 'discuss', 'tag', 'rename-guest', 'open-private', 'react', 'reaction-list']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);
@@ -104,6 +112,7 @@ const fullTime = computed(() => Number.isNaN(date.value.getTime())
   : `${date.value.getFullYear()}-${pad(date.value.getMonth() + 1)}-${pad(date.value.getDate())} ${pad(date.value.getHours())}:${pad(date.value.getMinutes())}`);
 const time = computed(() => formatChatTimestamp(date.value));
 const discussionResponseCount = computed(() => Number(props.message.discussion?.responseCount || 0));
+const reactions = computed(() => props.message.reactions || {positiveCount: 0, negativeCount: 0, currentReaction: 0});
 const discussionChannel = computed(() => props.message.discussion?.channel || `discussion_${props.message.id}`);
 const discussionHref = computed(() => `${window.location.origin}/#/chat?channel=${encodeURIComponent(discussionChannel.value)}`);
 function renameGuest(event) {

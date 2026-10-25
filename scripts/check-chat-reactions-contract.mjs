@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {existsSync, readFileSync} from 'node:fs';
+import {parse} from '@vue/compiler-sfc';
+
+const componentUrl = new URL('../src/components/Chat/ChatReactionModal.vue', import.meta.url);
+assert.ok(existsSync(componentUrl), 'chat reaction modal must exist');
+const modal = readFileSync(componentUrl, 'utf8');
+const message = readFileSync(new URL('../src/components/Chat/ChatMessage.vue', import.meta.url), 'utf8');
+const chat = readFileSync(new URL('../src/components/Chat/index.vue', import.meta.url), 'utf8');
+const connection = readFileSync(new URL('../src/components/Chat/chatConnection.js', import.meta.url), 'utf8');
+assert.match(message, /chat-reaction-positive/);
+assert.match(message, /chat-reaction-negative/);
+assert.match(message, /is-active/);
+assert.match(message, /\$emit\('reaction-list', message\)/);
+assert.match(modal, /<b-modal/);
+assert.match(modal, /positive/);
+assert.match(modal, /negative/);
+assert.match(chat, /reaction_changed/);
+assert.match(chat, /reaction_list/);
+assert.match(connection, /reactMessage/);
+assert.match(connection, /loadReactionList/);
+assert.deepEqual(parse(modal, {filename: 'ChatReactionModal.vue'}).errors, []);
+console.log('Chat reactions contract passed.');

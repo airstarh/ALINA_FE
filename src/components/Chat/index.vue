@@ -67,6 +67,7 @@
                        :edited="editedMessageIds.has(entry.message.id)" :edited-blinking="blinkingMessageIds.has(entry.message.id)" :base-url="apiBaseUrl"
                        :replying="replyingMessageId === entry.message.id" :reply-disabled="!!editingMessageId"
                        @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
+                       @react="reactMessage" @reaction-list="showReactionList"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
           <ChatActivityBlock v-else :messages="entry.messages" :start-index="entry.startIndex" :discussion-room="!!chatState.discussionOfMessageId"
                              :base-url="apiBaseUrl" :can-manage-message="canManageMessage" @delete="deleteMessage" />
@@ -107,6 +108,7 @@
         <ChatRoomsDirectory :api-base-url="apiBaseUrl" :current-channel="normalizedChannel" compact />
       </aside>
     </div>
+    <ChatReactionModal v-model="reactionModalOpen" :positive="reactionPeople.positive" :negative="reactionPeople.negative" />
   </section>
 </template>
 <script setup>
@@ -122,6 +124,7 @@ import ChatMessage from './ChatMessage.vue';
 import ChatActivityBlock from './ChatActivityBlock.vue';
 import ChatParticipants from './ChatParticipants.vue';
 import ChatRoomsDirectory from './ChatRoomsDirectory.vue';
+import ChatReactionModal from './ChatReactionModal.vue';
 import {createChatConnection} from './chatConnection.js';
 import {nextChatSidebar} from './chatSidebar.js';
 import {createVoiceRecorder} from './chatVoiceRecorder.js';
@@ -184,6 +187,8 @@ const mentionQuery = ref(null);
 const mentionOptionIndex = ref(0);
 const following = ref(true);
 const unread = ref(0);
+const reactionModalOpen = ref(false);
+const reactionPeople = ref({positive: [], negative: []});
 const hasOlder = ref(false);
 const showLoadOlder = ref(false);
 const loadingOlder = ref(false);
@@ -350,6 +355,12 @@ function receive(event) {
     }
     if (!following.value) unread.value++;
     scrollIfFollowing();
+  } else if (event.type === 'reaction_changed' && event.messageId && event.reactions) {
+    const index = messages.value.findIndex(message => message.id === event.messageId);
+    if (index !== -1) messages.value[index] = {...messages.value[index], reactions: event.reactions};
+  } else if (event.type === 'reaction_list' && Array.isArray(event.positive) && Array.isArray(event.negative)) {
+    reactionPeople.value = {positive: event.positive, negative: event.negative};
+    reactionModalOpen.value = true;
   } else if (event.type === 'message_edited' && event.message?.id) {
     const index = messages.value.findIndex(message => message.id === event.message.id);
     if (index !== -1) {
@@ -548,6 +559,12 @@ function discussMessage(message) {
     return;
   }
   pendingDiscussionRequests.add(message.id);
+}
+function reactMessage(message, reaction) {
+  if (!connected.value || !connection?.reactMessage(message.id, reaction)) error.value = t('Could not save reaction.');
+}
+function showReactionList(message) {
+  if (!connected.value || !connection?.loadReactionList(message.id)) error.value = t('Could not load reactions.');
 }
 function onInput() {
   error.value = '';
