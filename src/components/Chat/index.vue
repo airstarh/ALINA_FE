@@ -26,7 +26,7 @@
         </button>
         <input v-if="!user.attributes.id" class="chat-guest-nickname" :value="guestNickname" maxlength="25"
                :placeholder="$t('Your nickname')" :aria-label="$t('Your nickname')" @input="changeGuestNickname" />
-        <router-link v-if="!user.attributes.id" to="/auth/register" class="chat-button chat-register">{{ $t('SignUp') }}</router-link>
+        <router-link v-if="registrationAllowed && !user.attributes.id" to="/auth/register" class="chat-button chat-register">{{ $t('SignUp') }}</router-link>
         <button type="button" class="chat-button chat-copy-link" :title="$t('Copy chat link')" :aria-label="$t('Copy chat link')" @click="copyChatLink">
           <i class="bi bi-link-45deg" aria-hidden="true"></i>
         </button>
@@ -158,6 +158,7 @@ const props = defineProps({channel: {type: String, default: '1'}, title: {type: 
 const {t} = useI18n();
 const router = useRouter();
 const pageSettings = reactive(PageSettings);
+const registrationAllowed = String(import.meta.env.VITE_APP_ALINA_MENU_REGISTRATION || '') === '1';
 const previousShowMainMenu = pageSettings.showMainMenu;
 pageSettings.showMainMenu = false;
 const inputId = `chat-input-${useId()}`;
