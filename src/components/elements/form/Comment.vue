@@ -215,8 +215,9 @@
           class="btn btn-sm btn-primary"
           target="_top">{{ $t("IMP_LOGIN") }}
         </a>
-        {{ $t("i_ok") }}
+        <span v-if="registrationAllowed">{{ $t("i_ok") }}</span>
         <a
+          v-if="registrationAllowed"
           href="#/auth/register"
           class="btn btn-sm btn-primary"
           target="_top">{{ $t("IMP_REGISTER") }}
@@ -255,6 +256,7 @@ export default {
       AlinaStorage,
       ConfigApi,
       CU: CurrentUser.obj(),
+      registrationAllowed: String(import.meta.env.VITE_APP_ALINA_MENU_REGISTRATION || "") === "1",
       dConf: {
         urlFeed: `${ConfigApi.url_base}/tale/feed`,
         urlTaleUpsert: `${ConfigApi.url_base}/tale/upsert`,

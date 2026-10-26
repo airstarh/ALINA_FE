@@ -7,7 +7,7 @@
         >{{ $t("TXT_LOGIN") }}
         </router-link>
         &nbsp;
-        <router-link to="/auth/register"
+        <router-link v-if="registrationAllowed" to="/auth/register"
                      class="btn btn-sm btn-primary"
         >{{ $t("TXT_REGISTER") }}
         </router-link>
@@ -38,6 +38,7 @@ export default {
   name: "auth_reset_password_with_code",
   data() {
     return {
+      registrationAllowed: String(import.meta.env.VITE_APP_ALINA_MENU_REGISTRATION || "") === "1",
       options: {
         url: `${ConfigApi.url_base}/auth/ResetPasswordWithCode`
       },

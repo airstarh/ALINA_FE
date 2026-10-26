@@ -1,6 +1,7 @@
 <template>
   <div class="alina-form p-3 m-5 container mx-auto">
     <router-link
+        v-if="registrationAllowed"
         to="/auth/register"
         class="btn btn-sm btn-primary"
     >{{ $t("TXT_REGISTER") }}
@@ -38,6 +39,7 @@ export default {
   data() {
     return {
       referer: null,
+      registrationAllowed: String(import.meta.env.VITE_APP_ALINA_MENU_REGISTRATION || "") === "1",
       CurrentUser,
       options: {
         url: `${ConfigApi.url_base}/auth/login`

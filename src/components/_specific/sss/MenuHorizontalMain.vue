@@ -69,7 +69,7 @@
               <span class="me-1 ms-1">{{ CU.attributes.firstname || CU.attributes.mail || 'ツ' }}</span>
             </template>
             <b-dropdown-item to="/auth/login" v-if="!CU.isLoggedIn()">{{ $t("TXT_LOGIN") }}</b-dropdown-item>
-            <b-dropdown-item to="/auth/register" v-if="!CU.isLoggedIn()">{{ $t("TXT_REGISTER") }}</b-dropdown-item>
+            <b-dropdown-item to="/auth/register" v-if="registrationAllowed && !CU.isLoggedIn()">{{ $t("TXT_REGISTER") }}</b-dropdown-item>
             <b-dropdown-item to="/auth/reset_password_request" v-if="!CU.isLoggedIn()">{{ $t("TXT_RESET_PASS_REQUEST") }}</b-dropdown-item>
             <b-dropdown-item to="/auth/reset_password_with_code" v-if="!CU.isLoggedIn()">{{ $t("TXT_RESET_PASS_CODE") }}</b-dropdown-item>
             <!---->
@@ -119,6 +119,7 @@ export default {
       CU:               CurrentUser.obj(),
       languageList:     CurrentLocale.variants,
       languageSelected: CurrentLocale.language,
+      registrationAllowed: String(import.meta.env.VITE_APP_ALINA_MENU_REGISTRATION || "") === "1",
     }
   },
   methods: {
