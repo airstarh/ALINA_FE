@@ -19,17 +19,6 @@
     </section>
     <ul class="chat-people-list">
       <li v-for="person in displayedParticipants" :key="person.id" class="chat-person">
-        <div v-if="person.id !== selfId" class="chat-person-actions">
-          <button type="button" class="chat-button chat-person-tag"
-                  :title="$t('Mention a creature')" :aria-label="`${$t('Mention a creature')}: ${displayName(person.user, person.id)}`"
-                  @click="$emit('tag', person)">{{ $t('i_tag') }}</button>
-          <button type="button" class="chat-button chat-person-private"
-                  :title="$t('Open a separate chat')" :aria-label="`${$t('Open a separate chat')}: ${displayName(person.user, person.id)}`"
-                  @click="openPrivate(person)">{{ $t('i_private') }}</button>
-          <button v-if="canKick" type="button" class="chat-button chat-kick"
-                  :title="$t('Remove from chat')" :aria-label="`${$t('Remove from chat')}: ${displayName(person.user, person.id)}`"
-                  @click="$emit('kick', person.id)">×</button>
-        </div>
         <div class="chat-person-main">
           <component :is="privateHref(person) ? 'a' : 'span'" :href="privateHref(person) || undefined"
                      :title="privateHref(person) ? $t('Open a separate chat') : undefined"
@@ -47,6 +36,17 @@
             <span class="chat-person-status" :class="{'is-typing': person.typing}">
               <span class="chat-online-dot" :class="{'is-online': person.online}" aria-hidden="true"></span>{{ person.typing ? $t('Typing…') : person.inChat ? $t('In chat') : $t('Not in chat') }}
             </span>
+            <div v-if="person.id !== selfId" class="chat-person-actions">
+              <button type="button" class="chat-button chat-person-tag"
+                      :title="$t('Mention a creature')" :aria-label="`${$t('Mention a creature')}: ${displayName(person.user, person.id)}`"
+                      @click="$emit('tag', person)">{{ $t('i_tag') }}</button>
+              <button type="button" class="chat-button chat-person-private"
+                      :title="$t('Open a separate chat')" :aria-label="`${$t('Open a separate chat')}: ${displayName(person.user, person.id)}`"
+                      @click="openPrivate(person)">{{ $t('i_private') }}</button>
+              <button v-if="canKick" type="button" class="chat-button chat-kick"
+                      :title="$t('Remove from chat')" :aria-label="`${$t('Remove from chat')}: ${displayName(person.user, person.id)}`"
+                      @click="$emit('kick', person.id)">×</button>
+            </div>
           </div>
         </div>
       </li>

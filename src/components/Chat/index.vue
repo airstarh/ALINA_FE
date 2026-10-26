@@ -582,6 +582,10 @@ function approveParticipant(participantId) {
   joinRequests.value = joinRequests.value.filter(request => request.id !== participantId);
 }
 function kickParticipant(participantId) {
+  const person = participants.value.find(candidate => candidate.id === participantId)
+    || participantSearchResults.value.find(candidate => candidate.id === participantId);
+  const name = person ? displayName(person.user, person.id) : participantId;
+  if (!window.confirm(`${t('Remove from chat')} “${name}”?`)) return;
   if (!connected.value || !connection?.kick(participantId)) {
     error.value = t('Could not remove the participant. Reconnect and try again.');
   }

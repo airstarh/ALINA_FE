@@ -102,9 +102,10 @@ export default {
 .a-flex { display:flex; flex-flow:row nowrap; align-items:center; gap:2px; width:100%; }
 .aSelect-label { flex:0 0 auto; }
 .aSelect-readonly { padding:2px 2mm; }
-.aSelect-field { position:relative; display:flex; flex:1 1 10rem; align-items:center; flex-wrap:wrap; min-width:8rem; min-height:30px; border:.5px solid #666; border-radius:8px; padding:2px 7mm 2px 2mm; background:#303030; cursor:text; }
+.aSelect-field { position:relative; display:flex; flex:1 1 10rem; align-items:center; flex-wrap:wrap; min-width:8rem; min-height:30px; border:.5px solid #666; border-radius:8px; padding:2px 7mm 2px 2mm; background:#303030; cursor:pointer; }
 .aSelect-field.disabled { opacity:.6; cursor:not-allowed; }
-.aSelect-field input { flex:1 1 5rem; min-width:3rem; border:0; outline:0; padding:2px; color:inherit; background:transparent; }
+.aSelect-field input { flex:1 1 5rem; min-width:3rem; border:0; outline:0; padding:2px; color:inherit; background:transparent; cursor:pointer; }
+.aSelect-field.disabled input { cursor:not-allowed; }
 .aSelect-chips { display:flex; flex-wrap:wrap; gap:2px; }
 .aSelect-chip { border:1px solid #666; border-radius:6px; padding:0 1.5mm; background:#120133; }
 .aSelect-single { position:absolute; left:2mm; right:8mm; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; pointer-events:none; border:1px solid #666; border-radius:6px; padding:0 1.5mm; background:#120133; }
