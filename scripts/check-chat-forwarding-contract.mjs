@@ -12,10 +12,13 @@ assert.equal(parseForwardMessage('<div class="forward-quote">broken</div>'), nul
 const message = readFileSync(new URL('../src/components/Chat/ChatMessage.vue', import.meta.url), 'utf8');
 const chat = readFileSync(new URL('../src/components/Chat/index.vue', import.meta.url), 'utf8');
 assert.match(message, /@click="\$emit\('forward', message\)"/, 'message must offer a forwarding action');
+assert.match(message, /'chat-message-replying': replying \|\| forwarding/, 'forwarding source must reuse the dark-orange reply highlight');
 assert.match(message, /hash: `#chat-message-\$\{forwarded\.value\.messageId\}`/, 'forward author must link to the source message');
 assert.match(chat, /v-model="composerText"/, 'the existing textarea must become the forwarding search box');
 assert.match(chat, /connection\?\.forwardMessage/, 'selected forwarding destinations must use the chat connection');
 assert.match(chat, /connection\?\.searchForwardDestinations\(''\)/, 'clicking Forward must immediately request the destination directory');
+assert.match(chat, /:forwarding="forwardingMessageId === entry\.message\.id"/, 'only the selected forwarding source may be highlighted');
+assert.match(chat, /forwardingMessageId\.value && event\.key === 'Escape'[\s\S]*cancelForwardingMessage\(\)/, 'Escape must leave forwarding mode and remove its source highlight');
 assert.match(chat, /<div v-if="forwardingMessageId" class="chat-mention-selector chat-forward-selector"/, 'forward destination popup must open immediately, even while results load');
 
 console.log('Chat forwarding contract passed.');

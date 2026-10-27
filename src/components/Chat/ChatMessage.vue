@@ -13,7 +13,7 @@
       <button v-if="canManage" type="button" class="chat-copy-button chat-message-delete" :title="$t('Delete message')" :aria-label="$t('Delete message')" @click="$emit('delete', message)">{{ $t('i_delete') }}</button>
     </div>
   </article>
-  <article v-else :id="messageElementId" tabindex="-1" class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing, 'chat-message-edited': edited, 'chat-message-edited-blinking': editedBlinking, 'chat-message-replying': replying}">
+  <article v-else :id="messageElementId" tabindex="-1" class="chat-message" :class="{'chat-message-own': own, 'chat-message-bot': isRobocop, 'chat-message-editing': editing, 'chat-message-edited': edited, 'chat-message-edited-blinking': editedBlinking, 'chat-message-replying': replying || forwarding}">
     <div class="chat-message-heading">
       <div class="chat-message-identity">
         <span v-if="isRobocop" class="chat-avatar chat-avatar-robocop chat-message-avatar" aria-hidden="true">🤖</span>
@@ -104,7 +104,7 @@ import {computed, onBeforeUnmount, reactive, ref} from 'vue';
 import {displayName, formatChatTimestamp, messageParts, parseForwardMessage, parseMentionNotification, parsePresenceNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
 import PopupObj from '@/services/PopupObj';
 import UtilsFS from '@/Utils/UtilsFS';
-const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canPin: Boolean, canTag: Boolean, canForward: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
+const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canPin: Boolean, canTag: Boolean, canForward: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, forwarding: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
 const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'pin', 'reply', 'forward', 'discuss', 'tag', 'rename-guest', 'open-private', 'react', 'reaction-list']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});

@@ -73,7 +73,7 @@
                        :can-manage="canManageMessage(entry.message)" :can-pin="!!user.attributes.id" :editing="editingMessageId === entry.message.id"
                        :can-tag="canTagMessage(entry.message)" :can-forward="!!user.attributes.id" :private-href="privateMessageHref(entry.message)" :can-rename-guest="canRenameGuestAuthor(entry.message)"
                        :edited="editedMessageIds.has(entry.message.id)" :edited-blinking="blinkingMessageIds.has(entry.message.id)" :base-url="apiBaseUrl"
-                       :replying="replyingMessageId === entry.message.id" :reply-disabled="!!editingMessageId"
+                       :replying="replyingMessageId === entry.message.id" :forwarding="forwardingMessageId === entry.message.id" :reply-disabled="!!editingMessageId"
                        @reply="toggleReplyMessage" @forward="startForwardingMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
                        @react="reactMessage" @reaction-list="showReactionList" @pin="toggleMessagePin"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
