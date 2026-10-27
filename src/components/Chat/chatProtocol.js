@@ -157,6 +157,43 @@ export function messageParts(text) {
   return parts;
 }
 
+function escapeTaleHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function messagePartsHtml(text) {
+  return messageParts(text).map(part => {
+    if (part.type === 'text') {
+      return part.text ? `<div>${escapeTaleHtml(part.text).replaceAll(/\r?\n/g, '<br>')}</div>` : '';
+    }
+    if (part.type === 'code') return `<pre><code>${escapeTaleHtml(part.text)}</code></pre>`;
+    const url = safeHttpUrl(part.url);
+    if (!url) return '';
+    const escapedUrl = escapeTaleHtml(url);
+    if (part.type === 'image') return `<img src="${escapedUrl}">`;
+    if (part.type === 'video') return `<video src="${escapedUrl}"></video>`;
+    if (part.type === 'audio' || part.type === 'voice') return `<audio src="${escapedUrl}"></audio>`;
+    return `<a href="${escapedUrl}">${escapedUrl}</a>`;
+  }).join('');
+}
+
+export function messageHtmlForTale(text) {
+  const forwarded = parseForwardMessage(text);
+  if (forwarded) {
+    return `<div><strong>${escapeTaleHtml(forwarded.author)}</strong></div>${messagePartsHtml(forwarded.text)}`;
+  }
+  const replied = parseReplyMessage(text);
+  const quote = replied.quote
+    ? `<div><strong>${escapeTaleHtml(replied.quote.author)}</strong></div>${messagePartsHtml(replied.quote.text)}`
+    : '';
+  return quote + messagePartsHtml(replied.body);
+}
+
 function linkedMessageParts(text) {
   const source = String(text || '');
   const voice = source.match(/^VOICE:(https?:\/\/[^\s"'<>()]+)$/i);

@@ -71,10 +71,10 @@
           <template v-for="entry in timelineEntries" :key="entry.key">
           <ChatMessage v-if="entry.type === 'message'" :message="entry.message" :first-message="entry.index === 0" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(entry.message)"
                        :can-manage="canManageMessage(entry.message)" :can-pin="!!user.attributes.id" :editing="editingMessageId === entry.message.id"
-                       :can-tag="canTagMessage(entry.message)" :can-forward="!!user.attributes.id" :private-href="privateMessageHref(entry.message)" :can-rename-guest="canRenameGuestAuthor(entry.message)"
+                       :can-tag="canTagMessage(entry.message)" :can-forward="!!user.attributes.id" :can-add-tale="!!user.attributes.id" :private-href="privateMessageHref(entry.message)" :can-rename-guest="canRenameGuestAuthor(entry.message)"
                        :edited="editedMessageIds.has(entry.message.id)" :edited-blinking="blinkingMessageIds.has(entry.message.id)" :base-url="apiBaseUrl"
                        :replying="replyingMessageId === entry.message.id" :forwarding="forwardingMessageId === entry.message.id" :reply-disabled="!!editingMessageId"
-                       @reply="toggleReplyMessage" @forward="startForwardingMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
+                       @reply="toggleReplyMessage" @forward="startForwardingMessage" @add-tale="addMessageToTale" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
                        @react="reactMessage" @reaction-list="showReactionList" @pin="toggleMessagePin"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
           <ChatActivityBlock v-else :messages="entry.messages" :start-index="entry.startIndex" :discussion-room="!!chatState.discussionOfMessageId"
@@ -138,6 +138,7 @@ import CurrentUser from '@/services/CurrentUser';
 import ConfigApi from '@/configs/ConfigApi';
 import AjaxAlina from '@/services/AjaxAlina';
 import PageSettings from '@/services/PageSettings';
+import {buildChatTaleDraft, storeChatTaleDraft} from '@/services/ChatTaleDraft.js';
 import ChatMessage from './ChatMessage.vue';
 import ChatActivityBlock from './ChatActivityBlock.vue';
 import ChatParticipants from './ChatParticipants.vue';
@@ -155,6 +156,7 @@ import {
   canKickParticipants,
   canonicalChatUrl,
   displayName,
+  messageHtmlForTale,
   parseReplyMessage,
   privateChat,
   uploadedFileUrl,
@@ -651,6 +653,17 @@ function discussMessage(message) {
     return;
   }
   pendingDiscussionRequests.add(message.id);
+}
+function addMessageToTale(message) {
+  if (!user.attributes.id || !message?.id) return;
+  storeChatTaleDraft(sessionStorage, buildChatTaleDraft({
+    channel: normalizedChannel.value,
+    messageId: message.id,
+    authorName: displayName(message.CurrentUser, message.participantId),
+    messageHtml: messageHtmlForTale(message.msg),
+    origin: window.location.origin,
+  }));
+  router.push({path: '/tale/upsert'});
 }
 function reactMessage(message, reaction) {
   if (!connected.value || !connection?.reactMessage(message.id, reaction)) error.value = t('Could not save reaction.');

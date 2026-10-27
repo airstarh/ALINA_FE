@@ -86,6 +86,10 @@
                 @click="$emit('discuss', message)">{{ $t('Discuss') }}</button>
         <button v-if="canForward" type="button" class="chat-copy-button chat-message-forward" :disabled="replyDisabled"
                 :title="$t('Forward')" :aria-label="$t('Forward')" @click="$emit('forward', message)">{{ $t('Forward') }}</button>
+        <button v-if="canAddTale" type="button" class="chat-copy-button chat-message-add-tale" :disabled="replyDisabled"
+                :title="$t('Add Tale')" :aria-label="$t('Add Tale')" @click="$emit('add-tale', message)">
+          <i class="bi bi-file-earmark-plus" aria-hidden="true"></i>
+        </button>
       </span>
       <span class="chat-message-actions">
         <button v-if="canPin" type="button" class="chat-copy-button chat-message-pin" :class="{'is-active': message.isPinned}"
@@ -104,8 +108,8 @@ import {computed, onBeforeUnmount, reactive, ref} from 'vue';
 import {displayName, formatChatTimestamp, messageParts, parseForwardMessage, parseMentionNotification, parsePresenceNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
 import PopupObj from '@/services/PopupObj';
 import UtilsFS from '@/Utils/UtilsFS';
-const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canPin: Boolean, canTag: Boolean, canForward: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, forwarding: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
-const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'pin', 'reply', 'forward', 'discuss', 'tag', 'rename-guest', 'open-private', 'react', 'reaction-list']);
+const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canPin: Boolean, canTag: Boolean, canForward: Boolean, canAddTale: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, forwarding: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
+const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'pin', 'reply', 'forward', 'add-tale', 'discuss', 'tag', 'rename-guest', 'open-private', 'react', 'reaction-list']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);

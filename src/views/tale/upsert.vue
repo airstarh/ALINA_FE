@@ -462,6 +462,7 @@ import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 import UtilsDate from "../../Utils/UtilsDate";
 import BorgEditor from "@/components/BorgEditor/index.vue";
 import aInput from "@/components/elements/form/aInput.vue";
+import {consumeChatTaleDraft} from "@/services/ChatTaleDraft.js";
 import {
   createTaleSessionKey,
   markFeedDataStale,
@@ -869,6 +870,12 @@ export default {
               if (_t.CU.ownsOrAdminOrModerator(_t.tale.owner_id)) {
                 _t.dConf.modeEdit = true;
                 _t.taleLastTouchedRecall();
+                const chatDraft = consumeChatTaleDraft(sessionStorage);
+                if (chatDraft) {
+                  _t.tale.header = chatDraft.header;
+                  _t.tale.body = chatDraft.body;
+                  _t.taleLastTouchedRemember(_t.tale);
+                }
               }
             }
             //###############
