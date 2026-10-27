@@ -164,6 +164,12 @@ export function createChatConnection({url, channel, chatName = '', getUser, onEv
     loadReactionList(messageId) { return send({type: 'reaction_list', messageId: String(messageId)}); },
     searchMentions(query) { return send({type: 'mentions_search', query: String(query)}); },
     searchParticipants(query) { return send({type: 'participants_search', query: String(query)}); },
+    searchForwardDestinations(query) { return send({type: 'forward_search', query: String(query)}); },
+    forwardMessage(messageId, targetType, targetId, requestedMessageId = '') {
+      const clientMessageId = requestedMessageId || createClientMessageId();
+      return send({type: 'forward_message', messageId: String(messageId), targetType, targetId: String(targetId), clientMessageId})
+        ? clientMessageId : false;
+    },
     replyMessage(replyToMessageId, text, requestedMessageId = '') {
       const key = `reply:${String(replyToMessageId)}\0${String(text)}`;
       const clientMessageId = requestedMessageId || failedMessageIds.get(key) || createClientMessageId();

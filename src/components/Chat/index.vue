@@ -71,10 +71,10 @@
           <template v-for="entry in timelineEntries" :key="entry.key">
           <ChatMessage v-if="entry.type === 'message'" :message="entry.message" :first-message="entry.index === 0" :discussion-room="!!chatState.discussionOfMessageId" :own="isOwn(entry.message)"
                        :can-manage="canManageMessage(entry.message)" :can-pin="!!user.attributes.id" :editing="editingMessageId === entry.message.id"
-                       :can-tag="canTagMessage(entry.message)" :private-href="privateMessageHref(entry.message)" :can-rename-guest="canRenameGuestAuthor(entry.message)"
+                       :can-tag="canTagMessage(entry.message)" :can-forward="!!user.attributes.id" :private-href="privateMessageHref(entry.message)" :can-rename-guest="canRenameGuestAuthor(entry.message)"
                        :edited="editedMessageIds.has(entry.message.id)" :edited-blinking="blinkingMessageIds.has(entry.message.id)" :base-url="apiBaseUrl"
                        :replying="replyingMessageId === entry.message.id" :reply-disabled="!!editingMessageId"
-                       @reply="toggleReplyMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
+                       @reply="toggleReplyMessage" @forward="startForwardingMessage" @discuss="discussMessage" @edit="startEditingMessage" @delete="deleteMessage" @tag="tagMessageAuthor" @rename-guest="renameGuestAuthor" @open-private="openPrivateMessage"
                        @react="reactMessage" @reaction-list="showReactionList" @pin="toggleMessagePin"
                        @media-load="scrollIfFollowing" @copy-error="error = $t('Could not copy the URL. Please copy the link manually.')" />
           <ChatActivityBlock v-else :messages="entry.messages" :start-index="entry.startIndex" :discussion-room="!!chatState.discussionOfMessageId"
@@ -85,30 +85,40 @@
         <p v-if="typingNames" class="chat-typing-summary" role="status">{{ typingNames }} — {{ $t('Typing…') }}</p>
         <p v-if="error" class="chat-error" role="alert">{{ error }} <button type="button" :aria-label="$t('Dismiss')" @click="error = ''">×</button></p>
         <form class="chat-composer" @submit.prevent="sendMessage">
-          <div v-if="mentionSuggestions.length" class="chat-mention-selector" role="listbox" :aria-label="$t('Mention a creature')">
+          <div v-if="forwardingMessageId" class="chat-mention-selector chat-forward-selector" role="listbox" :aria-label="$t('Forward destination')">
+            <button v-for="(candidate, index) in forwardSuggestions" :key="`${candidate.targetType}:${candidate.targetId}`" type="button"
+                    class="chat-mention-option" :class="{'is-active': index === forwardOptionIndex}" role="option"
+                    @pointerdown.prevent="selectForwardDestination(candidate)">{{ candidate.label }}</button>
+            <p v-if="forwardSearchPending || !forwardSuggestions.length" class="chat-forward-status">
+              {{ $t(forwardSearchPending ? 'Searching…' : 'No destinations found.') }}
+            </p>
+          </div>
+          <div v-else-if="mentionSuggestions.length" class="chat-mention-selector" role="listbox" :aria-label="$t('Mention a creature')">
             <button v-for="(candidate, index) in mentionSuggestions" :key="`${candidate.senderType}:${candidate.senderId}`" type="button"
                     class="chat-mention-option" :class="{'is-active': index === mentionOptionIndex}" role="option"
                     @pointerdown.prevent="selectMention(candidate)">{{ candidate.senderName }}</button>
           </div>
           <label class="chat-sr-only" :for="inputId">{{ $t('Message') }}</label>
-          <textarea :id="inputId" ref="input" v-model="draft" class="chat-composer-input" :placeholder="$t('Type a message…')" rows="2" maxlength="16000" :disabled="!connected"
+          <textarea :id="inputId" ref="input" v-model="composerText" class="chat-composer-input" :placeholder="$t(forwardingMessageId ? 'Search users and chats…' : 'Type a message…')" rows="2" :maxlength="forwardingMessageId ? 200 : 16000" :disabled="!connected"
                     @input="onInput" @click="updateMentionQuery" @keyup="updateMentionQuery" @compositionend="updateMentionQuery" @keydown="onKeydown" @blur="connection?.typing(false)"></textarea>
-          <input ref="fileInput" type="file" multiple class="chat-sr-only" :aria-label="$t('Attach files')" :disabled="uploading || !user.attributes.id || !connected" @change="uploadFiles" />
+          <input ref="fileInput" type="file" multiple class="chat-sr-only" :aria-label="$t('Attach files')" :disabled="uploading || !!forwardingMessageId || !user.attributes.id || !connected" @change="uploadFiles" />
           <button type="button" class="chat-button chat-attach" :title="$t(user.attributes.id ? 'Attach files' : 'Sign in to upload files')"
-                  :aria-label="$t('Attach files')" :disabled="uploading || recordingVoice || processingVoice || !user.attributes.id || !connected" @click="fileInput?.click()">
+                  :aria-label="$t('Attach files')" :disabled="uploading || !!forwardingMessageId || recordingVoice || processingVoice || !user.attributes.id || !connected" @click="fileInput?.click()">
             <i class="bi bi-paperclip" aria-hidden="true"></i>
           </button>
           <button type="button" class="chat-button chat-voice me-1" :class="{'is-recording': recordingVoice}"
                   :title="$t(recordingVoice ? 'Stop and send voice recording' : 'Start voice recording')"
                   :aria-label="$t(recordingVoice ? 'Stop and send voice recording' : 'Start voice recording')"
                   :aria-pressed="recordingVoice"
-                  :disabled="processingVoice || (!recordingVoice && (uploading || !user.attributes.id || !connected))"
+                  :disabled="!!forwardingMessageId || processingVoice || (!recordingVoice && (uploading || !user.attributes.id || !connected))"
                   @click="toggleVoiceRecording">{{ $t(recordingVoice ? 'i_mic_off' : 'i_mic') }}</button>
           <button v-if="editingMessageId" type="button" class="chat-button chat-edit-cancel"
                   :title="$t('Cancel editing')" :aria-label="$t('Cancel editing')" @click="cancelEditingMessage">{{ $t('i_cancel') }}</button>
+          <button v-if="forwardingMessageId" type="button" class="chat-button chat-edit-cancel"
+                  :title="$t('Cancel forwarding')" :aria-label="$t('Cancel forwarding')" @click="cancelForwardingMessage">{{ $t('i_cancel') }}</button>
           <small v-if="recordingVoice" class="chat-composer-hint" role="status">{{ $t('Recording voice… Press again to send.') }}</small>
           <small v-else-if="uploading" class="chat-composer-hint" role="status">{{ $t('Uploading files…') }}</small>
-          <button type="submit" class="chat-send" :disabled="uploading || recordingVoice || processingVoice || !connected || !draft.trim()">{{ $t('i_save') }}</button>
+          <button type="submit" class="chat-send" :disabled="!!forwardingMessageId || uploading || recordingVoice || processingVoice || !connected || !draft.trim()">{{ $t('i_save') }}</button>
           <small class="chat-composer-hint">{{ $t('Ctrl+Enter to send · Enter for a new line') }}</small>
         </form>
       </div>
@@ -121,7 +131,7 @@
 </template>
 <script setup>
 import {computed, nextTick, onBeforeUnmount, reactive, ref, useId, watch} from 'vue';
-import {useRouter} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import {guestNickname as storedGuestNickname, saveGuestNickname, guestNicknameStorageKey} from '@/services/GuestIdentity';
 import CurrentUser from '@/services/CurrentUser';
@@ -157,6 +167,7 @@ import './chat.css';
 const props = defineProps({channel: {type: String, default: '1'}, title: {type: String, default: ''}, initialChatName: {type: String, default: ''}, apiBaseUrl: {type: String, default: () => ConfigApi.url_base}});
 const {t} = useI18n();
 const router = useRouter();
+const route = useRoute();
 const pageSettings = reactive(PageSettings);
 const registrationAllowed = String(import.meta.env.VITE_APP_ALINA_MENU_REGISTRATION || '') === '1';
 const previousShowMainMenu = pageSettings.showMainMenu;
@@ -174,6 +185,20 @@ const selfId = ref('');
 const draft = ref('');
 const editingMessageId = ref('');
 const replyingMessageId = ref('');
+const forwardingMessageId = ref('');
+const forwardQuery = ref('');
+const forwardUsers = ref([]);
+const forwardRooms = ref([]);
+const forwardOptionIndex = ref(0);
+const forwardSearchPending = ref(false);
+const forwardSuggestions = computed(() => [
+  ...forwardUsers.value.map(person => ({targetType: 'user', targetId: String(person.senderId), label: `👤 ${person.senderName}`})),
+  ...forwardRooms.value.map(room => ({targetType: 'chat', targetId: String(room.channel), label: `💬 ${room.chatName}`})),
+]);
+const composerText = computed({
+  get: () => forwardingMessageId.value ? forwardQuery.value : draft.value,
+  set: value => { if (forwardingMessageId.value) forwardQuery.value = value; else draft.value = value; },
+});
 const editedMessageIds = reactive(new Set());
 const blinkingMessageIds = reactive(new Set());
 const error = ref('');
@@ -224,6 +249,7 @@ const guestNickname = ref(storedGuestNickname());
 let nicknameTimer;
 let mentionSearchTimer;
 let participantSearchTimer;
+let forwardSearchTimer;
 function toggleSidebar(requested) {
   openSidebar.value = nextChatSidebar(openSidebar.value, requested);
 }
@@ -340,6 +366,16 @@ function jumpToPinnedMessage() {
   element?.scrollIntoView({behavior: 'smooth', block: 'center'});
   element?.focus({preventScroll: true});
 }
+function jumpToRouteMessage() {
+  if (!/^#chat-message-[1-9][0-9]*$/.test(route.hash)) return;
+  nextTick(() => {
+    const element = document.getElementById(route.hash.slice(1));
+    if (!element) return;
+    following.value = false;
+    element.scrollIntoView({behavior: 'smooth', block: 'center'});
+    element.focus({preventScroll: true});
+  });
+}
 function markMessageEdited(messageId) {
   editedMessageIds.add(messageId);
   blinkingMessageIds.delete(messageId);
@@ -361,6 +397,7 @@ function receive(event) {
     unread.value = 0;
     following.value = true;
     scrollIfFollowing();
+    jumpToRouteMessage();
   } else if (event.type === 'history_older' && Array.isArray(event.messages)) {
     const el = messageList.value;
     const previousHeight = el?.scrollHeight ?? 0;
@@ -419,6 +456,17 @@ function receive(event) {
   } else if (event.type === 'participants_search' && Array.isArray(event.participants)
       && event.query === participantSearchQuery.value) {
     participantSearchResults.value = event.participants;
+  } else if (event.type === 'forward_search' && event.query === forwardQuery.value
+      && Array.isArray(event.users) && Array.isArray(event.rooms)) {
+    forwardSearchPending.value = false;
+    forwardUsers.value = event.users;
+    forwardRooms.value = event.rooms;
+    forwardOptionIndex.value = 0;
+  } else if (event.type === 'forward_ready' && event.destination?.channel && event.message?.id) {
+    const destination = String(event.destination.channel);
+    const messageId = String(event.message.id);
+    cancelForwardingMessage();
+    router.push({path: '/chat', query: {channel: destination}, hash: `#chat-message-${messageId}`});
   } else if (event.type === 'guest_renamed' && event.participantId && event.guestId) {
     const renamedSelf = acceptGuestRename(event, selfId.value, saveGuestNickname);
     if (renamedSelf !== null) guestNickname.value = renamedSelf;
@@ -484,10 +532,12 @@ watch([normalizedChannel, () => props.apiBaseUrl], async ([channel], previous) =
   loadingOlder.value = false;
   editingMessageId.value = '';
   replyingMessageId.value = '';
+  cancelForwardingMessage();
   mentionCandidates.value = [];
   participantSearchQuery.value = '';
   participantSearchResults.value = [];
   clearTimeout(participantSearchTimer);
+  clearTimeout(forwardSearchTimer);
   listTaggedUsers.value = [];
   mentionQuery.value = null;
   editedMessageIds.clear();
@@ -613,11 +663,37 @@ function toggleMessagePin(message) {
 }
 function onInput() {
   error.value = '';
+  if (forwardingMessageId.value) {
+    forwardUsers.value = [];
+    forwardRooms.value = [];
+    forwardOptionIndex.value = 0;
+    clearTimeout(forwardSearchTimer);
+    const query = forwardQuery.value.trim();
+    forwardSearchPending.value = true;
+    forwardSearchTimer = setTimeout(() => connection?.searchForwardDestinations(query), 250);
+    return;
+  }
   listTaggedUsers.value = synchronizeSelectedMentions(draft.value, listTaggedUsers.value);
   updateMentionQuery();
   if (connected.value) connection?.typing(!!draft.value.trim());
 }
 function onKeydown(event) {
+  if (forwardingMessageId.value && forwardSuggestions.value.length && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
+    event.preventDefault();
+    const direction = event.key === 'ArrowDown' ? 1 : -1;
+    forwardOptionIndex.value = (forwardOptionIndex.value + direction + forwardSuggestions.value.length) % forwardSuggestions.value.length;
+    return;
+  }
+  if (forwardingMessageId.value && forwardSuggestions.value.length && event.key === 'Enter' && !event.ctrlKey) {
+    event.preventDefault();
+    selectForwardDestination(forwardSuggestions.value[forwardOptionIndex.value]);
+    return;
+  }
+  if (forwardingMessageId.value && event.key === 'Escape') {
+    event.preventDefault();
+    cancelForwardingMessage();
+    return;
+  }
   if (mentionSuggestions.value.length && ['ArrowDown', 'ArrowUp'].includes(event.key)) {
     event.preventDefault();
     const direction = event.key === 'ArrowDown' ? 1 : -1;
@@ -635,6 +711,7 @@ function onKeydown(event) {
   }
 }
 function updateMentionQuery() {
+  if (forwardingMessageId.value) return;
   mentionQuery.value = activeMentionQuery(draft.value, input.value?.selectionStart ?? draft.value.length);
   mentionOptionIndex.value = 0;
   clearTimeout(mentionSearchTimer);
@@ -642,6 +719,39 @@ function updateMentionQuery() {
     const query = mentionQuery.value.query;
     mentionSearchTimer = setTimeout(() => connection?.searchMentions(query), 250);
   }
+}
+function startForwardingMessage(message) {
+  if (!user.attributes.id || editingMessageId.value) return;
+  replyingMessageId.value = '';
+  forwardingMessageId.value = String(message.id);
+  forwardQuery.value = '';
+  forwardUsers.value = [];
+  forwardRooms.value = [];
+  forwardOptionIndex.value = 0;
+  forwardSearchPending.value = true;
+  listTaggedUsers.value = [];
+  mentionQuery.value = null;
+  error.value = '';
+  if (!connection?.searchForwardDestinations('')) {
+    forwardSearchPending.value = false;
+    error.value = t('Could not load forwarding destinations. Reconnect and try again.');
+  }
+  nextTick(() => input.value?.focus());
+}
+function cancelForwardingMessage() {
+  clearTimeout(forwardSearchTimer);
+  forwardingMessageId.value = '';
+  forwardQuery.value = '';
+  forwardUsers.value = [];
+  forwardRooms.value = [];
+  forwardOptionIndex.value = 0;
+  forwardSearchPending.value = false;
+  nextTick(() => input.value?.focus());
+}
+function selectForwardDestination(candidate) {
+  if (!forwardingMessageId.value || !candidate) return;
+  const sent = connection?.forwardMessage(forwardingMessageId.value, candidate.targetType, candidate.targetId);
+  if (!connected.value || !sent) error.value = t('Could not forward the message. Reconnect and try again.');
 }
 function searchParticipants(value) {
   participantSearchQuery.value = String(value ?? '').trim();
@@ -794,6 +904,7 @@ function sendMessage() {
   input.value?.focus();
 }
 function startEditingMessage(message) {
+  cancelForwardingMessage();
   replyingMessageId.value = '';
   editingMessageId.value = message.id;
   draft.value = parseReplyMessage(message.msg).body;
@@ -802,6 +913,7 @@ function startEditingMessage(message) {
 }
 function toggleReplyMessage(message) {
   if (editingMessageId.value) return;
+  cancelForwardingMessage();
   replyingMessageId.value = replyingMessageId.value === message.id ? '' : message.id;
   input.value?.focus();
 }
@@ -822,6 +934,7 @@ onBeforeUnmount(() => {
   clearTimeout(nicknameTimer);
   clearTimeout(mentionSearchTimer);
   clearTimeout(participantSearchTimer);
+  clearTimeout(forwardSearchTimer);
   pageSettings.showMainMenu = previousShowMainMenu;
   generation++;
   identityAbort?.abort();

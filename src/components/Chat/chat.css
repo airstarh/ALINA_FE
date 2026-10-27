@@ -138,6 +138,7 @@
 .alina-chat .chat-mention-selector { position: absolute; left: 0; right: 0; bottom: 100%; z-index: 5; display: flex; flex-direction: column; gap: 2px; max-height: min(45vh, 280px); overflow-y: auto; overscroll-behavior: contain; padding: 4px; border: 1px solid #53637a; border-radius: 7px 7px 0 0; background: #1e2633; box-shadow: 0 -8px 20px #0008; }
 .alina-chat .chat-mention-option { min-height: 44px; flex: 0 0 auto; border: 0; border-radius: 4px; padding: 8px 10px; text-align: left; touch-action: manipulation; color: #edf2f8; background: transparent; }
 .alina-chat .chat-mention-option:hover, .alina-chat .chat-mention-option.is-active { background: #294a76; }
+.alina-chat .chat-forward-status { margin: 0; padding: 8px 10px; color: var(--chat-muted); }
 .alina-chat .chat-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @container (max-width: 1040px) {
   .alina-chat .chat-header { padding: 10px; flex-wrap: wrap; gap: 8px; }

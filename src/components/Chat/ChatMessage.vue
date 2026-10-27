@@ -32,7 +32,14 @@
         <time :datetime="message.timestamp" :title="fullTime">{{ time }}</time>
       </div>
     </div>
-    <div v-if="parsed.quote" class="reply-quote">
+    <div v-if="forwarded" class="reply-quote forward-quote">
+      <div class="reply-quote-heading">
+        <router-link :to="forwardSource"><strong>{{ forwarded.author }}</strong></router-link>
+        <time>{{ formatChatTimestamp(forwarded.timestamp) }}</time>
+      </div>
+      <div class="reply-quote-text">{{ forwarded.text }}</div>
+    </div>
+    <div v-else-if="parsed.quote" class="reply-quote">
       <div class="reply-quote-heading"><strong>{{ parsed.quote.author }}</strong><time>{{ formatChatTimestamp(parsed.quote.timestamp) }}</time></div>
       <div class="reply-quote-text">{{ parsed.quote.text }}</div>
     </div>
@@ -77,6 +84,8 @@
            class="chat-copy-button chat-message-discussion is-active">{{ $t('...in discussion') }} ({{ discussionResponseCount }})</a>
         <button v-else-if="!firstMessage" type="button" class="chat-copy-button chat-message-discussion"
                 @click="$emit('discuss', message)">{{ $t('Discuss') }}</button>
+        <button v-if="canForward" type="button" class="chat-copy-button chat-message-forward" :disabled="replyDisabled"
+                :title="$t('Forward')" :aria-label="$t('Forward')" @click="$emit('forward', message)">{{ $t('Forward') }}</button>
       </span>
       <span class="chat-message-actions">
         <button v-if="canPin" type="button" class="chat-copy-button chat-message-pin" :class="{'is-active': message.isPinned}"
@@ -92,11 +101,11 @@
 </template>
 <script setup>
 import {computed, onBeforeUnmount, reactive, ref} from 'vue';
-import {displayName, formatChatTimestamp, messageParts, parseMentionNotification, parsePresenceNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
+import {displayName, formatChatTimestamp, messageParts, parseForwardMessage, parseMentionNotification, parsePresenceNotification, parseReplyMessage, safeHttpUrl} from './chatProtocol.js';
 import PopupObj from '@/services/PopupObj';
 import UtilsFS from '@/Utils/UtilsFS';
-const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canPin: Boolean, canTag: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
-const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'pin', 'reply', 'discuss', 'tag', 'rename-guest', 'open-private', 'react', 'reaction-list']);
+const props = defineProps({message: {type: Object, required: true}, firstMessage: Boolean, discussionRoom: Boolean, own: Boolean, canManage: Boolean, canPin: Boolean, canTag: Boolean, canForward: Boolean, canRenameGuest: Boolean, privateHref: {type: String, default: ''}, editing: Boolean, edited: Boolean, editedBlinking: Boolean, replying: Boolean, replyDisabled: Boolean, baseUrl: {type: String, required: true}});
+const emit = defineEmits(['media-load', 'copy-error', 'edit', 'delete', 'pin', 'reply', 'forward', 'discuss', 'tag', 'rename-guest', 'open-private', 'react', 'reaction-list']);
 const avatarFailed = ref(false);
 const failedMedia = reactive({});
 const copied = ref(null);
@@ -113,7 +122,9 @@ const profilePath = computed(() => {
   return !isRobocop.value && Number.isInteger(authorId) && authorId > 0 ? `/auth/profile/${authorId}` : '';
 });
 const avatar = computed(() => safeHttpUrl(props.message.CurrentUser?.emblem, props.baseUrl));
-const parsed = computed(() => parseReplyMessage(props.message.msg));
+const forwarded = computed(() => parseForwardMessage(props.message.msg));
+const forwardSource = computed(() => forwarded.value ? ({path: '/chat', query: {channel: forwarded.value.channel}, hash: `#chat-message-${forwarded.value.messageId}`}) : '/chat');
+const parsed = computed(() => forwarded.value ? ({quote: null, body: ''}) : parseReplyMessage(props.message.msg));
 const parts = computed(() => messageParts(parsed.value.body));
 const date = computed(() => new Date(props.message.timestamp));
 const pad = value => String(value).padStart(2, '0');

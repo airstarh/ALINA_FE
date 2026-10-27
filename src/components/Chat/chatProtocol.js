@@ -56,6 +56,18 @@ export function parseReplyMessage(text) {
   };
 }
 
+export function parseForwardMessage(text) {
+  const source = String(text || '');
+  const match = source.match(/^<div class="forward-quote" data-channel="([A-Za-z0-9_-]{1,128})" data-message-id="([1-9][0-9]*)" data-timestamp="([0-9]+)"><div class="forward-quote-author">([\s\S]*?)<\/div><div class="forward-quote-text">([\s\S]*?)<\/div><\/div>$/);
+  if (!match) return null;
+  const timestamp = Number(match[3]);
+  if (!Number.isSafeInteger(timestamp)) return null;
+  return {
+    channel: match[1], messageId: match[2], timestamp,
+    author: decodeReplyText(match[4]), text: decodeReplyText(match[5]),
+  };
+}
+
 export function parseMentionNotification(text) {
   const source = String(text || '');
   if (!source.startsWith('MENTION:')) return null;
