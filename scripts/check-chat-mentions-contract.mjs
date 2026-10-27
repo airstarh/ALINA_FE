@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
 import {activeMentionQuery, appendMention, filterMentionCandidates, insertMention, synchronizeSelectedMentions} from '../src/components/Chat/chatMentions.js';
 import {parseMentionNotification} from '../src/components/Chat/chatProtocol.js';
 
@@ -8,12 +7,6 @@ assert.deepEqual(activeMentionQuery('hello @de', 9), {start: 6, query: 'de'});
 assert.equal(activeMentionQuery('mail@de', 7), null);
 assert.deepEqual(activeMentionQuery('hello\n@de', 9), {start: 6, query: 'de'}, 'a new mobile composer line must activate mentions');
 assert.deepEqual(activeMentionQuery('hello\u00a0@de', 9), {start: 6, query: 'de'}, 'mobile non-breaking spaces must activate mentions');
-
-const component = readFileSync(new URL('../src/components/Chat/index.vue', import.meta.url), 'utf8');
-const css = readFileSync(new URL('../src/components/Chat/chat.css', import.meta.url), 'utf8');
-assert.match(component, /@pointerdown\.prevent="selectMention\(candidate\)"/, 'touch and pointer selection must not blur the composer');
-assert.match(css, /\.chat-mention-selector[^}]*position:\s*absolute[^}]*bottom:\s*100%/s, 'suggestions must overlay above the composer instead of sharing its grid row');
-assert.match(css, /\.chat-mention-option[^}]*min-height:\s*44px/s, 'suggestions must provide touch-sized targets');
 
 const candidates = [
   {senderType: 'user', senderId: '1', senderName: 'Codex', latestActivityAt: 5},

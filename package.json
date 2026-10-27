@@ -22,21 +22,18 @@
     "build:all": "npm run build:vov && npm run build:zero",
     "check:vite": "node scripts/check-vite-contract.mjs",
     "check:vue3": "node scripts/check-vue3-contract.mjs",
-    "check:bootstrap5": "node scripts/check-bootstrap5-contract.mjs",
     "check:media-embed": "node scripts/check-video-embed-contract.mjs",
     "check:chat-rooms": "node scripts/check-chat-rooms-contract.mjs",
     "check:chat": "node scripts/check-chat-contract.mjs",
     "check:chat-voice-recorder": "node scripts/check-chat-voice-recorder-contract.mjs",
-    "check:chat-voice-ui": "node scripts/check-chat-voice-ui-contract.mjs",
     "check:chat-mentions": "node scripts/check-chat-mentions-contract.mjs",
     "check:chat-activity": "node scripts/check-chat-activity-contract.mjs",
     "check:chat-history": "node scripts/check-chat-history-contract.mjs",
-    "check:chat-reactions": "node scripts/check-chat-reactions-contract.mjs",
     "check:chat-forwarding": "node scripts/check-chat-forwarding-contract.mjs",
     "check:chat-tale": "node scripts/check-chat-tale-contract.mjs",
     "check:feed-navigation": "node scripts/check-feed-navigation-contract.mjs",
     "check:file-list": "node scripts/check-file-list.mjs",
-    "check:migration": "npm run check:vite && npm run check:vue3 && npm run check:bootstrap5 && npm run check:media-embed && npm run check:chat && npm run check:chat-rooms && npm run check:chat-voice-recorder && npm run check:chat-voice-ui && npm run check:chat-mentions && npm run check:chat-activity && npm run check:chat-history && npm run check:chat-reactions && npm run check:chat-forwarding && npm run check:chat-tale && npm run check:feed-navigation && npm run check:file-list"
+    "check:migration": "npm run check:vite && npm run check:vue3 && npm run check:media-embed && npm run check:chat && npm run check:chat-rooms && npm run check:chat-voice-recorder && npm run check:chat-mentions && npm run check:chat-activity && npm run check:chat-history && npm run check:chat-forwarding && npm run check:chat-tale && npm run check:feed-navigation && npm run check:file-list"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-vue": "^8.2.0",

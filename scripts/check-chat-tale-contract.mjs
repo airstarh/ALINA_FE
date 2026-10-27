@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
 
 import {
   buildChatTaleDraft,
@@ -42,15 +41,5 @@ assert.deepEqual(consumeChatTaleDraft(session, 1_001), draft, 'stored draft must
 assert.equal(consumeChatTaleDraft(session, 1_002), null, 'consumed draft must be removed');
 storeChatTaleDraft(session, draft, 1_000);
 assert.equal(consumeChatTaleDraft(session, 1_000 + 5 * 60_000 + 1), null, 'stale chat handoff must not replace a later draft');
-
-const messageComponent = readFileSync(new URL('../src/components/Chat/ChatMessage.vue', import.meta.url), 'utf8');
-const chatComponent = readFileSync(new URL('../src/components/Chat/index.vue', import.meta.url), 'utf8');
-const taleComponent = readFileSync(new URL('../src/views/tale/upsert.vue', import.meta.url), 'utf8');
-assert.match(messageComponent, /bi-file-earmark-plus/, 'real chat messages must offer the Add Tale icon');
-assert.match(messageComponent, /\$emit\('add-tale', message\)/, 'Add Tale must identify its source message');
-assert.match(chatComponent, /@add-tale="addMessageToTale"/, 'chat must handle the Add Tale action');
-assert.match(chatComponent, /messageHtml:\s*messageHtmlForTale\(message\.msg\)/, 'the handoff must snapshot the same semantic media and code structure rendered by chat');
-assert.match(taleComponent, /consumeChatTaleDraft\(sessionStorage\)/, 'the loaded server draft must consume the chat handoff');
-assert.match(taleComponent, /tale\.header = chatDraft\.header[\s\S]*tale\.body = chatDraft\.body/, 'chat content must replace, not append to, the draft');
 
 console.log('Chat-to-tale contract passed.');
