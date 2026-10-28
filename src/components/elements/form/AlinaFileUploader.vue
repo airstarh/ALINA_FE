@@ -7,7 +7,7 @@
       v-if="videoUploadActive"
       class="alert alert-warning text-center p-4"
       role="status">
-      <div>Video file is up to load. Do not leave the page.</div>
+      <div>{{ $t("Video file is up to load. Do not leave the page.") }}</div>
       <div class="mt-2">{{ videoJobProgress }}%</div>
     </div>
 
@@ -358,7 +358,7 @@ export default {
         return;
       }
 
-      const warning = "Video file is up to load. Do not leave the page.";
+      const warning = this.$t("Video file is up to load. Do not leave the page.");
       this.videoUploadActive = true;
       this.videoJobProgress = 0;
       this.navigationLock = new FileUploadNavigationLock({router: this.$router, message: warning});

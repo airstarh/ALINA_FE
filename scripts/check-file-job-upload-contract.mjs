@@ -1,5 +1,13 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import {FileJobSocket, FileUploadNavigationLock, partitionUploadFiles, fileJobSocketUrl} from '../src/services/FileJobUpload.js';
+
+const uploaderSource=fs.readFileSync(new URL('../src/components/elements/form/AlinaFileUploader.vue',import.meta.url),'utf8');
+const localesSource=fs.readFileSync(new URL('../src/locales/index.js',import.meta.url),'utf8');
+const warningKey='Video file is up to load. Do not leave the page.';
+assert.ok(uploaderSource.includes(`$t("${warningKey}")`),'visible upload warning must use the locale key');
+assert.ok(uploaderSource.includes(`this.$t("${warningKey}")`),'navigation lock warning must use the locale key');
+assert.ok(localesSource.includes('"Video file is up to load. Do not leave the page.": "Загружаю большой файл. Не трогайте ничего, пожалуйста."'),'Russian large-file warning must be translated');
 
 const files=[{name:'a.png',type:'image/png'},{name:'voice.webm',type:'audio/webm'},{name:'clip.WEBM',type:''},{name:'camera.bin',type:'video/mp4'}];
 const split=partitionUploadFiles(files);
