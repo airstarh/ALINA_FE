@@ -28,7 +28,7 @@
             <router-link :to="`/auth/profile/${person.id}`" class="users-feed-name">
               {{ fullName(person) }}
             </router-link>
-            <small>[ID {{ person.id }}]</small>
+            <small>[ID {{ person.id }}: {{ roleSummary(person) }}]</small>
           </div>
           <div v-if="person.about_myself" class="users-feed-bio ck ck-content" v-html="bio(person.about_myself)"></div>
         </div>
@@ -118,6 +118,10 @@ export default {
     },
     bio(value) {
       return UtilsStr.content(value || '');
+    },
+    roleSummary(person) {
+      const roles = [...new Set((person.roles || []).map(role => String(role).trim()).filter(Boolean))];
+      return roles.length ? roles.map(role => this.$t(role)).join(', ') : this.$t('NO_ROLES');
     },
   },
 };

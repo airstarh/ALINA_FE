@@ -48,13 +48,13 @@
             <b-dropdown-item to="/about">UI tests</b-dropdown-item>
           </b-nav-item-dropdown>
 
-          <b-nav-item class="m-2">
+          <li class="nav-item m-2">
             <b-form-select
               size="sm"
               v-model="languageSelected"
               :options="languageList">
             </b-form-select>
-          </b-nav-item>
+          </li>
         </b-navbar-nav>
         <!--################################################## -->
         <!--region USER-->

@@ -60,11 +60,11 @@
       </div>
 
       <b-navbar-nav class="zero-menu-account flex-row ms-auto">
-        <b-nav-item class="zero-menu-language">
+        <li class="nav-item zero-menu-language">
           <aSelect v-model="languageSelected" :options="languageList" :modeEdit="true"
                    :allowEmpty="false" :clearable="false" :searchable="false"
                    valueKey="value" labelKey="text" inputWidth="3ch" />
-        </b-nav-item>
+        </li>
 
         <b-nav-item-dropdown v-if="!CU.isLoggedIn()" end
                              toggle-class="corporate-bg-and-text text-decoration-none zero-menu-label"

@@ -4,7 +4,7 @@
       <div class="row g-0 mt-2 mb-2">
         <div class="col"></div>
         <div class="col-auto row g-0 justify-content-end" style="gap:5mm;">
-          <sup class="f-left text-sm">[ID {{ post.id }}]</sup>
+          <sup class="f-left text-sm">[ID {{ post.id }}: {{ roleSummary(post) }}]</sup>
           <button v-if="options.modeEdit && CU.ownsOrAdminOrModerator(post.id)" @click="ajaDeleteUser(post)" class="btn btn-a" style="min-width: 8ch;">{{ $t("i_delete") }}</button>
           <button v-if="CU.ownsOrAdminOrModerator(post.id) && !options.modeEdit" @click="options.modeEdit = !options.modeEdit" class="btn btn-a">{{ options.modeEdit ? $t("i_cancel") : $t("i_edit") }}</button>
           <StandardButtons v-if="CU.ownsOrAdminOrModerator(post.id) && options.modeEdit" :onGo="runAJax"></StandardButtons>
@@ -57,7 +57,8 @@
 
     <StandardButtons v-if="options.modeEdit" :onGo="runAJax" class="mt-5"></StandardButtons>
 
-    <UserAdminBlock v-if="canAdministrateUsers && post.id" :key="post.id" :userId="post.id" @saved="applyAdministrativeUpdate" />
+    <UserAdminBlock v-if="canAdministrateUsers && post.id" :key="post.id" :userId="post.id"
+                    @saved="applyAdministrativeUpdate" @roles-changed="applyRoleSelection" />
 
     <div class="mt-5">&nbsp;</div>
     <tale_feed
@@ -151,6 +152,17 @@ export default {
     this.saveSessionState();
   },
   methods: {
+    roleSummary(person) {
+      const roles = [...new Set((person.roles || []).map(role => String(role).trim()).filter(Boolean))];
+      return roles.length ? roles.map(role => this.$t(role)).join(', ') : this.$t('NO_ROLES');
+    },
+    mergeProfile(user) {
+      const roles = Array.isArray(user?.roles)
+        ? [...new Set(user.roles.map(role => String(role).trim()).filter(Boolean))]
+        : [...(this.post.roles || [])];
+      this.post = UtilsObject.mergeRecursively(this.post, user);
+      this.post.roles = roles;
+    },
     sessionKey(owner = this.curId) {
       return createProfileSessionKey(owner);
     },
@@ -164,7 +176,7 @@ export default {
     restoreSessionState() {
       const saved = readSessionState(sessionStorage, this.sessionKey());
 
-      if (!saved?.post || String(saved.post.id) !== String(this.curId)) {
+      if (!saved?.post || String(saved.post.id) !== String(this.curId) || !Array.isArray(saved.post.roles)) {
         return false;
       }
 
@@ -180,7 +192,7 @@ export default {
         method: 'GET',
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            this.post = UtilsObject.mergeRecursively(this.post, aja.respBody.data.user);
+            this.mergeProfile(aja.respBody.data.user);
             this.options.modeEdit = false;
             this.saveSessionState();
           }
@@ -221,7 +233,7 @@ export default {
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             const savedUser = aja.respBody.data.user;
-            this.post = UtilsObject.mergeRecursively(this.post, savedUser);
+            this.mergeProfile(savedUser);
 
             if (this.CU.owns(savedUser.id ?? this.post.id)) {
               this.CU.applyAttributes({
@@ -256,11 +268,14 @@ export default {
         .go();
     },
     applyAdministrativeUpdate(savedUser) {
-      this.post = UtilsObject.mergeRecursively(this.post, savedUser);
+      this.mergeProfile(savedUser);
       if (this.CU.owns(savedUser.id)) {
         this.CU.applyAttributes({...this.CU.attributes, ...savedUser});
       }
       this.saveSessionState();
+    },
+    applyRoleSelection(roles) {
+      this.post.roles = [...new Set(roles)];
     },
   },
   computed: {

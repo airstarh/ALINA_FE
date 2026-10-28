@@ -10,9 +10,9 @@
         <p v-if="error" class="user-admin-status user-admin-error">{{ error }}</p>
 
         <form v-if="loaded" class="user-admin-form" @submit.prevent="save">
-          <aSelect v-model="form.role_ids" :options="roles" :modeEdit="true" multiple searchable
+          <aSelect v-model="form.role_ids" :options="translatedRoles" :modeEdit="true" multiple searchable
                    valueKey="id" labelKey="name" :label="$t('Roles')" componentDisplay="block"
-                   inputWidth="100%" class="user-admin-roles" />
+                   inputWidth="100%" class="user-admin-roles" @update:modelValue="emitRoleSelection" />
 
           <div class="user-admin-grid">
             <aInput :modelValue="String(form.id)" type="text" :modeEdit="false" :label="$t('ID')" componentDisplay="block" />
@@ -68,7 +68,7 @@ import AlinaFileUploader from '@/components/elements/form/AlinaFileUploader.vue'
 export default {
   name: 'UserAdminBlock',
   components: {aInput, aSelect, AlinaDatePicker, AlinaFileUploader},
-  emits: ['saved'],
+  emits: ['saved', 'roles-changed'],
   props: {
     userId: {type: [Number, String], required: true},
   },
@@ -86,6 +86,9 @@ export default {
     };
   },
   computed: {
+    translatedRoles() {
+      return this.roles.map(role => ({...role, name: this.$t(role.name)}));
+    },
     collapseId() {
       return `user-admin-${this.userId}`;
     },
@@ -97,6 +100,10 @@ export default {
     clearTimeout(this.savedTimer);
   },
   methods: {
+    emitRoleSelection(roleIds) {
+      const selected = new Set((roleIds || []).map(Number));
+      this.$emit('roles-changed', this.roles.filter(role => selected.has(Number(role.id))).map(role => role.name));
+    },
     load() {
       if (this.loaded || this.loading) return;
       this.loading = true;
