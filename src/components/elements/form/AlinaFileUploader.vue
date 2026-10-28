@@ -28,7 +28,7 @@
           v-if="dModeEdit && dArrFiles.length > 0"
           size="md"
           class="btn btn-a"
-          @click="onChangeBulk(dArrFiles)">{{ $t("i_ok") }}</b-button>
+          @click="saveFiles">{{ $t("i_ok") }}</b-button>
 
         <button
           type="button"
@@ -228,6 +228,9 @@ export default {
         file.order = index + 1;
       });
     },
+    saveFiles() {
+      this.onChangeBulk(this.dArrFiles);
+    },
     onMove(index, offset) {
       if (!this.smartOrderingEnabled) {
         return;
@@ -396,8 +399,16 @@ export default {
     onChangeBulk(dArrFiles, remainEditing = false) {
       const _t = this;
       const obj = {};
+
+      if (this.smartOrderingEnabled) {
+        this.normalizeFileOrders();
+      }
+
       obj.form_id = "actionUpdateBulk";
-      obj.list = dArrFiles;
+      obj.list = dArrFiles.map((file, index) => ({
+        ...file,
+        order: this.smartOrderingEnabled ? index + 1 : file.order,
+      }));
       AjaxAlina.newInst({
         method: "POST",
         url: `${this.dConf.urlFileUpdateBulk}/file`,
@@ -406,7 +417,7 @@ export default {
           if (aja.respBody.meta.alina_response_success == 1) {
             if (!remainEditing) {
               _t.loadFileList();
-              _t.dModeEdit = false;
+              _t.dModeEdit = _t.modeEdit;
             }
           }
           _t.pageRecalcIframeHeight();
