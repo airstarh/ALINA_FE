@@ -16,27 +16,47 @@
               :modeEdit="modeEdit"
               componentDisplay="block"
               :placeholder="$t('File Name')" />
-            <aInput
-              type="number"
-              v-model="row.order"
-              :modeEdit="modeEdit"
-              :placeholder="$t('File Order')"
-              componentDisplay="block" />
+            <div class="file-order-controls">
+              <aInput
+                type="number"
+                v-model="row.order"
+                :modeEdit="modeEdit"
+                :disabled="true"
+                inputWidth="8ch"
+                :placeholder="$t('File Order')"
+                componentDisplay="block" />
+              <b-button
+                v-if="smartOrdering"
+                size="sm"
+                class="btn btn-a"
+                :disabled="index === 0"
+                @click="$emit('onMove', index, -1)">{{ $t("i_up") }}</b-button>
+              <b-button
+                v-if="smartOrdering"
+                size="sm"
+                class="btn btn-a"
+                :disabled="index === pJson.length - 1"
+                @click="$emit('onMove', index, 1)">{{ $t("i_down") }}</b-button>
+            </div>
+            <!-- Individual save is intentionally disabled: files are saved by the top bulk-save button.
             <div class="d-flex mt-3 mb-3" style="gap:5mm;">
               <b-button
                 size="sm"
                 class="btn btn-a"
                 @click="$emit('onChange', row, index)">{{ $t("TXT_SUBMIT") }}
               </b-button>
-              <b-button
-                size="sm"
-                class="btn btn-a"
-                @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-button>
             </div>
+            -->
           </div>
         </div>
 
         <AlinAFile :p-file-json="row" />
+
+        <b-button
+          v-if="isCurrentUserAllowedEdit(row)"
+          size="sm"
+          class="btn btn-a mt-2 mb-2"
+          @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-button>
       </div>
     </div>
   </div>
@@ -50,7 +70,7 @@ import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name: "AlinaHorizontalScroll",
-  emits: ["onDelete", "onChange"],
+  emits: ["onDelete", "onChange", "onMove"],
   components: {
     AlinAFile,
     aInput,
@@ -66,6 +86,10 @@ export default {
     },
     modeEdit: {
       default: false,
+    },
+    smartOrdering: {
+      type: Boolean,
+      default: true,
     },
     modeHideHeaders: {
       default: true,
@@ -130,5 +154,11 @@ export default {
     border: #777 solid 1px;
     border-radius: 10px;
   }
+}
+
+.file-order-controls {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
 }
 </style>

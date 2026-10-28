@@ -20,7 +20,7 @@
         <button
           v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id) && dArrFiles.length > 0"
           class="btn btn-a"
-          @click="dModeEdit = !dModeEdit">
+          @click="toggleEditMode">
           {{ dModeEdit ? $t("i_undo") : $t("i_edit") }}
         </button>
 
@@ -67,14 +67,18 @@
           :pJson="dArrFiles"
           :showOnly="['url']"
           :modeEdit="dModeEdit"
+          :smartOrdering="smartOrderingEnabled"
           @onDelete="onDelete"
-          @onChange="onChange"></AlinaHorizontalScrollJson>
+          @onChange="onChange"
+          @onMove="onMove"></AlinaHorizontalScrollJson>
         <AlinaVerticalScrollJson
           v-else
           :pJson="dArrFiles"
           :modeEdit="dModeEdit"
+          :smartOrdering="smartOrderingEnabled"
           @onDelete="onDelete"
-          @onChange="onChange"></AlinaVerticalScrollJson>
+          @onChange="onChange"
+          @onMove="onMove"></AlinaVerticalScrollJson>
       </b-collapse>
     </div>
   </div>
@@ -149,6 +153,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    smartOrdering: {
+      type: [Boolean, Number],
+      default: true,
+    },
   },
   data() {
     return {
@@ -175,6 +183,11 @@ export default {
   updated() {
     this.pageRecalcIframeHeight();
   },
+  computed: {
+    smartOrderingEnabled() {
+      return !this.loadByOwner && Boolean(this.smartOrdering);
+    },
+  },
   methods: {
     onExpandedChanged(expanded) {
       this.dExpanded = expanded;
@@ -182,6 +195,39 @@ export default {
     },
     toggleViewMode() {
       this.viewMode = this.viewMode === "horizontal" ? "vertical" : "horizontal";
+      this.$nextTick(this.pageRecalcIframeHeight);
+    },
+    toggleEditMode() {
+      if (this.dModeEdit) {
+        this.dModeEdit = false;
+        return;
+      }
+
+      this.dModeEdit = true;
+
+      if (this.smartOrderingEnabled) {
+        this.normalizeFileOrders();
+        this.onChangeBulk(this.dArrFiles, true);
+      }
+    },
+    normalizeFileOrders() {
+      this.dArrFiles.forEach((file, index) => {
+        file.order = index + 1;
+      });
+    },
+    onMove(index, offset) {
+      if (!this.smartOrderingEnabled) {
+        return;
+      }
+
+      const targetIndex = index + offset;
+
+      if (targetIndex < 0 || targetIndex >= this.dArrFiles.length) {
+        return;
+      }
+
+      UtilsArray.elsSwap(this.dArrFiles, index, targetIndex);
+      this.normalizeFileOrders();
       this.$nextTick(this.pageRecalcIframeHeight);
     },
     loopFiles() {
@@ -257,6 +303,11 @@ export default {
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.elRemoveByIndex(_t.dArrFiles, index);
+
+            if (_t.smartOrderingEnabled && _t.dArrFiles.length > 0) {
+              _t.normalizeFileOrders();
+              _t.onChangeBulk(_t.dArrFiles, true);
+            }
           }
           _t.pageRecalcIframeHeight();
         },
@@ -283,7 +334,7 @@ export default {
         },
       }).go();
     },
-    onChangeBulk(dArrFiles) {
+    onChangeBulk(dArrFiles, remainEditing = false) {
       const _t = this;
       const obj = {};
       obj.form_id = "actionUpdateBulk";
@@ -294,8 +345,10 @@ export default {
         postParams: obj,
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
-            _t.loadFileList();
-            _t.dModeEdit = false;
+            if (!remainEditing) {
+              _t.loadFileList();
+              _t.dModeEdit = false;
+            }
           }
           _t.pageRecalcIframeHeight();
         },

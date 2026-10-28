@@ -50,6 +50,7 @@
             :ownLength="Number(form.count_files || 0)"
             :modeEdit="false"
             :expanded="false"
+            :smart-ordering="0"
             loadByOwner />
         </form>
       </div>

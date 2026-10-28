@@ -36,24 +36,44 @@
         <span v-else-if="row.source_type" class="file-source-link">{{ sourceLabel(row) }}</span>
 
         <template v-if="modeEdit && isCurrentUserAllowedEdit(row)">
-          <aInput
-            type="number"
-            v-model="row.order"
-            :modeEdit="true"
-            :placeholder="$t('File Order')"
-            componentDisplay="block" />
+          <div class="file-order-controls">
+            <aInput
+              type="number"
+              v-model="row.order"
+              :modeEdit="true"
+              :disabled="true"
+              inputWidth="8ch"
+              :placeholder="$t('File Order')"
+              componentDisplay="block" />
+            <b-button
+              v-if="smartOrdering"
+              size="sm"
+              class="btn btn-a"
+              :disabled="index === 0"
+              @click="$emit('onMove', index, -1)">{{ $t("i_up") }}</b-button>
+            <b-button
+              v-if="smartOrdering"
+              size="sm"
+              class="btn btn-a"
+              :disabled="index === pJson.length - 1"
+              @click="$emit('onMove', index, 1)">{{ $t("i_down") }}</b-button>
+          </div>
 
+          <!-- Individual save is intentionally disabled: files are saved by the top bulk-save button.
           <div class="d-flex mt-2" style="gap: 5mm;">
             <b-button
               size="sm"
               class="btn btn-a"
               @click="$emit('onChange', row, index)">{{ $t("TXT_SUBMIT") }}</b-button>
-            <b-button
-              size="sm"
-              class="btn btn-a"
-              @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-button>
           </div>
+          -->
         </template>
+
+        <b-button
+          v-if="isCurrentUserAllowedEdit(row)"
+          size="sm"
+          class="btn btn-a mt-2"
+          @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-button>
       </div>
     </div>
   </div>
@@ -68,7 +88,7 @@ import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name: "AlinaVerticalScrollJson",
-  emits: ["onDelete", "onChange"],
+  emits: ["onDelete", "onChange", "onMove"],
   components: {
     AlinAFile,
     aInput,
@@ -81,6 +101,10 @@ export default {
     modeEdit: {
       type: Boolean,
       default: false,
+    },
+    smartOrdering: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -202,6 +226,16 @@ export default {
 .file-copy-button { min-width: 2rem; padding: 0 .35rem; border: 1px solid #777; border-radius: .25rem; color: inherit; background: transparent; }
 .file-copy-button:hover { background: #444; }
 .file-source-link { color: #8fc7ff !important; font-size: .85rem; }
+
+.file-order-controls {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+}
+
+.file-order-controls :deep(.aInput) {
+  width: auto;
+}
 
 .vertical-file-details :deep(a),
 .vertical-file-details :deep(a:link),
