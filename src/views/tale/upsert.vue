@@ -380,6 +380,7 @@
             entity_table="tale"
             :owner_id="tale.owner_id"
             :modeEdit="dConf.modeEdit"
+            :videoUploadAllowed="tale.is_submitted == 1"
             :ownLength="tale.count_files"
             :expanded="taleUiState.filesExpanded"
             @update:expanded="handleFilesExpandedChanged" />
