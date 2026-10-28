@@ -32,16 +32,6 @@
 
         <button
           type="button"
-          v-if="ownLength && dArrFiles.length > 0"
-          class="btn btn-a"
-          :title="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
-          :aria-label="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
-          @click="toggleViewMode">
-          <i :class="viewMode === 'horizontal' ? 'bi bi-list-ul' : 'bi bi-layout-three-columns'"></i>
-        </button>
-
-        <button
-          type="button"
           v-if="dArrFiles.length > 0 && CurrentUser.ownsOrAdminOrModerator(owner_id)"
           class="btn btn-a"
           :title="$t('Delete')"
@@ -50,7 +40,15 @@
           {{ $t("i_delete") }}
         </button>
 
-
+        <button
+          type="button"
+          v-if="ownLength && dArrFiles.length > 0"
+          class="btn btn-a"
+          :title="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
+          :aria-label="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
+          @click="toggleViewMode">
+          <i :class="viewMode === 'horizontal' ? 'bi bi-list-ul' : 'bi bi-layout-three-columns'"></i>
+        </button>
       </div>
 
       <b-collapse
