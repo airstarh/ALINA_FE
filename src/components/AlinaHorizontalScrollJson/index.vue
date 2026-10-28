@@ -62,13 +62,16 @@
           </div>
         </div>
 
-        <AlinAFile :p-file-json="row" />
-
-        <b-button
-          v-if="isCurrentUserAllowedEdit(row)"
-          size="sm"
-          class="btn btn-a mt-2 mb-2"
-          @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-button>
+        <AlinAFile :p-file-json="row">
+          <template v-if="isCurrentUserAllowedEdit(row)" #meta-actions>
+            <button
+              type="button"
+              class="file-delete-button"
+              :title="$t('Delete')"
+              :aria-label="$t('Delete')"
+              @click="$emit('onDelete', row, index)">{{ $t("i_delete") }}</button>
+          </template>
+        </AlinAFile>
       </div>
     </div>
   </div>
@@ -172,5 +175,18 @@ export default {
   display: flex;
   align-items: center;
   gap: 3mm;
+}
+
+.file-delete-button {
+  min-width: 2rem;
+  padding: 0 .35rem;
+  border: 1px solid #777;
+  border-radius: .25rem;
+  color: inherit;
+  background: transparent;
+}
+
+.file-delete-button:hover {
+  background: #444;
 }
 </style>

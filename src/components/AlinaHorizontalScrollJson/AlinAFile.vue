@@ -68,12 +68,14 @@
         <button type="button" class="file-copy-button" :title="$t('Copy URL')" :aria-label="$t('Copy URL')" @click="copyFileUrl">
           {{ $t(copied ? 'i_ok' : 'i_copy') }}
         </button>
+        <slot name="meta-actions" />
       </span>
       <router-link v-if="pFileJson.source_path" :to="pFileJson.source_path" class="file-source-link">
         {{ sourceLabel }}
       </router-link>
       <span v-else-if="pFileJson.source_type" class="file-source-link">{{ sourceLabel }}</span>
     </div>
+
   </div>
 </template>
 
@@ -193,7 +195,7 @@ export default {
   flex-direction: column;
 }
 
-.file-meta { display: flex; align-items: center; gap: .4rem; }
+.file-meta { display: flex; align-items: center; gap: 3mm; }
 .file-size { display: inline-block; }
 .file-copy-button { min-width: 2rem; padding: 0 .35rem; border: 1px solid #777; border-radius: .25rem; color: inherit; background: transparent; }
 .file-copy-button:hover { background: #444; }
