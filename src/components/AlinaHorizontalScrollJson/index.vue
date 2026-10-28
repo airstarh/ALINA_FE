@@ -37,6 +37,18 @@
                 class="btn btn-a"
                 :disabled="index === pJson.length - 1"
                 @click="$emit('onMove', index, 1)">{{ $t("i_down") }}</b-button>
+              <b-button
+                v-if="smartOrdering"
+                size="sm"
+                class="btn btn-a"
+                :disabled="index === 0"
+                @click="$emit('onMoveTo', index, 0)">{{ $t("i_first") }}</b-button>
+              <b-button
+                v-if="smartOrdering"
+                size="sm"
+                class="btn btn-a"
+                :disabled="index === pJson.length - 1"
+                @click="$emit('onMoveTo', index, pJson.length - 1)">{{ $t("i_last") }}</b-button>
             </div>
             <!-- Individual save is intentionally disabled: files are saved by the top bulk-save button.
             <div class="d-flex mt-3 mb-3" style="gap:5mm;">
@@ -70,7 +82,7 @@ import AlinaPageGlobalAnalyzer from "@/services/AlinaPageGlobalAnalyzer";
 
 export default {
   name: "AlinaHorizontalScroll",
-  emits: ["onDelete", "onChange", "onMove"],
+  emits: ["onDelete", "onChange", "onMove", "onMoveTo"],
   components: {
     AlinAFile,
     aInput,

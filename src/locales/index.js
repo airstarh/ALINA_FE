@@ -147,6 +147,8 @@ const Translations = {
     i_window:                                                             "🗔",
     i_link:                                                               "🔗",
     i_share:                                                              "⁖",
+    i_last:                                                               "▼",
+    i_first:                                                              "▲",
     i_expand:                                                             "▼",
     i_collapse:                                                           "▲",
     i_engage:                                                             "⤳",

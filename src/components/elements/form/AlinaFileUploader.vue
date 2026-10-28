@@ -40,6 +40,16 @@
           <i :class="viewMode === 'horizontal' ? 'bi bi-list-ul' : 'bi bi-layout-three-columns'"></i>
         </button>
 
+        <button
+          type="button"
+          v-if="dArrFiles.length > 0 && CurrentUser.ownsOrAdminOrModerator(owner_id)"
+          class="btn btn-a"
+          :title="$t('Delete')"
+          :aria-label="$t('Delete')"
+          @click="onDeleteAll">
+          {{ $t("i_delete") }}
+        </button>
+
 
       </div>
 
@@ -70,7 +80,8 @@
           :smartOrdering="smartOrderingEnabled"
           @onDelete="onDelete"
           @onChange="onChange"
-          @onMove="onMove"></AlinaHorizontalScrollJson>
+          @onMove="onMove"
+          @onMoveTo="onMoveTo"></AlinaHorizontalScrollJson>
         <AlinaVerticalScrollJson
           v-else
           :pJson="dArrFiles"
@@ -78,7 +89,8 @@
           :smartOrdering="smartOrderingEnabled"
           @onDelete="onDelete"
           @onChange="onChange"
-          @onMove="onMove"></AlinaVerticalScrollJson>
+          @onMove="onMove"
+          @onMoveTo="onMoveTo"></AlinaVerticalScrollJson>
       </b-collapse>
     </div>
   </div>
@@ -164,6 +176,7 @@ export default {
       dConf: {
         urlFileUpload: `${ConfigApi.url_base}/FileUpload`,
         urlFileDelete: `${ConfigApi.url_base}/FileUpload/delete`,
+        urlFileDeleteBulk: `${ConfigApi.url_base}/FileUpload/deleteBulk`,
         urlFileUpdate: `${ConfigApi.url_base}/AdminDbManager/EditRow`,
         urlFileUpdateBulk: `${ConfigApi.url_base}/AdminDbManager/UpdateBulk`,
         urlGetFiles: `${ConfigApi.url_base}/FileUpload/getFiles`,
@@ -227,6 +240,25 @@ export default {
       }
 
       UtilsArray.elsSwap(this.dArrFiles, index, targetIndex);
+      this.normalizeFileOrders();
+      this.$nextTick(this.pageRecalcIframeHeight);
+    },
+    onMoveTo(index, targetIndex) {
+      if (
+        !this.smartOrderingEnabled
+        || index === targetIndex
+        || targetIndex < 0
+        || targetIndex >= this.dArrFiles.length
+      ) {
+        return;
+      }
+
+      const step = targetIndex < index ? -1 : 1;
+
+      for (let currentIndex = index; currentIndex !== targetIndex; currentIndex += step) {
+        UtilsArray.elsSwap(this.dArrFiles, currentIndex, currentIndex + step);
+      }
+
       this.normalizeFileOrders();
       this.$nextTick(this.pageRecalcIframeHeight);
     },
@@ -308,6 +340,33 @@ export default {
               _t.normalizeFileOrders();
               _t.onChangeBulk(_t.dArrFiles, true);
             }
+          }
+          _t.pageRecalcIframeHeight();
+        },
+      }).go();
+    },
+    onDeleteAll() {
+      if (!confirm("Are you sure?")) {
+        return;
+      }
+
+      const _t = this;
+      const ids = this.dArrFiles.map(file => Number(file.id));
+
+      AjaxAlina.newInst({
+        method: "DELETE",
+        url: this.dConf.urlFileDeleteBulk,
+        postParams: {
+          form_id: "actionDeleteBulk",
+          list: ids,
+        },
+        onDone: (aja) => {
+          if (aja.respBody.meta.alina_response_success == 1) {
+            UtilsArray.clear(_t.dArrFiles);
+            _t.dModeEdit = false;
+          }
+          else {
+            _t.loadFileList();
           }
           _t.pageRecalcIframeHeight();
         },
