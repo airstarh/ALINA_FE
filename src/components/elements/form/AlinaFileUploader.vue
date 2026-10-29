@@ -1,7 +1,7 @@
 <template>
   <div
     class="mt-3 mb-3"
-    v-if="modeEdit || dArrFiles.length > 0 || ownLength > 0">
+    v-if="modeEdit || dArrFiles.length > 0 || dOwnLength > 0">
 
     <div
       v-if="videoUploadActive"
@@ -21,12 +21,12 @@
           </span>
           <span>{{ $t("Attached files") }}</span>
           <span
-            v-if="ownLength > 0"
-            style="font-size: 2em; vertical-align: middle">&nbsp;{{ ownLength }}</span>
+            v-if="dOwnLength > 0"
+            style="font-size: 2em; vertical-align: middle">&nbsp;{{ dOwnLength }}</span>
         </b-button>
 
         <button
-          v-if="ownLength && CurrentUser.ownsOrAdminOrModerator(owner_id) && dArrFiles.length > 0"
+          v-if="dOwnLength && CurrentUser.ownsOrAdminOrModerator(owner_id) && dArrFiles.length > 0"
           class="btn btn-a"
           @click="toggleEditMode">
           {{ dModeEdit ? $t("i_undo") : $t("i_edit") }}
@@ -50,7 +50,7 @@
 
         <button
           type="button"
-          v-if="ownLength && dArrFiles.length > 0"
+          v-if="dOwnLength && dArrFiles.length > 0"
           class="btn btn-a"
           :title="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
           :aria-label="viewMode === 'horizontal' ? 'Vertical view' : 'Horizontal view'"
@@ -71,7 +71,7 @@
           <aInput
             v-if="!loadByOwner"
             type="file"
-            :modeEdit="dModeEdit"
+            :modeEdit="modeEdit"
             accept="*/*"
             :multiple="true"
             :idNameKey="ConfigApi.ALINA_FILE_UPLOAD_KEY"
@@ -200,6 +200,7 @@ export default {
       },
       ConfigApi,
       dArrFiles: [],
+      dOwnLength: this.ownLength,
       dModeEdit: this.modeEdit,
       dExpanded: this.expanded,
       viewMode: "vertical",
@@ -312,6 +313,7 @@ export default {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.clear(_t.dArrFiles);
             UtilsArray.vueSensitiveConcat(_t.dArrFiles, aja.respBody.data);
+            _t.dOwnLength = _t.dArrFiles.length;
             _t.loopFiles();
             _t.pageRecalcIframeHeight();
           }
@@ -339,6 +341,7 @@ export default {
     applyOrdinaryUpload(aja) {
       if (aja?.respBody?.meta?.alina_response_success != 1) return;
       UtilsArray.vueSensitivePrepend(this.dArrFiles, aja.respBody.data);
+      this.dOwnLength = this.dArrFiles.length;
       if (this.smartOrderingEnabled) this.normalizeFileOrders();
       this.loopFiles();
     },
@@ -409,6 +412,7 @@ export default {
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.elRemoveByIndex(_t.dArrFiles, index);
+            _t.dOwnLength = _t.dArrFiles.length;
 
             if (_t.smartOrderingEnabled && _t.dArrFiles.length > 0) {
               _t.normalizeFileOrders();
@@ -437,6 +441,7 @@ export default {
         onDone: (aja) => {
           if (aja.respBody.meta.alina_response_success == 1) {
             UtilsArray.clear(_t.dArrFiles);
+            _t.dOwnLength = 0;
             _t.dModeEdit = false;
           }
           else {
@@ -517,6 +522,9 @@ export default {
     },
     modeEdit(newValue) {
       return (this.dModeEdit = newValue);
+    },
+    ownLength(newValue) {
+      this.dOwnLength = newValue;
     },
   },
 
