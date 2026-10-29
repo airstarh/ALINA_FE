@@ -23,6 +23,13 @@
           :placeholder="$t('File Name')" />
 
         <div class="file-meta">
+          <button
+            v-if="isCurrentUserAllowedEdit(row)"
+            type="button"
+            class="file-delete-button"
+            :title="$t('Delete')"
+            :aria-label="$t('Delete')"
+            @click="$emit('onDelete', row, index)">{{ $t("i_delete") }}</button>
           <small v-if="formattedFileSize(row.size)" class="file-size">
             {{ formattedFileSize(row.size) }}
           </small>
@@ -81,11 +88,6 @@
           -->
         </template>
 
-        <b-button
-          v-if="isCurrentUserAllowedEdit(row)"
-          size="sm"
-          class="btn btn-a mt-2"
-          @click="$emit('onDelete', row, index)">{{ $t("Delete") }}</b-button>
       </div>
     </div>
   </div>
@@ -235,6 +237,8 @@ export default {
 }
 
 .file-meta { display: flex; align-items: center; gap: .4rem; }
+.file-delete-button { width: 2rem; height: 2rem; min-width: 2rem; padding: 0; border: 1px solid #777; border-radius: .25rem; color: inherit; background: transparent; }
+.file-delete-button:hover { background: #444; }
 .file-copy-button { min-width: 2rem; padding: 0 .35rem; border: 1px solid #777; border-radius: .25rem; color: inherit; background: transparent; }
 .file-copy-button:hover { background: #444; }
 .file-source-link { color: #8fc7ff !important; font-size: .85rem; }
