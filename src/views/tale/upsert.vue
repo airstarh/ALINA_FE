@@ -344,7 +344,7 @@
                 <!-- body_free -->
                 <span class="input-group-text bg-dark text-light">{{
                   $t("body_free")
-                }}</span>
+                  }}</span>
                 <textarea
                   class="form-control"
                   :placeholder="$t('body_free').toString()"
@@ -534,7 +534,7 @@ export default {
         is_date_hidden: 0,
         is_avatar_hidden: 0,
         is_social_sharing_hidden: 0,
-        is_for_registered: 0,
+        is_for_registered: 1,
         is_comment_for_owner: 0,
         seo_index: 0.1,
         geo_latitude: 0,
